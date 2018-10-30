@@ -45,7 +45,7 @@ namespace xQuantLogFactory
         {
             Console.Title = $"xQuant 日志分析工具 - {Application.ProductVersion}";
             Tracer.WriteLine($"{Console.Title} 已启动...");
-            Tracer.WriteLine($"启动参数：\n\t{string.Join("\n\t", args)}");
+            Tracer.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
 
             Tracer.WriteLine("开始创建任务参数对象...");
             try
@@ -57,7 +57,8 @@ namespace xQuantLogFactory
                 Tracer.WriteLine($"创建任务参数对象失败：{ex.Message}");
                 Exit(1);
             }
-            Tracer.WriteLine("创建任务参数对象成功");
+            Tracer.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
+
 
             //TODO: so much todo ...
 

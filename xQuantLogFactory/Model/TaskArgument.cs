@@ -12,7 +12,7 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 生成HTML
         /// </summary>
-        Html = 1,
+        HTML = 1,
 
         /// <summary>
         /// 生成Word
@@ -68,7 +68,7 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 日志分析报告输出模式
         /// </summary>
-        public ReportModes ReportMode { get; protected set; } = ReportModes.Html;
+        public ReportModes ReportMode { get; protected set; } = ReportModes.HTML;
 
         /// <summary>
         /// 监控的项目名称列表
@@ -120,11 +120,16 @@ namespace xQuantLogFactory.Model
                 return argument;
 
             if (args.Length >= 7)
-                argument.ReportMode = Enum.TryParse(args[6], out ReportModes reportModel) ? reportModel :  ReportModes.Html;
+                argument.ReportMode = Enum.TryParse(args[6], out ReportModes reportModel) ? reportModel : ReportModes.HTML;
             else
                 return argument;
 
             return argument;
+        }
+
+        public override string ToString()
+        {
+            return $"\t日志文件目录：{this.BaseDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视项目列表：{string.Join("、", this.ItemNames)}\n\t日志开始时间：{this.LogStartTime}\n\t日志截止时间：{this.LogFinishTime}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
         }
 
     }
