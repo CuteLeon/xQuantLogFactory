@@ -9,6 +9,9 @@ namespace xQuantLogFactory
     {
         static void Main(string[] args)
         {
+            Console.Title = $"xQuant 日志分析工具";
+
+            Console.Read();
         }
     }
 }
