@@ -61,7 +61,7 @@
   <ItemGroup>
     <Folder Include="BIZ\Analysiser\" />
     <Folder Include="BIZ\Exporter\" />
-    <Folder Include="BIZ\IO\" />
+    <Folder Include="BIZ\FileFinder\" />
     <Folder Include="BIZ\Parser\" />
     <Folder Include="DAL\" />
   </ItemGroup>

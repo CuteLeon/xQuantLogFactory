@@ -31,6 +31,11 @@ namespace xQuantLogFactory.Model
     public class TaskArgument
     {
         /// <summary>
+        /// 任务ID
+        /// </summary>
+        public string TaskID { get; set; }
+
+        /// <summary>
         /// 日志文件目录
         /// </summary>
         public string BaseDirectory { get; protected set; }
@@ -97,6 +102,7 @@ namespace xQuantLogFactory.Model
             //基础参数
             var argument = new TaskArgument
             {
+                TaskID = Guid.NewGuid().ToString("N"),
                 TaskStartTime = DateTime.Now,
                 BaseDirectory = args[0],
                 LogStartTime = DateTime.Parse(args[2]),
