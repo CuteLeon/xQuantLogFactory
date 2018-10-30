@@ -46,8 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\IMonitor.cs" />
+    <Compile Include="Model\LogFile.cs" />
     <Compile Include="Model\MonitorContainer.cs" />
     <Compile Include="Model\MonitorItem.cs" />
+    <Compile Include="Model\MonitorItemResult.cs" />
     <Compile Include="Model\TaskArgument.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
