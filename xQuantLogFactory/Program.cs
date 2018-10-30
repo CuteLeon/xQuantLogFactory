@@ -19,9 +19,14 @@ namespace xQuantLogFactory
         public static TaskArgument UnityArgument = null;
 
         /// <summary>
+        /// 全局配置助手
+        /// </summary>
+        public static ConfigHelper UnityConfig = new ConfigHelper();
+
+        /// <summary>
         /// 全局追踪器
         /// </summary>
-        public static ITrace Tracer = new Trace();
+        public static ITrace UnityTrace = new Trace();
 
         /* 启动参数：{string_日志文件目录} {string.Format(,)_监控的项目名称列表} "{datetime_日志开始时间}" "[datetime_日志截止时间 =DateTime.Now]" [boolean_包含系统信息 =false] [boolean_包含客户端信息 =false] [reportmodes_报告导出模式 =RepostModes.Html]
          * 注意：
@@ -44,21 +49,32 @@ namespace xQuantLogFactory
         static void Main(string[] args)
         {
             Console.Title = $"xQuant 日志分析工具 - {Application.ProductVersion}";
-            Tracer.WriteLine($"{Console.Title} 已启动...");
-            Tracer.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
+            UnityTrace.WriteLine($"{Console.Title} 已启动...");
+            UnityTrace.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
 
-            Tracer.WriteLine("开始创建任务参数对象...");
+            UnityTrace.WriteLine("开始创建任务参数对象...");
             try
             {
                 UnityArgument = TaskArgument.Parse(args);
             }
             catch (Exception ex)
             {
-                Tracer.WriteLine($"创建任务参数对象失败：{ex.Message}");
+                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
                 Exit(1);
             }
-            Tracer.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
+            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
 
+            UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", UnityConfig.MonitorDirectory);
+            try
+            {
+                IOUtils.PrepareDirectory(UnityConfig.MonitorDirectory);
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"准备目录失败：{ex.Message}");
+                Exit(2);
+            }
+            UnityTrace.WriteLine("准备目录成功");
 
             //TODO: so much todo ...
 

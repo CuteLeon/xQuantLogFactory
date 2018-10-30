@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using xQuantLogFactory.Utils.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using xQuantLogFactory.Model;
 using System.IO;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.Utils.Extensions.Tests
 {

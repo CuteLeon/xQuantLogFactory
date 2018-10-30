@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace xQuantLogFactory.Model
+﻿namespace xQuantLogFactory.Model
 {
     /// <summary>
     /// 监视接口
