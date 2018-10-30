@@ -67,7 +67,7 @@ namespace xQuantLogFactory
         /// <summary>
         /// 程序结束
         /// </summary>
-        /// <param name="code">程序退出代码</param>
+        /// <param name="code">程序退出代码 (0: 正常退出)</param>
         public static void Exit(int code)
         {
             Console.WriteLine("\n————————\n按任意键退出此程序... (￣▽￣)／");

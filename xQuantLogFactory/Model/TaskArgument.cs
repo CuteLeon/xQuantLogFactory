@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 
 namespace xQuantLogFactory.Model
 {
@@ -109,22 +105,22 @@ namespace xQuantLogFactory.Model
 
             //可选参数
             if (args.Length >= 4)
-                argument.LogFinishTime = (DateTime.TryParse(args[3], out DateTime finishTime)) ? finishTime : DateTime.Now;
+                argument.LogFinishTime = DateTime.TryParse(args[3], out DateTime finishTime) ? finishTime : DateTime.Now;
             else
                 return argument;
 
             if (args.Length >= 5)
-                argument.IncludeSystemInfo = (bool.TryParse(args[4], out bool systemInfo)) ? systemInfo : false;
+                argument.IncludeSystemInfo = bool.TryParse(args[4], out bool systemInfo) ? systemInfo : false;
             else
                 return argument;
 
             if (args.Length >= 6)
-                argument.IncludeClientInfo = (bool.TryParse(args[5], out bool clientInfo)) ? clientInfo : false;
+                argument.IncludeClientInfo = bool.TryParse(args[5], out bool clientInfo) ? clientInfo : false;
             else
                 return argument;
 
             if (args.Length >= 7)
-                argument.ReportMode = (Enum.TryParse<ReportModes>(args[6], out ReportModes reportModel)) ? reportModel :  ReportModes.Html;
+                argument.ReportMode = Enum.TryParse(args[6], out ReportModes reportModel) ? reportModel :  ReportModes.Html;
             else
                 return argument;
 
