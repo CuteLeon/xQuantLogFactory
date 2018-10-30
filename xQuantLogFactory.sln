@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xQuantLogFactory", "xQuantLogFactory\xQuantLogFactory.csproj", "{A2D3FB8C-BF8D-478E-AC36-0C9DC1E05EDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xQuantLogFactoryTests", "xQuantLogFactoryTests\xQuantLogFactoryTests.csproj", "{13A1CF59-4A16-44AE-A47C-0580DAC1EA7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A2D3FB8C-BF8D-478E-AC36-0C9DC1E05EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2D3FB8C-BF8D-478E-AC36-0C9DC1E05EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2D3FB8C-BF8D-478E-AC36-0C9DC1E05EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13A1CF59-4A16-44AE-A47C-0580DAC1EA7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13A1CF59-4A16-44AE-A47C-0580DAC1EA7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13A1CF59-4A16-44AE-A47C-0580DAC1EA7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13A1CF59-4A16-44AE-A47C-0580DAC1EA7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
