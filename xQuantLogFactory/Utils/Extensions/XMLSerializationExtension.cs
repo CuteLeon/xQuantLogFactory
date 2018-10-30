@@ -19,30 +19,20 @@ namespace xQuantLogFactory.Utils.Extensions
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="source">对象</param>
-        /// <param name="encoding">XML编码</param>
         /// <returns>XML内容</returns>
-        public static string SerializeToXML<T>(this T source, Encoding encoding) where T : class, new()
+        public static string SerializeToXML<T>(this T source) where T : class, new()
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
-            if (encoding == null) throw new ArgumentNullException(nameof(encoding));
 
             try
             {
                 var serializer = new XmlSerializer(typeof(T));
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true,
-                    NewLineChars = Environment.NewLine,
-                    Encoding = encoding,
-                    IndentChars = "  ",
-                    OmitXmlDeclaration = false
-                };
                 using (MemoryStream stream = new MemoryStream())
                 {
-                    using (var writer = new StreamWriter(stream, encoding))
+                    using (var writer = new StreamWriter(stream, Encoding.UTF8))
                     {
                         serializer.Serialize(writer, source);
-                        return encoding.GetString(stream.GetBuffer());
+                        return Encoding.UTF8.GetString(stream.GetBuffer());
                     }
                 }
             }
@@ -57,19 +47,17 @@ namespace xQuantLogFactory.Utils.Extensions
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="xml">XML内容</param>
-        /// <param name="encoding">XML编码</param>
         /// <returns>对象</returns>
-        public static T DeserializeToObject<T>(this string xml, Encoding encoding) where T : class, new()
+        public static T DeserializeToObject<T>(this string xml) where T : class, new()
         {
             if (xml == null) throw new ArgumentNullException(nameof(xml));
-            if (encoding == null) throw new ArgumentNullException(nameof(encoding));
 
             try
             {
                 var serializer = new XmlSerializer(typeof(T));
-                using (MemoryStream stream = new MemoryStream(encoding.GetBytes(xml)))
+                using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
                 {
-                    using (StreamReader reader = new StreamReader(stream, encoding))
+                    using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
                     {
                         return serializer.Deserialize(reader) as T;
                     }

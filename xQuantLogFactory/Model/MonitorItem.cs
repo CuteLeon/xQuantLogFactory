@@ -17,17 +17,17 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 起始正则表达式
         /// </summary>
-        private Regex startRegex;
+        private Regex _startRegex;
 
         /// <summary>
         /// 结束正则表达式
         /// </summary>
-        private Regex finishRegex;
+        private Regex _finishRegex;
 
         /// <summary>
         /// 条目正则表达式
         /// </summary>
-        private Regex itemRegex;
+        private Regex _itemRegex;
 
         /// <summary>
         /// 项目名称
@@ -68,14 +68,14 @@ namespace xQuantLogFactory.Model
         {
             get
             {
-                if (this.startRegex == null && !string.IsNullOrWhiteSpace(this.StartPattern))
+                if (this._startRegex == null && !string.IsNullOrWhiteSpace(this.StartPattern))
                 {
-                    this.startRegex = new Regex(
+                    this._startRegex = new Regex(
                         string.Format("^.*{0}.*$", this.StartPattern),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
                 }
 
-                return this.startRegex;
+                return this._startRegex;
             }
         }
 
@@ -86,14 +86,14 @@ namespace xQuantLogFactory.Model
         {
             get
             {
-                if (this.finishRegex == null && !string.IsNullOrWhiteSpace(this.FinishPatterny))
+                if (this._finishRegex == null && !string.IsNullOrWhiteSpace(this.FinishPatterny))
                 {
-                    this.finishRegex = new Regex(
+                    this._finishRegex = new Regex(
                         string.Format("^.*{0}.*$", this.StartPattern),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
                 }
 
-                return this.finishRegex;
+                return this._finishRegex;
             }
         }
 
@@ -104,19 +104,19 @@ namespace xQuantLogFactory.Model
         {
             get
             {
-                if (this.itemRegex == null)
+                if (this._itemRegex == null)
                 {
                     if (string.IsNullOrWhiteSpace(this.StartPattern) && string.IsNullOrWhiteSpace(this.FinishPatterny))
                     {
                         return null;
                     }
 
-                    this.itemRegex = new Regex(
+                    this._itemRegex = new Regex(
                         string.Format("^.*{0}|{1}.*$", this.StartPattern, this.FinishPatterny),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
                 }
 
-                return this.itemRegex;
+                return this._itemRegex;
             }
         }
     }

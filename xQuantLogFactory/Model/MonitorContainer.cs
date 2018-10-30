@@ -10,13 +10,13 @@ namespace xQuantLogFactory.Model
     /// 监视规则容器
     /// </summary>
     [Serializable]
-    [XmlRoot("Root")]
+    [XmlRoot("MonitorRoot")]
     public class MonitorContainer : IMonitor
     {
         /// <summary>
         /// 规则容器名称
         /// </summary>
-        [XmlElement("Name")]
+        [XmlAttribute("Name")]
         public string Name { get; set; }
 
         /// <summary>
