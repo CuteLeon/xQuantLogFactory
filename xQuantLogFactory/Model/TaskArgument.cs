@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using xQuantLogFactory.DAL;
 
 namespace xQuantLogFactory.Model
 {
@@ -28,57 +33,90 @@ namespace xQuantLogFactory.Model
     /// <summary>
     /// 任务配置参数
     /// </summary>
+    [Table("Tasks")]
     public class TaskArgument
     {
         /// <summary>
         /// 任务ID
         /// </summary>
+        [Key]
+        [Required]
+        [DisplayName("任务ID"), DataType(DataType.Text)]
         public string TaskID { get; set; }
 
         /// <summary>
         /// 日志文件目录
         /// </summary>
-        public string BaseDirectory { get; protected set; }
+        [Required]
+        [DisplayName("日志文件目录"), DataType(DataType.Text)]
+        public string BaseDirectory { get; set; }
 
         /// <summary>
         /// 日志开始时间
         /// </summary>
-        public DateTime LogStartTime { get; protected set; }
+        [Required]
+        [DisplayName("日志开始时间"), DataType(DataType.DateTime)]
+        public DateTime LogStartTime { get; set; }
 
         /// <summary>
         /// 日志截止时间
         /// </summary>
-        public DateTime LogFinishTime { get; protected set; } = DateTime.Now;
+        [Required]
+        [DisplayName("日志截止时间"), DataType(DataType.DateTime)]
+        public DateTime LogFinishTime { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 任务开始时间
         /// </summary>
+        [Required]
+        [DisplayName("任务开始时间"), DataType(DataType.DateTime)]
         public DateTime TaskStartTime { get; set; }
 
         /// <summary>
         /// 任务完成时间
         /// </summary>
+        [DisplayName("任务完成时间"), DataType(DataType.DateTime)]
         public DateTime TaskFinishTime { get; set; }
 
         /// <summary>
         /// 包含系统信息
         /// </summary>
-        public bool IncludeSystemInfo { get; protected set; } = false;
+        [Required]
+        [DisplayName("包含系统信息"), DataType(DataType.DateTime)]
+        public bool IncludeSystemInfo { get; set; } = false;
 
         /// <summary>
         /// 包含客户端文件信息
         /// </summary>
-        public bool IncludeClientInfo { get; protected set; } = false;
+        [Required]
+        [DisplayName("包含客户端文件信息")]
+        public bool IncludeClientInfo { get; set; } = false;
 
         /// <summary>
         /// 日志分析报告输出模式
         /// </summary>
-        public ReportModes ReportMode { get; protected set; } = ReportModes.HTML;
+        [Required]
+        [DisplayName("日志分析报告输出模式")]
+        public ReportModes ReportMode { get; set; } = ReportModes.HTML;
 
         /// <summary>
         /// 监控的项目名称列表
         /// </summary>
-        public List<string> ItemNames { get; protected set; } = new List<string>();
+        [Required]
+        [DisplayName("监控的项目名称列表")]
+        public virtual List<string> ItemNames { get; set; } = new List<string>();
+
+        /// <summary>
+        /// 监控规则列表
+        /// </summary>
+        [DisplayName("监控规则列表")]
+        public virtual List<MonitorItem> MonitorItems { get; set; } = new List<MonitorItem>();
+
+        /// <summary>
+        /// 日志文件列表
+        /// </summary>
+        [DisplayName("日志文件列表")]
+        public virtual List<LogFile> LogFiles { get; set; } = new List<LogFile>();
 
         /// <summary>
         /// 根据工具启动参数创建任务参数对象

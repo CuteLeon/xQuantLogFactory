@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
@@ -9,47 +12,48 @@ namespace xQuantLogFactory.Model
     /// 监视规则
     /// </summary>
     [Serializable]
-    public class MonitorItem : IMonitor
+    [Table("MonitorItems")]
+    public class MonitorItem
     {
 
         /// <summary>
-        /// 起始正则表达式
+        /// 监视规则ID
         /// </summary>
-        private Regex _startRegex;
-
-        /// <summary>
-        /// 结束正则表达式
-        /// </summary>
-        private Regex _finishRegex;
-
-        /// <summary>
-        /// 条目正则表达式
-        /// </summary>
-        private Regex _itemRegex;
+        [Key]
+        [Required]
+        [DisplayName("监视规则ID")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ItemID { get; set; }
 
         /// <summary>
         /// 项目名称
         /// </summary>
         [XmlAttribute("Name")]
+        [Required]
+        [DisplayName(""), DataType(DataType.Text)]
         public string Name { get; set; }
 
         /// <summary>
         /// 起始匹配模式
         /// </summary>
         [XmlAttribute("Begin")]
+        [DisplayName("起始匹配模式"), DataType(DataType.Text)]
         public string StartPattern { get; set; }
 
         /// <summary>
         /// 结束匹配模式
         /// </summary>
         [XmlAttribute("End")]
+        [DisplayName("结束匹配模式"), DataType(DataType.Text)]
         public string FinishPatterny { get; set; }
 
         /// <summary>
         /// 子监控项目列表
         /// </summary>
         [XmlElement("Item")]
-        public List<MonitorItem> ChildList { get; set; }
+        [Required]
+        [DisplayName("子监控项目列表"), DataType(DataType.Text)]
+        public virtual List<MonitorItem> ChildList { get; set; }
 
         /// <summary>
         /// 是否有子监控项目
@@ -58,6 +62,11 @@ namespace xQuantLogFactory.Model
         {
             get { return this.ChildList != null && this.ChildList.Count > 0; }
         }
+
+        /// <summary>
+        /// 起始正则表达式
+        /// </summary>
+        private Regex _startRegex;
 
         /// <summary>
         /// 起始正则表达式
@@ -80,6 +89,11 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 结束正则表达式
         /// </summary>
+        private Regex _finishRegex;
+
+        /// <summary>
+        /// 结束正则表达式
+        /// </summary>
         public Regex FinishRegex
         {
             get
@@ -94,6 +108,11 @@ namespace xQuantLogFactory.Model
                 return this._finishRegex;
             }
         }
+
+        /// <summary>
+        /// 条目正则表达式
+        /// </summary>
+        private Regex _itemRegex;
 
         /// <summary>
         /// 条目正则表达式

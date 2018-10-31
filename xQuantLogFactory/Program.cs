@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
 
@@ -22,6 +23,11 @@ namespace xQuantLogFactory
         /// 全局配置助手
         /// </summary>
         public static ConfigHelper UnityConfig = new ConfigHelper();
+
+        /// <summary>
+        /// 全局数据库交互对象
+        /// </summary>
+        public static LogDBContext UnityContext = LogDBContext.UnityContext;
 
         /// <summary>
         /// 全局追踪器
@@ -63,6 +69,8 @@ namespace xQuantLogFactory
                 Exit(1);
             }
             UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
+            UnityContext.TaskArguments.Add(UnityArgument);
+            UnityContext.SaveChanges();
 
             UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", UnityConfig.MonitorDirectory);
             try
