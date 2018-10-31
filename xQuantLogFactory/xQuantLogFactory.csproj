@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>xQuantLogFactoryIcon.ico</ApplicationIcon>
@@ -58,6 +60,9 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.109.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.109.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -66,6 +71,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BIZ\FileFinder\IChildFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\ITaskFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\LogFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
     <Compile Include="DAL\LogDBSeed.cs" />
     <Compile Include="Model\LogFile.cs" />
@@ -83,7 +92,6 @@
   <ItemGroup>
     <Folder Include="BIZ\Analysiser\" />
     <Folder Include="BIZ\Exporter\" />
-    <Folder Include="BIZ\FileFinder\" />
     <Folder Include="BIZ\Parser\" />
   </ItemGroup>
   <ItemGroup>

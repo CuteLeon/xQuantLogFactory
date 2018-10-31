@@ -18,7 +18,7 @@ namespace xQuantLogFactory.Model
         [Required]
         [DisplayName("解析结果ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string ResultID { get; set; }
+        public int ResultID { get; set; }
 
         /// <summary>
         /// 日志文件

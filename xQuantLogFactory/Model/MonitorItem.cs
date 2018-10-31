@@ -23,6 +23,7 @@ namespace xQuantLogFactory.Model
         [Required]
         [DisplayName("监视规则ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [XmlIgnore]
         public int ItemID { get; set; }
 
         /// <summary>

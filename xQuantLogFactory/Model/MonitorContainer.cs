@@ -21,6 +21,6 @@ namespace xQuantLogFactory.Model
         /// 监控项目列表
         /// </summary>
         [XmlElement("Item")]
-        public virtual List<MonitorItem> ItemList { get; set; }
+        public virtual List<MonitorItem> ItemList { get; set; } = new List<MonitorItem>();
     }
 }

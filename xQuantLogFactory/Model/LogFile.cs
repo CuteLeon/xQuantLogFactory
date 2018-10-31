@@ -18,7 +18,7 @@ namespace xQuantLogFactory.Model
         [Required]
         [DisplayName("日志文件ID")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string FileID { get; set; }
+        public int FileID { get; set; }
 
         /// <summary>
         /// 日志文件路径

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
@@ -58,6 +60,7 @@ namespace xQuantLogFactory
             UnityTrace.WriteLine($"{Console.Title} 已启动...");
             UnityTrace.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
 
+            //创建任务参数对象
             UnityTrace.WriteLine("开始创建任务参数对象...");
             try
             {
@@ -68,10 +71,11 @@ namespace xQuantLogFactory
                 UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
                 Exit(1);
             }
-            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
             UnityContext.TaskArguments.Add(UnityArgument);
             UnityContext.SaveChanges();
+            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
 
+            //准备监视规则存储目录
             UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", UnityConfig.MonitorDirectory);
             try
             {
@@ -84,6 +88,20 @@ namespace xQuantLogFactory
             }
             UnityTrace.WriteLine("准备目录成功");
 
+            //反序列化监视规则文件
+            UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
+            MonitorFileFinder monitorFinder = new MonitorFileFinder();
+            UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(UnityArgument));
+            UnityContext.SaveChanges();
+            UnityTrace.WriteLine($"发现 {UnityArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityArgument.MonitorItems.Select(item => item.Name))}");
+
+            //获取时间段内日志文件
+            UnityTrace.WriteLine("开始获取时间段内日志文件...");
+            ITaskFileFinder logFinder = new LogFileFinder();
+            UnityArgument.LogFiles.AddRange(logFinder.GetFiles<LogFile>(UnityArgument));
+            UnityContext.SaveChanges();
+            UnityTrace.WriteLine($"获取日志文件成功，共计 {UnityArgument.LogFiles.Count} 个");
+
             //TODO: so much todo ...
 
             Exit(0);
@@ -95,6 +113,8 @@ namespace xQuantLogFactory
         /// <param name="code">程序退出代码 (0: 正常退出)</param>
         public static void Exit(int code)
         {
+            UnityContext?.Dispose();
+
             Console.WriteLine("\n————————\n按任意键退出此程序... (￣▽￣)／");
             Console.Read();
             Environment.Exit(code);
