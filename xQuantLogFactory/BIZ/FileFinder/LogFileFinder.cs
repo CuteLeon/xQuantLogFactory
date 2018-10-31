@@ -16,9 +16,10 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <summary>
         /// 查找符合日志分析参数的待分析日志文件清单
         /// </summary>
+        /// <param name="directory">文件存放目录</param>
         /// <param name="param">任务参数</param>
         /// <returns>返回符合日志分析参数的待分析日志文件清单</returns>
-        public IEnumerable<T> GetFiles<T>(TaskArgument argumant) where T : class
+        public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argumant) where T : class
         {
             if (argumant == null)
                 throw new ArgumentNullException(nameof(argumant));

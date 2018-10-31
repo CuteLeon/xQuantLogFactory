@@ -33,9 +33,9 @@ namespace xQuantLogFactory.Utils.Extensions
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                throw new InvalidOperationException(ex.Message);
+                return string.Empty;
             }
         }
 
@@ -60,9 +60,9 @@ namespace xQuantLogFactory.Utils.Extensions
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                throw new InvalidOperationException(ex.Message);
+                return null;
             }
         }
     }

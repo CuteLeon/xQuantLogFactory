@@ -15,34 +15,34 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
         [TestMethod()]
         public void SerializeToXMLTest()
         {
-            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", ItemList = new List<MonitorItem>() };
+            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorItems = new List<MonitorItem>() };
 
             MonitorItem rootItem = new MonitorItem
             {
                 Name = "客户端启动",
                 StartPattern = "客户端启动开始",
                 FinishPatterny = "初始化第二阶段开始",
-                ChildList = new List<MonitorItem>(),
+                MonitorItems = new List<MonitorItem>(),
             };
             MonitorItem dataItem = new MonitorItem()
             {
                 Name = "数据加载",
                 StartPattern = "加载中债参数设置表",
                 FinishPatterny = "加载当前登录部门",
-                ChildList = new List<MonitorItem>(),
+                MonitorItems = new List<MonitorItem>(),
             };
             MonitorItem bondItem = new MonitorItem()
             {
                 Name = "债券加载",
                 StartPattern = "加载TBND查询",
                 FinishPatterny = "加载TBND",
-                ChildList = new List<MonitorItem>(),
+                MonitorItems = new List<MonitorItem>(),
             };
 
-            container.ItemList.Add(rootItem);
-            rootItem.ChildList.Add(dataItem);
-            rootItem.ChildList.Add(new MonitorItem() { Name = "额外任务" });
-            dataItem.ChildList.Add(bondItem);
+            container.MonitorItems.Add(rootItem);
+            rootItem.MonitorItems.Add(dataItem);
+            rootItem.MonitorItems.Add(new MonitorItem() { Name = "额外任务" });
+            dataItem.MonitorItems.Add(bondItem);
 
             string xmlContent = container.SerializeToXML();
             Assert.IsNotNull(xmlContent);
@@ -61,7 +61,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
 
             Assert.IsNotNull(container);
             Assert.AreEqual("监听客户端启动方案", container.Name);
-            Assert.AreEqual(2, container.ItemList[0].ChildList.Count);
+            Assert.AreEqual(2, container.MonitorItems[0].MonitorItems.Count);
         }
     }
 }

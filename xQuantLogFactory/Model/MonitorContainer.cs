@@ -9,7 +9,7 @@ namespace xQuantLogFactory.Model
     /// </summary>
     [Serializable]
     [XmlRoot("MonitorRoot")]
-    public class MonitorContainer
+    public class MonitorContainer : IMonitor
     {
         /// <summary>
         /// 规则容器名称
@@ -21,6 +21,15 @@ namespace xQuantLogFactory.Model
         /// 监控项目列表
         /// </summary>
         [XmlElement("Item")]
-        public virtual List<MonitorItem> ItemList { get; set; } = new List<MonitorItem>();
+        public virtual List<MonitorItem> MonitorItems { get; set; } = new List<MonitorItem>();
+
+        /// <summary>
+        /// 是否有子监控项目
+        /// </summary>
+        public bool HasChildren
+        {
+            get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
+        }
+
     }
 }

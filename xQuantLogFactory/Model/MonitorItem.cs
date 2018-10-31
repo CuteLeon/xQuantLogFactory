@@ -13,7 +13,7 @@ namespace xQuantLogFactory.Model
     /// </summary>
     [Serializable]
     [Table("MonitorItems")]
-    public class MonitorItem
+    public class MonitorItem : IMonitor
     {
 
         /// <summary>
@@ -54,14 +54,14 @@ namespace xQuantLogFactory.Model
         [XmlElement("Item")]
         [Required]
         [DisplayName("子监控项目列表"), DataType(DataType.Text)]
-        public virtual List<MonitorItem> ChildList { get; set; }
+        public virtual List<MonitorItem> MonitorItems { get; set; }
 
         /// <summary>
         /// 是否有子监控项目
         /// </summary>
         public bool HasChildren
         {
-            get { return this.ChildList != null && this.ChildList.Count > 0; }
+            get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
         }
 
         /// <summary>
@@ -137,5 +137,6 @@ namespace xQuantLogFactory.Model
                 return this._itemRegex;
             }
         }
+
     }
 }

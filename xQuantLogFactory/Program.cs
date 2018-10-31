@@ -11,8 +11,8 @@ using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory
 {
-    //TODO: 移除和排除 using
-    //TODO: 编写单元测试
+    //TODO: [全局任务] 移除和排除 using
+    //TODO: [全局任务] 编写单元测试
 
     class Program
     {
@@ -90,15 +90,15 @@ namespace xQuantLogFactory
 
             //反序列化监视规则文件
             UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
-            MonitorFileFinder monitorFinder = new MonitorFileFinder();
-            UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(UnityArgument));
+            ITaskFileFinder monitorFinder = new MonitorFileFinder();
+            UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(UnityConfig.MonitorDirectory, UnityArgument));
             UnityContext.SaveChanges();
             UnityTrace.WriteLine($"发现 {UnityArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityArgument.MonitorItems.Select(item => item.Name))}");
 
             //获取时间段内日志文件
             UnityTrace.WriteLine("开始获取时间段内日志文件...");
             ITaskFileFinder logFinder = new LogFileFinder();
-            UnityArgument.LogFiles.AddRange(logFinder.GetFiles<LogFile>(UnityArgument));
+            UnityArgument.LogFiles.AddRange(logFinder.GetFiles<LogFile>(UnityArgument.BaseDirectory, UnityArgument));
             UnityContext.SaveChanges();
             UnityTrace.WriteLine($"获取日志文件成功，共计 {UnityArgument.LogFiles.Count} 个");
 
