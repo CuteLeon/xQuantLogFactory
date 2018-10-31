@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.BIZ.Parser
@@ -12,6 +13,14 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public class LogParser : ILogParser
     {
+        /// <summary>
+        /// 日志正则表达式
+        /// </summary>
+        /// <remarks>2018-10-30 09:25:30,111 DEBUG 东方证券 1.3.0.064补丁1 开始排券</remarks>
+        public Regex LogRegex = new Regex(
+            @"(?<Time>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2},\d{3})\s(?<Type>(TRACE|DEBUG|INFO|WARN))*$",
+            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         /// <summary>
         /// 日志解析
         /// </summary>
