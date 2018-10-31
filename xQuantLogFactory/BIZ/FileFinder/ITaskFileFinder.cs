@@ -15,9 +15,9 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// </summary>
         /// <typeparam name="T">转义对象类型</typeparam>
         /// <param name="directory">文件存放目录</param>
-        /// <param name="argumant">任务参数</param>
+        /// <param name="argument">任务参数</param>
         /// <returns>文件清单</returns>
-        IEnumerable<T> GetFiles<T>(string directory, TaskArgument argumant) where T : class;
+        IEnumerable<T> GetFiles<T>(string directory, TaskArgument argument) where T : class;
 
     }
 }

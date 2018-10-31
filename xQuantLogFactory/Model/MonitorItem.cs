@@ -54,9 +54,16 @@ namespace xQuantLogFactory.Model
         /// 子监控项目列表
         /// </summary>
         [XmlElement("Item")]
-        [DisplayName("子监控项目列表"), DataType(DataType.Text)]
+        [DisplayName("子监控项目列表")]
         public virtual List<MonitorItem> MonitorItems { get; set; }
 
+        /// <summary>
+        /// 解析结果列表
+        /// </summary>
+        [XmlIgnore]
+        [NotMapped]
+        public virtual List<MonitorResult> MonitorResults { get; set; }
+        
         #endregion
 
         #region 正则

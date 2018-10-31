@@ -75,13 +75,15 @@
     <Compile Include="BIZ\FileFinder\ITaskFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\LogFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
+    <Compile Include="BIZ\Parser\ILogParser.cs" />
+    <Compile Include="BIZ\Parser\LogParser.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
     <Compile Include="DAL\LogDBSeed.cs" />
     <Compile Include="Model\IMonitor.cs" />
     <Compile Include="Model\LogFile.cs" />
     <Compile Include="Model\MonitorContainer.cs" />
     <Compile Include="Model\MonitorItem.cs" />
-    <Compile Include="Model\MonitorItemResult.cs" />
+    <Compile Include="Model\MonitorResult.cs" />
     <Compile Include="Model\TaskArgument.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,7 +95,6 @@
   <ItemGroup>
     <Folder Include="BIZ\Analysiser\" />
     <Folder Include="BIZ\Exporter\" />
-    <Folder Include="BIZ\Parser\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Monitor\Monitor.xml">

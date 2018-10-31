@@ -19,20 +19,20 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <param name="directory">文件存放目录</param>
         /// <param name="param">任务参数</param>
         /// <returns>返回符合日志分析参数的待分析日志文件清单</returns>
-        public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argumant) where T : class
+        public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argument) where T : class
         {
-            if (argumant == null)
-                throw new ArgumentNullException(nameof(argumant));
-            if (!Directory.Exists(argumant.BaseDirectory))
-                throw new DirectoryNotFoundException(argumant.BaseDirectory);
+            if (argument == null)
+                throw new ArgumentNullException(nameof(argument));
+            if (!Directory.Exists(argument.BaseDirectory))
+                throw new DirectoryNotFoundException(argument.BaseDirectory);
 
             List<LogFile> logFiles = new List<LogFile>();
-            DirectoryInfo directoryInfo = new DirectoryInfo(argumant.BaseDirectory);
+            DirectoryInfo directoryInfo = new DirectoryInfo(argument.BaseDirectory);
 
             foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo.GetFiles("*.txt*").Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
             {
-                if ((CreationTime > argumant.LogStartTime && CreationTime < argumant.LogFinishTime) ||
-                    (LastWriteTime > argumant.LogStartTime && LastWriteTime < argumant.LogFinishTime)
+                if ((CreationTime > argument.LogStartTime && CreationTime < argument.LogFinishTime) ||
+                    (LastWriteTime > argument.LogStartTime && LastWriteTime < argument.LogFinishTime)
                     )
                 {
                     logFiles.Add(new LogFile()

@@ -28,14 +28,14 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// 将目录内XML文件反序列化为监视规则容器对象
         /// </summary>
         /// <param name="directory">文件目录</param>
-        /// <param name="argumant">任务参数</param>
+        /// <param name="argument">任务参数</param>
         /// <returns></returns>
-        public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argumant) where T : class
+        public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argument) where T : class
         {
-            if (argumant == null)
-                throw new ArgumentNullException(nameof(argumant));
-            if (!Directory.Exists(argumant.BaseDirectory))
-                throw new DirectoryNotFoundException(argumant.BaseDirectory);
+            if (argument == null)
+                throw new ArgumentNullException(nameof(argument));
+            if (!Directory.Exists(argument.BaseDirectory))
+                throw new DirectoryNotFoundException(argument.BaseDirectory);
 
             //符合要求的监视规则
             List<MonitorItem> targetItems = new List<MonitorItem>();
@@ -64,7 +64,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 //查询匹配的监视规则对象 (返回的IMonitor对象清空子级监视规则对象，以免被ORM重复记录到数据库)
                 targetItems.AddRange(
                         from monitor in CurrentMonitor.MonitorItems
-                        where argumant.ItemNames.Contains(monitor.Name)
+                        where argument.ItemNames.Contains(monitor.Name)
                         select monitor.Clone() as MonitorItem
                         );
 

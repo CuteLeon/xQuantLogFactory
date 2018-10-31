@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using xQuantLogFactory.BIZ.FileFinder;
+using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory
 {
+    //TODO: [全局任务] 使用
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试
 
@@ -93,14 +95,41 @@ namespace xQuantLogFactory
             ITaskFileFinder monitorFinder = new MonitorFileFinder();
             UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(UnityConfig.MonitorDirectory, UnityArgument));
             UnityContext.SaveChanges();
-            UnityTrace.WriteLine($"发现 {UnityArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityArgument.MonitorItems.Select(item => item.Name))}");
+            if (UnityArgument.MonitorItems.Count == 0)
+            {
+                UnityTrace.WriteLine("未发现任务相关监视规则，程序将退出");
+                Exit(3);
+            }
+            else
+            {
+                UnityTrace.WriteLine($"发现 {UnityArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityArgument.MonitorItems.Select(item => item.Name))}");
+            }
 
             //获取时间段内日志文件
             UnityTrace.WriteLine("开始获取时间段内日志文件...");
             ITaskFileFinder logFinder = new LogFileFinder();
             UnityArgument.LogFiles.AddRange(logFinder.GetFiles<LogFile>(UnityArgument.BaseDirectory, UnityArgument));
             UnityContext.SaveChanges();
-            UnityTrace.WriteLine($"获取日志文件成功，共计 {UnityArgument.LogFiles.Count} 个");
+            if (UnityArgument.LogFiles.Count == 0)
+            {
+                UnityTrace.WriteLine("未发现任务相关日志文件，程序将退出");
+                Exit(4);
+            }
+            else
+            {
+                UnityTrace.WriteLine($"发现 {UnityArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityArgument.LogFiles.Select(file => file.FilePath))}\n————————");
+            }
+
+            UnityTrace.WriteLine("开始解析日志文件...");
+            ILogParser logParser = new LogParser();
+            foreach (MonitorResult result in logParser.Parse(UnityArgument))
+            {
+                /*
+                result.MonitorItem;
+                result.LogFile;
+                 */
+            }
+            UnityTrace.WriteLine("日志文件解析完成");
 
             //TODO: so much todo ...
 

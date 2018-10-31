@@ -8,8 +8,8 @@ namespace xQuantLogFactory.Model
     /// <summary>
     /// 监视规则解析结果
     /// </summary>
-    [Table("MonitorItemResults")]
-    public class MonitorItemResult
+    [Table("MonitorResults")]
+    public class MonitorResult
     {
         /// <summary>
         /// 解析结果ID
