@@ -18,7 +18,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// </summary>
         /// <remarks>2018-10-30 09:25:30,111 DEBUG 东方证券 1.3.0.064补丁1 开始排券</remarks>
         public Regex LogRegex = new Regex(
-            @"(?<Time>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2},\d{3})\s(?<Type>(TRACE|DEBUG|INFO|WARN))*$",
+            @"(?<Time>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2},\d{3})\s(?<Type>(TRACE|DEBUG|INFO|WARN))",//*$
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -36,12 +36,22 @@ namespace xQuantLogFactory.BIZ.Parser
             {
                 using (StreamReader reader = new StreamReader(logFile.FilePath))
                 {
-                    while (reader.EndOfStream)
+                    while (!reader.EndOfStream)
                     {
                         //获取日志行
                         string logLine = reader.ReadLine();
+                        Match match = this.LogRegex.Match(logLine);
 
-                        //TODO: 使用正则匹配日志行，匹配失败时忽略
+                        if (match.Success)
+                        {
+                            //TODO: 使用正则匹配日志行
+                            Console.WriteLine(match.Groups["Time"]);
+                            Console.WriteLine(match.Groups["Type"]);
+                        }
+                        else
+                        {
+                            //未识别的日志行
+                        }
                     }
                     yield return new MonitorResult();
                     reader.Close();
