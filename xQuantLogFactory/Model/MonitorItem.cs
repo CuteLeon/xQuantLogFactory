@@ -13,8 +13,10 @@ namespace xQuantLogFactory.Model
     /// </summary>
     [Serializable]
     [Table("MonitorItems")]
-    public class MonitorItem : IMonitor
+    public class MonitorItem : IMonitor, ICloneable
     {
+
+        #region 数据库字段
 
         /// <summary>
         /// 监视规则ID
@@ -52,17 +54,12 @@ namespace xQuantLogFactory.Model
         /// 子监控项目列表
         /// </summary>
         [XmlElement("Item")]
-        [Required]
         [DisplayName("子监控项目列表"), DataType(DataType.Text)]
         public virtual List<MonitorItem> MonitorItems { get; set; }
 
-        /// <summary>
-        /// 是否有子监控项目
-        /// </summary>
-        public bool HasChildren
-        {
-            get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
-        }
+        #endregion
+
+        #region 正则
 
         /// <summary>
         /// 起始正则表达式
@@ -137,6 +134,33 @@ namespace xQuantLogFactory.Model
                 return this._itemRegex;
             }
         }
+
+        #endregion
+
+        #region 方法
+
+        /// <summary>
+        /// 是否有子监控项目
+        /// </summary>
+        public bool HasChildren
+        {
+            get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
+        }
+
+        /// <summary>
+        /// 克隆不含子级规则的监视规则对象
+        /// </summary>
+        /// <returns></returns>
+        public object Clone()
+            => new MonitorItem()
+            {
+                Name = this.Name,
+                ItemID = this.ItemID,
+                StartPattern = this.StartPattern,
+                FinishPatterny = this.FinishPatterny,
+            };
+        
+        #endregion
 
     }
 }
