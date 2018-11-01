@@ -115,16 +115,18 @@ namespace xQuantLogFactory
                 UnityTrace.WriteLine($"发现 {UnityArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityArgument.LogFiles.Select(file => file.FilePath))}\n————————");
             }
 
-            //TODO: 根据日志文件开头字符区分服务端日志文件和客户端日志文件，并使用对应的解析器解析日志信息
             UnityTrace.WriteLine("开始解析日志文件...");
-            ILogParser logParser = new ServerLogParser() { UnityTrace = UnityTrace };
-            foreach (MonitorResult result in logParser.Parse(UnityArgument))
+            if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
             {
-                UnityTrace.WriteLine($"发现监视结果：\n\t行号: {result.LineNumber} 等级: {result.LogLevel} 日志内容: {result.LogContent}");
-                /*
-                result.MonitorItem;
-                result.LogFile;
-                 */
+                //存在客户端日志文件，创建客户端日志解析器
+                ILogParser clientLogParser = new ClientLogParser() { UnityTrace = UnityTrace };
+                LogParseExecute(clientLogParser, UnityArgument);
+            }
+            if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Server) > 0)
+            {
+                //存在服务端日志文件，创建服务端日志解析器
+                ILogParser serverLogParser = new ServerLogParser() { UnityTrace = UnityTrace };
+                LogParseExecute(serverLogParser, UnityArgument);
             }
 
             UnityTrace.WriteLine("日志文件解析完成");
@@ -163,6 +165,24 @@ namespace xQuantLogFactory
             {
                 TimeSpan duration = UnityArgument.TaskFinishTime.Subtract(UnityArgument.TaskStartTime);
                 Console.WriteLine($"任务耗时：{duration.Hours}时 {duration.Minutes}分 {duration.Seconds}秒 {duration.Milliseconds}毫秒");
+            }
+        }
+
+        /// <summary>
+        /// 执行日志解析器
+        /// </summary>
+        /// <param name="logParser">日志解析器</param>
+        /// <param name="argument">任务参数</param>
+        private static void LogParseExecute(ILogParser logParser, TaskArgument argument)
+        {
+            foreach (MonitorResult result in logParser.Parse(argument))
+            {
+                //TODO: 监视结果数据持久化，测试能否 [通过文件和规则查找结果] 和 [通过结果反向查找文件和规则]
+                UnityTrace.WriteLine($"发现监视结果：\n\t行号: {result.LineNumber} 等级: {result.LogLevel} 日志内容: {result.LogContent}");
+                /*
+                result.MonitorItem;
+                result.LogFile;
+                 */
             }
         }
 
