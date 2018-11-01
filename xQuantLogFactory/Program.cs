@@ -120,8 +120,9 @@ namespace xQuantLogFactory
                 UnityTrace.WriteLine($"发现 {UnityArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityArgument.LogFiles.Select(file => file.FilePath))}\n————————");
             }
 
+            //TODO: 根据日志文件开头字符区分服务端日志文件和客户端日志文件，并使用对应的解析器解析日志信息
             UnityTrace.WriteLine("开始解析日志文件...");
-            ILogParser logParser = new LogParser() { UnityTrace = UnityTrace };
+            ILogParser logParser = new ServerLogParser() { UnityTrace = UnityTrace };
             foreach (MonitorResult result in logParser.Parse(UnityArgument))
             {
                 UnityTrace.WriteLine($"发现监视结果：\n\t行号: {result.LineNumber} 等级: {result.LogLevel} 日志内容: {result.LogContent}");

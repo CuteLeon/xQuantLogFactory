@@ -29,6 +29,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
             List<LogFile> logFiles = new List<LogFile>();
             DirectoryInfo directoryInfo = new DirectoryInfo(argument.BaseDirectory);
 
+            //TODO: 已知客户端和服务端日志文件格式，需要按格式筛选，以免查找到无用的文件
             foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo.GetFiles("*.txt*").Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
             {
                 if ((CreationTime > argument.LogStartTime && CreationTime < argument.LogFinishTime) ||

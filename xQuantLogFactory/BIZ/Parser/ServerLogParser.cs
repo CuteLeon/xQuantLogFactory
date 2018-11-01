@@ -10,20 +10,16 @@ using xQuantLogFactory.Utils;
 namespace xQuantLogFactory.BIZ.Parser
 {
     /// <summary>
-    /// 日志解析器
+    /// 服务端日志解析器
     /// </summary>
-    public class LogParser : ILogParser
+    public class ServerLogParser : ILogParser
     {
-        //TODO: 客户端分析日志内IP地址
-
         /// <summary>
         /// 日志正则表达式
         /// </summary>
-        /// <remarks>2018-10-29 16:35:32,651 TRACE 客户端初始化应用程序相关属性</remarks>
         /// <remarks>2018-10-30 09:25:30,111 DEBUG 东方证券 1.3.0.064补丁1 开始排券</remarks>
-        /// <remarks>2018-10-29 16:51:04,457 TRACE 安信证券 1.3.0.065 192.168.7.101 初始化准备</remarks>
-        public Regex LogRegex = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<Client>.*?)\s?(?<Version>.*?)\s?(?<IPAddress>.*?)\s?(?<LogContent>.+)$",
+        public Regex LogRegex { get; set; } = new Regex(
+            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<Client>.*?)\s(?<Version>.*?)\s(?<LogContent>.+)$",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>

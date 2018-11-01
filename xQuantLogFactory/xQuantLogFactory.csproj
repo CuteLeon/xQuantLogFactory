@@ -75,8 +75,9 @@
     <Compile Include="BIZ\FileFinder\ITaskFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\LogFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
+    <Compile Include="BIZ\Parser\ClientLogParser.cs" />
     <Compile Include="BIZ\Parser\ILogParser.cs" />
-    <Compile Include="BIZ\Parser\LogParser.cs" />
+    <Compile Include="BIZ\Parser\ServerLogParser.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
     <Compile Include="DAL\LogDBSeed.cs" />
     <Compile Include="Model\IMonitor.cs" />

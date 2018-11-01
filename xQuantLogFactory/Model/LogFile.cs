@@ -7,6 +7,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace xQuantLogFactory.Model
 {
     /// <summary>
+    /// 日志文件类型
+    /// </summary>
+    public enum LogFileTypes
+    {
+        /// <summary>
+        /// 客户端日志文件
+        /// </summary>
+        Client = 1,
+        /// <summary>
+        /// 服务端日志文件
+        /// </summary>
+        Server =2,
+    }
+
+    /// <summary>
     /// 日志文件
     /// </summary>
     [Table("LogFiles")]
@@ -27,6 +42,12 @@ namespace xQuantLogFactory.Model
         [Required]
         [DisplayName("日志文件路径"), DataType(DataType.Text)]
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// 日志文件类型
+        /// </summary>
+        [DisplayName("日志文件类型")]
+        public LogFileTypes LogFileType { get; set; }
 
         /// <summary>
         /// 文件创建时间

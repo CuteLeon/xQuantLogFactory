@@ -20,7 +20,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
                 "2018-10-29 16:51:04,457 TRACE 安信证券 1.3.0.065 192.168.7.101 初始化准备",
                 "2018-10-29 16:35:32,651 TRACE 客户端初始化应用程序相关属性",
             };
-            LogParser parser = new LogParser();
+            ServerLogParser parser = new ServerLogParser();
 
             Match match_0 = parser.LogRegex.Match(logs[0]);
             Match match_1 = parser.LogRegex.Match(logs[1]);
