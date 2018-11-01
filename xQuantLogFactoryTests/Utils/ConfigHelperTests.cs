@@ -7,7 +7,7 @@ using xQuantLogFactory.Utils;
 namespace xQuantLogFactoryTests.Utils
 {
     [TestClass()]
-    public class ConfigHelperTest
+    public class ConfigHelperTests
     {
         [TestMethod()]
         public void LogFileNameFormatTest()

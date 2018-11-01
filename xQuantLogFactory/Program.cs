@@ -119,13 +119,13 @@ namespace xQuantLogFactory
             if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
             {
                 //存在客户端日志文件，创建客户端日志解析器
-                ILogParser clientLogParser = new ClientLogParser() { UnityTrace = UnityTrace };
+                LogParserBase clientLogParser = new ClientLogParser(UnityTrace);
                 LogParseExecute(clientLogParser, UnityArgument);
             }
             if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Server) > 0)
             {
                 //存在服务端日志文件，创建服务端日志解析器
-                ILogParser serverLogParser = new ServerLogParser() { UnityTrace = UnityTrace };
+                LogParserBase serverLogParser = new ServerLogParser(UnityTrace);
                 LogParseExecute(serverLogParser, UnityArgument);
             }
 
@@ -173,7 +173,7 @@ namespace xQuantLogFactory
         /// </summary>
         /// <param name="logParser">日志解析器</param>
         /// <param name="argument">任务参数</param>
-        private static void LogParseExecute(ILogParser logParser, TaskArgument argument)
+        private static void LogParseExecute(LogParserBase logParser, TaskArgument argument)
         {
             foreach (MonitorResult result in logParser.Parse(argument))
             {

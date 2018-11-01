@@ -77,6 +77,7 @@
     <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
     <Compile Include="BIZ\Parser\ClientLogParser.cs" />
     <Compile Include="BIZ\Parser\ILogParser.cs" />
+    <Compile Include="BIZ\Parser\LogParserBase.cs" />
     <Compile Include="BIZ\Parser\ServerLogParser.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
     <Compile Include="DAL\LogDBSeed.cs" />
