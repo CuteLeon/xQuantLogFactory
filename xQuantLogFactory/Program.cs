@@ -12,7 +12,7 @@ using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory
 {
-    //TODO: [全局任务] 使用
+    //TODO: [全局任务] 使用4.0或5.0语言版本...
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试
 
@@ -124,6 +124,7 @@ namespace xQuantLogFactory
             ILogParser logParser = new LogParser() { UnityTrace = UnityTrace };
             foreach (MonitorResult result in logParser.Parse(UnityArgument))
             {
+                UnityTrace.WriteLine($"发现监视结果：\n\t行号: {result.LineNumber} 等级: {result.LogLevel} 日志内容: {result.LogContent}");
                 /*
                 result.MonitorItem;
                 result.LogFile;
@@ -149,9 +150,24 @@ namespace xQuantLogFactory
         {
             UnityContext?.Dispose();
 
-            Console.WriteLine("\n————————\n按任意键退出此程序... (￣▽￣)／");
+            Console.WriteLine("\n————————");
+            ShowTaskDuration();
+            Console.WriteLine("————————");
+            Console.WriteLine("按任意键退出此程序... (￣▽￣)／");
             Console.Read();
             Environment.Exit(code);
+        }
+
+        /// <summary>
+        /// 显示任务耗时
+        /// </summary>
+        private static void ShowTaskDuration()
+        {
+            if (UnityArgument != null)
+            {
+                TimeSpan duration = UnityArgument.TaskFinishTime.Subtract(UnityArgument.TaskStartTime);
+                Console.WriteLine($"任务耗时：{duration.Hours}时 {duration.Minutes}分 {duration.Seconds}秒 {duration.Milliseconds}毫秒");
+            }
         }
 
     }

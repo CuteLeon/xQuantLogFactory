@@ -11,6 +11,10 @@ namespace xQuantLogFactory.Model
     public enum ResultTypes
     {
         /// <summary>
+        /// 未匹配
+        /// </summary>
+        Unmatch = 0,
+        /// <summary>
         /// 开始匹配
         /// </summary>
         Start = 1,

@@ -62,27 +62,19 @@ namespace xQuantLogFactory.BIZ.Parser
                             //匹配所有监视规则
                             foreach (MonitorItem monitor in argument.MonitorItems)
                             {
-                                if (monitor.StartRegex != null && monitor.StartRegex.IsMatch(logContent))
+                                ResultTypes resultType = this.MatchMonitor(monitor, logContent);
+                                if (resultType == ResultTypes.Unmatch)
                                 {
-                                    //TODO: 开始匹配
-                                }
-                                else if (monitor.FinishRegex != null && monitor.FinishRegex.IsMatch(logContent))
-                                {
-                                    //TODO: 结束匹配
-                                }
-                                else if (monitor.ItemRegex != null && monitor.ItemRegex.IsMatch(logContent))
-                                {
-                                    //TODO: 条目匹配
-                                }
-                                else
-                                {
-                                    //未匹配到任何监视规则则尝试下一条规则
+                                    //未匹配到任何监视规则，尝试下一条规则
                                     continue;
                                 }
+
                                 MonitorResult result = new MonitorResult()
                                 {
+                                    ResultType = resultType,
                                     LineNumber = lineNumber,
                                     LogFile = logFile,
+                                    MonitorItem = monitor,
                                     LogContent = logContent,
                                 };
 
@@ -103,7 +95,6 @@ namespace xQuantLogFactory.BIZ.Parser
 
                                 if (match.Groups["Client"].Success)
                                     result.Client = match.Groups["Client"].Value;
-                                result.MonitorItem = null;
 
                                 yield return result;
                             }
@@ -115,8 +106,34 @@ namespace xQuantLogFactory.BIZ.Parser
                     }
 
                     reader.Close();
-                    this.UnityTrace?.WriteLine("当前日志文件解析完成");
+                    this.UnityTrace?.WriteLine("当前日志文件解析完成\n————————");
                 }
+            }
+        }
+
+        /// <summary>
+        /// 匹配监视规则
+        /// </summary>
+        /// <param name="monitor">监视规则</param>
+        /// <param name="logContent">日志内容</param>
+        /// <returns>匹配监视规则类型</returns>
+        private ResultTypes MatchMonitor(MonitorItem monitor, string logContent)
+        {
+            if (monitor.StartRegex != null && monitor.StartRegex.IsMatch(logContent))
+            {
+                return ResultTypes.Start;
+            }
+            else if (monitor.FinishRegex != null && monitor.FinishRegex.IsMatch(logContent))
+            {
+                return ResultTypes.Finish;
+            }
+            else if (monitor.ItemRegex != null && monitor.ItemRegex.IsMatch(logContent))
+            {
+                return ResultTypes.Item;
+            }
+            else
+            {
+                return ResultTypes.Unmatch;
             }
         }
 
