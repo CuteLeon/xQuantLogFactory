@@ -33,9 +33,9 @@ namespace xQuantLogFactory.BIZ.FileFinder
 
             foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo.GetFiles("*.txt*").Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
             {
-                Console.WriteLine(FullName);
+                string fileName = Path.GetFileName(FullName);
                 //按格式筛选日志文件，以免查找到无用的文件
-                if (!logRegex.IsMatch(FullName)) continue;
+                if (!logRegex.IsMatch(fileName)) continue;
 
                 if ((CreationTime > argument.LogStartTime && CreationTime < argument.LogFinishTime) ||
                     (LastWriteTime > argument.LogStartTime && LastWriteTime < argument.LogFinishTime)
@@ -43,6 +43,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 {
                     logFiles.Add(new LogFile()
                     {
+                        LogFileType = fileName.StartsWith(ConfigHelper.ServerLogFileNamerefix) ? LogFileTypes.Server : LogFileTypes.Client,
                         FilePath = FullName,
                         CreateTime = CreationTime,
                         LastWriteTime = LastWriteTime,

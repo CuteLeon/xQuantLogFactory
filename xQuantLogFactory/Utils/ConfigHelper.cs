@@ -23,7 +23,7 @@ namespace xQuantLogFactory.Utils
         /// <remarks>神奇，勿动！</remarks>
         public static string LogFileNameFormat
         {
-            get => $@"^.*?({ServerLogFileNamerefix}|{ClientLogFileNamerefix})Log_(Trace|Debug|Info|Warn|Error)\.txt(|\.\d*)$";
+            get => $@"^({ServerLogFileNamerefix}|{ClientLogFileNamerefix})Log_(Trace|Debug|Info|Warn|Error)\.txt(|\.\d*)$";
         }
 
         /// <summary>
