@@ -6,19 +6,41 @@ namespace xQuantLogFactory.Utils
     /// <summary>
     /// 配置助手
     /// </summary>
-    public class ConfigHelper
+    public static class ConfigHelper
     {
-        //TODO: 此类改为静态类，使用静态字段公开配置信息
 
         /// <summary>
         /// 监视规则XML文件存储目录
         /// </summary>
-        public string MonitorDirectory
+        public static string MonitorDirectory
         {
             get => Path.Combine(Environment.CurrentDirectory, "Monitor");
         }
 
-        //TODO: 使用常量记录客户端和服务端日志开头字符
+        /// <summary>
+        /// 日志文件名称格式
+        /// </summary>
+        /// <remarks>神奇，勿动！</remarks>
+        public static string LogFileNameFormat
+        {
+            get => $@"^.*?({ServerLogFileNamerefix}|{ClientLogFileNamerefix})Log_(Trace|Debug|Info|Warn|Error)\.txt(|\.\d*)$";
+        }
+
+        /// <summary>
+        /// 服务端日志文件名称前缀
+        /// </summary>
+        public static string ServerLogFileNamerefix
+        {
+            get => "Srv";
+        }
+
+        /// <summary>
+        /// 客户端日志文件名称前缀
+        /// </summary>
+        public static string ClientLogFileNamerefix
+        {
+            get => "Clt";
+        }
 
     }
 }

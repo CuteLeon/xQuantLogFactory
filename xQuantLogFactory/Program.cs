@@ -24,11 +24,6 @@ namespace xQuantLogFactory
         public static TaskArgument UnityArgument = null;
 
         /// <summary>
-        /// 全局配置助手
-        /// </summary>
-        public static ConfigHelper UnityConfig = new ConfigHelper();
-
-        /// <summary>
         /// 全局数据库交互对象
         /// </summary>
         public static LogDBContext UnityContext = LogDBContext.UnityContext;
@@ -78,10 +73,10 @@ namespace xQuantLogFactory
             UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
 
             //准备监视规则存储目录
-            UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", UnityConfig.MonitorDirectory);
+            UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", ConfigHelper.MonitorDirectory);
             try
             {
-                IOUtils.PrepareDirectory(UnityConfig.MonitorDirectory);
+                IOUtils.PrepareDirectory(ConfigHelper.MonitorDirectory);
             }
             catch (Exception ex)
             {
@@ -93,7 +88,7 @@ namespace xQuantLogFactory
             //反序列化监视规则文件
             UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
             ITaskFileFinder monitorFinder = new MonitorFileFinder();
-            UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(UnityConfig.MonitorDirectory, UnityArgument));
+            UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(ConfigHelper.MonitorDirectory, UnityArgument));
             UnityContext.SaveChanges();
             if (UnityArgument.MonitorItems.Count == 0)
             {
