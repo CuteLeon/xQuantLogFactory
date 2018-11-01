@@ -6,6 +6,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace xQuantLogFactory.Model
 {
     /// <summary>
+    /// 结果模式
+    /// </summary>
+    public enum ResultTypes
+    {
+        /// <summary>
+        /// 开始匹配
+        /// </summary>
+        Start = 1,
+        /// <summary>
+        /// 结束匹配
+        /// </summary>
+        Finish = 2,
+        /// <summary>
+        /// 条目匹配
+        /// </summary>
+        Item = 3,
+    }
+
+    /// <summary>
     /// 监视规则解析结果
     /// </summary>
     [Table("MonitorResults")]
@@ -30,7 +49,6 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 日志写入时间
         /// </summary>
-        [Required]
         [DisplayName("日志写入时间"), DataType(DataType.DateTime)]
         public DateTime LogTime { get; set; }
 
@@ -42,11 +60,17 @@ namespace xQuantLogFactory.Model
         public MonitorItem MonitorItem { get; set; }
 
         /// <summary>
-        /// 匹配模式
+        /// 监视结果匹配模式
         /// </summary>
         [Required]
-        [DisplayName("匹配模式"), DataType(DataType.Text)]
-        public string Pattern { get; set; }
+        [DisplayName("监视结果匹配模式")]
+        public ResultTypes ResultType { get; set; }
+
+        /// <summary>
+        /// 客户端名称
+        /// </summary>
+        [DisplayName("客户端名称"), DataType(DataType.Text)]
+        public string Client { get; set; }
 
         /// <summary>
         /// 日志文件中的行号
@@ -64,26 +88,19 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// IP地址
         /// </summary>
-        [DisplayName("summary"), DataType(DataType.Text)]
+        [DisplayName("IP地址"), DataType(DataType.Text)]
         public string IPAddress { get; set; }
-
         /// <summary>
         /// 日志级别
         /// </summary>
-        [Required]
         [DisplayName("日志级别"), DataType(DataType.Text)]
-        public string Level { get; set; }
+        public string LogLevel { get; set; }
 
         /// <summary>
         /// 日志内容
         /// </summary>
-        [Required]
         [DisplayName("日志内容"), DataType(DataType.Text)]
         public string LogContent { get; set; }
 
-        public override string ToString()
-        {
-            return string.Format("{0} {1} {2} {3}", this.LogFile, this.Pattern, this.LogTime, this.LogContent);
-        }
     }
 }

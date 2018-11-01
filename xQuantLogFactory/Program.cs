@@ -121,7 +121,7 @@ namespace xQuantLogFactory
             }
 
             UnityTrace.WriteLine("开始解析日志文件...");
-            ILogParser logParser = new LogParser();
+            ILogParser logParser = new LogParser() { UnityTrace = UnityTrace };
             foreach (MonitorResult result in logParser.Parse(UnityArgument))
             {
                 /*
@@ -129,9 +129,14 @@ namespace xQuantLogFactory
                 result.LogFile;
                  */
             }
+
             UnityTrace.WriteLine("日志文件解析完成");
 
             //TODO: so much todo ...
+
+            //记录任务完成时间
+            UnityArgument.TaskFinishTime = DateTime.Now;
+            UnityContext.SaveChanges();
 
             Exit(0);
         }

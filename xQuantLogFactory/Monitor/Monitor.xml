@@ -4,6 +4,11 @@
     <Item Name="数据加载" Begin="加载中债参数设置表" End="加载当前登录部门">
       <Item Name="债券加载" Begin="加载TBND查询" End="加载TBND" />
     </Item>
-    <Item Name="额外任务" />
+    <Item Name="额外空任务" />
   </Item>
+  <Item Name="直联服务">
+    <Item Name="直联服务1234" Begin="直联服务1234|执行" End="直联服务1194|结束" />
+    <Item Name="直联服务1194" Begin="直联服务1194|执行" End="直联服务1194|结束" />
+  </Item>
+  <Item Name="InvestExt_UP6355" Begin="InvestExt_UP6355|执行" End="InvestExt_UP6355|结束" />
 </MonitorRoot>

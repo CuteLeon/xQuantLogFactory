@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.BIZ.Parser
 {
@@ -11,6 +9,11 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public interface ILogParser
     {
+        /// <summary>
+        /// 注入追踪器
+        /// </summary>
+        ITrace UnityTrace { get; set; }
+
         /// <summary>
         /// 解析
         /// </summary>

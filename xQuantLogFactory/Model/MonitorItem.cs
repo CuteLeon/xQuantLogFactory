@@ -54,16 +54,16 @@ namespace xQuantLogFactory.Model
         /// 子监控项目列表
         /// </summary>
         [XmlElement("Item")]
-        [DisplayName("子监控项目列表")]
+        [NotMapped] //对ORM忽略
         public virtual List<MonitorItem> MonitorItems { get; set; }
 
         /// <summary>
         /// 解析结果列表
         /// </summary>
-        [XmlIgnore]
-        [NotMapped]
+        [XmlIgnore] //对XML忽略
+        [DisplayName("监控结果列表")]
         public virtual List<MonitorResult> MonitorResults { get; set; }
-        
+
         #endregion
 
         #region 正则
@@ -82,6 +82,7 @@ namespace xQuantLogFactory.Model
             {
                 if (this._startRegex == null && !string.IsNullOrWhiteSpace(this.StartPattern))
                 {
+                    //TODO: 注意传入的匹配字符串含有特殊的正则符号而被当做正则符号注入到表达式
                     this._startRegex = new Regex(
                         string.Format("^.*{0}.*$", this.StartPattern),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -105,6 +106,7 @@ namespace xQuantLogFactory.Model
             {
                 if (this._finishRegex == null && !string.IsNullOrWhiteSpace(this.FinishPatterny))
                 {
+                    //TODO: 注意传入的匹配字符串含有特殊的正则符号而被当做正则符号注入到表达式
                     this._finishRegex = new Regex(
                         string.Format("^.*{0}.*$", this.StartPattern),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -132,7 +134,7 @@ namespace xQuantLogFactory.Model
                     {
                         return null;
                     }
-
+                    //TODO: 注意传入的匹配字符串含有特殊的正则符号而被当做正则符号注入到表达式
                     this._itemRegex = new Regex(
                         string.Format("^.*{0}|{1}.*$", this.StartPattern, this.FinishPatterny),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -166,7 +168,7 @@ namespace xQuantLogFactory.Model
                 StartPattern = this.StartPattern,
                 FinishPatterny = this.FinishPatterny,
             };
-        
+
         #endregion
 
     }
