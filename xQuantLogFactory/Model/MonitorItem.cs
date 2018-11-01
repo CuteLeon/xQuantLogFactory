@@ -82,9 +82,8 @@ namespace xQuantLogFactory.Model
             {
                 if (this._startRegex == null && !string.IsNullOrWhiteSpace(this.StartPattern))
                 {
-                    //TODO: 注意传入的匹配字符串含有特殊的正则符号而被当做正则符号注入到表达式
                     this._startRegex = new Regex(
-                        string.Format("^.*{0}.*$", this.StartPattern),
+                        string.Format("^.*{0}.*$", Regex.Escape(this.StartPattern)),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
                 }
 
@@ -106,9 +105,8 @@ namespace xQuantLogFactory.Model
             {
                 if (this._finishRegex == null && !string.IsNullOrWhiteSpace(this.FinishPatterny))
                 {
-                    //TODO: 注意传入的匹配字符串含有特殊的正则符号而被当做正则符号注入到表达式
                     this._finishRegex = new Regex(
-                        string.Format("^.*{0}.*$", this.StartPattern),
+                        string.Format("^.*{0}.*$", Regex.Escape(this.StartPattern)),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
                 }
 
@@ -128,15 +126,15 @@ namespace xQuantLogFactory.Model
         {
             get
             {
+                //TODO: 需要测试或可优化
                 if (this._itemRegex == null)
                 {
                     if (string.IsNullOrWhiteSpace(this.StartPattern) && string.IsNullOrWhiteSpace(this.FinishPatterny))
                     {
                         return null;
                     }
-                    //TODO: 注意传入的匹配字符串含有特殊的正则符号而被当做正则符号注入到表达式
                     this._itemRegex = new Regex(
-                        string.Format("^.*{0}|{1}.*$", this.StartPattern, this.FinishPatterny),
+                        string.Format("^.*{0}|{1}.*$", Regex.Escape(this.StartPattern), Regex.Escape(this.FinishPatterny)),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
                 }
 
