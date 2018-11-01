@@ -119,6 +119,12 @@ namespace xQuantLogFactory.Model
         public virtual List<LogFile> LogFiles { get; set; } = new List<LogFile>();
 
         /// <summary>
+        /// 日志监视结果
+        /// </summary>
+        [DisplayName("日志监视规则")]
+        public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
+
+        /// <summary>
         /// 根据工具启动参数创建任务参数对象
         /// </summary>
         /// <param name="args">工具启动参数</param>
@@ -132,7 +138,7 @@ namespace xQuantLogFactory.Model
             3 "[datetime_日志截止时间 = DateTime.Now]"
             4 [boolean_包含系统信息 = false]
             5 [boolean_包含客户端信息 = false]
-            6 [reportmodes_报告导出模式 = RepostModes.Html]
+            6 [reportmodes_报告导出模式 = RepostModes.HTML]
              */
             if (args.Length < 3 || args.Length > 7)
                 throw new ArgumentOutOfRangeException("启动参数长度应为 3~7");

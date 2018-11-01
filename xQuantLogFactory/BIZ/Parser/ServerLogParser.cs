@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -37,9 +38,9 @@ namespace xQuantLogFactory.BIZ.Parser
                 throw new ArgumentNullException(nameof(argument));
 
             //遍历文件
-            foreach (LogFile logFile in argument.LogFiles)
+            foreach (LogFile logFile in argument.LogFiles.Where(file => file.LogFileType == LogFileTypes.Server))
             {
-                this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}) {logFile.FilePath}");
+                this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
 
                 using (StreamReader reader = new StreamReader(logFile.FilePath, Encoding.Default))
                 {
@@ -68,6 +69,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
                                 MonitorResult result = new MonitorResult()
                                 {
+                                    TaskArgument = argument,
                                     ResultType = resultType,
                                     LineNumber = lineNumber,
                                     LogFile = logFile,

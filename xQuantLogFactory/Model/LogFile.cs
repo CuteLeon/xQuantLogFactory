@@ -67,7 +67,7 @@ namespace xQuantLogFactory.Model
         /// 解析结果列表
         /// </summary>
         [DisplayName("解析结果列表")]
-        public virtual List<MonitorResult> MonitorResults { get; set; }
+        public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
 
     }
 }

@@ -55,14 +55,14 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlElement("Item")]
         [NotMapped] //对ORM忽略
-        public virtual List<MonitorItem> MonitorItems { get; set; }
+        public virtual List<MonitorItem> MonitorItems { get; set; } = new List<MonitorItem>();
 
         /// <summary>
         /// 解析结果列表
         /// </summary>
         [XmlIgnore] //对XML忽略
         [DisplayName("监控结果列表")]
-        public virtual List<MonitorResult> MonitorResults { get; set; }
+        public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
 
         #endregion
 

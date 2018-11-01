@@ -31,7 +31,7 @@ namespace xQuantLogFactory.DAL
         /// <summary>
         /// 日志解析结果表
         /// </summary>
-        public DbSet<MonitorResult> GetMonitorItemResults { get; set; }
+        public DbSet<MonitorResult> MonitorResults { get; set; }
 
         public static LogDBContext UnityContext = new LogDBContext();
 

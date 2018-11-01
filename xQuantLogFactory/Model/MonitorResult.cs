@@ -44,6 +44,13 @@ namespace xQuantLogFactory.Model
         public int ResultID { get; set; }
 
         /// <summary>
+        /// 任务参数
+        /// </summary>
+        [Required]
+        [DisplayName("任务参数")]
+        public TaskArgument TaskArgument { get; set; }
+
+        /// <summary>
         /// 日志文件
         /// </summary>
         [Required]
