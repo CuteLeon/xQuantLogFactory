@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
 
@@ -14,7 +14,6 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public class MiddlewareLogParser : LogParserBase
     {
-        //2018-11-01 00:00:00.343	172.28.200.38		2018-11-01 00:00:00.343	0	/LogonManager.soap	GetMessageList	0	锟斤拷始
 
         /// <summary>
         /// 日志正则表达式
@@ -53,8 +52,18 @@ namespace xQuantLogFactory.BIZ.Parser
                         Match match = this.LogRegex.Match(logLine);
                         if (match.Success)
                         {
+                            DateTime logTime = DateTime.MinValue;
+                            //跳过日志时间在任务时间范围外的日志行
+                            if (!match.Groups["LogTime"].Success ||
+                                !DateTime.TryParse(match.Groups["LogTime"].Value, out logTime) ||
+                                logTime < argument.LogStartTime ||
+                                logTime > argument.LogFinishTime
+                                )
+                                continue;
+
                             MiddlewareResult result = new MiddlewareResult()
                             {
+                                LogTime = logTime,
                                 LineNumber = lineNumber,
                             };
 
@@ -67,10 +76,6 @@ namespace xQuantLogFactory.BIZ.Parser
                                 argument.MiddlewareResults.Add(result);
                                 logFile.MiddlewareResults.Add(result);
                             }
-
-                            if (match.Groups["LogTime"].Success &&
-                                DateTime.TryParse(match.Groups["LogTime"].Value, out DateTime logTime))
-                                result.LogTime = logTime;
 
                             if (match.Groups["Client"].Success)
                                 result.Client = match.Groups["Client"].Value;

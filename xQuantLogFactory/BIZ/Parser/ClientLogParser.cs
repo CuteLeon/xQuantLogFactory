@@ -55,6 +55,21 @@ namespace xQuantLogFactory.BIZ.Parser
                             //跳过未匹配到内容的日志行
                             if (!match.Groups["LogContent"].Success) continue;
 
+                            DateTime logTime = DateTime.MinValue;
+                            //跳过日志时间在任务时间范围外的日志行
+                            if (match.Groups["LogTime"].Success &&
+                                DateTime.TryParse(match.Groups["LogTime"].Value, out logTime) &&
+                                match.Groups["Millisecond"].Success &&
+                                double.TryParse(match.Groups["Millisecond"].Value, out double millisecond)
+                                )
+                                logTime = logTime.AddMilliseconds(millisecond);
+                            else
+                                continue;
+
+                            //筛选日志行时间戳
+                            if (logTime < argument.LogStartTime || logTime > argument.LogFinishTime)
+                                continue;
+
                             string logContent = match.Groups["LogContent"].Value;
                             //匹配所有监视规则
                             foreach (MonitorItem monitor in argument.MonitorItems)
@@ -66,8 +81,10 @@ namespace xQuantLogFactory.BIZ.Parser
                                     continue;
                                 }
 
+                                //匹配到监视规则则新增一条监视结果记录，可能同一行日志会产生多条结果日志，因为同时与多条规则匹配
                                 MonitorResult result = new MonitorResult()
                                 {
+                                    LogTime = logTime,
                                     ResultType = resultType,
                                     LineNumber = lineNumber,
                                     LogContent = logContent,
@@ -87,15 +104,6 @@ namespace xQuantLogFactory.BIZ.Parser
 
                                 if (match.Groups["LogLevel"].Success)
                                     result.LogLevel = match.Groups["LogLevel"].Value;
-
-                                //不能从此格式直接转换为日期时间类型，需要分开处理
-                                if (match.Groups["LogTime"].Success &&
-                                    DateTime.TryParse(match.Groups["LogTime"].Value, out DateTime logTime))
-                                    result.LogTime = logTime;
-
-                                if (match.Groups["Millisecond"].Success &&
-                                    double.TryParse(match.Groups["Millisecond"].Value, out double millisecond))
-                                    result.LogTime = result.LogTime.AddMilliseconds(millisecond);
 
                                 if (match.Groups["Version"].Success)
                                     result.Version = match.Groups["Version"].Value;

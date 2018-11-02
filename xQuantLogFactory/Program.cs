@@ -57,51 +57,40 @@ namespace xQuantLogFactory
             UnityTrace.WriteLine($"{Console.Title} 已启动...");
             UnityTrace.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
 
-            //创建任务参数对象
             UnityTrace.WriteLine("开始创建任务参数对象...");
-            try
-            {
-                UnityArgument = TaskArgument.Parse(args);
-            }
-            catch (Exception ex)
-            {
-                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
-                Exit(1);
-            }
-            UnityContext.TaskArguments.Add(UnityArgument);
-            UnityContext.SaveChanges();
-            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
+            CreateTaskArgument(args);
 
-            //准备监视规则存储目录
             UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", ConfigHelper.MonitorDirectory);
-            try
-            {
-                IOUtils.PrepareDirectory(ConfigHelper.MonitorDirectory);
-            }
-            catch (Exception ex)
-            {
-                UnityTrace.WriteLine($"准备目录失败：{ex.Message}");
-                Exit(2);
-            }
-            UnityTrace.WriteLine("准备目录成功");
+            CheckMonitorDirectory(ConfigHelper.MonitorDirectory);
 
-            //反序列化监视规则文件
             UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
-            ITaskFileFinder monitorFinder = new MonitorFileFinder();
-            UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(ConfigHelper.MonitorDirectory, UnityArgument));
-            UnityContext.SaveChanges();
-            if (UnityArgument.MonitorItems.Count == 0)
-            {
-                UnityTrace.WriteLine("未发现任务相关监视规则，程序将退出");
-                Exit(3);
-            }
-            else
-            {
-                UnityTrace.WriteLine($"发现 {UnityArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityArgument.MonitorItems.Select(item => item.Name))}");
-            }
+            GetMonitorItems(ConfigHelper.MonitorDirectory);
 
-            //获取时间段内日志文件
             UnityTrace.WriteLine("开始获取时间段内日志文件...");
+            GetTaskLogFiles(UnityArgument.BaseDirectory);
+
+            UnityTrace.WriteLine("开始解析日志文件...");
+            ParseClientLog();
+            ParseServerLog();
+            ParseMiddlewareLog();
+
+            ShowParseResult();
+
+            //TODO: so much todo ...
+
+            //记录任务完成时间
+            UnityArgument.TaskFinishTime = DateTime.Now;
+            UnityContext.SaveChanges();
+
+            Exit(0);
+        }
+
+        /// <summary>
+        /// 获取任务相关日志文件
+        /// </summary>
+        /// <param name="directory"></param>
+        private static void GetTaskLogFiles(string directory)
+        {
             ITaskFileFinder logFinder = new LogFileFinder();
             UnityArgument.LogFiles.AddRange(logFinder.GetFiles<LogFile>(UnityArgument.BaseDirectory, UnityArgument));
             UnityContext.SaveChanges();
@@ -114,31 +103,64 @@ namespace xQuantLogFactory
             {
                 UnityTrace.WriteLine($"发现 {UnityArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityArgument.LogFiles.Select(file => file.FilePath))}\n————————");
             }
+        }
 
-            UnityTrace.WriteLine("开始解析日志文件...");
-
-            ParseClientLog();
-            ParseServerLog();
-            /* TODO: 中间件日志文件和数据量过大，暂时关闭功能
-            ParseMiddlewareLog();
-             */
-
-            UnityTrace.WriteLine("所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个监视结果和 {3} 个中间件结果\n————————",
-                UnityArgument.LogFiles.Count(file => file.MonitorResults.Count > 0 || file.MiddlewareResults.Count > 0),
-                UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Count > 0),
-                UnityArgument.MonitorResults.Count,
-                UnityArgument.MiddlewareResults.Count()
-                );
-
-            //TODO: 创建时间和最后写入时间在任务时间范围的日志文件内可能存在任务时间段外的日志信息，需要过滤剔除
-
-            //TODO: so much todo ...
-
-            //记录任务完成时间
-            UnityArgument.TaskFinishTime = DateTime.Now;
+        /// <summary>
+        /// 获取监视规则对象
+        /// </summary>
+        /// <param name="directory"></param>
+        private static void GetMonitorItems(string directory)
+        {
+            ITaskFileFinder monitorFinder = new MonitorFileFinder();
+            UnityArgument.MonitorItems.AddRange(monitorFinder.GetFiles<MonitorItem>(directory, UnityArgument));
             UnityContext.SaveChanges();
+            if (UnityArgument.MonitorItems.Count == 0)
+            {
+                UnityTrace.WriteLine("未发现任务相关监视规则，程序将退出");
+                Exit(3);
+            }
+            else
+            {
+                UnityTrace.WriteLine($"发现 {UnityArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityArgument.MonitorItems.Select(item => item.Name))}");
+            }
+        }
 
-            Exit(0);
+        /// <summary>
+        /// 检查监视规则目录
+        /// </summary>
+        /// <param name="directory"></param>
+        private static void CheckMonitorDirectory(string directory)
+        {
+            try
+            {
+                IOUtils.PrepareDirectory(directory);
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"准备目录失败：{ex.Message}");
+                Exit(2);
+            }
+            UnityTrace.WriteLine("准备目录成功");
+        }
+
+        /// <summary>
+        /// 创建任务参数
+        /// </summary>
+        /// <param name="args"></param>
+        private static void CreateTaskArgument(string[] args)
+        {
+            try
+            {
+                UnityArgument = TaskArgument.Parse(args);
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
+                Exit(1);
+            }
+            UnityContext.TaskArguments.Add(UnityArgument);
+            UnityContext.SaveChanges();
+            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityArgument);
         }
 
         /// <summary>
@@ -167,6 +189,19 @@ namespace xQuantLogFactory
                 TimeSpan duration = UnityArgument.TaskFinishTime.Subtract(UnityArgument.TaskStartTime);
                 Console.WriteLine($"任务耗时：{duration.Hours}时 {duration.Minutes}分 {duration.Seconds}秒 {duration.Milliseconds}毫秒");
             }
+        }
+
+        /// <summary>
+        /// 显示解析结果
+        /// </summary>
+        private static void ShowParseResult()
+        {
+            UnityTrace.WriteLine("所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个监视结果和 {3} 个中间件结果\n————————",
+                UnityArgument.LogFiles.Count(file => file.MonitorResults.Count > 0 || file.MiddlewareResults.Count > 0),
+                UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Count > 0),
+                UnityArgument.MonitorResults.Count,
+                UnityArgument.MiddlewareResults.Count()
+                );
         }
 
         /// <summary>
