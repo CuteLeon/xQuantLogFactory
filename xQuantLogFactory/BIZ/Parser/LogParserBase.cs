@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
@@ -14,6 +10,11 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public abstract class LogParserBase : ILogParser
     {
+
+        /// <summary>
+        /// 静态异步锁芯
+        /// </summary>
+        protected static object LockSeed = new object();
 
         /// <summary>
         /// 日志正则表达式
@@ -35,8 +36,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// 日志解析
         /// </summary>
         /// <param name="argument">任务参数</param>
-        /// <returns></returns>
-        public abstract IEnumerable<MonitorResult> Parse(TaskArgument argument);
+        public abstract void Parse(TaskArgument argument);
 
         /// <summary>
         /// 匹配监视规则

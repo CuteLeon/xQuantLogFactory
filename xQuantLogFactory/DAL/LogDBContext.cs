@@ -33,7 +33,10 @@ namespace xQuantLogFactory.DAL
         /// </summary>
         public DbSet<MonitorResult> MonitorResults { get; set; }
 
-        public static LogDBContext UnityContext = new LogDBContext();
+        /// <summary>
+        /// 全局静态数据库交互对象
+        /// </summary>
+        public volatile static LogDBContext UnityContext = new LogDBContext();
 
         private LogDBContext() : base("LogFactoryDB") { }
 

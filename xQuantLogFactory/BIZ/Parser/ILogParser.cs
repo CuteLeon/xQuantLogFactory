@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using xQuantLogFactory.Model;
-using xQuantLogFactory.Utils;
+﻿using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.BIZ.Parser
 {
@@ -16,7 +13,6 @@ namespace xQuantLogFactory.BIZ.Parser
         /// 解析
         /// </summary>
         /// <param name="argument">任务参数</param>
-        /// <returns></returns>
-        IEnumerable<MonitorResult> Parse(TaskArgument argument);
+        void Parse(TaskArgument argument);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -32,14 +31,13 @@ namespace xQuantLogFactory.BIZ.Parser
         /// 日志解析
         /// </summary>
         /// <param name="argument">任务参数</param>
-        /// <returns></returns>
-        public override IEnumerable<MonitorResult> Parse(TaskArgument argument)
+        public override void Parse(TaskArgument argument)
         {
             if (argument == null)
                 throw new ArgumentNullException(nameof(argument));
 
             //遍历文件
-            foreach (LogFile logFile in argument.LogFiles.Where(file => file.LogFileType == LogFileTypes.Client))
+            argument.LogFiles.Where(file => file.LogFileType == LogFileTypes.Client).AsParallel().ForAll(logFile =>
             {
                 this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
 
@@ -70,13 +68,22 @@ namespace xQuantLogFactory.BIZ.Parser
 
                                 MonitorResult result = new MonitorResult()
                                 {
-                                    TaskArgument = argument,
                                     ResultType = resultType,
                                     LineNumber = lineNumber,
-                                    LogFile = logFile,
-                                    MonitorItem = monitor,
                                     LogContent = logContent,
                                 };
+
+                                //反向关联日志监视结果
+                                lock (argument)  //lock 任务而非 LockSeed 为了多任务并行考虑
+                                {
+                                    result.TaskArgument = argument;
+                                    result.LogFile = logFile;
+                                    result.MonitorItem = monitor;
+
+                                    argument.MonitorResults.Add(result);
+                                    logFile.MonitorResults.Add(result);
+                                    monitor.MonitorResults.Add(result);
+                                }
 
                                 if (match.Groups["LogLevel"].Success)
                                     result.LogLevel = match.Groups["LogLevel"].Value;
@@ -100,7 +107,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 if (match.Groups["IPAddress"].Success)
                                     result.IPAddress = match.Groups["IPAddress"].Value;
 
-                                yield return result;
+                                this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }
                         }
                         else
@@ -110,9 +117,9 @@ namespace xQuantLogFactory.BIZ.Parser
                     }
 
                     reader.Close();
-                    this.Trace?.WriteLine("当前日志文件解析完成\n————————");
                 }
-            }
+                this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
+            });
         }
 
     }

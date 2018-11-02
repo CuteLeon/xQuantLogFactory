@@ -21,7 +21,7 @@ namespace xQuantLogFactory
         /// <summary>
         /// 全局任务参数
         /// </summary>
-        public static TaskArgument UnityArgument = null;
+        public volatile static TaskArgument UnityArgument = null;
 
         /// <summary>
         /// 全局数据库交互对象
@@ -31,7 +31,7 @@ namespace xQuantLogFactory
         /// <summary>
         /// 全局追踪器
         /// </summary>
-        public static ITrace UnityTrace = new Trace();
+        public volatile static ITrace UnityTrace = new Trace();
 
         /* 启动参数：{string_日志文件目录} {string.Format(,)_监控的项目名称列表} "{datetime_日志开始时间}" "[datetime_日志截止时间 =DateTime.Now]" [boolean_包含系统信息 =false] [boolean_包含客户端信息 =false] [reportmodes_报告导出模式 =RepostModes.Html]
          * 注意：
@@ -115,14 +115,18 @@ namespace xQuantLogFactory
                 UnityTrace.WriteLine($"发现 {UnityArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityArgument.LogFiles.Select(file => file.FilePath))}\n————————");
             }
 
-                UnityTrace.WriteLine("开始解析日志文件...");
+            UnityTrace.WriteLine("开始解析日志文件...");
             if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
             {
                 UnityTrace.WriteLine("开始解析 [客户端] 日志文件...\n————————");
 
                 //存在客户端日志文件，创建客户端日志解析器
                 LogParserBase clientLogParser = new ClientLogParser(UnityTrace);
-                LogParseExecute(clientLogParser, UnityArgument);
+                clientLogParser.Parse(UnityArgument);
+
+                //UnityContext.MonitorResults.Add(result);
+                lock (UnityContext)
+                    UnityContext.SaveChanges();
 
                 UnityTrace.WriteLine("[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
@@ -137,7 +141,11 @@ namespace xQuantLogFactory
 
                 //存在服务端日志文件，创建服务端日志解析器
                 LogParserBase serverLogParser = new ServerLogParser(UnityTrace);
-                LogParseExecute(serverLogParser, UnityArgument);
+                serverLogParser.Parse(UnityArgument);
+
+                //UnityContext.MonitorResults.Add(result);
+                lock (UnityContext)
+                    UnityContext.SaveChanges();
 
                 UnityTrace.WriteLine("[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
@@ -145,7 +153,7 @@ namespace xQuantLogFactory
                     UnityArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server)
                     );
             }
-            UnityTrace.WriteLine("所有日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
+            UnityTrace.WriteLine("所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                 UnityArgument.LogFiles.Count(file => file.MonitorResults.Count > 0),
                 UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Count > 0),
                 UnityArgument.MonitorResults.Count
@@ -186,29 +194,6 @@ namespace xQuantLogFactory
                 TimeSpan duration = UnityArgument.TaskFinishTime.Subtract(UnityArgument.TaskStartTime);
                 Console.WriteLine($"任务耗时：{duration.Hours}时 {duration.Minutes}分 {duration.Seconds}秒 {duration.Milliseconds}毫秒");
             }
-        }
-
-        /// <summary>
-        /// 执行日志解析器
-        /// </summary>
-        /// <param name="logParser">日志解析器</param>
-        /// <param name="argument">任务参数</param>
-        private static void LogParseExecute(LogParserBase logParser, TaskArgument argument)
-        {
-            foreach (MonitorResult result in logParser.Parse(argument))
-            {
-                //反向关联日志监视结果
-                result.TaskArgument.MonitorResults.Add(result);
-                result.LogFile.MonitorResults.Add(result);
-                result.MonitorItem.MonitorResults.Add(result);
-
-                UnityContext.MonitorResults.Add(result);
-
-                UnityTrace.WriteLine($"发现监视结果：\n\t行号: {result.LineNumber} 等级: {result.LogLevel} 日志内容: {result.LogContent}");
-            }
-
-            //减少数据库压力
-            UnityContext.SaveChanges();
         }
 
     }
