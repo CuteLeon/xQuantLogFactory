@@ -22,10 +22,6 @@ namespace xQuantLogFactory.Model
         /// 结束匹配
         /// </summary>
         Finish = 2,
-        /// <summary>
-        /// 条目匹配
-        /// </summary>
-        Item = 3,
     }
 
     /// <summary>

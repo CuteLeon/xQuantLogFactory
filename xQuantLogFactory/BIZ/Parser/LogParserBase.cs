@@ -54,10 +54,6 @@ namespace xQuantLogFactory.BIZ.Parser
             {
                 return ResultTypes.Finish;
             }
-            else if (monitor.ItemRegex != null && monitor.ItemRegex.IsMatch(logContent))
-            {
-                return ResultTypes.Item;
-            }
             else
             {
                 return ResultTypes.Unmatch;

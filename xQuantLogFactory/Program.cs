@@ -12,6 +12,8 @@ using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory
 {
+    //TODO: 扩展支持 performanceLog20181030.txt 中间件日志（LogFileType、ResultModel、Parser、Analysiser）
+
     //TODO: [全局任务] 使用4.0或5.0语言版本...
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试

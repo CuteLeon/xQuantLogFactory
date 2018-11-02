@@ -114,34 +114,6 @@ namespace xQuantLogFactory.Model
             }
         }
 
-        /// <summary>
-        /// 条目正则表达式
-        /// </summary>
-        private Regex _itemRegex;
-
-        /// <summary>
-        /// 条目正则表达式
-        /// </summary>
-        public Regex ItemRegex
-        {
-            get
-            {
-                //TODO: 需要测试或可优化
-                if (this._itemRegex == null)
-                {
-                    if (string.IsNullOrWhiteSpace(this.StartPattern) && string.IsNullOrWhiteSpace(this.FinishPatterny))
-                    {
-                        return null;
-                    }
-                    this._itemRegex = new Regex(
-                        string.Format("^.*{0}|{1}.*$", Regex.Escape(this.StartPattern), Regex.Escape(this.FinishPatterny)),
-                        RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-                }
-
-                return this._itemRegex;
-            }
-        }
-
         #endregion
 
         #region 方法
