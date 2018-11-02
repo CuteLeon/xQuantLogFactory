@@ -29,9 +29,14 @@ namespace xQuantLogFactory.DAL
         public DbSet<LogFile> LogFiles { get; set; }
 
         /// <summary>
-        /// 日志解析结果表
+        /// 监视日志解析结果表
         /// </summary>
         public DbSet<MonitorResult> MonitorResults { get; set; }
+
+        /// <summary>
+        /// 中间件日志解析结果表
+        /// </summary>
+        public DbSet<MiddlewareResult> MiddlewareResults { get; set; }
 
         /// <summary>
         /// 全局静态数据库交互对象

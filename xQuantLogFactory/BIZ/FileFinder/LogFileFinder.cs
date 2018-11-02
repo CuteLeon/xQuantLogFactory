@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
 
@@ -43,7 +44,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 {
                     logFiles.Add(new LogFile()
                     {
-                        LogFileType = fileName.StartsWith(ConfigHelper.ServerLogFileNamerefix, StringComparison.OrdinalIgnoreCase) ? LogFileTypes.Server : LogFileTypes.Client,
+                        LogFileType = this.GetLogFileType(fileName),
                         FilePath = FullName,
                         CreateTime = CreationTime,
                         LastWriteTime = LastWriteTime,
@@ -52,6 +53,23 @@ namespace xQuantLogFactory.BIZ.FileFinder
             }
 
             return logFiles as IEnumerable<T>;
+        }
+
+        /// <summary>
+        /// 获取日志文件类型
+        /// </summary>
+        /// <param name="fileName">日志文件名称</param>
+        /// <returns></returns>
+        private LogFileTypes GetLogFileType(string fileName)
+        {
+            if (fileName.StartsWith(ConfigHelper.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+                return LogFileTypes.Server;
+            else if (fileName.StartsWith(ConfigHelper.ClientLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+                return LogFileTypes.Client;
+            else if (fileName.StartsWith(ConfigHelper.MiddlewareLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+                return LogFileTypes.Middleware;
+
+            return default;
         }
 
     }

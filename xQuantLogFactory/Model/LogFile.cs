@@ -19,6 +19,10 @@ namespace xQuantLogFactory.Model
         /// 服务端日志文件
         /// </summary>
         Server =2,
+        /// <summary>
+        /// 中间件日志
+        /// </summary>
+        Middleware=3,
     }
 
     /// <summary>
@@ -64,10 +68,16 @@ namespace xQuantLogFactory.Model
         public DateTime LastWriteTime { get; set; }
 
         /// <summary>
-        /// 解析结果列表
+        /// 监视日志解析结果列表
         /// </summary>
-        [DisplayName("解析结果列表")]
+        [DisplayName("监视日志解析结果列表")]
         public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
+
+        /// <summary>
+        /// 中间件日志解析结果表
+        /// </summary>
+        [DisplayName("中间件日志解析结果表")]
+        public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();
 
     }
 }

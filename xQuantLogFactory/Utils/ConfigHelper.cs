@@ -23,13 +23,13 @@ namespace xQuantLogFactory.Utils
         /// <remarks>神奇，勿动！</remarks>
         public static string LogFileNameFormat
         {
-            get => $@"^({ServerLogFileNamerefix}|{ClientLogFileNamerefix})Log_(Trace|Debug|Info|Warn|Error)\.txt(|\.\d*)$";
+            get => $@"^(({ServerLogFileNamePrefix}|{ClientLogFileNamePrefix})Log_(Trace|Debug|Info|Warn|Error)\.txt(|\.\d*))|(performanceLog\d{{8}}\.txt)$";
         }
 
         /// <summary>
         /// 服务端日志文件名称前缀
         /// </summary>
-        public static string ServerLogFileNamerefix
+        public static string ServerLogFileNamePrefix
         {
             get => "Srv";
         }
@@ -37,9 +37,17 @@ namespace xQuantLogFactory.Utils
         /// <summary>
         /// 客户端日志文件名称前缀
         /// </summary>
-        public static string ClientLogFileNamerefix
+        public static string ClientLogFileNamePrefix
         {
             get => "Clt";
+        }
+
+        /// <summary>
+        /// 中间件日志文件名称前缀
+        /// </summary>
+        public static string MiddlewareLogFileNamePrefix
+        {
+            get => "performanceLog";
         }
 
     }

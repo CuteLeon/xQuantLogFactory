@@ -78,11 +78,14 @@
     <Compile Include="BIZ\Parser\ClientLogParser.cs" />
     <Compile Include="BIZ\Parser\ILogParser.cs" />
     <Compile Include="BIZ\Parser\LogParserBase.cs" />
+    <Compile Include="BIZ\Parser\MiddlewareLogParser.cs" />
     <Compile Include="BIZ\Parser\ServerLogParser.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
     <Compile Include="DAL\LogDBSeed.cs" />
+    <Compile Include="Model\LogResultBase.cs" />
     <Compile Include="Model\IMonitor.cs" />
     <Compile Include="Model\LogFile.cs" />
+    <Compile Include="Model\MiddlewareResult.cs" />
     <Compile Include="Model\MonitorContainer.cs" />
     <Compile Include="Model\MonitorItem.cs" />
     <Compile Include="Model\MonitorResult.cs" />

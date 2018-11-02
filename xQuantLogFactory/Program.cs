@@ -10,7 +10,7 @@ using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory
 {
-    //TODO: 扩展支持 performanceLog20181030.txt 中间件日志（LogFileType、ResultModel、Parser、Analysiser）
+    //TODO: 日志文件通过并行解析，数据库内记录在日志文件范围内以日至时间和日志行号有序，但对整个任务是无序的，可以通过日志时间大致排序(有概率重复)或区分文件以日志行号排序；
 
     //TODO: [全局任务] 使用4.0或5.0语言版本...
     //TODO: [全局任务] 移除和排除 using
@@ -116,48 +116,21 @@ namespace xQuantLogFactory
             }
 
             UnityTrace.WriteLine("开始解析日志文件...");
-            if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
-            {
-                UnityTrace.WriteLine("开始解析 [客户端] 日志文件...\n————————");
 
-                //存在客户端日志文件，创建客户端日志解析器
-                LogParserBase clientLogParser = new ClientLogParser(UnityTrace);
-                clientLogParser.Parse(UnityArgument);
+            ParseClientLog();
+            ParseServerLog();
+            /* TODO: 中间件日志文件和数据量过大，暂时关闭功能
+            ParseMiddlewareLog();
+             */
 
-                //UnityContext.MonitorResults.Add(result);
-                lock (UnityContext)
-                    UnityContext.SaveChanges();
-
-                UnityTrace.WriteLine("[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
-                    UnityArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
-                    UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
-                    UnityArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Client)
-                    );
-            }
-
-            if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Server) > 0)
-            {
-                UnityTrace.WriteLine("开始解析 [服务端] 日志文件...\n————————");
-
-                //存在服务端日志文件，创建服务端日志解析器
-                LogParserBase serverLogParser = new ServerLogParser(UnityTrace);
-                serverLogParser.Parse(UnityArgument);
-
-                //UnityContext.MonitorResults.Add(result);
-                lock (UnityContext)
-                    UnityContext.SaveChanges();
-
-                UnityTrace.WriteLine("[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
-                    UnityArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
-                    UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
-                    UnityArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server)
-                    );
-            }
-            UnityTrace.WriteLine("所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
-                UnityArgument.LogFiles.Count(file => file.MonitorResults.Count > 0),
+            UnityTrace.WriteLine("所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个监视结果和 {3} 个中间件结果\n————————",
+                UnityArgument.LogFiles.Count(file => file.MonitorResults.Count > 0 || file.MiddlewareResults.Count > 0),
                 UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Count > 0),
-                UnityArgument.MonitorResults.Count
+                UnityArgument.MonitorResults.Count,
+                UnityArgument.MiddlewareResults.Count()
                 );
+
+            //TODO: 创建时间和最后写入时间在任务时间范围的日志文件内可能存在任务时间段外的日志信息，需要过滤剔除
 
             //TODO: so much todo ...
 
@@ -193,6 +166,74 @@ namespace xQuantLogFactory
             {
                 TimeSpan duration = UnityArgument.TaskFinishTime.Subtract(UnityArgument.TaskStartTime);
                 Console.WriteLine($"任务耗时：{duration.Hours}时 {duration.Minutes}分 {duration.Seconds}秒 {duration.Milliseconds}毫秒");
+            }
+        }
+
+        /// <summary>
+        /// 解析客户端日志
+        /// </summary>
+        private static void ParseClientLog()
+        {
+            if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
+            {
+                UnityTrace.WriteLine("开始解析 [客户端] 日志文件...\n————————");
+
+                LogParserBase clientLogParser = new ClientLogParser(UnityTrace);
+                clientLogParser.Parse(UnityArgument);
+
+                lock (UnityContext)
+                    UnityContext.SaveChanges();
+
+                UnityTrace.WriteLine("[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
+                    UnityArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
+                    UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
+                    UnityArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Client)
+                    );
+            }
+        }
+
+        /// <summary>
+        /// 解析服务端日志
+        /// </summary>
+        private static void ParseServerLog()
+        {
+            if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Server) > 0)
+            {
+                UnityTrace.WriteLine("开始解析 [服务端] 日志文件...\n————————");
+
+                LogParserBase serverLogParser = new ServerLogParser(UnityTrace);
+                serverLogParser.Parse(UnityArgument);
+
+                lock (UnityContext)
+                    UnityContext.SaveChanges();
+
+                UnityTrace.WriteLine("[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
+                    UnityArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
+                    UnityArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
+                    UnityArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server)
+                    );
+            }
+        }
+
+        /// <summary>
+        /// 解析中间件日志
+        /// </summary>
+        private static void ParseMiddlewareLog()
+        {
+            if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Middleware) > 0)
+            {
+                UnityTrace.WriteLine("开始解析 [中间件] 日志文件...\n————————");
+
+                LogParserBase middlewareLogParser = new MiddlewareLogParser(UnityTrace);
+                middlewareLogParser.Parse(UnityArgument);
+
+                lock (UnityContext)
+                    UnityContext.SaveChanges();
+
+                UnityTrace.WriteLine("[中间件] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个结果\n————————",
+                    UnityArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Middleware && file.MiddlewareResults.Count > 0),
+                    UnityArgument.MiddlewareResults.Count
+                    );
             }
         }
 

@@ -119,10 +119,16 @@ namespace xQuantLogFactory.Model
         public virtual List<LogFile> LogFiles { get; set; } = new List<LogFile>();
 
         /// <summary>
-        /// 日志监视结果
+        /// 监视日志解析结果表
         /// </summary>
-        [DisplayName("日志监视规则")]
+        [DisplayName("监视日志解析结果表")]
         public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
+
+        /// <summary>
+        /// 中间件日志解析结果表
+        /// </summary>
+        [DisplayName("中间件日志解析结果表")]
+        public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();
 
         /// <summary>
         /// 根据工具启动参数创建任务参数对象
