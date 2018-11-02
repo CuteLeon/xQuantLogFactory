@@ -7,8 +7,6 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public interface ILogParser
     {
-        //TODO: 使用并行解析文件
-
         /// <summary>
         /// 解析
         /// </summary>
