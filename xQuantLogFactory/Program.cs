@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+
 using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.DAL;
@@ -117,7 +115,7 @@ namespace xQuantLogFactory
                 UnityTrace.WriteLine($"发现 {UnityArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityArgument.LogFiles.Select(file => file.FilePath))}\n————————");
             }
 
-            UnityTrace.WriteLine("开始解析日志文件...");
+                UnityTrace.WriteLine("开始解析日志文件...");
             if (UnityArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
             {
                 UnityTrace.WriteLine("开始解析 [客户端] 日志文件...\n————————");
@@ -205,10 +203,12 @@ namespace xQuantLogFactory
                 result.MonitorItem.MonitorResults.Add(result);
 
                 UnityContext.MonitorResults.Add(result);
-                UnityContext.SaveChanges();
 
                 UnityTrace.WriteLine($"发现监视结果：\n\t行号: {result.LineNumber} 等级: {result.LogLevel} 日志内容: {result.LogContent}");
             }
+
+            //减少数据库压力
+            UnityContext.SaveChanges();
         }
 
     }
