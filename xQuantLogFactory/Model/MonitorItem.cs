@@ -33,7 +33,7 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlAttribute("Name")]
         [Required]
-        [DisplayName(""), DataType(DataType.Text)]
+        [DisplayName("项目名称"), DataType(DataType.Text)]
         public string Name { get; set; }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace xQuantLogFactory.Model
                 if (this._finishRegex == null && !string.IsNullOrWhiteSpace(this.FinishPatterny))
                 {
                     this._finishRegex = new Regex(
-                        string.Format("^.*{0}.*$", Regex.Escape(this.StartPattern)),
+                        string.Format("^.*{0}.*$", Regex.Escape(this.FinishPatterny)),
                         RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
                 }
 
