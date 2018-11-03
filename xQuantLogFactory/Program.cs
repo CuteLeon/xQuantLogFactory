@@ -146,6 +146,14 @@ namespace xQuantLogFactory
         /// </summary>
         private static void AnalysisLog()
         {
+            //分析结果前先清空分析结果
+            UnityDBContext.AnalysisResults.RemoveRange(UnityTaskArgument.AnalysisResults);
+            UnityTaskArgument.AnalysisResults.Clear();
+            UnityTaskArgument.LogFiles.ForEach(logFile=>logFile.AnalysisResults.Clear());
+            UnityTaskArgument.MonitorItems.ForEach(monitor => monitor.AnalysisResults.Clear());
+            lock (UnityDBContext)
+                UnityDBContext.SaveChanges();
+
             ILogAnalysiser logAnalysiser = new LogAnalysiser(UnityTrace);
             logAnalysiser.Analysis(UnityTaskArgument);
 
