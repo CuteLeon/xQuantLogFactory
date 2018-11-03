@@ -4,9 +4,9 @@ namespace xQuantLogFactory.Utils.Trace
 {
 
     /// <summary>
-    /// 追踪器
+    /// 控制台追踪器
     /// </summary>
-    public class LogTracer : ITracer
+    public class ConsoleTracer : ITracer
     {
         /// <summary>
         /// 输出信息

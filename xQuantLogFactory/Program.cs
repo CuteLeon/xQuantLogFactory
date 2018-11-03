@@ -4,11 +4,13 @@ using System.Linq;
 using System.Windows.Forms;
 
 using xQuantLogFactory.BIZ.Analysiser;
+using xQuantLogFactory.BIZ.Exporter;
 using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
+using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
@@ -39,7 +41,7 @@ namespace xQuantLogFactory
         /// <summary>
         /// 全局追踪器
         /// </summary>
-        public volatile static ITracer UnityTrace = new LogTracer();
+        public volatile static ITracer UnityTrace = new ConsoleTracer();
 
         /* 启动参数：{string_日志文件目录} {string.Format(,)_监控的项目名称列表} "{datetime_日志开始时间}" "[datetime_日志截止时间 =DateTime.Now]" [boolean_包含系统信息 =false] [boolean_包含客户端信息 =false] [reportmodes_报告导出模式 =RepostModes.Html]
          * 注意：
@@ -58,7 +60,7 @@ namespace xQuantLogFactory
         /// <summary>
         /// 入口
         /// </summary>
-        /// <param name="args"></param>
+        /// <param name="args">启动参数</param>
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -72,22 +74,26 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
+#if (DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
+            UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
 #else
             UnityTrace.WriteLine("开始创建任务参数对象...");
             CreateTaskArgument(args);
 
             UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", ConfigHelper.MonitorDirectory);
-            CheckMonitorDirectory(ConfigHelper.MonitorDirectory);
+            CheckDirectory(ConfigHelper.MonitorDirectory);
+
+            UnityTrace.WriteLine("准备日志报告导出目录：{0}", ConfigHelper.ReportExportDirectory);
+            CheckDirectory(ConfigHelper.ReportExportDirectory);
 
             UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
             GetMonitorItems(ConfigHelper.MonitorDirectory);
             UnityTrace.WriteLine($"发现 {UnityTaskArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorItems.Select(item => item.Name))}");
 
             UnityTrace.WriteLine("开始获取时间段内日志文件...");
-            GetTaskLogFiles(UnityTaskArgument.BaseDirectory);
+            GetTaskLogFiles(UnityTaskArgument.LogDirectory);
 
             UnityTrace.WriteLine("开始解析日志文件...");
             //未发现监视规则对象，不解析客户端和服务端日志文件
@@ -97,15 +103,101 @@ namespace xQuantLogFactory
                 ParseServerLog();
             }
             ParseMiddlewareLog();
-#endif
             ShowParseResult();
 
             UnityTrace.WriteLine("开始分析日志解析结果...");
             AnalysisLog();
+#endif
+            ShowAnalysisResult();
+
+            TryToExportLogReport();
 
             //TODO: so much todo ...
 
             Exit(0);
+        }
+
+        /// <summary>
+        /// 尝试导出日志报告
+        /// </summary>
+        private static void TryToExportLogReport()
+        {
+            string reportPath = GetReportFilePath(UnityTaskArgument);
+            bool exportSuccess = false;
+            //当导出失败且用户同意重试时重复导出，并在失败时再次询问用户
+            do
+            {
+                UnityTrace.WriteLine("开始导出分析日志报告...");
+                try
+                {
+                    ExportLogReport(reportPath);
+                    exportSuccess = true;
+                }
+                catch (Exception ex)
+                {
+                    exportSuccess = false;
+                    UnityTrace.WriteLine($"导出日志报告失败：{ex.Message}");
+                    UnityTrace.WriteLine("是否重试？(请输入： Y / N )");
+                }
+            } while (!exportSuccess && Console.ReadLine().Trim().ToUpper() == "Y");
+
+            if (exportSuccess)
+            {
+                //记录日志报告导出路径
+                UnityTaskArgument.LastReportPath = reportPath;
+                UnityTrace.WriteLine($"日志报告到处成功=> {UnityTaskArgument.LastReportPath}");
+            }
+            else
+            {
+                UnityTrace.WriteLine($"放弃导出日志报告，任务结束~");
+            }
+        }
+
+        /// <summary>
+        /// 导出日志报告
+        /// </summary>
+        /// <param name="reportPath">报告路径</param>
+        private static void ExportLogReport(string reportPath)
+        {
+            ILogReportExporter reportExporter = null;
+            switch (UnityTaskArgument.ReportMode)
+            {
+                case ReportModes.HTML:
+                    {
+                        reportExporter = new HTMLLogReportExporter();
+                        break;
+                    }
+                case ReportModes.Word:
+                    {
+                        throw new NotImplementedException($"暂未实现 {UnityTaskArgument.ReportMode} 报告格式对应的报告导出器，请等待程序开发...");
+                    }
+                case ReportModes.Excel:
+                    {
+                        throw new NotImplementedException($"暂未实现 {UnityTaskArgument.ReportMode} 报告格式对应的报告导出器，请等待程序开发...");
+                    }
+                default:
+                    {
+                        throw new InvalidOperationException($"未找到 {UnityTaskArgument.ReportMode} 报告格式对应的报告导出器！");
+                    }
+            }
+
+            try
+            {
+                reportExporter.ExportReport(reportPath, UnityTaskArgument);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 获取导出报告文件路径
+        /// </summary>
+        /// <returns></returns>
+        private static string GetReportFilePath(TaskArgument argument)
+        {
+            return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
         /// <summary>
@@ -149,7 +241,7 @@ namespace xQuantLogFactory
             //分析结果前先清空分析结果
             UnityDBContext.AnalysisResults.RemoveRange(UnityTaskArgument.AnalysisResults);
             UnityTaskArgument.AnalysisResults.Clear();
-            UnityTaskArgument.LogFiles.ForEach(logFile=>logFile.AnalysisResults.Clear());
+            UnityTaskArgument.LogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
             UnityTaskArgument.MonitorItems.ForEach(monitor => monitor.AnalysisResults.Clear());
             lock (UnityDBContext)
                 UnityDBContext.SaveChanges();
@@ -159,12 +251,6 @@ namespace xQuantLogFactory
 
             lock (UnityDBContext)
                 UnityDBContext.SaveChanges();
-
-            UnityTrace.WriteLine("日志解析结果分析完成：\n\t在 {0} 个文件中匹配到 {1} 个监视规则的 {2} 组分析结果\n————————",
-                UnityTaskArgument.LogFiles.Count(file => file.AnalysisResults.Count > 0),
-                UnityTaskArgument.MonitorItems.Count(monitor => monitor.AnalysisResults.Count > 0),
-                UnityTaskArgument.AnalysisResults.Count
-                );
         }
 
         /// <summary>
@@ -178,7 +264,7 @@ namespace xQuantLogFactory
 
             try
             {
-                logFiles = logFinder.GetFiles<LogFile>(UnityTaskArgument.BaseDirectory, UnityTaskArgument);
+                logFiles = logFinder.GetFiles<LogFile>(UnityTaskArgument.LogDirectory, UnityTaskArgument);
             }
             catch (Exception ex)
             {
@@ -230,10 +316,10 @@ namespace xQuantLogFactory
         }
 
         /// <summary>
-        /// 检查监视规则目录
+        /// 检查工作目录
         /// </summary>
-        /// <param name="directory"></param>
-        private static void CheckMonitorDirectory(string directory)
+        /// <param name="directory">工作目录</param>
+        private static void CheckDirectory(string directory)
         {
             try
             {
@@ -241,10 +327,10 @@ namespace xQuantLogFactory
             }
             catch (Exception ex)
             {
-                UnityTrace.WriteLine($"准备目录失败：{ex.Message}");
+                UnityTrace.WriteLine($"准备工作目录失败：{ex.Message}");
                 Exit(2);
             }
-            UnityTrace.WriteLine("准备目录成功");
+            UnityTrace.WriteLine("准备工作目录成功");
         }
 
         /// <summary>
@@ -308,6 +394,18 @@ namespace xQuantLogFactory
                 UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Count > 0),
                 UnityTaskArgument.MonitorResults.Count,
                 UnityTaskArgument.MiddlewareResults.Count()
+                );
+        }
+
+        /// <summary>
+        /// 显示分析结果
+        /// </summary>
+        private static void ShowAnalysisResult()
+        {
+            UnityTrace.WriteLine("日志解析结果分析完成：\n\t在 {0} 个文件中匹配到 {1} 个监视规则的 {2} 组分析结果\n————————",
+                UnityTaskArgument.LogFiles.Count(file => file.AnalysisResults.Count > 0),
+                UnityTaskArgument.MonitorItems.Count(monitor => monitor.AnalysisResults.Count > 0),
+                UnityTaskArgument.AnalysisResults.Count
                 );
         }
 
@@ -380,8 +478,6 @@ namespace xQuantLogFactory
         }
 
         //TODO: 按需记录系统信息和客户端信息
-
-
 
     }
 }

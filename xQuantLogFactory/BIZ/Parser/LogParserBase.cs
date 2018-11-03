@@ -35,6 +35,8 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <returns>匹配监视规则类型</returns>
         protected ResultTypes MatchMonitor(MonitorItem monitor, string logContent)
         {
+            //TODO: 这里优化："".Contains("") 会比正则获得更好的性能
+
             if (monitor.StartRegex != null && monitor.StartRegex.IsMatch(logContent))
             {
                 return ResultTypes.Start;

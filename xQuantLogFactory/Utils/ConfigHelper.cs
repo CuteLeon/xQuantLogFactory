@@ -18,6 +18,14 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
+        /// 日志报告导出目录
+        /// </summary>
+        public static string ReportExportDirectory
+        {
+            get => Path.Combine(Environment.CurrentDirectory, "Export");
+        }
+
+        /// <summary>
         /// 日志文件名称格式
         /// </summary>
         /// <remarks>神奇，勿动！</remarks>

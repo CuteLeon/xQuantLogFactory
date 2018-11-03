@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace xQuantLogFactory.Model
 {
@@ -15,16 +16,19 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 生成HTML
         /// </summary>
+        [AmbientValue("html")]
         HTML = 1,
 
         /// <summary>
         /// 生成Word
         /// </summary>
+        [AmbientValue("doc")]
         Word = 2,
 
         /// <summary>
         /// 生成Excel
         /// </summary>
+        [AmbientValue("xls")]
         Excel = 3
     }
 
@@ -47,7 +51,7 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [Required]
         [DisplayName("日志文件目录"), DataType(DataType.Text)]
-        public string BaseDirectory { get; set; }
+        public string LogDirectory { get; set; }
 
         /// <summary>
         /// 日志开始时间
@@ -98,11 +102,17 @@ namespace xQuantLogFactory.Model
         public ReportModes ReportMode { get; set; } = ReportModes.HTML;
 
         /// <summary>
+        /// 最近一次导出的日志报告路径
+        /// </summary>
+        [DisplayName("最近一次导出的日志报告路径"), DataType(DataType.Text)]
+        public string LastReportPath { get; set; }
+
+        /// <summary>
         /// 监控的项目名称列表
         /// </summary>
         [Required]
         [DisplayName("监控的项目名称列表")]
-        public virtual List<string> ItemNames { get; set; } = new List<string>();
+        public virtual List<string> MonitorItemNames { get; set; } = new List<string>();
 
         /// <summary>
         /// 监控规则列表
@@ -158,10 +168,10 @@ namespace xQuantLogFactory.Model
             {
                 TaskID = Guid.NewGuid().ToString("N"),
                 TaskStartTime = DateTime.Now,
-                BaseDirectory = args[0],
+                LogDirectory = args[0],
                 LogStartTime = DateTime.Parse(args[2]),
             };
-            argument.ItemNames.AddRange(args[1].Split(','));
+            argument.MonitorItemNames.AddRange(args[1].Split(','));
 
             //可选参数
             if (args.Length >= 4)
@@ -189,7 +199,7 @@ namespace xQuantLogFactory.Model
 
         public override string ToString()
         {
-            return $"\t日志文件目录：{this.BaseDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视项目列表：{string.Join("、", this.ItemNames)}\n\t日志开始时间：{this.LogStartTime}\n\t日志截止时间：{this.LogFinishTime}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
+            return $"\t日志文件目录：{this.LogDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视项目列表：{string.Join("、", this.MonitorItems.Select(monitor => monitor.Name))}\n\t日志开始时间：{this.LogStartTime}\n\t日志截止时间：{this.LogFinishTime}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
         }
 
     }

@@ -79,7 +79,7 @@ namespace xQuantLogFactory.Model
         /// 起始正则表达式
         /// </summary>
         private Regex _startRegex;
-
+        //TODO: 这里优化："".Contains("") 会比正则获得更好的性能
         /// <summary>
         /// 起始正则表达式
         /// </summary>
@@ -102,7 +102,7 @@ namespace xQuantLogFactory.Model
         /// 结束正则表达式
         /// </summary>
         private Regex _finishRegex;
-
+        //TODO: 这里优化："".Contains("") 会比正则获得更好的性能
         /// <summary>
         /// 结束正则表达式
         /// </summary>

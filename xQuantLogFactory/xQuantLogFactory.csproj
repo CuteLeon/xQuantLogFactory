@@ -72,6 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BIZ\Analysiser\LogAnalysiser.cs" />
+    <Compile Include="BIZ\Exporter\ILogReportExporter.cs" />
+    <Compile Include="BIZ\Exporter\HTMLLogReportExporter.cs" />
     <Compile Include="BIZ\FileFinder\IChildFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\ITaskFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\LogFileFinder.cs" />
@@ -97,15 +99,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\ConfigHelper.cs" />
+    <Compile Include="Utils\Extensions\EnumExtension.cs" />
     <Compile Include="Utils\Extensions\XMLSerializationExtension.cs" />
     <Compile Include="Utils\IOUtils.cs" />
     <Compile Include="Utils\Trace\ITracer.cs" />
-    <Compile Include="Utils\Trace\LogTracer.cs" />
+    <Compile Include="Utils\Trace\ConsoleTracer.cs" />
     <Compile Include="Utils\Trace\SQLTracer.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BIZ\Exporter\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Monitor\Monitor.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -65,7 +65,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 //查询匹配的监视规则对象 (返回的IMonitor对象清空子级监视规则对象，以免被ORM重复记录到数据库)
                 targetItems.AddRange(
                         from monitor in CurrentMonitor.MonitorItems
-                        where argument.ItemNames.Contains(monitor.Name)
+                        where argument.MonitorItemNames.Contains(monitor.Name)
                         select monitor.Clone() as MonitorItem
                         );
 
