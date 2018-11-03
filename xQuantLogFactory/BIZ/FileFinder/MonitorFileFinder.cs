@@ -32,10 +32,10 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <returns></returns>
         public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argument) where T : class
         {
+            if (!Directory.Exists(directory))
+                throw new DirectoryNotFoundException(nameof(directory));
             if (argument == null)
                 throw new ArgumentNullException(nameof(argument));
-            if (!Directory.Exists(argument.BaseDirectory))
-                throw new DirectoryNotFoundException(argument.BaseDirectory);
 
             //符合要求的监视规则
             List<MonitorItem> targetItems = new List<MonitorItem>();
