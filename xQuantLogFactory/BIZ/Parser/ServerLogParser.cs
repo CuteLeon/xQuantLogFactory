@@ -40,8 +40,11 @@ namespace xQuantLogFactory.BIZ.Parser
             {
                 this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
 
-                using (StreamReader reader = new StreamReader(logFile.FilePath, Encoding.Default))
+                StreamReader reader = null;
+                try
                 {
+                    reader = new StreamReader(logFile.FilePath, Encoding.Default);
+
                     int lineNumber = 0;
                     while (!reader.EndOfStream)
                     {
@@ -103,7 +106,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
                                 if (match.Groups["LogLevel"].Success)
                                     result.LogLevel = match.Groups["LogLevel"].Value;
-                                
+
                                 if (match.Groups["Version"].Success)
                                     result.Version = match.Groups["Version"].Value;
 
@@ -119,9 +122,17 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    reader.Close();
+                    this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
                 }
-                this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
+                catch (Exception ex)
+                {
+                    this.Trace?.WriteLine($"解析日志文件(ID: {logFile.FileID}) {logFile.FilePath} 失败：{ex.Message}\n————————");
+                }
+                finally
+                {
+                    reader?.Close();
+                    reader?.Dispose();
+                }
             });
         }
 

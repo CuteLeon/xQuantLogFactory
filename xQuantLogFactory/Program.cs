@@ -73,8 +73,9 @@ namespace xQuantLogFactory
 
             UnityTrace.WriteLine("开始解析日志文件...");
             //未发现监视规则对象，不解析客户端和服务端日志文件
-            if (UnityArgument.MonitorItems.Count == 0)
+            if (UnityArgument.MonitorItems.Count > 0)
             {
+                UnityArgument.LogFiles.ForEach(file => file.FilePath += "123");
                 ParseClientLog();
                 ParseServerLog();
             }

@@ -23,13 +23,13 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <returns>返回符合日志分析参数的待分析日志文件清单</returns>
         public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argument) where T : class
         {
+            if (!Directory.Exists(directory))
+                throw new DirectoryNotFoundException(nameof(directory));
             if (argument == null)
                 throw new ArgumentNullException(nameof(argument));
-            if (!Directory.Exists(argument.BaseDirectory))
-                throw new DirectoryNotFoundException(argument.BaseDirectory);
 
             List<LogFile> logFiles = new List<LogFile>();
-            DirectoryInfo directoryInfo = new DirectoryInfo(argument.BaseDirectory);
+            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
             Regex logRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
             foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo.GetFiles("*.txt*", SearchOption.AllDirectories).Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
