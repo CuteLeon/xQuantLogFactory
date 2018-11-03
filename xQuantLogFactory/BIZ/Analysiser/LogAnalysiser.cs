@@ -47,7 +47,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     this.Trace?.WriteLine($"分析监视规则：(文件ID: {logFile.FileID}, Type: {logFile.LogFileType}) {monitor.Name}");
 
                     AnalysisResult analysisResult = null;
-                    foreach (MonitorResult monitorResult in monitorGroupResult)
+                    foreach (MonitorResult monitorResult in monitorGroupResult.OrderBy(result => result.LineNumber))
                     {
                         switch (monitorResult.ResultType)
                         {
