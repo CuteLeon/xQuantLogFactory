@@ -17,7 +17,6 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <summary>
         /// 日志正则表达式
         /// </summary>
-        /// <remarks>2018-10-30 09:25:30,111 DEBUG 东方证券 1.3.0.064补丁1 开始排券</remarks>
         public override Regex LogRegex { get; } = new Regex(
             @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<Client>.*?)\s(?<Version>.*?)\s(?<LogContent>.+)$",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);

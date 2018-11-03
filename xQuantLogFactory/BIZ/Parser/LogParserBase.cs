@@ -1,5 +1,5 @@
 ﻿using System.Text.RegularExpressions;
-
+using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
 
@@ -8,29 +8,17 @@ namespace xQuantLogFactory.BIZ.Parser
     /// <summary>
     /// 日志解析器抽象类
     /// </summary>
-    public abstract class LogParserBase : ILogParser
+    public abstract class LogParserBase : LogProcesserBase, ILogParser
     {
-
-        /// <summary>
-        /// 静态异步锁芯
-        /// </summary>
-        protected static object LockSeed = new object();
 
         /// <summary>
         /// 日志正则表达式
         /// </summary>
-        /// <remarks>2018-10-30 09:25:30,111 DEBUG 东方证券 1.3.0.064补丁1 开始排券</remarks>
         public abstract Regex LogRegex { get; }
-
-        /// <summary>
-        /// 追踪器
-        /// </summary>
-        public ITrace Trace { get; protected set; }
 
         public LogParserBase() { }
 
-        public LogParserBase(ITrace trace)
-            => this.Trace = trace;
+        public LogParserBase(ITrace trace) : base(trace) { }
 
         /// <summary>
         /// 日志解析

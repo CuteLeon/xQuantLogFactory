@@ -18,7 +18,6 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <summary>
         /// 日志正则表达式
         /// </summary>
-        /// <remarks>2018-10-29 16:51:04,457 TRACE 安信证券 1.3.0.065 192.168.7.101 初始化准备</remarks>
         public override Regex LogRegex { get; } = new Regex(
             @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Client>.*?)\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>.*?)\s(?<RequestURI>.*?)\s(?<MethodName>.*?)\s(?<StreamLength>.*?)\s(?<Message>.+)$",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);

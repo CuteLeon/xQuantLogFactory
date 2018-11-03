@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
+﻿using System.Data.Entity;
+
 using SQLite.CodeFirst;
 
 namespace xQuantLogFactory.DAL
@@ -17,7 +14,7 @@ namespace xQuantLogFactory.DAL
 
         protected override void Seed(LogDBContext context)
         {
-            LogDBContext.UnityContext.SaveChanges();
+            LogDBContext.UnityDBContext.SaveChanges();
             base.Seed(context);
         }
     }

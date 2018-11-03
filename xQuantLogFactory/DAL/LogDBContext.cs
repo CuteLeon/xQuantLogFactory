@@ -41,7 +41,7 @@ namespace xQuantLogFactory.DAL
         /// <summary>
         /// 全局静态数据库交互对象
         /// </summary>
-        public volatile static LogDBContext UnityContext = new LogDBContext();
+        public volatile static LogDBContext UnityDBContext = new LogDBContext();
 
         private LogDBContext() : base("LogFactoryDB") { }
 

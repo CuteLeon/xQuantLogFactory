@@ -71,13 +71,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BIZ\Analysiser\LogAnalysiser.cs" />
     <Compile Include="BIZ\FileFinder\IChildFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\ITaskFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\LogFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
     <Compile Include="BIZ\Parser\ClientLogParser.cs" />
+    <Compile Include="BIZ\Analysiser\ILogAnalysiser.cs" />
     <Compile Include="BIZ\Parser\ILogParser.cs" />
     <Compile Include="BIZ\Parser\LogParserBase.cs" />
+    <Compile Include="BIZ\Processer\LogProcesserBase.cs" />
     <Compile Include="BIZ\Parser\MiddlewareLogParser.cs" />
     <Compile Include="BIZ\Parser\ServerLogParser.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
@@ -98,7 +101,6 @@
     <Compile Include="Utils\Trace.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="BIZ\Analysiser\" />
     <Folder Include="BIZ\Exporter\" />
   </ItemGroup>
   <ItemGroup>

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using xQuantLogFactory.Utils.Extensions;
+
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Utils.Extensions;
 
 namespace xQuantLogFactory.BIZ.FileFinder
 {
