@@ -31,7 +31,7 @@ namespace xQuantLogFactory.Model
     /// <summary>
     /// 任务配置参数
     /// </summary>
-    [Table("Tasks")]
+    [Table("TaskArguments")]
     public class TaskArgument
     {
         /// <summary>
@@ -127,6 +127,12 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [DisplayName("中间件日志解析结果表")]
         public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();
+
+        /// <summary>
+        /// 日志分析结果表
+        /// </summary>
+        [DisplayName("日志分析结果表")]
+        public virtual List<AnalysisResult> AnalysisResults { get; set; } = new List<AnalysisResult>();
 
         /// <summary>
         /// 根据工具启动参数创建任务参数对象

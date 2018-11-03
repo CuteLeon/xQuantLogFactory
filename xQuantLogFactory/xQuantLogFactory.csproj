@@ -85,6 +85,7 @@
     <Compile Include="BIZ\Parser\ServerLogParser.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
     <Compile Include="DAL\LogDBSeed.cs" />
+    <Compile Include="Model\AnalysisResult.cs" />
     <Compile Include="Model\LogResultBase.cs" />
     <Compile Include="Model\IMonitor.cs" />
     <Compile Include="Model\LogFile.cs" />
@@ -98,7 +99,9 @@
     <Compile Include="Utils\ConfigHelper.cs" />
     <Compile Include="Utils\Extensions\XMLSerializationExtension.cs" />
     <Compile Include="Utils\IOUtils.cs" />
-    <Compile Include="Utils\Trace.cs" />
+    <Compile Include="Utils\Trace\ITracer.cs" />
+    <Compile Include="Utils\Trace\LogTracer.cs" />
+    <Compile Include="Utils\Trace\SQLTracer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BIZ\Exporter\" />

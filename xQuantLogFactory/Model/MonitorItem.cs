@@ -64,6 +64,13 @@ namespace xQuantLogFactory.Model
         [DisplayName("监视日志解析结果表")]
         public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
 
+        /// <summary>
+        /// 日志分析结果表
+        /// </summary>
+        [XmlIgnore]
+        [DisplayName("日志分析结果表")]
+        public virtual List<AnalysisResult> AnalysisResults { get; set; } = new List<AnalysisResult>();
+
         #endregion
 
         #region 正则

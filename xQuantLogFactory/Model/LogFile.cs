@@ -79,5 +79,11 @@ namespace xQuantLogFactory.Model
         [DisplayName("中间件日志解析结果表")]
         public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();
 
+        /// <summary>
+        /// 日志分析结果表
+        /// </summary>
+        [DisplayName("日志分析结果表")]
+        public virtual List<AnalysisResult> AnalysisResults { get; set; } = new List<AnalysisResult>();
+
     }
 }

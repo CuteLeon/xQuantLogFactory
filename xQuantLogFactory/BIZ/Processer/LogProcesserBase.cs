@@ -1,4 +1,4 @@
-﻿using xQuantLogFactory.Utils;
+﻿using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Processer
 {
@@ -16,11 +16,11 @@ namespace xQuantLogFactory.BIZ.Processer
         /// <summary>
         /// 追踪器
         /// </summary>
-        public ITrace Trace { get; protected set; }
+        public ITracer Trace { get; protected set; }
 
         public LogProcesserBase() { }
 
-        public LogProcesserBase(ITrace trace)
+        public LogProcesserBase(ITracer trace)
             => this.Trace = trace;
 
     }

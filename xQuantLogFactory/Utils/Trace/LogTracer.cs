@@ -1,21 +1,12 @@
 ﻿using System;
 
-namespace xQuantLogFactory.Utils
+namespace xQuantLogFactory.Utils.Trace
 {
-    /// <summary>
-    /// 追踪器接口
-    /// </summary>
-    public interface ITrace
-    {
-        void WriteLine(string info);
-
-        void WriteLine(string info, params object[] values);
-    }
 
     /// <summary>
     /// 追踪器
     /// </summary>
-    public class Trace : ITrace
+    public class LogTracer : ITracer
     {
         /// <summary>
         /// 输出信息

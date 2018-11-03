@@ -39,6 +39,11 @@ namespace xQuantLogFactory.DAL
         public DbSet<MiddlewareResult> MiddlewareResults { get; set; }
 
         /// <summary>
+        /// 分析结果表
+        /// </summary>
+        public DbSet<AnalysisResult> AnalysisResults { get; set; }
+
+        /// <summary>
         /// 全局静态数据库交互对象
         /// </summary>
         public volatile static LogDBContext UnityDBContext = new LogDBContext();

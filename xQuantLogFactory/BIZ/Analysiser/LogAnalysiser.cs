@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
+
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Utils;
+using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
 {
@@ -13,7 +14,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
     {
         public LogAnalysiser() { }
 
-        public LogAnalysiser(ITrace trace) : base(trace) { }
+        public LogAnalysiser(ITracer trace) : base(trace) { }
 
         /// <summary>
         /// 分析日志
@@ -25,7 +26,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 throw new ArgumentNullException(nameof(argument));
 
             //对日志结果按文件分组，以保证日志解析结果有序
-            foreach (var fileResult in argument.MonitorResults.GroupBy(result => result.LogFile))
+            argument.MonitorResults.GroupBy(result => result.LogFile).AsParallel().ForAll(fileResult =>
             {
                 this.Trace?.WriteLine("——————————————————————");
                 this.Trace?.WriteLine(fileResult.Key.FilePath);
@@ -42,18 +43,8 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         this.Trace?.WriteLine($"{result.ResultType} {result.LogContent}");
                     }
                 }
-            }
-
-            /*
-            argument.LogFiles.Where(file =>
-                (file.LogFileType == LogFileTypes.Client || file.LogFileType == LogFileTypes.Server) && file.MonitorResults.Count > 0
-                ).AsParallel().ForAll(logFile =>
-            {
-                this.Trace?.WriteLine($"开始分析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
-
-                this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
             });
-             */
         }
+
     }
 }

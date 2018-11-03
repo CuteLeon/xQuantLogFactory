@@ -9,6 +9,7 @@ using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
+using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
@@ -31,9 +32,14 @@ namespace xQuantLogFactory
         public static LogDBContext UnityDBContext = LogDBContext.UnityDBContext;
 
         /// <summary>
+        /// SQL追踪器
+        /// </summary>
+        public static ITracer SQLTrace = new SQLTracer();
+
+        /// <summary>
         /// 全局追踪器
         /// </summary>
-        public volatile static ITrace UnityTrace = new Trace();
+        public volatile static ITracer UnityTrace = new LogTracer();
 
         /* 启动参数：{string_日志文件目录} {string.Format(,)_监控的项目名称列表} "{datetime_日志开始时间}" "[datetime_日志截止时间 =DateTime.Now]" [boolean_包含系统信息 =false] [boolean_包含客户端信息 =false] [reportmodes_报告导出模式 =RepostModes.Html]
          * 注意：
@@ -55,11 +61,18 @@ namespace xQuantLogFactory
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Console.Title = $"xQuant 日志分析工具 - {Application.ProductVersion}";
             UnityTrace.WriteLine($"{Console.Title} 已启动...");
             UnityTrace.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
 
 #if (DEBUG)
+            //输出SQL日志
+            UnityDBContext.Database.Log = SQLTrace.WriteLine;
+#endif
+
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
 #else
@@ -71,14 +84,14 @@ namespace xQuantLogFactory
 
             UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
             GetMonitorItems(ConfigHelper.MonitorDirectory);
-            UnityTrace.WriteLine($"发现 {UnityArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityArgument.MonitorItems.Select(item => item.Name))}");
+            UnityTrace.WriteLine($"发现 {UnityTaskArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorItems.Select(item => item.Name))}");
 
             UnityTrace.WriteLine("开始获取时间段内日志文件...");
-            GetTaskLogFiles(UnityArgument.BaseDirectory);
+            GetTaskLogFiles(UnityTaskArgument.BaseDirectory);
 
             UnityTrace.WriteLine("开始解析日志文件...");
             //未发现监视规则对象，不解析客户端和服务端日志文件
-            if (UnityArgument.MonitorItems.Count > 0)
+            if (UnityTaskArgument.MonitorItems.Count > 0)
             {
                 ParseClientLog();
                 ParseServerLog();
@@ -96,6 +109,39 @@ namespace xQuantLogFactory
         }
 
         /// <summary>
+        /// 处理当前域未捕捉异常
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (!(e.ExceptionObject is Exception UnhandledException)) return;
+
+            string ExceptionDescription = string.Format(
+                "应用域内发现未被捕获的异常：\r\n" +
+                "\t异常类型 : {0}\r\n" +
+                "\t异常地址 : {1}\r\n" +
+                "\t出错方法 : {2}\r\n" +
+                "\t所在文件 : {3}\r\n" +
+                "\t异常信息 : {4}\r\n" +
+                "\t调用堆栈 : \r\n{5}\r\n" +
+                "\t即将终止 : {6}",
+                UnhandledException.GetType().ToString(),
+                UnhandledException.Source,
+                UnhandledException.TargetSite.Name,
+                UnhandledException.TargetSite.Module.FullyQualifiedName,
+                UnhandledException.Message,
+                UnhandledException.StackTrace,
+                e.IsTerminating
+            );
+
+            Console.WriteLine("——————————————————");
+            UnityTrace.WriteLine(ExceptionDescription);
+            Console.WriteLine("——————————————————");
+            Exit(int.MaxValue);
+        }
+
+        /// <summary>
         /// 分析日志解析结果
         /// </summary>
         private static void AnalysisLog()
@@ -106,9 +152,10 @@ namespace xQuantLogFactory
             lock (UnityDBContext)
                 UnityDBContext.SaveChanges();
 
-            //TODO: 显示分析结果
-            UnityTrace.WriteLine("日志解析结果分析完成：\n\t{0}\n————————",
-                string.Empty
+            UnityTrace.WriteLine("日志解析结果分析完成：\n\t在 {0} 个文件中匹配到 {1} 个监视规则的 {2} 组分析结果\n————————",
+                UnityTaskArgument.LogFiles.Count(file => file.AnalysisResults.Count > 0),
+                UnityTaskArgument.MonitorItems.Count(monitor => monitor.AnalysisResults.Count > 0),
+                UnityTaskArgument.AnalysisResults.Count
                 );
         }
 
@@ -323,6 +370,10 @@ namespace xQuantLogFactory
                     );
             }
         }
+
+        //TODO: 按需记录系统信息和客户端信息
+
+
 
     }
 }

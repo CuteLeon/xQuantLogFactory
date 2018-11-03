@@ -1,7 +1,8 @@
 ﻿using System.Text.RegularExpressions;
+
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Utils;
+using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser
 {
@@ -18,7 +19,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
         public LogParserBase() { }
 
-        public LogParserBase(ITrace trace) : base(trace) { }
+        public LogParserBase(ITracer trace) : base(trace) { }
 
         /// <summary>
         /// 日志解析

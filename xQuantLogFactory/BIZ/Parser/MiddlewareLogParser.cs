@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Utils;
+using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser
 {
@@ -24,7 +24,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
         public MiddlewareLogParser() { }
 
-        public MiddlewareLogParser(ITrace trace) : base(trace) { }
+        public MiddlewareLogParser(ITracer trace) : base(trace) { }
 
         /// <summary>
         /// 日志解析
@@ -50,6 +50,7 @@ namespace xQuantLogFactory.BIZ.Parser
                     {
                         lineNumber++;
                         //获取日志行
+                        //TODO: 使用数据缓冲区分块读取文件，防止文件过大而发生人间惨剧
                         string logLine = reader.ReadLine();
                         Match match = this.LogRegex.Match(logLine);
                         if (match.Success)

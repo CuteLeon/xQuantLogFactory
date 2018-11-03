@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Utils;
+using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser
 {
@@ -24,7 +24,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
         public ClientLogParser() { }
 
-        public ClientLogParser(ITrace trace) : base(trace) { }
+        public ClientLogParser(ITracer trace) : base(trace) { }
 
         /// <summary>
         /// 日志解析
