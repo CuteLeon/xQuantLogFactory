@@ -73,56 +73,6 @@ namespace xQuantLogFactory.Model
 
         #endregion
 
-        #region 正则
-
-        /// <summary>
-        /// 起始正则表达式
-        /// </summary>
-        private Regex _startRegex;
-        //TODO: 这里优化："".Contains("") 会比正则获得更好的性能
-        /// <summary>
-        /// 起始正则表达式
-        /// </summary>
-        public Regex StartRegex
-        {
-            get
-            {
-                if (this._startRegex == null && !string.IsNullOrWhiteSpace(this.StartPattern))
-                {
-                    this._startRegex = new Regex(
-                        string.Format("^.*{0}.*$", Regex.Escape(this.StartPattern)),
-                        RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-                }
-
-                return this._startRegex;
-            }
-        }
-
-        /// <summary>
-        /// 结束正则表达式
-        /// </summary>
-        private Regex _finishRegex;
-        //TODO: 这里优化："".Contains("") 会比正则获得更好的性能
-        /// <summary>
-        /// 结束正则表达式
-        /// </summary>
-        public Regex FinishRegex
-        {
-            get
-            {
-                if (this._finishRegex == null && !string.IsNullOrWhiteSpace(this.FinishPatterny))
-                {
-                    this._finishRegex = new Regex(
-                        string.Format("^.*{0}.*$", Regex.Escape(this.FinishPatterny)),
-                        RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-                }
-
-                return this._finishRegex;
-            }
-        }
-
-        #endregion
-
         #region 方法
 
         /// <summary>

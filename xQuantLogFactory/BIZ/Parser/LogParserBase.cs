@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
@@ -35,13 +36,14 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <returns>匹配监视规则类型</returns>
         protected ResultTypes MatchMonitor(MonitorItem monitor, string logContent)
         {
-            //TODO: 这里优化："".Contains("") 会比正则获得更好的性能
-
-            if (monitor.StartRegex != null && monitor.StartRegex.IsMatch(logContent))
+            //以下字符串判空方法会获得比 ""==string.Empty 更好的性能
+            if (monitor.StartPattern?.Length > 0 &&
+                logContent.IndexOf(monitor.StartPattern, StringComparison.Ordinal) > -1)
             {
                 return ResultTypes.Start;
             }
-            else if (monitor.FinishRegex != null && monitor.FinishRegex.IsMatch(logContent))
+            else if (monitor.FinishPatterny?.Length > 0 &&
+                logContent.IndexOf(monitor.FinishPatterny, StringComparison.Ordinal) > -1)
             {
                 return ResultTypes.Finish;
             }
