@@ -90,6 +90,9 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                 this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})分析完成\n————————");
             });
+
+            //计算监视规则总耗时
+            argument.MonitorItems.ForEach(monitor => { monitor.ElapsedMillisecond = argument.AnalysisResults.Where(result => result.MonitorItem == monitor).Sum(result => result.ElapsedMillisecond); });
         }
 
         /// <summary>

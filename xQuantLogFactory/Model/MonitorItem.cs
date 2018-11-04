@@ -51,6 +51,13 @@ namespace xQuantLogFactory.Model
         public string FinishPatterny { get; set; }
 
         /// <summary>
+        /// 结果总耗时（单位：毫秒）
+        /// </summary>
+        [XmlIgnore]
+        [DisplayName("结果总耗时（单位：毫秒）"), DataType(DataType.Duration)]
+        public double ElapsedMillisecond { get; set; }
+
+        /// <summary>
         /// 子监控项目列表
         /// </summary>
         [XmlElement("Item")]
