@@ -44,7 +44,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
             Queue<IMonitor> parentItems = new Queue<IMonitor>();
 
             //创建所有容器对象
-            foreach (string xmlFile in this.GetChildFiles(directory, file => file.ToUpper().EndsWith(".XML")))
+            foreach (string xmlFile in this.GetChildFiles(directory, file => file.EndsWith(".XML", StringComparison.OrdinalIgnoreCase)))
             {
                 //维护监视规则容器列表
                 MonitorContainer container = File.ReadAllText(xmlFile, Encoding.UTF8).DeserializeToObject<MonitorContainer>();

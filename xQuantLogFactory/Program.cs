@@ -74,7 +74,7 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (DEBUG)
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
@@ -127,7 +127,7 @@ namespace xQuantLogFactory
             //当导出失败且用户同意重试时重复导出，并在失败时再次询问用户
             do
             {
-                UnityTrace.WriteLine("开始导出分析日志报告...");
+                UnityTrace.WriteLine("开始导出日志报告...");
                 try
                 {
                     ExportLogReport(reportPath);
