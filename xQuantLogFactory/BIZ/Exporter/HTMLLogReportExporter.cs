@@ -199,6 +199,8 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void WriteMiddlewareLogFileTabContent(TaskArgument argument)
         {
+            //TODO: 按用户代码分析异常请求
+
             this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
