@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace xQuantLogFactory
 {
     //日志文件通过并行解析，数据库内记录在日志文件范围内以日志时间和日志行号有序，但对整个任务是无序的，可以通过日志时间大致排序(有概率重复)或区分文件以日志行号排序；
 
+    //TODO: 序列化 UnityTaskArgument 为xml
     //TODO: 所有参数可选，默认 当前目录、所有监视规则、当日内日志
     //TODO: 不约束参数顺序，
 
@@ -114,11 +116,40 @@ namespace xQuantLogFactory
 #endif
             ShowAnalysisResult();
 
+            SaveTaskArgumentToXML();
             TryToExportLogReport();
 
             //TODO: so much todo ...
 
             Exit(0);
+        }
+
+        /// <summary>
+        /// 将任务储存为XML文件
+        /// </summary>
+        private static void SaveTaskArgumentToXML()
+        {
+            try
+            {
+                string taskXMLPath = GetXMLFilePath(UnityTaskArgument);
+                string xmlContent = UnityTaskArgument.SerializeToXML();
+                File.WriteAllText(taskXMLPath, xmlContent);
+                UnityTrace.WriteLine($"任务对象存储到XML成功：{taskXMLPath}");
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"任务对象存储到XML失败：{ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// 获取任务导出XML文件路径
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private static string GetXMLFilePath(TaskArgument argument)
+        {
+            return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}.xml";
         }
 
         /// <summary>
@@ -203,7 +234,8 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetReportFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
+            return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}.{argument.ReportMode.GetAmbientValue()}";
+            //return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
         /// <summary>

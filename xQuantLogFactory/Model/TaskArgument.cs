@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
+using System.Xml.Serialization;
 
 namespace xQuantLogFactory.Model
 {
@@ -35,6 +35,8 @@ namespace xQuantLogFactory.Model
     /// <summary>
     /// 任务配置参数
     /// </summary>
+    [Serializable]
+    [XmlRoot("TaskArgumentRoot")]
     [Table("TaskArguments")]
     public class TaskArgument
     {
@@ -43,6 +45,7 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [Key]
         [Required]
+        [XmlAttribute("TaskID")]
         [DisplayName("任务ID"), DataType(DataType.Text)]
         public string TaskID { get; set; }
 
@@ -50,6 +53,7 @@ namespace xQuantLogFactory.Model
         /// 日志文件目录
         /// </summary>
         [Required]
+        [XmlAttribute("LogDirectory")]
         [DisplayName("日志文件目录"), DataType(DataType.Text)]
         public string LogDirectory { get; set; }
 
@@ -57,6 +61,7 @@ namespace xQuantLogFactory.Model
         /// 日志开始时间
         /// </summary>
         [Required]
+        [XmlAttribute("LogStartTime")]
         [DisplayName("日志开始时间"), DataType(DataType.DateTime)]
         public DateTime LogStartTime { get; set; }
 
@@ -64,6 +69,7 @@ namespace xQuantLogFactory.Model
         /// 日志截止时间
         /// </summary>
         [Required]
+        [XmlAttribute("LogFinishTime")]
         [DisplayName("日志截止时间"), DataType(DataType.DateTime)]
         public DateTime LogFinishTime { get; set; } = DateTime.Now;
 
@@ -71,12 +77,14 @@ namespace xQuantLogFactory.Model
         /// 任务开始时间
         /// </summary>
         [Required]
+        [XmlAttribute("TaskStartTime")]
         [DisplayName("任务开始时间"), DataType(DataType.DateTime)]
         public DateTime TaskStartTime { get; set; }
 
         /// <summary>
         /// 任务完成时间
         /// </summary>
+        [XmlAttribute("TaskFinishTime")]
         [DisplayName("任务完成时间"), DataType(DataType.DateTime)]
         public DateTime TaskFinishTime { get; set; }
 
@@ -84,6 +92,7 @@ namespace xQuantLogFactory.Model
         /// 包含系统信息
         /// </summary>
         [Required]
+        [XmlAttribute("IncludeSystemInfo")]
         [DisplayName("包含系统信息"), DataType(DataType.DateTime)]
         public bool IncludeSystemInfo { get; set; } = false;
 
@@ -91,6 +100,7 @@ namespace xQuantLogFactory.Model
         /// 包含客户端文件信息
         /// </summary>
         [Required]
+        [XmlAttribute("IncludeClientInfo")]
         [DisplayName("包含客户端文件信息")]
         public bool IncludeClientInfo { get; set; } = false;
 
@@ -98,12 +108,14 @@ namespace xQuantLogFactory.Model
         /// 日志分析报告输出模式
         /// </summary>
         [Required]
+        [XmlAttribute("ReportMode")]
         [DisplayName("日志分析报告输出模式")]
         public ReportModes ReportMode { get; set; } = ReportModes.HTML;
 
         /// <summary>
         /// 最近一次导出的日志报告路径
         /// </summary>
+        [XmlAttribute("LastReportPath")]
         [DisplayName("最近一次导出的日志报告路径"), DataType(DataType.Text)]
         public string LastReportPath { get; set; }
 
