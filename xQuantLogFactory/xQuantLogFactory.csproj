@@ -106,7 +106,6 @@
     <Compile Include="Utils\Trace\ConsoleTracer.cs" />
     <Compile Include="Utils\Trace\SQLTracer.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Monitor\Monitor.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

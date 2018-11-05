@@ -1,0 +1,350 @@
+<html>
+
+<head>
+    <style>
+        body {
+            margin: 10 auto;
+            width: 80%
+        }
+
+        pre {
+            color: #333;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            font-family: '微软雅黑';
+            text-align: center
+        }
+
+        #tasktable {
+            margin: 0 auto;
+            border: 1px #fff solid
+        }
+
+        caption {
+            text-align: left
+        }
+
+        hr {
+            margin: 10 auto;
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(75, 75, 75, 0.5), rgba(0, 0, 0, 0));
+        }
+
+        td.label {
+            width: 40%;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: right
+        }
+
+        td.value {
+            word-wrap: break-word;
+            text-align: left
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        #tab {
+            padding: 0;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 2px #ddd;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        #tab-header {
+            margin: 0;
+            padding: 0;
+            background-color: #F7F7F7;
+            height: 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        #tab-header ul {
+            margin: 0;
+            padding: 0;
+            width: auto;
+            position: absolute;
+            left: -1px;
+        }
+
+        #tab-header ul li {
+            float: left;
+            width: fit-content;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 10 0 10;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        #tab-header ul li.selected {
+            background-color: white;
+            font-weight: bolder;
+            border-bottom: 0;
+            border-left: 1px solid #dddddd;
+            border-right: 1px solid #dddddd;
+
+        }
+
+        #tab-header ul li:hover {
+            color: orangered;
+        }
+
+        #tab-content .tabContent {
+            display: none;
+            padding: 10px;
+        }
+
+        .datatable {
+            margin: 0 auto;
+            width: 90%;
+            border-collapse: collapse;
+        }
+
+        .datatable th {
+            border: 1px #ccc solid;
+            background-color: #eee;
+        }
+
+        .datatable td {
+            border: 1px #ddd solid;
+        }
+    </style>
+    <script>
+        function $(id) {
+            return typeof id === 'string' ? document.getElementById(id) : id;
+        }
+        window.onload = function () {
+            var titles = $('tab-header').getElementsByTagName('li');
+            var divs = $('tab-content').getElementsByClassName('tabContent');
+            if (titles.length != divs.length) return;
+            for (var i = 0; i < titles.length; i++) {
+                var li = titles[i];
+                li.id = i;
+                li.onmousemove = function () {
+                    for (var j = 0; j < titles.length; j++) {
+                        titles[j].className = '';
+                        divs[j].style.display = 'none';
+                    }
+                    this.className = 'selected';
+                    divs[this.id].style.display = 'block';
+                }
+            }
+
+        }
+    </script>
+    <meta charset="UTF-8">
+    <title>xQuant-日志分析报告：{argument.TaskID}-{DateTime.Now.ToString()}</title>
+</head>
+
+<body>
+    <pre><h1>xQuant-日志分析报告</h1></pre>
+    <hr />
+    <table id="tasktable">
+        <caption>
+            <h2>任务信息：</h3>
+        </caption>
+        <tbody>
+            <tr>
+                <td class="label">任务ID：</td>
+                <td class="value">{argument.TaskID}</td>
+            </tr>
+            <tr>
+                <td class="label">日志目录：</td>
+                <td class="value">{argument.LogDirectory}</td>
+            </tr>
+            <tr>
+                <td class="label">任务开始时间：</td>
+                <td class="value">{argument.TaskStartTime.ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">任务结束时间：</td>
+                <td class="value">{argument.TaskFinishTime.ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">日志开始时间：</td>
+                <td class="value">{argument.LogStartTime.ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">日志结束时间：</td>
+                <td class="value">{argument.LogFinishTime.ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">包含系统信息：</td>
+                <td class="value">{argument.IncludeSystemInfo.ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">包含客户端信息：</td>
+                <td class="value">{argument.IncludeClientInfo.ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">监控规则数量：</td>
+                <td class="value">{argument.MonitorItems.Count().ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">监控规则名称：</td>
+                <td class="value">{string.Join("、",argument.MonitorItems.Select(monitor=>monitor.Name))}</td>
+            </tr>
+            <tr>
+                <td class="label">日志文件数量:</td>
+                <td class="value">{argument.LogFiles.Count().ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">报告导出模式：</td>
+                <td class="value">{argument.ReportMode.ToString()}</td>
+            </tr>
+            <tr>
+                <td class="label">日志监视结果数量：</td>
+                <td class="value">{argument.MonitorResults.Count()}</td>
+            </tr>
+            <tr>
+                <td class="label">中间件日志结果数量：</td>
+                <td class="value">{argument.MiddlewareResults.Count()}</td>
+            </tr>
+            <tr>
+                <td class="label">监视分析结果数量：</td>
+                <td class="value">{argument.AnalysisResults.Count()}</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h2>日志分析数据：</h2>
+    <div id="tab">
+        <div id="tab-header">
+            <ul>
+                <li class="selected">客户端日志文件</li>
+                <li>服务端日志文件</li>
+                <li>中间件日志文件</li>
+                <li>监视规则</li>
+            </ul>
+        </div>
+        <div id="tab-content">
+            <div class="tabContent" style="display: block;">
+                <table class="datatable">
+                    <caption>
+                        <h3>客户端日志文件查看：</h3>
+                    </caption>
+                    <thead>
+                        <th>文件路径</th>
+                        <th>创建时间</th>
+                        <th>最后写入时间</th>
+                        <th>匹配监视规则</th>
+                        <th>日志监视结果数量</th>
+                        <th>日志分析配对数量</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-客户端\CltLog_Debug.txt</td>
+                            <td>2018/10/29 16:35:32</td>
+                            <td>2018/11/1 11:25:37</td>
+                            <td>客户端启动</td>
+                            <td>12</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-客户端\CltLog_Error.txt</td>
+                            <td>2018/10/29 16:35:32</td>
+                            <td>2018/11/1 11:19:23</td>
+                            <td></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-客户端\CltLog_Info.txt</td>
+                            <td>2018/10/29 16:35:32</td>
+                            <td>2018/11/1 11:25:35</td>
+                            <td></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-客户端\CltLog_Trace.txt</td>
+                            <td>2018/10/29 16:35:32</td>
+                            <td>2018/11/1 10:07:35</td>
+                            <td>客户端启动</td>
+                            <td>6</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-服务端\performanceLog20181101.txt</td>
+                            <td>2018/11/2 9:55:23</td>
+                            <td>2018/11/5 9:29:03</td>
+                            <td></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-服务端\SrvLog_Debug.txt.1</td>
+                            <td>2017/5/6 10:01:04</td>
+                            <td>2018/10/30 10:06:28</td>
+                            <td>直联服务1194、InvestExt_UP6355</td>
+                            <td>4</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-服务端\SrvLog_Debug.txt.2</td>
+                            <td>2017/5/6 10:01:04</td>
+                            <td>2018/10/30 9:25:22</td>
+                            <td></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-服务端\SrvLog_Info.txt.1</td>
+                            <td>2017/5/6 10:01:04</td>
+                            <td>2018/10/30 9:28:59</td>
+                            <td></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-服务端\SrvLog_Trace.txt.1</td>
+                            <td>2018/5/4 14:28:50</td>
+                            <td>2018/10/30 9:44:45</td>
+                            <td>直联服务1194</td>
+                            <td>2</td>
+                            <td>1</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-服务端\SrvLog_Warn.txt.1</td>
+                            <td>2017/5/6 10:01:04</td>
+                            <td>2018/10/30 9:35:53</td>
+                            <td></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>D:\xQuant\TT\日志分析工具\Log\Log-服务端\SrvLog_Warn.txt.2</td>
+                            <td>2017/5/6 10:01:04</td>
+                            <td>2018/10/30 8:55:07</td>
+                            <td></td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tabContent">
+                <h3>服务端日志文件查看：</h3>
+            </div>
+            <div class="tabContent">
+                <h3>中间件日志文件查看：</h3>
+            </div>
+            <div class="tabContent">
+                <h3>监视规则查看：</h3>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

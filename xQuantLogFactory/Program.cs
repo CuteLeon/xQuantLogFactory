@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -74,7 +75,7 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
+#if (DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
@@ -146,6 +147,8 @@ namespace xQuantLogFactory
                 //记录日志报告导出路径
                 UnityTaskArgument.LastReportPath = reportPath;
                 UnityTrace.WriteLine($"日志报告到处成功=> {UnityTaskArgument.LastReportPath}");
+
+                Process.Start(reportPath);
             }
             else
             {
