@@ -18,6 +18,9 @@ namespace xQuantLogFactory
 {
     //日志文件通过并行解析，数据库内记录在日志文件范围内以日志时间和日志行号有序，但对整个任务是无序的，可以通过日志时间大致排序(有概率重复)或区分文件以日志行号排序；
 
+    //TODO: 所有参数可选，默认 当前目录、所有监视规则、当日内日志
+    //TODO: 不约束参数顺序，
+
     //TODO: [全局任务] 使用4.0或5.0语言版本...
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试
@@ -75,7 +78,7 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (DEBUG)
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);

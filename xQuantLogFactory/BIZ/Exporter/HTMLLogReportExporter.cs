@@ -8,6 +8,7 @@ using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
+    //TODO: 显示最耗时的结果
     //TODO: HTML输出代码对内容格式化，防止导出结果太乱
     //TODO: 监视规则放在第一页
     //TODO: 用户关注 监视规则：启动几次？ 耗时多久？
