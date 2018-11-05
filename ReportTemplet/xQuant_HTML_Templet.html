@@ -120,6 +120,44 @@
             line-height: 30px;
             border: 1px #ddd solid
         }
+
+        .card {
+            margin: 10 36 10 36;
+            position: relative;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            border-radius: 0.25rem;
+        }
+
+        .card-body {
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1rem 1.5rem;
+        }
+
+        .card-title {
+            margin: 0;
+        }
+
+        .card-header {
+            padding: 0.5rem 1rem;
+            margin-bottom: 0;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .card-footer {
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 0, 0, 0.03);
+            border-top: 1px solid rgba(0, 0, 0, 0.125);
+        }
     </style>
     <script>
         function $(id) {
@@ -230,7 +268,40 @@
         <div id="tab-container">
             <div class="tabContent" style="display: block;">
                 <h3>监视规则查看：</h3>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">子标题</div>
+                    </div>
+                    <div class="card-body">主题</div>
+                    <div class="card-footer">足部</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">子标题</div>
+                    </div>
+                    <div class="card-body">主题</div>
+                    <div class="card-footer">足部</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">子标题</div>
+                    </div>
+                    <div class="card-body">主题</div>
+                    <div class="card-footer">足部</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">子标题</div>
+                    </div>
+                    <div class="card-body">主题</div>
+                    <div class="card-footer">足部</div>
+                </div>
             </div>
+
             <div class="tabContent">
                 <table class="datatable">
                     <caption>
@@ -249,7 +320,8 @@
                             <td>{logFile.FilePath}</td>
                             <td>{logFile.CreateTime}</td>
                             <td>{logFile.LastWriteTime}</td>
-                            <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
+                            <td>{string.Join("、", logFile.MonitorResults.Select(result =>
+                                result.MonitorItem.Name).Distinct())}</td>
                             <td>{logFile.MonitorResults.Count} 个</td>
                             <td>{logFile.AnalysisResults.Count} 组</td>
                         </tr>
@@ -263,7 +335,8 @@
                 <h3>中间件日志文件查看：</h3>
             </div>
         </div>
-    </div>
 </body>
+<style>
+</style>
 
 </html>

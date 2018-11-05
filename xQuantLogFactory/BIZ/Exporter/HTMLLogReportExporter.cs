@@ -32,6 +32,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine("<html>\n<head>");
 
             this.WriteCSS(@"body{margin:10 auto;width:80%}pre{color:#333;background-color:#f5f5f5;border:1px solid #ccc;border-radius:5px}h1{font-family:'微软雅黑';text-align:center}#tasktable{margin:0 auto;border:1px #fff solid}caption{text-align:left}hr{margin:10 auto;border:0;height:1px;background-image:linear-gradient(to right,rgba(0,0,0,0),rgba(75,75,75,0.5),rgba(0,0,0,0))}td.label{width:40%;font-size:15px;font-weight:bold;text-align:right}td.value{word-wrap:break-word;text-align:left}ul{list-style:none}#tab{padding:0;width:100%;height:auto;border:1px solid #ddd;box-shadow:0 0 2px #ddd;margin:0 auto;overflow:hidden}#tab-header{margin:0;padding:0;background-color:#f7f7f7;height:50px;text-align:center;position:relative}#tab-header ul{margin:0;padding:0;width:auto;position:absolute;left:-1px}#tab-header ul li{float:left;width:fit-content;height:50px;line-height:50px;padding:0 10 0 10;border-bottom:1px solid #ddd}#tab-header ul li.selected{background-color:white;font-weight:bolder;border-bottom:0;border-left:1px solid #ddd;border-right:1px solid #ddd}#tab-header ul li:hover{color:orangered}#tab-container .tabContent{display:none;padding:10px}.datatable{margin:0 auto;width:100%;border-collapse:collapse}.datatable th{line-height: 36px;border:1px #ccc solid;background-color:#eee}.datatable td{line-height: 30px;border:1px #ddd solid}");
+            this.WriteCSS(@".card{margin: 10 36 10 36; auto;position:relative;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;min-width:0;word-wrap:break-word;background-color:#fff;background-clip:border-box;border:1px solid rgba(0,0,0,0.125);border-radius:.25rem}.card-body{-ms-flex:1 1 auto;flex:1 1 auto;padding: 1rem 1.5rem;}.card-title{margin:0}.card-header{padding:.5rem 1rem;margin-bottom:0;background-color:rgba(0,0,0,0.03);border-bottom:1px solid rgba(0,0,0,0.125)}.card-footer{padding:.5rem 1rem;background-color:rgba(0,0,0,0.03);border-top:1px solid rgba(0,0,0,0.125)}");
             this.WriteJS(@"function $(id){return typeof id === 'string' ? document.getElementById(id):id}window.onload = function(){var titles = $('tab-header').getElementsByTagName('li');var divs = $('tab-container').getElementsByClassName('tabContent');for(var i = 0;i < titles.length;i++){var li = titles[i];li.id = i;li.onmousemove = function(){for(var j = 0;j < titles.length;j++){titles[j].className = '';divs[j].style.display = 'none'}this.className = 'selected';divs[this.id].style.display = 'block'}}}");
             this.HTMLBuilder.Value.AppendFormat("<meta charset=\"UTF-8\">\n<title>xQuant-日志分析报告：{0}</title>\n", argument.TaskID);
 
@@ -92,8 +93,28 @@ namespace xQuantLogFactory.BIZ.Exporter
                 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+            this.WriteHR();
+
+            this.WriteSectionTitle("监视规则详情：");
+            foreach (var monitor in argument.MonitorItems
+                .OrderByDescending(monitor => monitor.ElapsedMillisecond))
+            {
+                this.WriteCard();
+            }
 
             this.HTMLBuilder.Value.AppendLine("</div>");
+        }
+
+        //TODO: 写入卡片数据
+        private void WriteCard()
+        {
+            this.HTMLBuilder.Value.AppendLine("<div class=\"card\">");
+            this.HTMLBuilder.Value.AppendLine("<div class=\"card-header\">");
+            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-title\">{123}</div>");
+            this.HTMLBuilder.Value.AppendLine($"</div>");
+            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-body\">{234}</div>");
+            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-footer\">{345}</div>");
+            this.HTMLBuilder.Value.AppendLine($"</div>");
         }
 
         /// <summary>
