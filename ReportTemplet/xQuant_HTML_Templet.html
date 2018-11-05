@@ -100,15 +100,16 @@
             color: orangered;
         }
 
-        #tab-content .tabContent {
+        #tab-container .tabContent {
             display: none;
             padding: 10px;
         }
 
         .datatable {
             margin: 0 auto;
-            width: 90%;
+            width: 100%;
             border-collapse: collapse;
+            
         }
 
         .datatable th {
@@ -126,7 +127,7 @@
         }
         window.onload = function () {
             var titles = $('tab-header').getElementsByTagName('li');
-            var divs = $('tab-content').getElementsByClassName('tabContent');
+            var divs = $('tab-container').getElementsByClassName('tabContent');
             if (titles.length != divs.length) return;
             for (var i = 0; i < titles.length; i++) {
                 var li = titles[i];
@@ -228,7 +229,7 @@
                 <li>监视规则</li>
             </ul>
         </div>
-        <div id="tab-content">
+        <div id="tab-container">
             <div class="tabContent" style="display: block;">
                 <table class="datatable">
                     <caption>
