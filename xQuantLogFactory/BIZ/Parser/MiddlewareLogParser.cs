@@ -102,7 +102,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 result.RequestURI = match.Groups["RequestURI"].Value;
 
                             if (match.Groups["MethodName"].Success)
-                                result.StartTime = match.Groups["MethodName"].Value;
+                                result.MethodName = match.Groups["MethodName"].Value;
                         }
                         else
                         {

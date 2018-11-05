@@ -80,7 +80,7 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
+#if (DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
@@ -116,7 +116,7 @@ namespace xQuantLogFactory
 #endif
             ShowAnalysisResult();
 
-            SaveTaskArgumentToXML();
+            //SaveTaskArgumentToXML();
             TryToExportLogReport();
 
             //TODO: so much todo ...

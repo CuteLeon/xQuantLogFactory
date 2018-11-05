@@ -50,8 +50,8 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             this.WriteMonitorItemTabContent(argument);
             this.WriteClientLogFileTabContent(argument);
-            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">123</div>");
-            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">456</div>");
+            this.WriteServerLogFileTabContent(argument);
+            this.WriteMiddlewareLogFileTabContent(argument);
 
             this.HTMLBuilder.Value.AppendLine("</div>\n</div>");
             this.HTMLBuilder.Value.AppendLine("</body>\n</html>");
@@ -115,7 +115,10 @@ namespace xQuantLogFactory.BIZ.Exporter
                         <th>分析匹配组数</th>
                     </thead>
                     <tbody>");
-            foreach (var logFile in argument.LogFiles.Where(logFile => logFile.LogFileType == LogFileTypes.Client).OrderByDescending(logFile => logFile.MonitorResults.Count))
+            foreach (var logFile in argument.LogFiles
+                .Where(logFile => logFile.LogFileType == LogFileTypes.Client)
+                .OrderByDescending(logFile => logFile.MonitorResults.Count)
+                )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
                     <td>{logFile.FilePath}</td>
@@ -127,6 +130,147 @@ namespace xQuantLogFactory.BIZ.Exporter
                 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.HTMLBuilder.Value.AppendLine("</div>");
+        }
+
+        /// <summary>
+        /// 写入服务端日志文件查看容器
+        /// </summary>
+        /// <param name="argument"></param>
+        private void WriteServerLogFileTabContent(TaskArgument argument)
+        {
+            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
+
+            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+                    <caption><h3>服务端日志文件查看：</h3></caption>
+                    <thead>
+                        <th>文件路径</th>
+                        <th>创建时间</th>
+                        <th>最后写入时间</th>
+                        <th>匹配监视规则</th>
+                        <th>结果数量</th>
+                        <th>匹配组数</th>
+                    </thead>
+                    <tbody>");
+            foreach (var logFile in argument.LogFiles
+                .Where(logFile => logFile.LogFileType == LogFileTypes.Server)
+                .OrderByDescending(logFile => logFile.MonitorResults.Count)
+                )
+            {
+                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                    <td>{logFile.FilePath}</td>
+                    <td>{logFile.CreateTime}</td>
+                    <td>{logFile.LastWriteTime}</td>
+                    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
+                    <td>{logFile.MonitorResults.Count} 个</td>
+                    <td>{logFile.AnalysisResults.Count} 组</td>
+                </tr>");
+            }
+            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.HTMLBuilder.Value.AppendLine("</div>");
+        }
+
+        /// <summary>
+        /// 写入中间件日志文件查看容器
+        /// </summary>
+        /// <param name="argument"></param>
+        private void WriteMiddlewareLogFileTabContent(TaskArgument argument)
+        {
+            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
+
+            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+                    <caption><h3>服务端日志文件查看：</h3></caption>
+                    <thead>
+                        <th>文件路径</th>
+                        <th>创建时间</th>
+                        <th>最后写入时间</th>
+                        <th>日志数量</th>
+                    </thead>
+                    <tbody>");
+            foreach (var logFile in argument.LogFiles
+                .Where(logFile => logFile.LogFileType == LogFileTypes.Middleware)
+                .OrderByDescending(logFile => logFile.MiddlewareResults.Count)
+                )
+            {
+                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                    <td>{logFile.FilePath}</td>
+                    <td>{logFile.CreateTime}</td>
+                    <td>{logFile.LastWriteTime}</td>
+                    <td>{logFile.MiddlewareResults.Count} 个</td>
+                </tr>");
+            }
+            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+            this.WriteHR();
+
+            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+                    <caption><h3>请求路径：</h3></caption>
+                    <thead>
+                        <th>请求路径</th>
+                        <th>方法名称</th>
+                        <th>调用次数</th>
+                        <th>调用用户数量</th>
+                        <th>最小流长度</th>
+                        <th>最大流长度</th>
+                        <th>总耗时</th>
+                    </thead>
+                    <tbody>");
+            foreach (var requestURIGroup in argument.MiddlewareResults
+                .GroupBy(result => result.RequestURI)
+                .OrderBy(result => result.Key)
+                )
+            {
+                string requestURI = requestURIGroup.Key;
+                foreach (var methodNameGroup in requestURIGroup
+                    .GroupBy(result => result.MethodName)
+                    .OrderBy(result => result.Key)
+                    )
+                {
+                    string methodName = methodNameGroup.Key;
+                    this.HTMLBuilder.Value.AppendLine($@"<tr>
+                        <td>{requestURI}</td>
+                        <td>{methodName}</td>
+                        <td>{methodNameGroup.Count()}</td>
+                        <td>{methodNameGroup.Select(result => result.UserCode).Distinct().Count()} 个</td>
+                        <td>{methodNameGroup.Min(result => result.StreamLenth)}</td>
+                        <td>{methodNameGroup.Max(result => result.StreamLenth)}</td>
+                        <td>{methodNameGroup.Sum(result => result.Elapsed)}</td>
+                    </tr>");
+                }
+            }
+            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+            this.WriteHR();
+
+            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+                    <caption><h3>请求耗时：</h3></caption>
+                    <thead>
+                        <th>请求路径</th>
+                        <th>方法名称</th>
+                        <th>调用次数</th>
+                        <th>调用用户数量</th>
+                        <th>最小流长度</th>
+                        <th>最大流长度</th>
+                        <th>总耗时</th>
+                    </thead>
+                    <tbody>");
+            foreach (var resultGroup in argument.MiddlewareResults
+                .GroupBy(result => (result.RequestURI, result.MethodName))
+                .OrderByDescending(results => results.Sum(result => result.Elapsed))
+                )
+            {
+                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                    <td>{resultGroup.Key.RequestURI}</td>
+                    <td>{resultGroup.Key.MethodName}</td>
+                    <td>{resultGroup.Count()}</td>
+                    <td>{resultGroup.Select(result => result.UserCode).Distinct().Count()} 个</td>
+                    <td>{resultGroup.Min(result => result.StreamLenth)}</td>
+                    <td>{resultGroup.Max(result => result.StreamLenth)}</td>
+                    <td>{resultGroup.Sum(result => result.Elapsed)}</td>
+                </tr>");
+            }
+            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+            this.WriteHR();
 
             this.HTMLBuilder.Value.AppendLine("</div>");
         }
@@ -284,6 +428,15 @@ namespace xQuantLogFactory.BIZ.Exporter
         private void WriteNodeTitle(string title)
         {
             this.HTMLBuilder.Value.AppendLine($"<h2>{title}</h2>");
+        }
+
+        /// <summary>
+        /// 写入分段标题
+        /// </summary>
+        /// <param name="title"></param>
+        private void WriteSectionTitle(string title)
+        {
+            this.HTMLBuilder.Value.AppendLine($"<h3>{title}</h3>");
         }
 
     }
