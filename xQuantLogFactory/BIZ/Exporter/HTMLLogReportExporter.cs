@@ -112,26 +112,30 @@ namespace xQuantLogFactory.BIZ.Exporter
         private void WriteMonitorItemCard(MonitorItem monitor)
         {
             this.WriteCardHeader($"监视规则：<b>{monitor.Name}</b>");
-            this.HTMLBuilder.Value.w
-            //$"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPatterny ?? "无"}</b><hr><b>匹配结果：</b>{ARContentBuilder.ToString()}"
-            this.WriteCardFooter($"监视结果总数：<b>{monitor.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{monitor.AnalysisResults.Count().ToString()}</b> 组");
+            this.HTMLBuilder.Value.Append($"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPatterny ?? "无"}</b><hr>匹配结果：");
 
-            StringBuilder ARContentBuilder = new StringBuilder();
             if (monitor.AnalysisResults.Count == 0)
             {
-                ARContentBuilder.Append("无");
+                this.HTMLBuilder.Value.Append("无");
             }
             else
             {
                 foreach (var analysisResult in monitor.AnalysisResults
-                    .OrderBy(result => result.ElapsedMillisecond)
+                    .OrderByDescending(result => result.ElapsedMillisecond)
                     )
                 {
-                    ARContentBuilder.Append("<br>");
-                    ARContentBuilder.Append($"<pre>开始日志：{(analysisResult.StartMonitorResult?.LogContent ?? "无")}<br>");
-                    ARContentBuilder.Append($"结束日志：{(analysisResult.FinishMonitorResult?.LogContent ?? "无")}</pre>");
+                    MonitorResult startResult = analysisResult.StartMonitorResult;
+                    MonitorResult finishResult = analysisResult.FinishMonitorResult;
+                    this.WriteCard(
+                        $"耗时：<b>{analysisResult.ElapsedMillisecond} ms</b>",
+                        $@"日志文件：{startResult?.LogFile?.FilePath ?? finishResult?.LogFile?.FilePath}<br><hr>
+开始日志：{(startResult == null ? "无" : $"{startResult.LogTime} 行号: {startResult.LineNumber} 等级: {startResult.LogLevel} 内容: {startResult.LogContent}")}<br>
+结束日志：{(finishResult == null ? "无" : $"{finishResult.LogTime} 行号: {finishResult.LineNumber} 等级: {finishResult.LogLevel} 内容: {finishResult.LogContent}")}"
+                        );
                 }
             }
+
+            this.WriteCardFooter($"监视结果总数：<b>{monitor.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{monitor.AnalysisResults.Count().ToString()}</b> 组， 总耗时：<b>{monitor.ElapsedMillisecond}</b> 毫秒");
         }
 
         /// <summary>
