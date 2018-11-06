@@ -116,6 +116,9 @@ namespace xQuantLogFactory
 #endif
             ShowAnalysisResult();
 
+            UnityTaskArgument.TaskFinishTime = DateTime.Now;
+            UnityDBContext.SaveChanges();
+
             //SaveTaskArgumentToXML();
             TryToExportLogReport();
 
@@ -398,8 +401,11 @@ namespace xQuantLogFactory
         public static void Exit(int code)
         {
             //记录任务完成时间
-            UnityTaskArgument.TaskFinishTime = DateTime.Now;
-            UnityDBContext.SaveChanges();
+            if (UnityTaskArgument!=null && UnityTaskArgument.TaskFinishTime == null)
+            {
+                UnityTaskArgument.TaskFinishTime = DateTime.Now;
+                UnityDBContext.SaveChanges();
+            }
             UnityDBContext.Dispose();
 
             Console.WriteLine("\n————————");

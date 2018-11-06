@@ -92,8 +92,8 @@ namespace xQuantLogFactory.BIZ.Parser
                             if (match.Groups["Elapsed"].Success && int.TryParse(match.Groups["Elapsed"].Value, out int elapsed))
                                 result.Elapsed = elapsed;
 
-                            if (match.Groups["StreamLenth"].Success && int.TryParse(match.Groups["StreamLenth"].Value, out int streamLength))
-                                result.StreamLenth = streamLength;
+                            if (match.Groups["StreamLength"].Success && int.TryParse(match.Groups["StreamLength"].Value, out int streamLength))
+                                result.StreamLength = streamLength;
 
                             if (match.Groups["Message"].Success)
                                 result.Message = match.Groups["Message"].Value;

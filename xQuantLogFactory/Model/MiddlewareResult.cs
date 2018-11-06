@@ -51,7 +51,7 @@ namespace xQuantLogFactory.Model
         /// 流长度
         /// </summary>
         [DisplayName("流长度")]
-        public int StreamLenth { get; set; }
+        public int StreamLength { get; set; }
 
         /// <summary>
         /// 消息

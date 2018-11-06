@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 
@@ -95,12 +95,12 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
-            this.WriteSectionTitle("监视规则详情：");
-            foreach (var monitor in argument.MonitorItems
-                .OrderByDescending(monitor => monitor.ElapsedMillisecond))
-            {
-                this.WriteCard();
-            }
+            //this.WriteSectionTitle("监视规则详情：");
+            //foreach (var monitor in argument.MonitorItems
+            //    .OrderByDescending(monitor => monitor.ElapsedMillisecond))
+            //{
+            //    this.WriteCard();
+            //}
 
             this.HTMLBuilder.Value.AppendLine("</div>");
         }
@@ -199,8 +199,6 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void WriteMiddlewareLogFileTabContent(TaskArgument argument)
         {
-            //TODO: 按用户代码分析异常请求
-
             this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
@@ -233,10 +231,12 @@ namespace xQuantLogFactory.BIZ.Exporter
                         <th>请求路径</th>
                         <th>方法名称</th>
                         <th>调用次数</th>
-                        <th>调用用户数量</th>
+                        <th>调用IP数量</th>
                         <th>最小流长度</th>
                         <th>最大流长度</th>
+                        <th>总流长度</th>
                         <th>总耗时</th>
+                        <th>平均耗时</th>
                     </thead>
                     <tbody>");
             foreach (var requestURIGroup in argument.MiddlewareResults
@@ -255,10 +255,12 @@ namespace xQuantLogFactory.BIZ.Exporter
                         <td>{requestURI}</td>
                         <td>{methodName}</td>
                         <td>{methodNameGroup.Count()}</td>
-                        <td>{methodNameGroup.Select(result => result.UserCode).Distinct().Count()} 个</td>
-                        <td>{methodNameGroup.Min(result => result.StreamLenth)}</td>
-                        <td>{methodNameGroup.Max(result => result.StreamLenth)}</td>
+                        <td>{methodNameGroup.Select(result => result.Client).Distinct().Count()} 个</td>
+                        <td>{methodNameGroup.Min(result => result.StreamLength)}</td>
+                        <td>{methodNameGroup.Max(result => result.StreamLength)}</td>
+                        <td>{methodNameGroup.Sum(result => result.StreamLength)}</td>
                         <td>{methodNameGroup.Sum(result => result.Elapsed)}</td>
+                        <td>{methodNameGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
                     </tr>");
                 }
             }
@@ -271,10 +273,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                         <th>请求路径</th>
                         <th>方法名称</th>
                         <th>调用次数</th>
-                        <th>调用用户数量</th>
+                        <th>调用IP数量</th>
                         <th>最小流长度</th>
                         <th>最大流长度</th>
                         <th>总耗时</th>
+                        <th>平均耗时</th>
                     </thead>
                     <tbody>");
             foreach (var resultGroup in argument.MiddlewareResults
@@ -286,14 +289,44 @@ namespace xQuantLogFactory.BIZ.Exporter
                     <td>{resultGroup.Key.RequestURI}</td>
                     <td>{resultGroup.Key.MethodName}</td>
                     <td>{resultGroup.Count()}</td>
-                    <td>{resultGroup.Select(result => result.UserCode).Distinct().Count()} 个</td>
-                    <td>{resultGroup.Min(result => result.StreamLenth)}</td>
-                    <td>{resultGroup.Max(result => result.StreamLenth)}</td>
+                    <td>{resultGroup.Select(result => result.Client).Distinct().Count()} 个</td>
+                    <td>{resultGroup.Min(result => result.StreamLength)}</td>
+                    <td>{resultGroup.Max(result => result.StreamLength)}</td>
                     <td>{resultGroup.Sum(result => result.Elapsed)}</td>
+                    <td>{resultGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
                 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
+
+            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+                    <caption><h3>客户端：</h3></caption>
+                    <thead>
+                        <th>客户端IP</th>
+                        <th>请求路径</th>
+                        <th>方法名称</th>
+                        <th>调用次数</th>
+                        <th>最小流长度</th>
+                        <th>最大流长度</th>
+                        <th>总耗时</th>
+                    </thead>
+                    <tbody>");
+            foreach (var resultGroup in argument.MiddlewareResults
+                .GroupBy(result => (result.Client, result.RequestURI, result.MethodName))
+                .OrderByDescending(results => results.Sum(result => result.Elapsed))
+                )
+            {
+                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                    <td>{resultGroup.Key.Client}</td>
+                    <td>{resultGroup.Key.RequestURI}</td>
+                    <td>{resultGroup.Key.MethodName}</td>
+                    <td>{resultGroup.Count()}</td>
+                    <td>{resultGroup.Min(result => result.StreamLength)}</td>
+                    <td>{resultGroup.Max(result => result.StreamLength)}</td>
+                    <td>{resultGroup.Sum(result => result.Elapsed)}</td>
+                </tr>");
+            }
+            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
 
             this.HTMLBuilder.Value.AppendLine("</div>");
         }
