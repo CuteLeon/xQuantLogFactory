@@ -69,28 +69,28 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"" style=""display: block;"">");
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-                    <caption><h3>监视规则查看：</h3></caption>
-                    <thead>
-                        <th>项目名称</th>
-                        <th>起始匹配模式</th>
-                        <th>结束匹配模式</th>
-                        <th>结果总耗时(毫秒)</th>
-                        <th>日志文件数量</th>
-                        <th>监视结果数量</th>
-                        <th>分析匹配组数</th>
-                    </thead>
-                    <tbody>");
+<caption><h3>监视规则查看：</h3></caption>
+<thead>
+    <th>项目名称</th>
+    <th>起始匹配模式</th>
+    <th>结束匹配模式</th>
+    <th>结果总耗时(毫秒)</th>
+    <th>日志文件数量</th>
+    <th>监视结果数量</th>
+    <th>分析匹配组数</th>
+</thead>
+<tbody>");
             foreach (var monitor in argument.MonitorItems.OrderByDescending(monitor => monitor.ElapsedMillisecond))
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-                    <td>{monitor.Name}</td>
-                    <td>{monitor.StartPattern}</td>
-                    <td>{monitor.FinishPatterny}</td>
-                    <td>{monitor.ElapsedMillisecond}</td>
-                    <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
-                    <td>{monitor.MonitorResults.Count}</td>
-                    <td>{monitor.AnalysisResults.Count}</td>
-                </tr>");
+    <td>{monitor.Name}</td>
+    <td>{monitor.StartPattern}</td>
+    <td>{monitor.FinishPatterny}</td>
+    <td>{monitor.ElapsedMillisecond}</td>
+    <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
+    <td>{monitor.MonitorResults.Count}</td>
+    <td>{monitor.AnalysisResults.Count}</td>
+</tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
@@ -129,8 +129,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.WriteCard(
                         $"耗时：<b>{analysisResult.ElapsedMillisecond} ms</b>",
                         $@"日志文件：{startResult?.LogFile?.FilePath ?? finishResult?.LogFile?.FilePath}<br><hr>
-开始日志：{(startResult == null ? "无" : $"{startResult.LogTime} 行号: {startResult.LineNumber} 等级: {startResult.LogLevel} 内容: {startResult.LogContent}")}<br>
-结束日志：{(finishResult == null ? "无" : $"{finishResult.LogTime} 行号: {finishResult.LineNumber} 等级: {finishResult.LogLevel} 内容: {finishResult.LogContent}")}"
+开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
+结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
                         );
                 }
             }
@@ -185,29 +185,29 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-                    <caption><h3>客户端日志文件查看：</h3></caption>
-                    <thead>
-                        <th>文件路径</th>
-                        <th>创建时间</th>
-                        <th>最后写入时间</th>
-                        <th>匹配监视规则</th>
-                        <th>监视结果数量</th>
-                        <th>分析匹配组数</th>
-                    </thead>
-                    <tbody>");
+<caption><h3>客户端日志文件查看：</h3></caption>
+<thead>
+    <th>文件路径</th>
+    <th>创建时间</th>
+    <th>最后写入时间</th>
+    <th>匹配监视规则</th>
+    <th>监视结果数量</th>
+    <th>分析匹配组数</th>
+</thead>
+<tbody>");
             foreach (var logFile in argument.LogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Client)
                 .OrderByDescending(logFile => logFile.MonitorResults.Count)
                 )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-                    <td>{logFile.FilePath}</td>
-                    <td>{logFile.CreateTime}</td>
-                    <td>{logFile.LastWriteTime}</td>
-                    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
-                    <td><b>{logFile.MonitorResults.Count}</b></td>
-                    <td>{logFile.AnalysisResults.Count}</td>
-                </tr>");
+    <td>{logFile.FilePath}</td>
+    <td>{logFile.CreateTime}</td>
+    <td>{logFile.LastWriteTime}</td>
+    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
+    <td><b>{logFile.MonitorResults.Count}</b></td>
+    <td>{logFile.AnalysisResults.Count}</td>
+</tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
 
@@ -223,29 +223,29 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-                    <caption><h3>服务端日志文件查看：</h3></caption>
-                    <thead>
-                        <th>文件路径</th>
-                        <th>创建时间</th>
-                        <th>最后写入时间</th>
-                        <th>匹配监视规则</th>
-                        <th>结果数量</th>
-                        <th>匹配组数</th>
-                    </thead>
-                    <tbody>");
+<caption><h3>服务端日志文件查看：</h3></caption>
+<thead>
+    <th>文件路径</th>
+    <th>创建时间</th>
+    <th>最后写入时间</th>
+    <th>匹配监视规则</th>
+    <th>结果数量</th>
+    <th>匹配组数</th>
+</thead>
+<tbody>");
             foreach (var logFile in argument.LogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Server)
                 .OrderByDescending(logFile => logFile.MonitorResults.Count)
                 )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-                    <td>{logFile.FilePath}</td>
-                    <td>{logFile.CreateTime}</td>
-                    <td>{logFile.LastWriteTime}</td>
-                    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
-                    <td><b>{logFile.MonitorResults.Count}</b></td>
-                    <td>{logFile.AnalysisResults.Count}</td>
-                </tr>");
+    <td>{logFile.FilePath}</td>
+    <td>{logFile.CreateTime}</td>
+    <td>{logFile.LastWriteTime}</td>
+    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
+    <td><b>{logFile.MonitorResults.Count}</b></td>
+    <td>{logFile.AnalysisResults.Count}</td>
+</tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
 
@@ -261,43 +261,43 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-                    <caption><h3>服务端日志文件查看：</h3></caption>
-                    <thead>
-                        <th>文件路径</th>
-                        <th>创建时间</th>
-                        <th>最后写入时间</th>
-                        <th>日志数量</th>
-                    </thead>
-                    <tbody>");
+<caption><h3>服务端日志文件查看：</h3></caption>
+<thead>
+    <th>文件路径</th>
+    <th>创建时间</th>
+    <th>最后写入时间</th>
+    <th>日志数量</th>
+</thead>
+<tbody>");
             foreach (var logFile in argument.LogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Middleware)
                 .OrderByDescending(logFile => logFile.MiddlewareResults.Count)
                 )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-                    <td>{logFile.FilePath}</td>
-                    <td>{logFile.CreateTime}</td>
-                    <td>{logFile.LastWriteTime}</td>
-                    <td><b>{logFile.MiddlewareResults.Count}</b></td>
-                </tr>");
+    <td>{logFile.FilePath}</td>
+    <td>{logFile.CreateTime}</td>
+    <td>{logFile.LastWriteTime}</td>
+    <td><b>{logFile.MiddlewareResults.Count}</b></td>
+</tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-                    <caption><h3>请求路径：</h3></caption>
-                    <thead>
-                        <th>请求路径</th>
-                        <th>方法名称</th>
-                        <th>调用次数</th>
-                        <th>调用IP数量</th>
-                        <th>最小流长度</th>
-                        <th>最大流长度</th>
-                        <th>总流长度</th>
-                        <th>总耗时</th>
-                        <th>平均耗时</th>
-                    </thead>
-                    <tbody>");
+<caption><h3>请求路径：</h3></caption>
+<thead>
+    <th>请求路径</th>
+    <th>方法名称</th>
+    <th>调用次数</th>
+    <th>调用IP数量</th>
+    <th>最小流长度</th>
+    <th>最大流长度</th>
+    <th>总流长度</th>
+    <th>总耗时</th>
+    <th>平均耗时</th>
+</thead>
+<tbody>");
             foreach (var requestURIGroup in argument.MiddlewareResults
                 .GroupBy(result => result.RequestURI)
                 .OrderBy(result => result.Key)
@@ -311,79 +311,81 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     string methodName = methodNameGroup.Key;
                     this.HTMLBuilder.Value.AppendLine($@"<tr>
-                        <td><b>{requestURI}</b></td>
-                        <td><b>{methodName}</b></td>
-                        <td>{methodNameGroup.Count()}</td>
-                        <td>{methodNameGroup.Select(result => result.Client).Distinct().Count()}</td>
-                        <td>{methodNameGroup.Min(result => result.StreamLength)}</td>
-                        <td>{methodNameGroup.Max(result => result.StreamLength)}</td>
-                        <td>{methodNameGroup.Sum(result => result.StreamLength)}</td>
-                        <td>{methodNameGroup.Sum(result => result.Elapsed)}</td>
-                        <td>{methodNameGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
-                    </tr>");
+    <td><b>{requestURI}</b></td>
+    <td><b>{methodName}</b></td>
+    <td>{methodNameGroup.Count()}</td>
+    <td>{methodNameGroup.Select(result => result.Client).Distinct().Count()}</td>
+    <td>{methodNameGroup.Min(result => result.StreamLength)}</td>
+    <td>{methodNameGroup.Max(result => result.StreamLength)}</td>
+    <td>{methodNameGroup.Sum(result => result.StreamLength)}</td>
+    <td>{methodNameGroup.Sum(result => result.Elapsed)}</td>
+    <td>{methodNameGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
+</tr>");
                 }
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-                    <caption><h3>请求耗时：</h3></caption>
-                    <thead>
-                        <th>请求路径</th>
-                        <th>方法名称</th>
-                        <th>调用次数</th>
-                        <th>调用IP数量</th>
-                        <th>最小流长度</th>
-                        <th>最大流长度</th>
-                        <th>总耗时</th>
-                        <th>平均耗时</th>
-                    </thead>
-                    <tbody>");
+<caption><h3>请求耗时：</h3></caption>
+<thead>
+    <th>请求路径</th>
+    <th>方法名称</th>
+    <th>调用次数</th>
+    <th>调用IP数量</th>
+    <th>最小流长度</th>
+    <th>最大流长度</th>
+    <th>总耗时</th>
+    <th>平均耗时</th>
+</thead>
+<tbody>");
             foreach (var resultGroup in argument.MiddlewareResults
                 .GroupBy(result => (result.RequestURI, result.MethodName))
                 .OrderByDescending(results => results.Sum(result => result.Elapsed))
                 )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-                    <td>{resultGroup.Key.RequestURI}</td>
-                    <td>{resultGroup.Key.MethodName}</td>
-                    <td>{resultGroup.Count()}</td>
-                    <td>{resultGroup.Select(result => result.Client).Distinct().Count()}</td>
-                    <td>{resultGroup.Min(result => result.StreamLength)}</td>
-                    <td>{resultGroup.Max(result => result.StreamLength)}</td>
-                    <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
-                    <td>{resultGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
-                </tr>");
+    <td>{resultGroup.Key.RequestURI}</td>
+    <td>{resultGroup.Key.MethodName}</td>
+    <td>{resultGroup.Count()}</td>
+    <td>{resultGroup.Select(result => result.Client).Distinct().Count()}</td>
+    <td>{resultGroup.Min(result => result.StreamLength)}</td>
+    <td>{resultGroup.Max(result => result.StreamLength)}</td>
+    <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
+    <td>{resultGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
+</tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-                    <caption><h3>客户端：</h3></caption>
-                    <thead>
-                        <th>客户端IP</th>
-                        <th>请求路径</th>
-                        <th>方法名称</th>
-                        <th>调用次数</th>
-                        <th>最小流长度</th>
-                        <th>最大流长度</th>
-                        <th>总耗时</th>
-                    </thead>
-                    <tbody>");
+<caption><h3>客户端：</h3></caption>
+<thead>
+    <th>客户端IP</th>
+    <th>请求路径</th>
+    <th>方法名称</th>
+    <th>调用次数</th>
+    <th>最小流长度</th>
+    <th>最大流长度</th>
+    <th>总流长度</th>
+    <th>总耗时</th>
+</thead>
+<tbody>");
             foreach (var resultGroup in argument.MiddlewareResults
                 .GroupBy(result => (result.Client, result.RequestURI, result.MethodName))
                 .OrderByDescending(results => results.Sum(result => result.Elapsed))
                 )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-                    <td>{resultGroup.Key.Client}</td>
-                    <td>{resultGroup.Key.RequestURI}</td>
-                    <td>{resultGroup.Key.MethodName}</td>
-                    <td>{resultGroup.Count()}</td>
-                    <td>{resultGroup.Min(result => result.StreamLength)}</td>
-                    <td>{resultGroup.Max(result => result.StreamLength)}</td>
-                    <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
-                </tr>");
+    <td>{resultGroup.Key.Client}</td>
+    <td>{resultGroup.Key.RequestURI}</td>
+    <td>{resultGroup.Key.MethodName}</td>
+    <td>{resultGroup.Count()}</td>
+    <td>{resultGroup.Min(result => result.StreamLength)}</td>
+    <td>{resultGroup.Max(result => result.StreamLength)}</td>
+    <td>{resultGroup.Sum(result => result.StreamLength)}</td>
+    <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
+</tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
 
@@ -451,72 +453,72 @@ namespace xQuantLogFactory.BIZ.Exporter
             if (argument == null) throw new ArgumentNullException(nameof(argument));
 
             this.HTMLBuilder.Value.AppendLine($@"<table id =""tasktable"">
-        <caption>
-            <h2>任务信息：</h3>
-        </caption>
-        <tbody>
-            <tr>
-                <td class=""label"">任务ID：</td>
-                <td class=""value"">{argument.TaskID}</td>
-            </tr>
-            <tr>
-                <td class=""label"">日志目录：</td>
-                <td class=""value"">{argument.LogDirectory}</td>
-            </tr>
-            <tr>
-                <td class=""label"">任务开始时间：</td>
-                <td class=""value"">{argument.TaskStartTime.ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">任务结束时间：</td>
-                <td class=""value"">{argument.TaskFinishTime.ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">日志开始时间：</td>
-                <td class=""value"">{argument.LogStartTime.ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">日志结束时间：</td>
-                <td class=""value"">{argument.LogFinishTime.ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">包含系统信息：</td>
-                <td class=""value"">{argument.IncludeSystemInfo.ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">包含客户端信息：</td>
-                <td class=""value"">{argument.IncludeClientInfo.ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">监控规则数量：</td>
-                <td class=""value"">{argument.MonitorItems.Count().ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">监控规则名称：</td>
-                <td class=""value"">{string.Join("、", argument.MonitorItems.Select(monitor => monitor.Name))}</td>
-            </tr>
-            <tr>
-                <td class=""label"">日志文件数量：</td>
-                <td class=""value"">{argument.LogFiles.Count().ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">报告导出模式：</td>
-                <td class=""value"">{argument.ReportMode.ToString()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">日志监视结果数量：</td>
-                <td class=""value"">{argument.MonitorResults.Count()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">中间件日志结果数量：</td>
-                <td class=""value"">{argument.MiddlewareResults.Count()}</td>
-            </tr>
-            <tr>
-                <td class=""label"">监视分析结果数量：</td>
-                <td class=""value"">{argument.AnalysisResults.Count()}</td>
-            </tr>
-        </tbody>
-    </table>");
+    <caption>
+        <h2>任务信息：</h3>
+    </caption>
+    <tbody>
+        <tr>
+            <td class=""label"">任务ID：</td>
+            <td class=""value"">{argument.TaskID}</td>
+        </tr>
+        <tr>
+            <td class=""label"">日志目录：</td>
+            <td class=""value"">{argument.LogDirectory}</td>
+        </tr>
+        <tr>
+            <td class=""label"">任务开始时间：</td>
+            <td class=""value"">{argument.TaskStartTime.ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">任务结束时间：</td>
+            <td class=""value"">{argument.TaskFinishTime.ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">日志开始时间：</td>
+            <td class=""value"">{argument.LogStartTime.ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">日志结束时间：</td>
+            <td class=""value"">{argument.LogFinishTime.ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">包含系统信息：</td>
+            <td class=""value"">{argument.IncludeSystemInfo.ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">包含客户端信息：</td>
+            <td class=""value"">{argument.IncludeClientInfo.ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">监控规则数量：</td>
+            <td class=""value"">{argument.MonitorItems.Count().ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">监控规则名称：</td>
+            <td class=""value"">{string.Join("、", argument.MonitorItems.Select(monitor => monitor.Name))}</td>
+        </tr>
+        <tr>
+            <td class=""label"">日志文件数量：</td>
+            <td class=""value"">{argument.LogFiles.Count().ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">报告导出模式：</td>
+            <td class=""value"">{argument.ReportMode.ToString()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">日志监视结果数量：</td>
+            <td class=""value"">{argument.MonitorResults.Count()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">中间件日志结果数量：</td>
+            <td class=""value"">{argument.MiddlewareResults.Count()}</td>
+        </tr>
+        <tr>
+            <td class=""label"">监视分析结果数量：</td>
+            <td class=""value"">{argument.AnalysisResults.Count()}</td>
+        </tr>
+    </tbody>
+</table>");
         }
 
         /// <summary>
