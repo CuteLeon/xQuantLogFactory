@@ -19,10 +19,11 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// </summary>
         /// <param name="directory">文件目录</param>
         /// <param name="predicate">文件筛选条件</param>
+        /// <param name="searchPattern">匹配模式</param>
         /// <returns></returns>
-        public IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null)
+        public IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null, string searchPattern = null)
         {
-            return predicate == null ? Directory.GetFiles(directory) : Array.FindAll(Directory.GetFiles(directory), predicate);
+            return Array.FindAll(Directory.GetFiles(directory, searchPattern ?? "*", SearchOption.AllDirectories), predicate);
         }
 
         /// <summary>

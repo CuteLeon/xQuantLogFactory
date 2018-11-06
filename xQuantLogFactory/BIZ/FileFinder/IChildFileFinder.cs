@@ -13,8 +13,9 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// </summary>
         /// <param name="directory">文件目录</param>
         /// <param name="predicate">文件筛选条件</param>
+        /// <param name="searchPattern">匹配模式</param>
         /// <returns></returns>
-        IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null);
+        IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null, string searchPattern = null);
 
     }
 }

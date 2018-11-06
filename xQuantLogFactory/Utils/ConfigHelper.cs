@@ -14,7 +14,7 @@ namespace xQuantLogFactory.Utils
         /// </summary>
         public static string MonitorDirectory
         {
-            get => Path.Combine(Environment.CurrentDirectory, "Monitor");
+            get => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Monitor");
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace xQuantLogFactory.Utils
         /// </summary>
         public static string ReportExportDirectory
         {
-            get => Path.Combine(Environment.CurrentDirectory, "Export");
+            get => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Export");
         }
 
         /// <summary>
