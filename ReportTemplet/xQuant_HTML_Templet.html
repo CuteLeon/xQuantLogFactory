@@ -38,11 +38,11 @@
         td.label {
             width: 40%;
             font-size: 15px;
-            font-weight: bold;
             text-align: right
         }
 
         td.value {
+            font-weight: bold;
             word-wrap: break-word;
             text-align: left
         }
@@ -117,6 +117,7 @@
         }
 
         .datatable td {
+            padding: 0 5 0 5;
             line-height: 30px;
             border: 1px #ddd solid
         }
@@ -322,8 +323,8 @@
                             <td>{logFile.LastWriteTime}</td>
                             <td>{string.Join("、", logFile.MonitorResults.Select(result =>
                                 result.MonitorItem.Name).Distinct())}</td>
-                            <td>{logFile.MonitorResults.Count} 个</td>
-                            <td>{logFile.AnalysisResults.Count} 组</td>
+                            <td><b>{logFile.MonitorResults.Count}</b></td>
+                            <td>{logFile.AnalysisResults.Count}</td>
                         </tr>
                     </tbody>
                 </table>
