@@ -95,25 +95,80 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
-            //this.WriteSectionTitle("监视规则详情：");
-            //foreach (var monitor in argument.MonitorItems
-            //    .OrderByDescending(monitor => monitor.ElapsedMillisecond))
-            //{
-            //    this.WriteCard();
-            //}
+            this.WriteSectionTitle("监视规则详情：");
+            foreach (var monitor in argument.MonitorItems
+                .OrderByDescending(monitor => monitor.ElapsedMillisecond))
+            {
+                this.WriteMonitorItemCard(monitor);
+            }
 
             this.HTMLBuilder.Value.AppendLine("</div>");
         }
 
-        //TODO: 写入卡片数据
-        private void WriteCard()
+        /// <summary>
+        /// 写入监视规则卡片
+        /// </summary>
+        /// <param name="monitor"></param>
+        private void WriteMonitorItemCard(MonitorItem monitor)
+        {
+            this.WriteCardHeader($"监视规则：<b>{monitor.Name}</b>");
+            this.HTMLBuilder.Value.w
+            //$"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPatterny ?? "无"}</b><hr><b>匹配结果：</b>{ARContentBuilder.ToString()}"
+            this.WriteCardFooter($"监视结果总数：<b>{monitor.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{monitor.AnalysisResults.Count().ToString()}</b> 组");
+
+            StringBuilder ARContentBuilder = new StringBuilder();
+            if (monitor.AnalysisResults.Count == 0)
+            {
+                ARContentBuilder.Append("无");
+            }
+            else
+            {
+                foreach (var analysisResult in monitor.AnalysisResults
+                    .OrderBy(result => result.ElapsedMillisecond)
+                    )
+                {
+                    ARContentBuilder.Append("<br>");
+                    ARContentBuilder.Append($"<pre>开始日志：{(analysisResult.StartMonitorResult?.LogContent ?? "无")}<br>");
+                    ARContentBuilder.Append($"结束日志：{(analysisResult.FinishMonitorResult?.LogContent ?? "无")}</pre>");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 写入卡片
+        /// </summary>
+        /// <param name="title">标题</param>
+        /// <param name="body">主体</param>
+        /// <param name="footer">底部</param>
+        private void WriteCard(string title, string body, string footer = null)
+        {
+            //处理换行符转义
+            //body = body.Replace("\r\n", "<br>").Replace("\n", "<br>").Replace("\r", "<br>");
+
+            this.WriteCardHeader(title);
+            this.HTMLBuilder.Value.AppendLine(body);
+            this.WriteCardFooter(footer);
+        }
+
+        /// <summary>
+        /// 写入卡片顶部（需要成对使用）
+        /// </summary>
+        /// <param name="title"></param>
+        private void WriteCardHeader(string title)
         {
             this.HTMLBuilder.Value.AppendLine("<div class=\"card\">");
-            this.HTMLBuilder.Value.AppendLine("<div class=\"card-header\">");
-            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-title\">{123}</div>");
-            this.HTMLBuilder.Value.AppendLine($"</div>");
-            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-body\">{234}</div>");
-            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-footer\">{345}</div>");
+            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-header\"><div class=\"card-title\">{title}</div></div>");
+            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-body\">");
+        }
+
+        /// <summary>
+        /// 写入卡片底部（需要成对使用）
+        /// </summary>
+        /// <param name="footer"></param>
+        private void WriteCardFooter(string footer = null)
+        {
+            this.HTMLBuilder.Value.AppendLine("</div>");
+            if (footer?.Length > 0) this.HTMLBuilder.Value.AppendLine($"<div class=\"card-footer\">{footer}</div>");
             this.HTMLBuilder.Value.AppendLine($"</div>");
         }
 
