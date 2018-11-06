@@ -45,17 +45,20 @@ namespace xQuantLogFactory.BIZ.Parser
                 {
                     reader = new StreamReader(logFile.FilePath, Encoding.Default);
 
+                    //临时变量放于循环外，防止内存爆炸
+                    Match match = null;
+                    string logLine = string.Empty;
                     int lineNumber = 0;
+                    DateTime logTime = DateTime.MinValue;
+
                     while (!reader.EndOfStream)
                     {
                         lineNumber++;
                         //获取日志行
-                        //TODO: 使用数据缓冲区分块读取文件，防止文件过大而发生人间惨剧
-                        string logLine = reader.ReadLine();
-                        Match match = this.LogRegex.Match(logLine);
+                        logLine = reader.ReadLine();
+                        match = this.LogRegex.Match(logLine);
                         if (match.Success)
                         {
-                            DateTime logTime = DateTime.MinValue;
                             //跳过日志时间在任务时间范围外的日志行
                             if (!match.Groups["LogTime"].Success ||
                                 !DateTime.TryParse(match.Groups["LogTime"].Value, out logTime) ||

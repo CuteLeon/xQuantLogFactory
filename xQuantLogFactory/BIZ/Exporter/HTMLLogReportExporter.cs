@@ -8,7 +8,7 @@ using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
-    
+
     /// <summary>
     /// HTML日志报告导出器
     /// </summary>
@@ -55,6 +55,9 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine("</body>\n</html>");
 
             this.SaveReportFile(reportPath);
+
+            //清理 StringBuilder 内数据
+            this.HTMLBuilder.Value.Clear();
         }
 
         /// <summary>
@@ -88,7 +91,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
     <td>{monitor.MonitorResults.Count}</td>
     <td>{monitor.AnalysisResults.Count}</td>
-    <td>{monitor.AverageElapsedMillisecond.ToString("##.##")}</td>
+    <td>{monitor.AverageElapsedMillisecond.ToString("0.##")}</td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
@@ -318,7 +321,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{methodNameGroup.Max(result => result.StreamLength)}</td>
     <td>{methodNameGroup.Sum(result => result.StreamLength)}</td>
     <td>{methodNameGroup.Sum(result => result.Elapsed)}</td>
-    <td>{methodNameGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
+    <td>{methodNameGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
 </tr>");
                 }
             }
@@ -351,7 +354,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{resultGroup.Min(result => result.StreamLength)}</td>
     <td>{resultGroup.Max(result => result.StreamLength)}</td>
     <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
-    <td>{resultGroup.Average(result => result.Elapsed).ToString("#.##")}</td>
+    <td>{resultGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");

@@ -122,8 +122,6 @@ namespace xQuantLogFactory
             //SaveTaskArgumentToXML();
             TryToExportLogReport();
 
-            //TODO: so much todo ...
-
             Exit(0);
         }
 
@@ -406,6 +404,8 @@ namespace xQuantLogFactory
                 UnityDBContext.SaveChanges();
             }
             UnityDBContext.Dispose();
+
+            GC.Collect();
 
             Console.WriteLine("\n————————");
             ShowTaskDuration();
