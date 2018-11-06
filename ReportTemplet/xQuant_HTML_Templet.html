@@ -182,6 +182,17 @@
             }
         }
     </script>
+	<script>
+    function onCardClick()
+		{
+			var card=event.target.parentNode.parentNode;
+			var cardbody=card.getElementsByClassName('card-body')[0];
+			var cardfooter=card.getElementsByClassName('card-footer')[0];
+			var bodydisplay=cardbody.style.display;
+			cardbody.style.display=bodydisplay=='none'?'block':'none';
+			cardfooter.style.display=cardbody.style.display;
+		}
+	</script>
     <meta charset="UTF-8">
     <title>xQuant-日志分析报告：{argument.TaskID}-{DateTime.Now.ToString()}</title>
 </head>
@@ -272,7 +283,7 @@
                 <h3>监视规则查看：</h3>
 
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" onclick="onCardClick()">
                         <div class="card-title">子标题</div>
                     </div>
                     <div class="card-body">
@@ -283,14 +294,13 @@
                 </div>
 
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header" onclick="onCardClick()">
                         <div class="card-title">子标题</div>
                     </div>
                     <div class="card-body">主题</div>
                     <div class="card-footer">足部</div>
                 </div>
             </div>
-
             <div class="tabContent">
                 <table class="datatable">
                     <caption>
