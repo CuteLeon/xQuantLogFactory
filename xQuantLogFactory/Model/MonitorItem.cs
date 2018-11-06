@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace xQuantLogFactory.Model
@@ -56,6 +55,13 @@ namespace xQuantLogFactory.Model
         [XmlIgnore]
         [DisplayName("结果总耗时（单位：毫秒）"), DataType(DataType.Duration)]
         public double ElapsedMillisecond { get; set; }
+
+        /// <summary>
+        /// 完整匹配组结果平均耗时
+        /// </summary>
+        [XmlIgnore]
+        [DisplayName("完整匹配组结果平均耗时"), DataType(DataType.Duration)]
+        public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
         /// 子监控项目列表

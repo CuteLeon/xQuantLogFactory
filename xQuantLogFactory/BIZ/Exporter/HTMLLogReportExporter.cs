@@ -8,10 +8,7 @@ using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
-    //TODO: 显示最耗时的结果
-    //TODO: HTML输出代码对内容格式化，防止导出结果太乱
-    //TODO: 用户关注 监视规则：启动几次？ 耗时多久？
-
+    
     /// <summary>
     /// HTML日志报告导出器
     /// </summary>
@@ -78,6 +75,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>日志文件数量</th>
     <th>监视结果数量</th>
     <th>分析匹配组数</th>
+    <th>匹配组平均耗时</th>
 </thead>
 <tbody>");
             foreach (var monitor in argument.MonitorItems.OrderByDescending(monitor => monitor.ElapsedMillisecond))
@@ -90,6 +88,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
     <td>{monitor.MonitorResults.Count}</td>
     <td>{monitor.AnalysisResults.Count}</td>
+    <td>{monitor.AverageElapsedMillisecond.ToString("##.##")}</td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
