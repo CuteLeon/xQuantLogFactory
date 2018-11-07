@@ -247,6 +247,12 @@ namespace xQuantLogFactory
         {
             if (!(e.ExceptionObject is Exception UnhandledException)) return;
 
+            if (UnhandledException is OutOfMemoryException)
+            {
+                GC.KeepAlive(UnityTaskArgument);
+                GC.Collect();
+            }
+
             string ExceptionDescription = string.Format(
                 "应用域内发现未被捕获的异常：\r\n" +
                 "\t异常类型 : {0}\r\n" +
