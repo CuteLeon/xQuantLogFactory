@@ -183,14 +183,15 @@
         }
     </script>
 	<script>
-    function onCardClick()
+        function onCardClick()
 		{
-			var card=event.target.parentNode.parentNode;
+            var card;
+            if(event.target.className=='card-title')
+			    card = event.target.parentNode.parentNode;
+            else if(event.target.className=='card-header')
+                card = event.target.parentNode;
 			var cardbody=card.getElementsByClassName('card-body')[0];
-			var cardfooter=card.getElementsByClassName('card-footer')[0];
-			var bodydisplay=cardbody.style.display;
-			cardbody.style.display=bodydisplay=='none'?'block':'none';
-			cardfooter.style.display=cardbody.style.display;
+			cardbody.style.display = cardbody.style.display=='none'?'block':'none';
 		}
 	</script>
     <meta charset="UTF-8">

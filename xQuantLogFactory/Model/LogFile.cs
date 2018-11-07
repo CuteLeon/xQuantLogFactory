@@ -68,6 +68,12 @@ namespace xQuantLogFactory.Model
         public DateTime LastWriteTime { get; set; }
 
         /// <summary>
+        /// 客户端和服务端匹配结果总耗时（单位：毫秒）
+        /// </summary>
+        [DisplayName("客户端和服务端匹配结果总耗时（单位：毫秒）"), DataType(DataType.Duration)]
+        public double ElapsedMillisecond { get; set; }
+
+        /// <summary>
         /// 监视日志解析结果列表
         /// </summary>
         [DisplayName("监视日志解析结果列表")]

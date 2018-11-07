@@ -91,13 +91,15 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})分析完成\n————————");
             });
 
-            //计算监视规则总耗时和完整匹配组平均耗时
+            //计算每个监视规则匹配结果总耗时和完整匹配组平均耗时
             argument.MonitorItems.ForEach(monitor =>
             {
                 monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result.ElapsedMillisecond);
                 int fullCoubleCount = monitor.AnalysisResults.Count(result => result.StartMonitorResult != null && result.FinishMonitorResult != null);
                 if (fullCoubleCount > 0) monitor.AverageElapsedMillisecond = monitor.ElapsedMillisecond / fullCoubleCount;
             });
+            //计算每个日志文件匹配结果总耗时
+            argument.LogFiles.ForEach(logFile => logFile.ElapsedMillisecond = logFile.AnalysisResults.Sum(result => result.ElapsedMillisecond));
         }
 
         /// <summary>

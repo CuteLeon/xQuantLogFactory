@@ -8,8 +8,7 @@ using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
-    //TODO: 维护监视规则的父子关系，导出报告时依然通过缩进显示父子关系
-    //TODO: 其他视图通过 WriteCrad() 显示详细信息 
+    //TODO: 维护监视规则的父子关系，导出报告时依然通过缩进或卡片显示父子关系
 
     /// <summary>
     /// HTML日志报告导出器
@@ -35,7 +34,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             //切换Tab容器JS
             this.WriteJS(@"function $(id){return typeof id === 'string' ? document.getElementById(id):id}window.onload = function(){var titles = $('tab-header').getElementsByTagName('li');var divs = $('tab-container').getElementsByClassName('tabContent');for(var i = 0;i < titles.length;i++){var li = titles[i];li.id = i;li.onmousemove = function(){for(var j = 0;j < titles.length;j++){titles[j].className = '';divs[j].style.display = 'none'}this.className = 'selected';divs[this.id].style.display = 'block'}}}");
             //显隐Card容器JS
-            this.WriteJS(@"function onCardClick(){var card=event.target.parentNode.parentNode;var cardbody=card.getElementsByClassName('card-body')[0];var cardfooter=card.getElementsByClassName('card-footer')[0];var bodydisplay=cardbody.style.display;cardbody.style.display=bodydisplay=='none'?'block':'none';cardfooter.style.display=cardbody.style.display;}");
+            this.WriteJS(@"function onCardClick(){var card;if(event.target.className==""card-title""){card=event.target.parentNode.parentNode}else{if(event.target.className==""card-header""){card=event.target.parentNode}}var cardbody=card.getElementsByClassName(""card-body"")[0];cardbody.style.display=cardbody.style.display==""none""?""block"":""none""};");
             this.HTMLBuilder.Value.AppendFormat("<meta charset=\"UTF-8\">\n<title>xQuant-日志分析报告：{0}</title>\n", argument.TaskID);
 
             this.HTMLBuilder.Value.AppendLine("</head>\n<body>");
@@ -110,6 +109,39 @@ namespace xQuantLogFactory.BIZ.Exporter
             }
 
             this.HTMLBuilder.Value.AppendLine("</div>");
+        }
+
+        /// <summary>
+        /// 写入客户端或服务端日志文件卡片
+        /// </summary>
+        /// <param name="logFile"></param>
+        private void WriteCSLogFileCard(LogFile logFile)
+        {
+            this.WriteCardHeader($"日志文件：<b>{logFile.FilePath}</b>");
+            this.HTMLBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
+
+            if (logFile.AnalysisResults.Count == 0)
+            {
+                this.HTMLBuilder.Value.Append("无");
+            }
+            else
+            {
+                foreach (var analysisResult in logFile.AnalysisResults
+                    .OrderByDescending(result => result.ElapsedMillisecond)
+                    )
+                {
+                    MonitorResult startResult = analysisResult.StartMonitorResult;
+                    MonitorResult finishResult = analysisResult.FinishMonitorResult;
+                    this.WriteCard(
+                        $"耗时：<b>{analysisResult.ElapsedMillisecond} ms</b>",
+                        $@"监视规则：{startResult?.MonitorItem?.Name ?? finishResult?.MonitorItem?.Name}<br><hr>
+开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
+结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
+                        );
+                }
+            }
+
+            this.WriteCardFooter($"监视结果总数：<b>{logFile.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{logFile.AnalysisResults.Count().ToString()}</b> 组， 总耗时：<b>{logFile.ElapsedMillisecond}</b> 毫秒");
         }
 
         /// <summary>
@@ -198,25 +230,34 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>创建时间</th>
     <th>最后写入时间</th>
     <th>匹配监视规则</th>
-    <th>监视结果数量</th>
-    <th>分析匹配组数</th>
+    <th>结果数量</th>
+    <th>匹配组数</th>
+    <th>匹配组总耗时</th>
 </thead>
 <tbody>");
-            foreach (var logFile in argument.LogFiles
+
+            IOrderedEnumerable<LogFile> logFiles = argument.LogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Client)
-                .OrderByDescending(logFile => logFile.MonitorResults.Count)
-                )
+                .OrderByDescending(logFile => logFile.ElapsedMillisecond);
+
+            foreach (var logFile in logFiles)
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
     <td>{logFile.FilePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
     <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
-    <td><b>{logFile.MonitorResults.Count}</b></td>
+    <td>{logFile.MonitorResults.Count}</td>
     <td>{logFile.AnalysisResults.Count}</td>
+    <td><b>{logFile.ElapsedMillisecond}</b></td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+            this.WriteHR();
+
+            this.WriteSectionTitle("日志文件详情：");
+            foreach (var logFile in logFiles)
+                this.WriteCSLogFileCard(logFile);
 
             this.HTMLBuilder.Value.AppendLine("</div>");
         }
@@ -238,12 +279,15 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>匹配监视规则</th>
     <th>结果数量</th>
     <th>匹配组数</th>
+    <th>匹配组总耗时</th>
 </thead>
 <tbody>");
-            foreach (var logFile in argument.LogFiles
+
+            IOrderedEnumerable<LogFile> logFiles = argument.LogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Server)
-                .OrderByDescending(logFile => logFile.MonitorResults.Count)
-                )
+                .OrderByDescending(logFile => logFile.MonitorResults.Count);
+
+            foreach (var logFile in logFiles)
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
     <td>{logFile.FilePath}</td>
@@ -252,11 +296,58 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
     <td><b>{logFile.MonitorResults.Count}</b></td>
     <td>{logFile.AnalysisResults.Count}</td>
+    <td>{logFile.ElapsedMillisecond}</td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+            this.WriteHR();
+
+            this.WriteSectionTitle("日志文件详情：");
+            foreach (var logFile in logFiles)
+                this.WriteCSLogFileCard(logFile);
 
             this.HTMLBuilder.Value.AppendLine("</div>");
+        }
+
+        /// <summary>
+        /// 写入中间件日志文件卡片
+        /// </summary>
+        /// <param name="logFile"></param>
+        private void WriteMiddlewareLogFileCard(LogFile logFile)
+        {
+            this.WriteCardHeader($"日志文件：<b>{logFile.FilePath}</b>");
+            this.HTMLBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
+
+            if (logFile.MiddlewareResults.Count == 0)
+            {
+                this.HTMLBuilder.Value.Append("无");
+            }
+            else
+            {
+                foreach (var requesURIResult in logFile.MiddlewareResults
+                    .GroupBy(result => result.RequestURI))
+                {
+                    this.WriteCardHeader($"请求路径：<b>{requesURIResult.Key}</b>");
+
+                    foreach (var methodNameResult in requesURIResult
+                        .GroupBy(result => result.MethodName)
+                        .OrderByDescending(result=>result.Count()))
+                    {
+                        this.WriteCard(
+                            $"方法名称：<b>{methodNameResult.Key}</b>",
+                            $@"<b>方法调用次数：{methodNameResult.Count()}</b><br>
+调用客户端数：<b>{methodNameResult.Select(result=>result.Client).Distinct().Count()}</b><br>
+调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count()}</b><br>
+返回总流长度：<b>{methodNameResult.Sum(result => result.StreamLength)}</b><br>
+流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>"
+                            );
+                    }
+
+                    this.WriteCardFooter($"方法总数：<b>{requesURIResult.Select(result => result.MethodName).Distinct().Count()}</b> 个， 调用总次数：<b>{requesURIResult.Count()}</b> 个， 总耗时：<b>{requesURIResult.Sum(result => result.Elapsed)}</b> 毫秒");
+                }
+            }
+
+            this.WriteCardFooter($"监视结果总数：<b>{logFile.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{logFile.AnalysisResults.Count().ToString()}</b> 组， 总耗时：<b>{logFile.ElapsedMillisecond}</b> 毫秒");
         }
 
         /// <summary>
@@ -268,7 +359,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
             this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
-<caption><h3>服务端日志文件查看：</h3></caption>
+<caption><h3>中间件日志文件查看：</h3></caption>
 <thead>
     <th>文件路径</th>
     <th>创建时间</th>
@@ -276,10 +367,12 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>日志数量</th>
 </thead>
 <tbody>");
-            foreach (var logFile in argument.LogFiles
+
+            IOrderedEnumerable<LogFile> logFiles = argument.LogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Middleware)
-                .OrderByDescending(logFile => logFile.MiddlewareResults.Count)
-                )
+                .OrderByDescending(logFile => logFile.MiddlewareResults.Count);
+
+            foreach (var logFile in logFiles)
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
     <td>{logFile.FilePath}</td>
@@ -305,30 +398,22 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>平均耗时</th>
 </thead>
 <tbody>");
-            foreach (var requestURIGroup in argument.MiddlewareResults
-                .GroupBy(result => result.RequestURI)
-                .OrderBy(result => result.Key)
+            foreach (var resultGroup in argument.MiddlewareResults
+                .GroupBy(result => (result.RequestURI, result.MethodName))
+                .OrderBy(result => (result.Key.RequestURI, result.Key.MethodName))
                 )
             {
-                string requestURI = requestURIGroup.Key;
-                foreach (var methodNameGroup in requestURIGroup
-                    .GroupBy(result => result.MethodName)
-                    .OrderBy(result => result.Key)
-                    )
-                {
-                    string methodName = methodNameGroup.Key;
-                    this.HTMLBuilder.Value.AppendLine($@"<tr>
-    <td><b>{requestURI}</b></td>
-    <td><b>{methodName}</b></td>
-    <td>{methodNameGroup.Count()}</td>
-    <td>{methodNameGroup.Select(result => result.Client).Distinct().Count()}</td>
-    <td>{methodNameGroup.Min(result => result.StreamLength)}</td>
-    <td>{methodNameGroup.Max(result => result.StreamLength)}</td>
-    <td>{methodNameGroup.Sum(result => result.StreamLength)}</td>
-    <td>{methodNameGroup.Sum(result => result.Elapsed)}</td>
-    <td>{methodNameGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
+                this.HTMLBuilder.Value.AppendLine($@"<tr>
+    <td><b>{resultGroup.Key.RequestURI}</b></td>
+    <td><b>{resultGroup.Key.MethodName}</b></td>
+    <td>{resultGroup.Count()}</td>
+    <td>{resultGroup.Select(result => result.Client).Distinct().Count()}</td>
+    <td>{resultGroup.Min(result => result.StreamLength)}</td>
+    <td>{resultGroup.Max(result => result.StreamLength)}</td>
+    <td>{resultGroup.Sum(result => result.StreamLength)}</td>
+    <td>{resultGroup.Sum(result => result.Elapsed)}</td>
+    <td>{resultGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
 </tr>");
-                }
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
@@ -395,6 +480,11 @@ namespace xQuantLogFactory.BIZ.Exporter
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+            this.WriteHR();
+
+            this.WriteSectionTitle("日志文件详情：");
+            foreach (var logFile in logFiles)
+                this.WriteMiddlewareLogFileCard(logFile);
 
             this.HTMLBuilder.Value.AppendLine("</div>");
         }
