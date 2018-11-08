@@ -40,10 +40,12 @@ namespace xQuantLogFactory.BIZ.Parser
             {
                 this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
 
-                StreamReader reader = null;
+                FileStream fileStream = null;
+                StreamReader streamRreader = null;
                 try
                 {
-                    reader = new StreamReader(logFile.FilePath, Encoding.Default);
+                    fileStream = new FileStream(logFile.FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    streamRreader = new StreamReader(fileStream, Encoding.Default);
 
                     //临时变量放于循环外，防止内存爆炸
                     Match match = null;
@@ -51,11 +53,11 @@ namespace xQuantLogFactory.BIZ.Parser
                     int lineNumber = 0;
                     DateTime logTime = DateTime.MinValue;
 
-                    while (!reader.EndOfStream)
+                    while (!streamRreader.EndOfStream)
                     {
                         lineNumber++;
                         //获取日志行
-                        logLine = reader.ReadLine();
+                        logLine = streamRreader.ReadLine();
                         match = this.LogRegex.Match(logLine);
                         if (match.Success)
                         {
@@ -121,8 +123,11 @@ namespace xQuantLogFactory.BIZ.Parser
                 }
                 finally
                 {
-                    reader?.Close();
-                    reader?.Dispose();
+                    streamRreader?.Close();
+                    streamRreader?.Dispose();
+
+                    fileStream?.Close();
+                    fileStream.Dispose();
                 }
             });
         }
