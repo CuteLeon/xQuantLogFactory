@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-
+using OfficeOpenXml;
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils.Extensions;
@@ -29,7 +30,50 @@ namespace xQuantLogFactory.BIZ.Exporter
             }
             catch { throw; }
 
+            //连接Excel文件
+            using (ExcelPackage excel = new ExcelPackage(new FileInfo(reportPath)))
+            {
+                try
+                {
+                    OfficeProperties properties = excel.Workbook.Properties;
+                    properties.Author = "xQuant日志分析工具";
+                    properties.Category = "xQuant日志分析报告";
+                    properties.Comments = $"xQuant日志分析报告-{argument.TaskID}";
+                    properties.Company = "xQuant";
+                    properties.Created = DateTime.Now;
+                    properties.Manager = "xQuant日志分析工具";
+                    properties.Subject = $"xQuant日志分析报告-{argument.TaskID}";
+                    properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
 
+                    ExcelWorksheet sourceDataSheet = excel.Workbook.Worksheets["原始"];
+                    ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
+
+                    using (ExcelRange range = sourceDataSheet.Cells[1, 1, 100, 100])
+                    {
+                        /*
+                        range[2, 2].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        range[2, 2].Style.Fill.BackgroundColor.SetColor(255, 0, 255, 0);
+                        range[5, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        range[5, 5].Style.Fill.BackgroundColor.SetColor(255, 255, 0, 0);
+                         */
+                    }
+
+                    //TODO: 数据透视表更新？？？
+                    excel.Workbook.FullCalcOnLoad = true;
+
+                    analysisSheet.PivotTables.ToList().ForEach(table => table?.ToString());
+                    analysisSheet.Calculate();
+                    excel.Workbook.Calculate();
+                }
+                catch
+                {
+                    throw;
+                }
+                finally
+                {
+                    excel.Save();
+                }
+            }
         }
 
     }
