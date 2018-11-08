@@ -31,7 +31,7 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 生成Excel
         /// </summary>
-        [AmbientValue("xls")]
+        [AmbientValue("xlsx")]
         Excel = 3
     }
 

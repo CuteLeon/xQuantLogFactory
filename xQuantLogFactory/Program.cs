@@ -473,7 +473,10 @@ namespace xQuantLogFactory
         public static void Exit(int code)
         {
             //记录任务完成时间
-            if (UnityTaskArgument != null && UnityTaskArgument.TaskFinishTime == null)
+            if (UnityTaskArgument != null &&
+                (UnityTaskArgument.TaskFinishTime == DateTime.MinValue ||
+                 UnityTaskArgument.TaskFinishTime == null)
+                )
             {
                 UnityTaskArgument.TaskFinishTime = DateTime.Now;
                 UnityDBContext.SaveChanges();

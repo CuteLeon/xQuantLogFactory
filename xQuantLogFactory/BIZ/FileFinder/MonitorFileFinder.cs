@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 
 namespace xQuantLogFactory.BIZ.FileFinder
@@ -21,9 +22,25 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <param name="predicate">文件筛选条件</param>
         /// <param name="searchPattern">匹配模式</param>
         /// <returns></returns>
-        public IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null, string searchPattern = null)
+        public IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null, string searchPattern = "*")
         {
-            return Array.FindAll(Directory.GetFiles(directory, searchPattern ?? "*", SearchOption.AllDirectories), predicate);
+            string[] files = Directory.GetFiles(directory, searchPattern);
+
+            //使用内嵌资源当做默认监视规则
+            if (files.Length == 0)
+            {
+                try
+                {
+                    UnityResource.Monitor_Template.SaveToFile(ConfigHelper.DefaultMonitorXMLPath);
+                }
+                catch { throw; }
+
+                return new string[] { ConfigHelper.DefaultMonitorXMLPath };
+            }
+
+            if (predicate != null) files = Array.FindAll(files, predicate);
+
+            return files;
         }
 
         /// <summary>

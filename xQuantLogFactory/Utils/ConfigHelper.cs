@@ -26,6 +26,14 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
+        /// 默认监视规则XML文件路径
+        /// </summary>
+        public static string DefaultMonitorXMLPath
+        {
+            get => Path.Combine(MonitorDirectory, "Monitor.xml");
+        }
+
+        /// <summary>
         /// 日志文件名称格式
         /// </summary>
         /// <remarks>神奇，勿动！</remarks>
