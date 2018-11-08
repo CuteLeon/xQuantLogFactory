@@ -251,6 +251,8 @@ namespace xQuantLogFactory
             {
                 GC.KeepAlive(UnityTaskArgument);
                 GC.Collect();
+
+                if (!e.IsTerminating) return;
             }
 
             string ExceptionDescription = string.Format(
