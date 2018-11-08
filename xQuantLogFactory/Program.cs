@@ -125,6 +125,208 @@ namespace xQuantLogFactory
             Exit(0);
         }
 
+        #region 准备任务及相关数据
+
+        /// <summary>
+        /// 获取任务相关日志文件
+        /// </summary>
+        /// <param name="directory"></param>
+        private static void GetTaskLogFiles(string directory)
+        {
+            ITaskFileFinder logFinder = new LogFileFinder();
+            IEnumerable<LogFile> logFiles = null;
+
+            try
+            {
+                logFiles = logFinder.GetFiles<LogFile>(UnityTaskArgument.LogDirectory, UnityTaskArgument);
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"获取任务相关日志文件失败：{ex.Message}");
+                Exit(4);
+            }
+
+            if (logFiles.Count() > 0)
+            {
+                UnityTaskArgument.LogFiles.AddRange(logFiles);
+                UnityDBContext.SaveChanges();
+            }
+
+            if (UnityTaskArgument.LogFiles.Count == 0)
+            {
+                UnityTrace.WriteLine("未发现任务相关日志文件，程序将退出");
+                Exit(4);
+            }
+            else
+            {
+                UnityTrace.WriteLine($"发现 {UnityTaskArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityTaskArgument.LogFiles.Select(file => file.FilePath))}\n————————");
+            }
+        }
+
+        /// <summary>
+        /// 获取监视规则对象
+        /// </summary>
+        /// <param name="directory"></param>
+        private static void GetMonitorItems(string directory)
+        {
+            ITaskFileFinder monitorFinder = new MonitorFileFinder();
+            IEnumerable<MonitorItem> monitorItems = null;
+
+            try
+            {
+                monitorItems = monitorFinder.GetFiles<MonitorItem>(directory, UnityTaskArgument);
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"获取任务相关监视规则失败：{ex.Message}");
+                Exit(5);
+            }
+
+            if (monitorItems.Count() > 0)
+            {
+                UnityTaskArgument.MonitorItems.AddRange(monitorItems);
+                UnityDBContext.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// 检查工作目录
+        /// </summary>
+        /// <param name="directory">工作目录</param>
+        private static void CheckDirectory(string directory)
+        {
+            try
+            {
+                IOUtils.PrepareDirectory(directory);
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"准备工作目录失败：{ex.Message}");
+                Exit(2);
+            }
+            UnityTrace.WriteLine("准备工作目录成功");
+        }
+
+        /// <summary>
+        /// 创建任务参数
+        /// </summary>
+        /// <param name="args"></param>
+        private static void CreateTaskArgument(string[] args)
+        {
+            try
+            {
+                UnityTaskArgument = TaskArgument.Parse(args);
+            }
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
+                Exit(1);
+            }
+            UnityDBContext.TaskArguments.Add(UnityTaskArgument);
+            UnityDBContext.SaveChanges();
+            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
+        }
+
+        #endregion
+
+        #region 解析日志
+
+        /// <summary>
+        /// 解析客户端日志
+        /// </summary>
+        private static void ParseClientLog()
+        {
+            if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
+            {
+                UnityTrace.WriteLine("开始解析 [客户端] 日志文件...\n————————");
+
+                ILogParser clientLogParser = new ClientLogParser(UnityTrace);
+                clientLogParser.Parse(UnityTaskArgument);
+
+                lock (UnityDBContext)
+                    UnityDBContext.SaveChanges();
+
+                UnityTrace.WriteLine("[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
+                    UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
+                    UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
+                    UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Client)
+                    );
+            }
+        }
+
+        /// <summary>
+        /// 解析服务端日志
+        /// </summary>
+        private static void ParseServerLog()
+        {
+            if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Server) > 0)
+            {
+                UnityTrace.WriteLine("开始解析 [服务端] 日志文件...\n————————");
+
+                ILogParser serverLogParser = new ServerLogParser(UnityTrace);
+                serverLogParser.Parse(UnityTaskArgument);
+
+                lock (UnityDBContext)
+                    UnityDBContext.SaveChanges();
+
+                UnityTrace.WriteLine("[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
+                    UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
+                    UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
+                    UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server)
+                    );
+            }
+        }
+
+        /// <summary>
+        /// 解析中间件日志
+        /// </summary>
+        private static void ParseMiddlewareLog()
+        {
+            if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Middleware) > 0)
+            {
+                UnityTrace.WriteLine("开始解析 [中间件] 日志文件...\n————————");
+
+                ILogParser middlewareLogParser = new MiddlewareLogParser(UnityTrace);
+                middlewareLogParser.Parse(UnityTaskArgument);
+
+                lock (UnityDBContext)
+                    UnityDBContext.SaveChanges();
+
+                UnityTrace.WriteLine("[中间件] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个结果\n————————",
+                    UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Middleware && file.MiddlewareResults.Count > 0),
+                    UnityTaskArgument.MiddlewareResults.Count
+                    );
+            }
+        }
+
+        #endregion
+
+        #region 分析日志
+
+        /// <summary>
+        /// 分析日志解析结果
+        /// </summary>
+        private static void AnalysisLog()
+        {
+            //分析结果前先清空分析结果
+            UnityDBContext.AnalysisResults.RemoveRange(UnityTaskArgument.AnalysisResults);
+            UnityTaskArgument.AnalysisResults.Clear();
+            UnityTaskArgument.LogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
+            UnityTaskArgument.MonitorItems.ForEach(monitor => monitor.AnalysisResults.Clear());
+            lock (UnityDBContext)
+                UnityDBContext.SaveChanges();
+
+            ILogAnalysiser logAnalysiser = new LogAnalysiser(UnityTrace);
+            logAnalysiser.Analysis(UnityTaskArgument);
+
+            lock (UnityDBContext)
+                UnityDBContext.SaveChanges();
+        }
+
+        #endregion
+
+        #region 导出报告
+
         /// <summary>
         /// 将任务储存为XML文件
         /// </summary>
@@ -238,6 +440,34 @@ namespace xQuantLogFactory
             return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
+        #endregion
+
+        #region 系统
+
+        /// <summary>
+        /// 程序结束
+        /// </summary>
+        /// <param name="code">程序退出代码 (0: 正常退出)</param>
+        public static void Exit(int code)
+        {
+            //记录任务完成时间
+            if (UnityTaskArgument != null && UnityTaskArgument.TaskFinishTime == null)
+            {
+                UnityTaskArgument.TaskFinishTime = DateTime.Now;
+                UnityDBContext.SaveChanges();
+            }
+            UnityDBContext.Dispose();
+
+            GC.Collect();
+
+            Console.WriteLine("\n————————");
+            ShowTaskDuration();
+            Console.WriteLine("————————");
+            Console.WriteLine("按任意键退出此程序... (￣▽￣)／");
+            Console.Read();
+            Environment.Exit(code);
+        }
+
         /// <summary>
         /// 处理当前域未捕捉异常
         /// </summary>
@@ -279,149 +509,9 @@ namespace xQuantLogFactory
             Exit(int.MaxValue);
         }
 
-        /// <summary>
-        /// 分析日志解析结果
-        /// </summary>
-        private static void AnalysisLog()
-        {
-            //分析结果前先清空分析结果
-            UnityDBContext.AnalysisResults.RemoveRange(UnityTaskArgument.AnalysisResults);
-            UnityTaskArgument.AnalysisResults.Clear();
-            UnityTaskArgument.LogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
-            UnityTaskArgument.MonitorItems.ForEach(monitor => monitor.AnalysisResults.Clear());
-            lock (UnityDBContext)
-                UnityDBContext.SaveChanges();
+        #endregion
 
-            ILogAnalysiser logAnalysiser = new LogAnalysiser(UnityTrace);
-            logAnalysiser.Analysis(UnityTaskArgument);
-
-            lock (UnityDBContext)
-                UnityDBContext.SaveChanges();
-        }
-
-        /// <summary>
-        /// 获取任务相关日志文件
-        /// </summary>
-        /// <param name="directory"></param>
-        private static void GetTaskLogFiles(string directory)
-        {
-            ITaskFileFinder logFinder = new LogFileFinder();
-            IEnumerable<LogFile> logFiles = null;
-
-            try
-            {
-                logFiles = logFinder.GetFiles<LogFile>(UnityTaskArgument.LogDirectory, UnityTaskArgument);
-            }
-            catch (Exception ex)
-            {
-                UnityTrace.WriteLine($"获取任务相关日志文件失败：{ex.Message}");
-                Exit(4);
-            }
-
-            if (logFiles.Count() > 0)
-            {
-                UnityTaskArgument.LogFiles.AddRange(logFiles);
-                UnityDBContext.SaveChanges();
-            }
-
-            if (UnityTaskArgument.LogFiles.Count == 0)
-            {
-                UnityTrace.WriteLine("未发现任务相关日志文件，程序将退出");
-                Exit(4);
-            }
-            else
-            {
-                UnityTrace.WriteLine($"发现 {UnityTaskArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityTaskArgument.LogFiles.Select(file => file.FilePath))}\n————————");
-            }
-        }
-
-        /// <summary>
-        /// 获取监视规则对象
-        /// </summary>
-        /// <param name="directory"></param>
-        private static void GetMonitorItems(string directory)
-        {
-            ITaskFileFinder monitorFinder = new MonitorFileFinder();
-            IEnumerable<MonitorItem> monitorItems = null;
-
-            try
-            {
-                monitorItems = monitorFinder.GetFiles<MonitorItem>(directory, UnityTaskArgument);
-            }
-            catch (Exception ex)
-            {
-                UnityTrace.WriteLine($"获取任务相关监视规则失败：{ex.Message}");
-                Exit(5);
-            }
-
-            if (monitorItems.Count() > 0)
-            {
-                UnityTaskArgument.MonitorItems.AddRange(monitorItems);
-                UnityDBContext.SaveChanges();
-            }
-        }
-
-        /// <summary>
-        /// 检查工作目录
-        /// </summary>
-        /// <param name="directory">工作目录</param>
-        private static void CheckDirectory(string directory)
-        {
-            try
-            {
-                IOUtils.PrepareDirectory(directory);
-            }
-            catch (Exception ex)
-            {
-                UnityTrace.WriteLine($"准备工作目录失败：{ex.Message}");
-                Exit(2);
-            }
-            UnityTrace.WriteLine("准备工作目录成功");
-        }
-
-        /// <summary>
-        /// 创建任务参数
-        /// </summary>
-        /// <param name="args"></param>
-        private static void CreateTaskArgument(string[] args)
-        {
-            try
-            {
-                UnityTaskArgument = TaskArgument.Parse(args);
-            }
-            catch (Exception ex)
-            {
-                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
-                Exit(1);
-            }
-            UnityDBContext.TaskArguments.Add(UnityTaskArgument);
-            UnityDBContext.SaveChanges();
-            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
-        }
-
-        /// <summary>
-        /// 程序结束
-        /// </summary>
-        /// <param name="code">程序退出代码 (0: 正常退出)</param>
-        public static void Exit(int code)
-        {
-            //记录任务完成时间
-            if (UnityTaskArgument!=null && UnityTaskArgument.TaskFinishTime == null)
-            {
-                UnityTaskArgument.TaskFinishTime = DateTime.Now;
-                UnityDBContext.SaveChanges();
-            }
-            UnityDBContext.Dispose();
-
-            GC.Collect();
-
-            Console.WriteLine("\n————————");
-            ShowTaskDuration();
-            Console.WriteLine("————————");
-            Console.WriteLine("按任意键退出此程序... (￣▽￣)／");
-            Console.Read();
-            Environment.Exit(code);
-        }
+        #region 输出信息
 
         /// <summary>
         /// 显示任务耗时
@@ -460,73 +550,7 @@ namespace xQuantLogFactory
                 );
         }
 
-        /// <summary>
-        /// 解析客户端日志
-        /// </summary>
-        private static void ParseClientLog()
-        {
-            if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
-            {
-                UnityTrace.WriteLine("开始解析 [客户端] 日志文件...\n————————");
-
-                ILogParser clientLogParser = new ClientLogParser(UnityTrace);
-                clientLogParser.Parse(UnityTaskArgument);
-
-                lock (UnityDBContext)
-                    UnityDBContext.SaveChanges();
-
-                UnityTrace.WriteLine("[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
-                    UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
-                    UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
-                    UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Client)
-                    );
-            }
-        }
-
-        /// <summary>
-        /// 解析服务端日志
-        /// </summary>
-        private static void ParseServerLog()
-        {
-            if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Server) > 0)
-            {
-                UnityTrace.WriteLine("开始解析 [服务端] 日志文件...\n————————");
-
-                ILogParser serverLogParser = new ServerLogParser(UnityTrace);
-                serverLogParser.Parse(UnityTaskArgument);
-
-                lock (UnityDBContext)
-                    UnityDBContext.SaveChanges();
-
-                UnityTrace.WriteLine("[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
-                    UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
-                    UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
-                    UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server)
-                    );
-            }
-        }
-
-        /// <summary>
-        /// 解析中间件日志
-        /// </summary>
-        private static void ParseMiddlewareLog()
-        {
-            if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Middleware) > 0)
-            {
-                UnityTrace.WriteLine("开始解析 [中间件] 日志文件...\n————————");
-
-                ILogParser middlewareLogParser = new MiddlewareLogParser(UnityTrace);
-                middlewareLogParser.Parse(UnityTaskArgument);
-
-                lock (UnityDBContext)
-                    UnityDBContext.SaveChanges();
-
-                UnityTrace.WriteLine("[中间件] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个结果\n————————",
-                    UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Middleware && file.MiddlewareResults.Count > 0),
-                    UnityTaskArgument.MiddlewareResults.Count
-                    );
-            }
-        }
+        #endregion
 
         //TODO: 按需记录系统信息和客户端信息
 
