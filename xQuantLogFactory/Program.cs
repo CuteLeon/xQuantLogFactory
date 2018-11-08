@@ -575,7 +575,7 @@ namespace xQuantLogFactory
         /// </summary>
         private static void ShowSystemInfo()
         {
-            UnityTrace.WriteLine($"获取系统信息完成：\n{UnityTaskArgument.SystemInfo?.ToString()}");
+            UnityTrace.WriteLine($"获取系统信息完成：\n————————\n{UnityTaskArgument.SystemInfo?.ToString()}\n————————");
         }
 
         #endregion

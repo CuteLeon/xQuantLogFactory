@@ -66,6 +66,13 @@ namespace xQuantLogFactory.Model
         public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
+        /// 父级监视规则
+        /// </summary>
+        [XmlIgnore]
+        [DisplayName("父级监视规则")]
+        public MonitorItem ParentMonitorItem { get; set; }
+
+        /// <summary>
         /// 监控规则列表
         /// </summary>
         [XmlElement("Item")]
@@ -96,6 +103,30 @@ namespace xQuantLogFactory.Model
         public bool HasChildren
         {
             get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
+        }
+
+        /// <summary>
+        /// 获取监视规则层深度
+        /// </summary>
+        /// <returns></returns>
+        public int GetLayerDepth()
+        {
+            int depth = 0;
+            //记录父级节点，防止陷入环路死循环
+            List<MonitorItem> monitors = new List<MonitorItem>();
+            MonitorItem parent = this;
+
+            while (parent.ParentMonitorItem != null)
+            {
+                //防止陷入环路死循环
+                if (monitors.Contains(parent)) return depth;
+                monitors.Add(parent);
+
+                parent = parent.ParentMonitorItem;
+                depth++;
+            }
+
+            return depth;
         }
 
         #endregion

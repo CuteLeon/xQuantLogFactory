@@ -29,7 +29,7 @@ namespace xQuantLogFactory.Utils.Collections
         /// 更新版本号
         /// </summary>
         /// <returns></returns>
-        protected virtual int UpdateVersion()
+        public virtual int UpdateVersion()
         {
             this.Version++;
             return this.Version;

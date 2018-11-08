@@ -163,7 +163,9 @@ namespace xQuantLogFactory.Model
             get
             {
                 //二维列表版本号低于树状列表时，更新二维列表
-                if (this.monitorItems.Version < this.MonitorItemTree.Version)
+                if (this.monitorItems.Version == 0 || //EF初始化 MonitorItemTree 时版本号不会自增
+                    this.monitorItems.Version < this.MonitorItemTree.Version
+                    )
                     this.RefreshMonitorItems();
 
                 return this.monitorItems;
@@ -195,6 +197,8 @@ namespace xQuantLogFactory.Model
                 }
             }
 
+            //同步完成后更新一次版本号，防止版本号一直为0而频繁刷新浪费性能
+            this.MonitorItemTree.UpdateVersion();
             //同步二维列表版本号
             this.monitorItems.SynchronizeVersion(this.MonitorItemTree);
         }

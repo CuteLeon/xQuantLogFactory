@@ -85,16 +85,17 @@ namespace xQuantLogFactory.BIZ.Exporter
 </thead>
 <tbody>");
             foreach (var monitor in argument.MonitorItems
-                .OrderByDescending(monitor => monitor.ElapsedMillisecond))
+                .OrderBy(monitor=>monitor.ItemID)
+                )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-    <td>{monitor.Name}</td>
+    <td>{monitor.Name.PadLeft(monitor.Name.Length + monitor.GetLayerDepth() , '+')}</td>
     <td>{monitor.StartPattern}</td>
     <td>{monitor.FinishPatterny}</td>
     <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
     <td>{monitor.MonitorResults.Count}</td>
     <td>{monitor.AnalysisResults.Count}</td>
-    <td><b>{monitor.ElapsedMillisecond}</b></td>
+    <td>{monitor.ElapsedMillisecond}</td>
     <td>{monitor.AverageElapsedMillisecond.ToString("0.##")}</td>
 </tr>");
             }
@@ -246,7 +247,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{logFile.FilePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
-    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
+    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem?.Name).Distinct())}</td>
     <td>{logFile.MonitorResults.Count}</td>
     <td>{logFile.AnalysisResults.Count}</td>
     <td><b>{logFile.ElapsedMillisecond}</b></td>
@@ -293,7 +294,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{logFile.FilePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
-    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem.Name).Distinct())}</td>
+    <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem?.Name).Distinct())}</td>
     <td><b>{logFile.MonitorResults.Count}</b></td>
     <td>{logFile.AnalysisResults.Count}</td>
     <td>{logFile.ElapsedMillisecond}</td>
@@ -331,12 +332,12 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                     foreach (var methodNameResult in requesURIResult
                         .GroupBy(result => result.MethodName)
-                        .OrderByDescending(result=>result.Count()))
+                        .OrderByDescending(result => result.Count()))
                     {
                         this.WriteCard(
                             $"方法名称：<b>{methodNameResult.Key}</b>",
                             $@"<b>方法调用次数：{methodNameResult.Count()}</b><br>
-调用客户端数：<b>{methodNameResult.Select(result=>result.Client).Distinct().Count()}</b><br>
+调用客户端数：<b>{methodNameResult.Select(result => result.Client).Distinct().Count()}</b><br>
 调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count()}</b><br>
 返回总流长度：<b>{methodNameResult.Sum(result => result.StreamLength)}</b><br>
 流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>"
@@ -572,11 +573,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">日志开始时间：</td>
-            <td class=""value"">{argument.LogStartTime?.ToString()??"[不限制]"}</td>
+            <td class=""value"">{argument.LogStartTime?.ToString() ?? "[不限制]"}</td>
         </tr>
         <tr>
             <td class=""label"">日志结束时间：</td>
-            <td class=""value"">{argument.LogFinishTime?.ToString()?? "[不限制]"}</td>
+            <td class=""value"">{argument.LogFinishTime?.ToString() ?? "[不限制]"}</td>
         </tr>
         <tr>
             <td class=""label"">包含系统信息：</td>
