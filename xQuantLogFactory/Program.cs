@@ -83,7 +83,7 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
+#if (DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
@@ -405,7 +405,8 @@ namespace xQuantLogFactory
                 UnityTaskArgument.LastReportPath = reportPath;
                 UnityTrace.WriteLine($"日志报告到处成功=> {UnityTaskArgument.LastReportPath}");
 
-                Process.Start(reportPath);
+                //自动打开报告
+                if (File.Exists(reportPath)) Process.Start(reportPath);
             }
             else
             {
@@ -422,16 +423,17 @@ namespace xQuantLogFactory
             ILogReportExporter reportExporter = null;
             switch (UnityTaskArgument.ReportMode)
             {
+                case ReportModes.Excel:
+                    {
+                        reportExporter = new ExcelLogReportExporter();
+                        break;
+                    }
                 case ReportModes.HTML:
                     {
                         reportExporter = new HTMLLogReportExporter();
                         break;
                     }
                 case ReportModes.Word:
-                    {
-                        throw new NotImplementedException($"暂未实现 {UnityTaskArgument.ReportMode} 报告格式对应的报告导出器，请等待程序开发...");
-                    }
-                case ReportModes.Excel:
                     {
                         throw new NotImplementedException($"暂未实现 {UnityTaskArgument.ReportMode} 报告格式对应的报告导出器，请等待程序开发...");
                     }

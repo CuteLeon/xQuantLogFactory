@@ -127,7 +127,7 @@ namespace xQuantLogFactory.Model
         [Required]
         [XmlAttribute("ReportMode")]
         [DisplayName("日志分析报告输出模式")]
-        public ReportModes ReportMode { get; set; } = ReportModes.HTML;
+        public ReportModes ReportMode { get; set; } = ReportModes.Excel;
 
         /// <summary>
         /// 最近一次导出的日志报告路径
