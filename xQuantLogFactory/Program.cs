@@ -19,10 +19,12 @@ namespace xQuantLogFactory
 {
     //日志文件通过并行解析，数据库内记录在日志文件范围内以日志时间和日志行号有序，但对整个任务是无序的，可以通过日志时间大致排序(有概率重复)或区分文件以日志行号排序；
 
+    //TODO: 实现 Execl 导出类，关注版本升级后性能差异
+
     //TODO: 序列化 UnityTaskArgument 为xml
-    //TODO: 保留监视规则树状结构，自动使用监视规则的所有子规则
     //TODO: 不约束参数顺序，
     //TODO: 监视规则使用正则，传入正则表达式（需要手动转义文本内的某些正则符号）
+    //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
 
     //TODO: [全局任务] 使用4.0或5.0语言版本...
     //TODO: [全局任务] 移除和排除 using
@@ -191,7 +193,7 @@ namespace xQuantLogFactory
 
             if (monitorItems.Count() > 0)
             {
-                UnityTaskArgument.MonitorItems.AddRange(monitorItems);
+                UnityTaskArgument.MonitorItemTree.AddRange(monitorItems);
                 UnityDBContext.SaveChanges();
             }
         }

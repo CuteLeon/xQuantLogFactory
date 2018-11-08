@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Xml.Serialization;
+
+using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Model
 {
@@ -141,10 +144,60 @@ namespace xQuantLogFactory.Model
         public virtual List<string> MonitorItemNames { get; set; } = new List<string>();
 
         /// <summary>
-        /// 监控规则列表
+        /// 子监控项目树根节点列表
         /// </summary>
-        [DisplayName("监控规则列表")]
-        public virtual List<MonitorItem> MonitorItems { get; set; } = new List<MonitorItem>();
+        [DisplayName("子监控项目树根节点列表")]
+        public virtual VersionedList<MonitorItem> MonitorItemTree { get; set; } = new VersionedList<MonitorItem>();
+
+        [XmlIgnore]
+        private readonly VersionedList<MonitorItem> monitorItems = new VersionedList<MonitorItem>();
+        /// <summary>
+        /// 子监控项目前序遍历列表
+        /// </summary>
+        /// <remarks>树状结构更新时需要手动刷新二维列表 this.RefreshMonitorItems()</remarks>
+        [XmlIgnore]
+        [NotMapped]
+        [DisplayName("子监控项目前序遍历列表"), DataType(DataType.Duration)]
+        public virtual List<MonitorItem> MonitorItems
+        {
+            get
+            {
+                //二维列表版本号低于树状列表时，更新二维列表
+                if (this.monitorItems.Version < this.MonitorItemTree.Version)
+                    this.RefreshMonitorItems();
+
+                return this.monitorItems;
+            }
+        }
+
+        /// <summary>
+        /// 刷新监视规则树状结构至二维列表
+        /// </summary>
+        protected void RefreshMonitorItems()
+        {
+            this.monitorItems.Clear();
+
+            if (this.MonitorItemTree.Count > 0)
+            {
+                Queue<MonitorItem> parentList = new Queue<MonitorItem>();
+
+                this.monitorItems.AddRange(this.MonitorItemTree);
+                this.MonitorItemTree.Where(monitor => monitor.HasChildren).ToList().ForEach(monitor => parentList.Enqueue(monitor));
+
+                //当前父节点指针
+                MonitorItem currentMonitor = null;
+                while (parentList.Count > 0)
+                {
+                    currentMonitor = parentList.Dequeue();
+
+                    this.monitorItems.AddRange(currentMonitor.MonitorItems);
+                    currentMonitor.MonitorItems.Where(monitor => monitor.HasChildren).ToList().ForEach(monitor => parentList.Enqueue(monitor));
+                }
+            }
+
+            //同步二维列表版本号
+            this.monitorItems.SynchronizeVersion(this.MonitorItemTree);
+        }
 
         /// <summary>
         /// 日志文件列表

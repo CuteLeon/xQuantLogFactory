@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Model
 {
@@ -15,7 +15,7 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 监控项目列表
         /// </summary>
-        List<MonitorItem> MonitorItems { get; set; }
+        VersionedList<MonitorItem> MonitorItems { get; set; }
 
         /// <summary>
         /// 是否有子监控项目

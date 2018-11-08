@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
+
+using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Model
 {
@@ -21,7 +22,7 @@ namespace xQuantLogFactory.Model
         /// 监控项目列表
         /// </summary>
         [XmlElement("Item")]
-        public virtual List<MonitorItem> MonitorItems { get; set; } = new List<MonitorItem>();
+        public virtual VersionedList<MonitorItem> MonitorItems { get; set; } = new VersionedList<MonitorItem>();
 
         /// <summary>
         /// 是否有子监控项目

@@ -2,7 +2,6 @@
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
-    //TODO: 实现其他格式报告导出器
 
     /// <summary>
     /// 日志报告导出器接口

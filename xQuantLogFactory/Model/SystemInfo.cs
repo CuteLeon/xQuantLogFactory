@@ -51,10 +51,10 @@ namespace xQuantLogFactory.Model
         public string ServicePack { get; set; } = Environment.OSVersion.ServicePack;
 
         /// <summary>
-        /// 版本号
+        /// 系统版本号
         /// </summary>
         [DisplayName("版本号"), DataType(DataType.Text)]
-        public string Version { get; set; } = Environment.OSVersion.VersionString;
+        public string OSVersion { get; set; } = Environment.OSVersion.VersionString;
 
         /// <summary>
         /// 处理器数
@@ -106,7 +106,7 @@ namespace xQuantLogFactory.Model
 
         public override string ToString()
         {
-            return $"\t主机名称：{this.MachineName}\t用户名称：{this.UserName}";
+            return $"\t主机名称：{this.MachineName}\n\t用户名称：{this.UserName}\n\t系统版本：{this.OSVersion}";
         }
 
     }

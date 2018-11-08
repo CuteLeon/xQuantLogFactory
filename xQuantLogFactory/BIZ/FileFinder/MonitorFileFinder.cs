@@ -32,6 +32,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <param name="directory">文件目录</param>
         /// <param name="argument">任务参数</param>
         /// <returns></returns>
+        /// <remarks>EF6会自动关联 MonitorItem 并将子节点一并入库并与父节点关联ID</remarks>
         public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argument) where T : class
         {
             if (!Directory.Exists(directory))
@@ -62,29 +63,30 @@ namespace xQuantLogFactory.BIZ.FileFinder
             {
                 //首元素出队
                 CurrentMonitor = parentItems.Dequeue();
-
                 //不约束监视规则时使用全部监视规则
                 if (argument.MonitorItemNames.Count == 0)
                 {
-                    targetItems.AddRange(
-                        from monitor in CurrentMonitor.MonitorItems
-                        select monitor.Clone() as MonitorItem
-                        );
+                    targetItems.AddRange(CurrentMonitor.MonitorItems);
+                    //不需要遍历子规则
+                    continue;
                 }
                 else
                 {
-                    //查询匹配的监视规则对象 (返回的IMonitor对象清空子级监视规则对象，以免被ORM重复记录到数据库)
+                    //查询匹配的监视规则对象并一并关联子对象
                     targetItems.AddRange(
                             from monitor in CurrentMonitor.MonitorItems
                             where argument.MonitorItemNames.Contains(monitor.Name)
-                            select monitor.Clone() as MonitorItem
+                            select monitor
                             );
                 }
 
-                //新的父元素依然入队
-                foreach (IMonitor monitor in CurrentMonitor.MonitorItems)
-                    if (monitor.HasChildren)
-                        parentItems.Enqueue(monitor);
+                //不符合的父级规则需要入队继续深度遍历
+                foreach (IMonitor monitor in CurrentMonitor.MonitorItems
+                    .Where(monitor => !argument.MonitorItemNames.Contains(monitor.Name) && monitor.HasChildren)
+                    )
+                {
+                    parentItems.Enqueue(monitor);
+                }
             }
 
             return targetItems as IEnumerable<T>;

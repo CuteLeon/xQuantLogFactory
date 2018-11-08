@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Utils.Collections;
+
 namespace xQuantLogFactory.Model
 {
     /// <summary>
@@ -12,7 +14,7 @@ namespace xQuantLogFactory.Model
     /// </summary>
     [Serializable]
     [Table("MonitorItems")]
-    public class MonitorItem : IMonitor, ICloneable
+    public class MonitorItem : IMonitor
     {
 
         #region 数据库字段
@@ -64,11 +66,11 @@ namespace xQuantLogFactory.Model
         public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
-        /// 子监控项目列表
+        /// 监控规则列表
         /// </summary>
         [XmlElement("Item")]
-        [NotMapped]
-        public virtual List<MonitorItem> MonitorItems { get; set; } = new List<MonitorItem>();
+        [DisplayName("监控规则列表")]
+        public virtual VersionedList<MonitorItem> MonitorItems { get; set; } = new VersionedList<MonitorItem>();
 
         /// <summary>
         /// 监视日志解析结果表
@@ -95,19 +97,6 @@ namespace xQuantLogFactory.Model
         {
             get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
         }
-
-        /// <summary>
-        /// 克隆不含子级规则的监视规则对象
-        /// </summary>
-        /// <returns></returns>
-        public object Clone()
-            => new MonitorItem()
-            {
-                Name = this.Name,
-                ItemID = this.ItemID,
-                StartPattern = this.StartPattern,
-                FinishPatterny = this.FinishPatterny,
-            };
 
         #endregion
 

@@ -25,10 +25,10 @@ namespace xQuantLogFactory.Model.Tests
             argument = TaskArgument.Parse(args.Take(3).ToArray());
             Assert.AreEqual(argument.LogDirectory, args[0]);
             Assert.AreEqual(argument.MonitorItemNames.Count, args[1].Split(',').Length);
-            Assert.AreEqual(argument.LogStartTime.ToString("yyyy-MM-dd HH:mm:ss"), args[2]);
+            Assert.AreEqual(argument.LogStartTime?.ToString("yyyy-MM-dd HH:mm:ss"), args[2]);
 
             argument = TaskArgument.Parse(args.Take(4).ToArray());
-            Assert.AreEqual(argument.LogFinishTime.ToString("yyyy-MM-dd HH:mm:ss"), args[3]);
+            Assert.AreEqual(argument.LogFinishTime?.ToString("yyyy-MM-dd HH:mm:ss"), args[3]);
 
             argument = TaskArgument.Parse(args.Take(5).ToArray());
             Assert.AreEqual(argument.IncludeSystemInfo.ToString().ToUpper(), args[4].ToUpper());

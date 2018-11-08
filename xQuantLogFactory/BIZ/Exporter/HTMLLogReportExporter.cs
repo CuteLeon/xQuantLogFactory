@@ -8,7 +8,6 @@ using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
-    //TODO: 维护监视规则的父子关系，导出报告时依然通过缩进或卡片显示父子关系
 
     /// <summary>
     /// HTML日志报告导出器

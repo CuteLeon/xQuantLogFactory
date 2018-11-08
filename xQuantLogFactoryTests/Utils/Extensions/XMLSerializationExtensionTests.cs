@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Utils.Extensions.Tests
 {
@@ -15,28 +15,28 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
         [TestMethod()]
         public void SerializeToXMLTest()
         {
-            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorItems = new List<MonitorItem>() };
+            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorItems = new VersionedList<MonitorItem>() };
 
             MonitorItem rootItem = new MonitorItem
             {
                 Name = "客户端启动",
                 StartPattern = "客户端启动开始",
                 FinishPatterny = "初始化第二阶段开始",
-                MonitorItems = new List<MonitorItem>(),
+                MonitorItems = new VersionedList<MonitorItem>(),
             };
             MonitorItem dataItem = new MonitorItem()
             {
                 Name = "数据加载",
                 StartPattern = "加载中债参数设置表",
                 FinishPatterny = "加载当前登录部门",
-                MonitorItems = new List<MonitorItem>(),
+                MonitorItems = new VersionedList<MonitorItem>(),
             };
             MonitorItem bondItem = new MonitorItem()
             {
                 Name = "债券加载",
                 StartPattern = "加载TBND查询",
                 FinishPatterny = "加载TBND",
-                MonitorItems = new List<MonitorItem>(),
+                MonitorItems = new VersionedList<MonitorItem>(),
             };
 
             container.MonitorItems.Add(rootItem);
