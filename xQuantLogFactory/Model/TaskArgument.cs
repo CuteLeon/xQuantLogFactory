@@ -58,20 +58,27 @@ namespace xQuantLogFactory.Model
         public string LogDirectory { get; set; }
 
         /// <summary>
+        /// 是否筛选日志时间
+        /// </summary>
+        [NotMapped]
+        public bool CheckLogTime
+        {
+            get => this.LogStartTime != null && this.LogFinishTime != null;
+        }
+
+        /// <summary>
         /// 日志开始时间
         /// </summary>
-        [Required]
         [XmlAttribute("LogStartTime")]
         [DisplayName("日志开始时间"), DataType(DataType.DateTime)]
-        public DateTime LogStartTime { get; set; }
+        public DateTime? LogStartTime { get; set; }
 
         /// <summary>
         /// 日志截止时间
         /// </summary>
-        [Required]
         [XmlAttribute("LogFinishTime")]
         [DisplayName("日志截止时间"), DataType(DataType.DateTime)]
-        public DateTime LogFinishTime { get; set; } = DateTime.Now;
+        public DateTime? LogFinishTime { get; set; }
 
         /// <summary>
         /// 任务开始时间
@@ -179,8 +186,8 @@ namespace xQuantLogFactory.Model
             5 [boolean_包含客户端信息 = false]
             6 [reportmodes_报告导出模式 = RepostModes.HTML]
              */
-            if (args.Length < 3 || args.Length > 7)
-                throw new ArgumentOutOfRangeException("启动参数长度应为 3~7");
+            if (args.Length == 0)
+                throw new ArgumentOutOfRangeException("不存在启动命令行参数，请至少输入参数：日志文件存放目录！ ");
 
             //基础参数
             var argument = new TaskArgument
@@ -188,37 +195,76 @@ namespace xQuantLogFactory.Model
                 TaskID = Guid.NewGuid().ToString("N"),
                 TaskStartTime = DateTime.Now,
                 LogDirectory = args[0],
-                LogStartTime = DateTime.Parse(args[2]),
             };
-            argument.MonitorItemNames.AddRange(args[1].Split(','));
 
             //可选参数
-            if (args.Length >= 4)
-                argument.LogFinishTime = DateTime.TryParse(args[3], out DateTime finishTime) ? finishTime : DateTime.Now;
+            if (args.Length >= 2)
+            {
+                argument.MonitorItemNames.AddRange(args[1].Split(','));
+            }
             else
+            {
                 return argument;
+            }
+
+            if (args.Length >= 3)
+            {
+                argument.LogStartTime = DateTime.Parse(args[2]);
+            }
+            else
+            {
+                return argument;
+            }
+
+            if (args.Length >= 4)
+            {
+                if (argument.LogStartTime == null)
+                {
+                    argument.LogFinishTime = null;
+                }
+                else
+                {
+                    argument.LogFinishTime = DateTime.TryParse(args[3], out DateTime finishTime) ? finishTime : DateTime.Now;
+                }
+            }
+            else
+            {
+                return argument;
+            }
 
             if (args.Length >= 5)
+            {
                 argument.IncludeSystemInfo = bool.TryParse(args[4], out bool systemInfo) ? systemInfo : false;
+            }
             else
+            {
                 return argument;
+            }
 
             if (args.Length >= 6)
+            {
                 argument.IncludeClientInfo = bool.TryParse(args[5], out bool clientInfo) ? clientInfo : false;
+            }
             else
+            {
                 return argument;
+            }
 
             if (args.Length >= 7)
+            {
                 argument.ReportMode = Enum.TryParse(args[6], out ReportModes reportModel) ? reportModel : ReportModes.HTML;
+            }
             else
+            {
                 return argument;
+            }
 
             return argument;
         }
 
         public override string ToString()
         {
-            return $"\t日志文件目录：{this.LogDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视项目列表：{string.Join("、", this.MonitorItemNames)}\n\t日志开始时间：{this.LogStartTime}\n\t日志截止时间：{this.LogFinishTime}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
+            return $"\t日志文件目录：{this.LogDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视项目列表：{(this.MonitorItemNames.Count > 0 ? string.Join("、", this.MonitorItemNames) : "[全部规则]")}\n\t日志开始时间：{this.LogStartTime?.ToString() ?? "[不限制]"}\n\t日志截止时间：{this.LogFinishTime?.ToString() ?? "[不限制]"}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
         }
 
     }

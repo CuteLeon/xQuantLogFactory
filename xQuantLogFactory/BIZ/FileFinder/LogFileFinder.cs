@@ -38,18 +38,22 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 //按格式筛选日志文件，以免查找到无用的文件
                 if (!logRegex.IsMatch(fileName)) continue;
 
-                if ((CreationTime > argument.LogStartTime && CreationTime < argument.LogFinishTime) ||
-                    (LastWriteTime > argument.LogStartTime && LastWriteTime < argument.LogFinishTime)
-                    )
+                //不限制日志时间时不做筛选
+                if (argument.CheckLogTime)
                 {
-                    logFiles.Add(new LogFile()
-                    {
-                        LogFileType = this.GetLogFileType(fileName),
-                        FilePath = FullName,
-                        CreateTime = CreationTime,
-                        LastWriteTime = LastWriteTime,
-                    });
+                    if ((CreationTime < argument.LogStartTime || CreationTime > argument.LogFinishTime) ||
+                        (LastWriteTime < argument.LogStartTime || LastWriteTime > argument.LogFinishTime)
+                        )
+                        continue;
                 }
+
+                logFiles.Add(new LogFile()
+                {
+                    LogFileType = this.GetLogFileType(fileName),
+                    FilePath = FullName,
+                    CreateTime = CreationTime,
+                    LastWriteTime = LastWriteTime,
+                });
             }
 
             return logFiles as IEnumerable<T>;

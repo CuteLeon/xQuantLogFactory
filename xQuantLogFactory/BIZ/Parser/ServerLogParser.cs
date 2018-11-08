@@ -69,9 +69,13 @@ namespace xQuantLogFactory.BIZ.Parser
                             else
                                 continue;
 
-                            //筛选日志行时间戳
-                            if (logTime < argument.LogStartTime || logTime > argument.LogFinishTime)
+                            //不限制日志时间时不做筛选
+                            if (argument.CheckLogTime)
+                            {
+                                //筛选日志行时间戳
+                                if (logTime < argument.LogStartTime || logTime > argument.LogFinishTime)
                                 continue;
+                            }
 
                             string logContent = match.Groups["LogContent"].Value;
                             //匹配所有监视规则

@@ -63,11 +63,18 @@ namespace xQuantLogFactory.BIZ.Parser
                         {
                             //跳过日志时间在任务时间范围外的日志行
                             if (!match.Groups["LogTime"].Success ||
-                                !DateTime.TryParse(match.Groups["LogTime"].Value, out logTime) ||
-                                logTime < argument.LogStartTime ||
-                                logTime > argument.LogFinishTime
+                                !DateTime.TryParse(match.Groups["LogTime"].Value, out logTime)
                                 )
                                 continue;
+
+                            //不限制日志时间时不做筛选
+                            if (argument.CheckLogTime)
+                            {
+                                if (logTime < argument.LogStartTime ||
+                                    logTime > argument.LogFinishTime
+                                    )
+                                    continue;
+                            }
 
                             MiddlewareResult result = new MiddlewareResult()
                             {

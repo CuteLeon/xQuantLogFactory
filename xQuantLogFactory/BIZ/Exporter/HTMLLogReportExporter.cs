@@ -78,23 +78,24 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>项目名称</th>
     <th>起始匹配模式</th>
     <th>结束匹配模式</th>
-    <th>结果总耗时(毫秒)</th>
     <th>日志文件数量</th>
     <th>监视结果数量</th>
     <th>分析匹配组数</th>
+    <th>结果总耗时(毫秒)</th>
     <th>匹配组平均耗时</th>
 </thead>
 <tbody>");
-            foreach (var monitor in argument.MonitorItems.OrderByDescending(monitor => monitor.ElapsedMillisecond))
+            foreach (var monitor in argument.MonitorItems
+                .OrderByDescending(monitor => monitor.ElapsedMillisecond))
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
     <td>{monitor.Name}</td>
     <td>{monitor.StartPattern}</td>
     <td>{monitor.FinishPatterny}</td>
-    <td>{monitor.ElapsedMillisecond}</td>
     <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
     <td>{monitor.MonitorResults.Count}</td>
     <td>{monitor.AnalysisResults.Count}</td>
+    <td><b>{monitor.ElapsedMillisecond}</b></td>
     <td>{monitor.AverageElapsedMillisecond.ToString("0.##")}</td>
 </tr>");
             }
@@ -572,11 +573,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">日志开始时间：</td>
-            <td class=""value"">{argument.LogStartTime.ToString()}</td>
+            <td class=""value"">{argument.LogStartTime?.ToString()??"[不限制]"}</td>
         </tr>
         <tr>
             <td class=""label"">日志结束时间：</td>
-            <td class=""value"">{argument.LogFinishTime.ToString()}</td>
+            <td class=""value"">{argument.LogFinishTime?.ToString()?? "[不限制]"}</td>
         </tr>
         <tr>
             <td class=""label"">包含系统信息：</td>

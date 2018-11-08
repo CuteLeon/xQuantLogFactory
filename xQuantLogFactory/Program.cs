@@ -22,6 +22,7 @@ namespace xQuantLogFactory
     //TODO: 序列化 UnityTaskArgument 为xml
     //TODO: 保留监视规则树状结构，自动使用监视规则的所有子规则
     //TODO: 不约束参数顺序，
+    //TODO: 监视规则使用正则，传入正则表达式（需要手动转义文本内的某些正则符号）
 
     //TODO: [全局任务] 使用4.0或5.0语言版本...
     //TODO: [全局任务] 移除和排除 using

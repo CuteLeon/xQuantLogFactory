@@ -63,12 +63,23 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 //首元素出队
                 CurrentMonitor = parentItems.Dequeue();
 
-                //查询匹配的监视规则对象 (返回的IMonitor对象清空子级监视规则对象，以免被ORM重复记录到数据库)
-                targetItems.AddRange(
+                //不约束监视规则时使用全部监视规则
+                if (argument.MonitorItemNames.Count == 0)
+                {
+                    targetItems.AddRange(
                         from monitor in CurrentMonitor.MonitorItems
-                        where argument.MonitorItemNames.Contains(monitor.Name)
                         select monitor.Clone() as MonitorItem
                         );
+                }
+                else
+                {
+                    //查询匹配的监视规则对象 (返回的IMonitor对象清空子级监视规则对象，以免被ORM重复记录到数据库)
+                    targetItems.AddRange(
+                            from monitor in CurrentMonitor.MonitorItems
+                            where argument.MonitorItemNames.Contains(monitor.Name)
+                            select monitor.Clone() as MonitorItem
+                            );
+                }
 
                 //新的父元素依然入队
                 foreach (IMonitor monitor in CurrentMonitor.MonitorItems)
