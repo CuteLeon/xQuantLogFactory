@@ -16,6 +16,11 @@ namespace xQuantLogFactory.DAL
         public DbSet<TaskArgument> TaskArguments { get; set; }
 
         /// <summary>
+        /// 系统信息表
+        /// </summary>
+        public DbSet<SystemInfo> SystemInfos { get; set; }
+
+        /// <summary>
         /// 监视规则表
         /// </summary>
         public DbSet<MonitorItem> MonitorItems { get; set; }

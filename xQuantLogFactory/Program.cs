@@ -80,13 +80,19 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (DEBUG)
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
 #else
             UnityTrace.WriteLine("开始创建任务参数对象...");
             CreateTaskArgument(args);
+
+            if (UnityTaskArgument?.IncludeSystemInfo ?? false)
+            {
+                UnityTrace.WriteLine("开始获取系统信息...");
+                GetSystemInfo();
+            }
 
             UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", ConfigHelper.MonitorDirectory);
             CheckDirectory(ConfigHelper.MonitorDirectory);
@@ -225,6 +231,17 @@ namespace xQuantLogFactory
             UnityDBContext.TaskArguments.Add(UnityTaskArgument);
             UnityDBContext.SaveChanges();
             UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
+        }
+
+        /// <summary>
+        /// 获取系统信息
+        /// </summary>
+        private static void GetSystemInfo()
+        {
+            SystemInfo systemInfo = new SystemInfo();
+            UnityTaskArgument.SystemInfo = systemInfo;
+            UnityDBContext.SaveChanges();
+            ShowSystemInfo();
         }
 
         #endregion
@@ -550,9 +567,15 @@ namespace xQuantLogFactory
                 );
         }
 
-        #endregion
+        /// <summary>
+        /// 输出系统信息
+        /// </summary>
+        private static void ShowSystemInfo()
+        {
+            UnityTrace.WriteLine($"获取系统信息完成：\n{UnityTaskArgument.SystemInfo?.ToString()}");
+        }
 
-        //TODO: 按需记录系统信息和客户端信息
+        #endregion
 
     }
 }

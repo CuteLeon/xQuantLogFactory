@@ -95,6 +95,7 @@
     <Compile Include="Model\MonitorContainer.cs" />
     <Compile Include="Model\MonitorItem.cs" />
     <Compile Include="Model\MonitorResult.cs" />
+    <Compile Include="Model\SystemInfo.cs" />
     <Compile Include="Model\TaskArgument.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

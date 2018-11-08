@@ -93,8 +93,15 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [Required]
         [XmlAttribute("IncludeSystemInfo")]
-        [DisplayName("包含系统信息"), DataType(DataType.DateTime)]
+        [DisplayName("包含系统信息")]
         public bool IncludeSystemInfo { get; set; } = false;
+
+        /// <summary>
+        /// 系统信息
+        /// </summary>
+        [XmlAttribute("SystemInfo")]
+        [DisplayName("系统信息")]
+        public SystemInfo SystemInfo { get; set; }
 
         /// <summary>
         /// 包含客户端文件信息
