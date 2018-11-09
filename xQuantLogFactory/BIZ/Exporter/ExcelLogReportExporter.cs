@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+
 using OfficeOpenXml;
+
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils.Extensions;
@@ -48,14 +48,10 @@ namespace xQuantLogFactory.BIZ.Exporter
                     ExcelWorksheet sourceDataSheet = excel.Workbook.Worksheets["原始"];
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
 
-                    using (ExcelRange range = sourceDataSheet.Cells[1, 1, 100, 100])
+                    //数据区域从 [2, 1] 开始
+                    using (ExcelRange range = sourceDataSheet.Cells[2, 1, 100, 100])
                     {
-                        /*
-                        range[2, 2].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        range[2, 2].Style.Fill.BackgroundColor.SetColor(255, 0, 255, 0);
-                        range[5, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        range[5, 5].Style.Fill.BackgroundColor.SetColor(255, 255, 0, 0);
-                         */
+
                     }
 
                     //TODO: 数据透视表更新？？？

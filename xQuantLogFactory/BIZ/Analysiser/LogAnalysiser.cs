@@ -59,17 +59,18 @@ namespace xQuantLogFactory.BIZ.Analysiser
                                 }
                             case ResultTypes.Finish:
                                 {
-                                    if (analysisResult == null)
+                                    if (analysisResult == null ||
+                                        !this.CheckMatch(analysisResult.StartMonitorResult, monitorResult)
+                                        )
                                     {
-                                        //结果类型为Finish时，若不存在未关闭的分析结果，则新建分析结果并记录监视结果；
+                                        //结果类型为Finish时，若不存在未关闭的分析结果或结果不匹配，则新建分析结果并记录监视结果；
                                         analysisResult = this.CreateAnalysisResult(argument, logFile, monitor, monitorResult);
                                     }
                                     else
                                     {
-                                        //TODO: [扩展] 如果需要分析其他数据，可在此处根据 monitor 配置的数据类型，扩展算法
-
                                         //结果类型为Finish时，若存在未关闭的分析结果，则记录监视结果并计算结果耗时；
                                         analysisResult.FinishMonitorResult = monitorResult;
+
                                         if (analysisResult.StartMonitorResult != null &&
                                             analysisResult.StartMonitorResult.LogTime != null &&
                                             analysisResult.FinishMonitorResult != null &&
@@ -100,6 +101,25 @@ namespace xQuantLogFactory.BIZ.Analysiser
             });
             //计算每个日志文件匹配结果总耗时
             argument.LogFiles.ForEach(logFile => logFile.ElapsedMillisecond = logFile.AnalysisResults.Sum(result => result.ElapsedMillisecond));
+        }
+
+        /// <summary>
+        /// 检查解析结果是否匹配
+        /// </summary>
+        /// <param name="startResult"></param>
+        /// <param name="finishResult"></param>
+        /// <returns></returns>
+        private bool CheckMatch(MonitorResult startResult, MonitorResult finishResult)
+        {
+            if (startResult == null || finishResult == null) return false;
+            
+            //判断解析结果是否匹配的逻辑放在这里
+            bool matched = (
+                startResult.Client == finishResult.Client &&
+                startResult.LogTime <= finishResult.LogTime //不可使用行号匹配，跨文件的解析结果将无法匹配
+                );
+
+            return matched;
         }
 
         /// <summary>
