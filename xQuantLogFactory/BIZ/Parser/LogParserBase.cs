@@ -36,14 +36,11 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <returns>匹配监视规则类型</returns>
         protected ResultTypes MatchMonitor(MonitorItem monitor, string logContent)
         {
-            //以下字符串判空方法会获得比 ""==string.Empty 更好的性能
-            if (monitor.StartPattern?.Length > 0 &&
-                logContent.IndexOf(monitor.StartPattern, StringComparison.Ordinal) > -1)
+            if (monitor.StartRegex?.IsMatch(logContent) ?? false)
             {
                 return ResultTypes.Start;
             }
-            else if (monitor.FinishPatterny?.Length > 0 &&
-                logContent.IndexOf(monitor.FinishPatterny, StringComparison.Ordinal) > -1)
+            else if (monitor.FinishRegex?.IsMatch(logContent) ?? false)
             {
                 return ResultTypes.Finish;
             }

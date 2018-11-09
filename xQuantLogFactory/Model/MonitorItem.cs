@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Utils.Collections;
@@ -50,6 +51,54 @@ namespace xQuantLogFactory.Model
         [XmlAttribute("End")]
         [DisplayName("结束匹配模式"), DataType(DataType.Text)]
         public string FinishPatterny { get; set; }
+
+        #region 正则
+
+        /// <summary>
+        /// 起始正则表达式
+        /// </summary>
+        private Regex _startRegex;
+        /// <summary>
+        /// 起始正则表达式
+        /// </summary>
+        public Regex StartRegex
+        {
+            get
+            {
+                if (this._startRegex == null && !string.IsNullOrWhiteSpace(this.StartPattern))
+                {
+                    this._startRegex = new Regex(
+                        string.Format("^.*{0}.*$", Regex.Escape(this.StartPattern)),
+                        RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+                }
+
+                return this._startRegex;
+            }
+        }
+
+        /// <summary>
+        /// 结束正则表达式
+        /// </summary>
+        private Regex _finishRegex;
+        /// <summary>
+        /// 结束正则表达式
+        /// </summary>
+        public Regex FinishRegex
+        {
+            get
+            {
+                if (this._finishRegex == null && !string.IsNullOrWhiteSpace(this.FinishPatterny))
+                {
+                    this._finishRegex = new Regex(
+                        string.Format("^.*{0}.*$", Regex.Escape(this.FinishPatterny)),
+                        RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+                }
+
+                return this._finishRegex;
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// 结果总耗时（单位：毫秒）
