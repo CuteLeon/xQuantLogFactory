@@ -112,9 +112,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
         private bool CheckMatch(MonitorResult startResult, MonitorResult finishResult)
         {
             if (startResult == null || finishResult == null) return false;
-            
+
             //判断解析结果是否匹配的逻辑放在这里
             bool matched = (
+                startResult.Version == finishResult.Version &&
                 startResult.Client == finishResult.Client &&
                 startResult.LogTime <= finishResult.LogTime //不可使用行号匹配，跨文件的解析结果将无法匹配
                 );
@@ -141,6 +142,8 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 LogFile = logFile,
                 MonitorItem = monitor,
                 TaskArgument = argument,
+                Client = monitorResult?.Client,
+                Version = monitorResult?.Version,
             };
 
             //反向关联日志监视结果

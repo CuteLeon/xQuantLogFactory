@@ -27,6 +27,18 @@ namespace xQuantLogFactory.Model
         public TaskArgument TaskArgument { get; set; }
 
         /// <summary>
+        /// 客户端
+        /// </summary>
+        [DisplayName("客户端"), DataType(DataType.Text)]
+        public string Client { get; set; }
+
+        /// <summary>
+        /// 客户端版本
+        /// </summary>
+        [DisplayName("客户端版本"), DataType(DataType.Text)]
+        public string Version { get; set; }
+
+        /// <summary>
         /// 日志文件
         /// </summary>
         [Required]

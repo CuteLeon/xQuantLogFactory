@@ -135,7 +135,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     MonitorResult finishResult = analysisResult.FinishMonitorResult;
                     this.WriteCard(
                         $"耗时：<b>{analysisResult.ElapsedMillisecond} ms</b>",
-                        $@"监视规则：{startResult?.MonitorItem?.Name ?? finishResult?.MonitorItem?.Name}<br><hr>
+                        $@"监视规则：{analysisResult.MonitorItem?.Name}<br><hr>
 开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
 结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
                         );
@@ -168,7 +168,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     MonitorResult finishResult = analysisResult.FinishMonitorResult;
                     this.WriteCard(
                         $"耗时：<b>{analysisResult.ElapsedMillisecond} ms</b>",
-                        $@"日志文件：{startResult?.LogFile?.FilePath ?? finishResult?.LogFile?.FilePath}<br><hr>
+                        $@"日志文件：{analysisResult.LogFile?.FilePath}<br><hr>
 开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
 结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
                         );
