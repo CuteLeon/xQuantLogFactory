@@ -17,8 +17,10 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
+
     //日志文件通过并行解析，数据库内记录在日志文件范围内以日志时间和日志行号有序，但对整个任务是无序的，可以通过日志时间大致排序(有概率重复)或区分文件以日志行号排序；
 
+    //TODO: 使用宏取窗口打开事件的目标窗口名称
     //TODO: 实现 Execl 导出类，关注版本升级后性能差异
 
     //TODO: 序列化 UnityTaskArgument 为xml
@@ -83,7 +85,7 @@ namespace xQuantLogFactory
             UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (DEBUG)
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);

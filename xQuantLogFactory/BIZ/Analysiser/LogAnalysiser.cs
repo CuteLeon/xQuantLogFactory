@@ -117,7 +117,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
             bool matched = (
                 startResult.Version == finishResult.Version &&
                 startResult.Client == finishResult.Client &&
-                startResult.LogTime <= finishResult.LogTime //不可使用行号匹配，跨文件的解析结果将无法匹配
+                startResult.LogTime <= finishResult.LogTime
                 );
 
             return matched;
@@ -144,6 +144,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 TaskArgument = argument,
                 Client = monitorResult?.Client,
                 Version = monitorResult?.Version,
+                LineNumber = monitorResult.LineNumber,
             };
 
             //反向关联日志监视结果

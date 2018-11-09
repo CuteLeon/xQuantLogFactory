@@ -27,6 +27,12 @@ namespace xQuantLogFactory.Model
         public TaskArgument TaskArgument { get; set; }
 
         /// <summary>
+        /// 行号
+        /// </summary>
+        [DisplayName("行号")]
+        public int LineNumber { get; set; }
+
+        /// <summary>
         /// 客户端
         /// </summary>
         [DisplayName("客户端"), DataType(DataType.Text)]
