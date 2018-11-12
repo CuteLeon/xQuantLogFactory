@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using xQuantLogFactory.BIZ.Processer;
+using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Monitor;
+using xQuantLogFactory.Model.Result;
+using xQuantLogFactory.Utils.Trace;
+
+namespace xQuantLogFactory.BIZ.Analysiser
+{
+    public abstract class LogAnalysiserBase : LogProcesserBase, ILogAnalysiser
+    {
+
+        public LogAnalysiserBase() { }
+
+        public LogAnalysiserBase(ITracer trace) : base(trace) { }
+
+        /// <summary>
+        /// 分析任务
+        /// </summary>
+        /// <param name="argument"></param>
+        public abstract void Analysis(TaskArgument argument);
+
+        /// <summary>
+        /// 创建分析结果
+        /// </summary>
+        /// <param name="argument">任务参数</param>
+        /// <param name="logFile">日志文件</param>
+        /// <param name="monitor">监视规则</param>
+        /// <param name="monitorResult">监视结果</param>
+        /// <returns></returns>
+        protected GroupAnalysisResult CreateAnalysisResult(
+            TaskArgument argument,
+            LogFile logFile,
+            MonitorItem monitor,
+            MonitorResult monitorResult)
+        {
+            GroupAnalysisResult analysisResult = new GroupAnalysisResult()
+            {
+                LogFile = logFile,
+                MonitorItem = monitor,
+                TaskArgument = argument,
+                Client = monitorResult?.Client,
+                Version = monitorResult?.Version,
+                LineNumber = monitorResult.LineNumber,
+            };
+
+            //反向关联日志监视结果
+            lock (argument)
+            {
+                argument.AnalysisResults.Add(analysisResult);
+                logFile.AnalysisResults.Add(analysisResult);
+                monitor.AnalysisResults.Add(analysisResult);
+            }
+
+            switch (monitorResult.GroupType)
+            {
+                case GroupTypes.Start:
+                    {
+                        analysisResult.StartMonitorResult = monitorResult;
+                        break;
+                    }
+                case GroupTypes.Finish:
+                    {
+                        analysisResult.FinishMonitorResult = monitorResult;
+                        break;
+                    }
+            }
+
+            return analysisResult;
+        }
+
+    }
+}

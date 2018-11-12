@@ -337,8 +337,12 @@ namespace xQuantLogFactory
             lock (UnityDBContext)
                 UnityDBContext.SaveChanges();
 
-            ILogAnalysiser logAnalysiser = new GroupLogAnalysiser(UnityTrace);
-            logAnalysiser.Analysis(UnityTaskArgument);
+            LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTrace);
+            LogAnalysiserBase formLogAnalysiser = new FormOperationAnalysiser(UnityTrace);
+
+            logAnalysiserHost.AddAnalysiser(formLogAnalysiser);
+
+            logAnalysiserHost.Analysis(UnityTaskArgument);
 
             lock (UnityDBContext)
                 UnityDBContext.SaveChanges();

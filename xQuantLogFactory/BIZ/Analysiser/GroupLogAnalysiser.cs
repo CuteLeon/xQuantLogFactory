@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 
-using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Model.Monitor;
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
@@ -12,7 +11,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// <summary>
     /// 日志分析器
     /// </summary>
-    public class GroupLogAnalysiser : LogProcesserBase, ILogAnalysiser
+    public class GroupLogAnalysiser : LogAnalysiserHost
     {
         public GroupLogAnalysiser() { }
 
@@ -22,7 +21,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// 分析日志
         /// </summary>
         /// <param name="argument">任务参数</param>
-        public void Analysis(TaskArgument argument)
+        public override void AnalysisTask(TaskArgument argument)
         {
             if (argument == null)
                 throw new ArgumentNullException(nameof(argument));
@@ -51,26 +50,26 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     GroupAnalysisResult analysisResult = null;
                     foreach (MonitorResult monitorResult in monitorGroupResult.OrderBy(result => result.LineNumber))
                     {
-                        switch (monitorResult.ResultType)
+                        switch (monitorResult.GroupType)
                         {
-                            case ResultTypes.Start:
+                            case GroupTypes.Start:
                                 {
-                                    //结果类型为Start时，总是新建分析结果并记录监视结果；
+                                    //组匹配类型为Start时，总是新建分析结果并记录监视结果；
                                     analysisResult = this.CreateAnalysisResult(argument, logFile, monitor, monitorResult);
                                     break;
                                 }
-                            case ResultTypes.Finish:
+                            case GroupTypes.Finish:
                                 {
                                     if (analysisResult == null ||
                                         !this.CheckMatch(analysisResult.StartMonitorResult, monitorResult)
                                         )
                                     {
-                                        //结果类型为Finish时，若不存在未关闭的分析结果或结果不匹配，则新建分析结果并记录监视结果；
+                                        //组匹配类型为Finish时，若不存在未关闭的分析结果或结果不匹配，则新建分析结果并记录监视结果；
                                         analysisResult = this.CreateAnalysisResult(argument, logFile, monitor, monitorResult);
                                     }
                                     else
                                     {
-                                        //结果类型为Finish时，若存在未关闭的分析结果，则记录监视结果并计算结果耗时；
+                                        //组匹配类型为Finish时，若存在未关闭的分析结果，则记录监视结果并计算结果耗时；
                                         analysisResult.FinishMonitorResult = monitorResult;
 
                                         if (analysisResult.StartMonitorResult != null &&
@@ -93,16 +92,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                 this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})分析完成\n————————");
             });
-
-            //计算每个监视规则匹配结果总耗时和完整匹配组平均耗时
-            argument.MonitorItems.ForEach(monitor =>
-            {
-                monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result.ElapsedMillisecond);
-                int fullCoubleCount = monitor.AnalysisResults.Count(result => result.StartMonitorResult != null && result.FinishMonitorResult != null);
-                if (fullCoubleCount > 0) monitor.AverageElapsedMillisecond = monitor.ElapsedMillisecond / fullCoubleCount;
-            });
-            //计算每个日志文件匹配结果总耗时
-            argument.LogFiles.ForEach(logFile => logFile.ElapsedMillisecond = logFile.AnalysisResults.Sum(result => result.ElapsedMillisecond));
         }
 
         /// <summary>
@@ -123,55 +112,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 );
 
             return matched;
-        }
-
-        /// <summary>
-        /// 创建分析结果
-        /// </summary>
-        /// <param name="argument">任务参数</param>
-        /// <param name="logFile">日志文件</param>
-        /// <param name="monitor">监视规则</param>
-        /// <param name="monitorResult">监视结果</param>
-        /// <returns></returns>
-        private GroupAnalysisResult CreateAnalysisResult(
-            TaskArgument argument,
-            LogFile logFile,
-            MonitorItem monitor,
-            MonitorResult monitorResult)
-        {
-            GroupAnalysisResult analysisResult = new GroupAnalysisResult()
-            {
-                LogFile = logFile,
-                MonitorItem = monitor,
-                TaskArgument = argument,
-                Client = monitorResult?.Client,
-                Version = monitorResult?.Version,
-                LineNumber = monitorResult.LineNumber,
-            };
-
-            //反向关联日志监视结果
-            lock (argument)
-            {
-                argument.AnalysisResults.Add(analysisResult);
-                logFile.AnalysisResults.Add(analysisResult);
-                monitor.AnalysisResults.Add(analysisResult);
-            }
-
-            switch (monitorResult.ResultType)
-            {
-                case ResultTypes.Start:
-                    {
-                        analysisResult.StartMonitorResult = monitorResult;
-                        break;
-                    }
-                case ResultTypes.Finish:
-                    {
-                        analysisResult.FinishMonitorResult = monitorResult;
-                        break;
-                    }
-            }
-
-            return analysisResult;
         }
 
     }

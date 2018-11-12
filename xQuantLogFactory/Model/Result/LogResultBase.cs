@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
-    /// 结果模式
+    /// 组匹配类型
     /// </summary>
-    public enum ResultTypes
+    public enum GroupTypes
     {
         /// <summary>
         /// 未匹配

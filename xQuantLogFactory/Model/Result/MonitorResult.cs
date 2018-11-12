@@ -26,7 +26,7 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         [Required]
         [DisplayName("监视结果匹配模式")]
-        public ResultTypes ResultType { get; set; }
+        public GroupTypes GroupType { get; set; }
 
         /// <summary>
         /// 客户端名称

@@ -84,33 +84,18 @@ namespace xQuantLogFactory.BIZ.Parser
                             //匹配所有监视规则
                             foreach (MonitorItem monitor in argument.MonitorItems)
                             {
-                                ResultTypes resultType = this.MatchMonitor(monitor, logContent);
-                                if (resultType == ResultTypes.Unmatch)
+                                GroupTypes groupType = this.MatchMonitor(monitor, logContent);
+                                if (groupType == GroupTypes.Unmatch)
                                 {
                                     //未匹配到任何监视规则，尝试下一条规则
                                     continue;
                                 }
 
-                                //匹配到监视规则则新增一条监视结果记录，可能同一行日志会产生多条结果日志，因为同时与多条规则匹配
-                                MonitorResult result = new MonitorResult()
-                                {
-                                    LogTime = logTime,
-                                    ResultType = resultType,
-                                    LineNumber = lineNumber,
-                                    LogContent = logContent,
-                                };
-
-                                //反向关联日志监视结果
-                                lock (argument)  //lock 任务而非 LockSeed 为了多任务并行考虑
-                                {
-                                    result.TaskArgument = argument;
-                                    result.LogFile = logFile;
-                                    result.MonitorItem = monitor;
-
-                                    argument.MonitorResults.Add(result);
-                                    logFile.MonitorResults.Add(result);
-                                    monitor.MonitorResults.Add(result);
-                                }
+                                MonitorResult result = this.CreateMonitorResult(argument, logFile, monitor);
+                                result.LogTime = logTime;
+                                result.GroupType = groupType;
+                                result.LineNumber = lineNumber;
+                                result.LogContent = logContent;
 
                                 if (match.Groups["LogLevel"].Success)
                                     result.LogLevel = match.Groups["LogLevel"].Value;
