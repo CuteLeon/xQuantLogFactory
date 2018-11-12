@@ -2,13 +2,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace xQuantLogFactory.Model
+using xQuantLogFactory.Model.Monitor;
+
+namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
     /// 分析结果
     /// </summary>
     [Table("AnalysisResults")]
-    public class AnalysisResult
+    public class GroupAnalysisResult
     {
         /// <summary>
         /// 分析结果ID

@@ -1,6 +1,6 @@
 ﻿using xQuantLogFactory.Utils.Collections;
 
-namespace xQuantLogFactory.Model
+namespace xQuantLogFactory.Model.Monitor
 {
     /// <summary>
     /// 监视规则接口

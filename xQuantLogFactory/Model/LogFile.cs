@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.Model
 {
@@ -89,7 +90,7 @@ namespace xQuantLogFactory.Model
         /// 日志分析结果表
         /// </summary>
         [DisplayName("日志分析结果表")]
-        public virtual List<AnalysisResult> AnalysisResults { get; set; } = new List<AnalysisResult>();
+        public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
 
     }
 }

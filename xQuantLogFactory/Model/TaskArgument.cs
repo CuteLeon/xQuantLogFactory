@@ -6,6 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Model.Monitor;
+using xQuantLogFactory.Model.Result;
+using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Model
@@ -127,7 +130,7 @@ namespace xQuantLogFactory.Model
         [Required]
         [XmlAttribute("ReportMode")]
         [DisplayName("日志分析报告输出模式")]
-        public ReportModes ReportMode { get; set; } = ReportModes.Excel;
+        public ReportModes ReportMode { get; set; } = ConfigHelper.DefaultReportMode;
 
         /// <summary>
         /// 最近一次导出的日志报告路径
@@ -225,7 +228,7 @@ namespace xQuantLogFactory.Model
         /// 日志分析结果表
         /// </summary>
         [DisplayName("日志分析结果表")]
-        public virtual List<AnalysisResult> AnalysisResults { get; set; } = new List<AnalysisResult>();
+        public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
 
         /// <summary>
         /// 根据工具启动参数创建任务参数对象

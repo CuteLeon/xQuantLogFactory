@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 using xQuantLogFactory.Utils.Collections;
 
-namespace xQuantLogFactory.Model
+namespace xQuantLogFactory.Model.Monitor
 {
     /// <summary>
     /// 监视规则容器

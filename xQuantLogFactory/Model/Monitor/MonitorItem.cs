@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
-
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Collections;
 
-namespace xQuantLogFactory.Model
+namespace xQuantLogFactory.Model.Monitor
 {
     /// <summary>
     /// 监视规则
@@ -91,7 +91,7 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlIgnore]
         [DisplayName("日志分析结果表")]
-        public virtual List<AnalysisResult> AnalysisResults { get; set; } = new List<AnalysisResult>();
+        public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
 
         #endregion
 

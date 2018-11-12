@@ -3,7 +3,7 @@ using System.IO;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Utils.Extensions.Tests

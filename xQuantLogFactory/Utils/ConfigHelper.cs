@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using xQuantLogFactory.Model;
 
 namespace xQuantLogFactory.Utils
 {
@@ -64,6 +65,14 @@ namespace xQuantLogFactory.Utils
         public static string MiddlewareLogFileNamePrefix
         {
             get => "performanceLog";
+        }
+
+        /// <summary>
+        /// 默认导出报告模式
+        /// </summary>
+        public static ReportModes DefaultReportMode
+        {
+            get => ReportModes.HTML;
         }
 
     }

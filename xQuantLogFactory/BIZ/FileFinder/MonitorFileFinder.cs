@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 

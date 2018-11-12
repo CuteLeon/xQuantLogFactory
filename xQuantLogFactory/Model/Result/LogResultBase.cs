@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace xQuantLogFactory.Model
+namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
     /// 结果模式

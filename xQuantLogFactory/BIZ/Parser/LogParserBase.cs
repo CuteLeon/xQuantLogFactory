@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Monitor;
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser

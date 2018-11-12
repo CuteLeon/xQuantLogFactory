@@ -11,6 +11,7 @@ using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
@@ -20,7 +21,6 @@ namespace xQuantLogFactory
 
     //日志文件通过并行解析，数据库内记录在日志文件范围内以日志时间和日志行号有序，但对整个任务是无序的，可以通过日志时间大致排序(有概率重复)或区分文件以日志行号排序；
 
-    //TODO: 实现 Execl 导出类，关注版本升级后性能差异
     //TODO: 外汇2.0、窗口加载等需求通过实现独立的分析器完成，不改变解析器逻辑，以免降低性能
 
     //TODO: 序列化 UnityTaskArgument 为xml
@@ -337,7 +337,7 @@ namespace xQuantLogFactory
             lock (UnityDBContext)
                 UnityDBContext.SaveChanges();
 
-            ILogAnalysiser logAnalysiser = new LogAnalysiser(UnityTrace);
+            ILogAnalysiser logAnalysiser = new GroupLogAnalysiser(UnityTrace);
             logAnalysiser.Analysis(UnityTaskArgument);
 
             lock (UnityDBContext)

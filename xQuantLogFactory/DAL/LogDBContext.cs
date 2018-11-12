@@ -2,6 +2,8 @@
 using System.Data.Entity.ModelConfiguration.Conventions;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Monitor;
+using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.DAL
 {
@@ -43,7 +45,7 @@ namespace xQuantLogFactory.DAL
         /// <summary>
         /// 分析结果表
         /// </summary>
-        public DbSet<AnalysisResult> AnalysisResults { get; set; }
+        public DbSet<GroupAnalysisResult> AnalysisResults { get; set; }
 
         /// <summary>
         /// 全局静态数据库交互对象

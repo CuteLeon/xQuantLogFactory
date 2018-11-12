@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace xQuantLogFactory.Model
+using xQuantLogFactory.Model.Monitor;
+
+namespace xQuantLogFactory.Model.Result
 {
 
     /// <summary>

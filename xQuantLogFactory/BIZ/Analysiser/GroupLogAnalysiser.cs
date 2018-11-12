@@ -3,6 +3,8 @@ using System.Linq;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Result;
+using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
@@ -10,11 +12,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// <summary>
     /// 日志分析器
     /// </summary>
-    public class LogAnalysiser : LogProcesserBase, ILogAnalysiser
+    public class GroupLogAnalysiser : LogProcesserBase, ILogAnalysiser
     {
-        public LogAnalysiser() { }
+        public GroupLogAnalysiser() { }
 
-        public LogAnalysiser(ITracer trace) : base(trace) { }
+        public GroupLogAnalysiser(ITracer trace) : base(trace) { }
 
         /// <summary>
         /// 分析日志
@@ -46,7 +48,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     }
                     this.Trace?.WriteLine($"分析监视规则：(文件ID: {logFile.FileID}, Type: {logFile.LogFileType}) {monitor.Name}");
 
-                    AnalysisResult analysisResult = null;
+                    GroupAnalysisResult analysisResult = null;
                     foreach (MonitorResult monitorResult in monitorGroupResult.OrderBy(result => result.LineNumber))
                     {
                         switch (monitorResult.ResultType)
@@ -131,13 +133,13 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="monitor">监视规则</param>
         /// <param name="monitorResult">监视结果</param>
         /// <returns></returns>
-        private AnalysisResult CreateAnalysisResult(
+        private GroupAnalysisResult CreateAnalysisResult(
             TaskArgument argument,
             LogFile logFile,
             MonitorItem monitor,
             MonitorResult monitorResult)
         {
-            AnalysisResult analysisResult = new AnalysisResult()
+            GroupAnalysisResult analysisResult = new GroupAnalysisResult()
             {
                 LogFile = logFile,
                 MonitorItem = monitor,

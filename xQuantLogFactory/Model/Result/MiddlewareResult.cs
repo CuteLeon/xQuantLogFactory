@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace xQuantLogFactory.Model
+namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
     /// 中间件日志结果

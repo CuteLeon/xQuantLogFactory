@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Monitor;
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser
