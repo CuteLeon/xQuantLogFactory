@@ -338,9 +338,11 @@ namespace xQuantLogFactory
                 UnityDBContext.SaveChanges();
 
             LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTrace);
-            LogAnalysiserBase formLogAnalysiser = new FormOperationAnalysiser(UnityTrace);
+            DirectedLogAnalysiserBase formLogAnalysiser = new CommonPrefixAnalysiser(UnityTrace) { TargetMonitorName = "开关窗体" };
+            DirectedLogAnalysiserBase reportLogAnalysiser = new CommonPrefixAnalysiser(UnityTrace) { TargetMonitorName = "查询报表" };
 
             logAnalysiserHost.AddAnalysiser(formLogAnalysiser);
+            logAnalysiserHost.AddAnalysiser(reportLogAnalysiser);
 
             logAnalysiserHost.Analysis(UnityTaskArgument);
 

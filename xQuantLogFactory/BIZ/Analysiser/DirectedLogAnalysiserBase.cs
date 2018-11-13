@@ -10,7 +10,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <summary>
         /// 针对的监视规则名称
         /// </summary>
-        protected abstract string TargetMonitorName { get; set; }
+        public abstract string TargetMonitorName { get; set; }
 
         public DirectedLogAnalysiserBase() { }
 

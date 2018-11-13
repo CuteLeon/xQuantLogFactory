@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="监听客户端启动方案">
   <Item Name="开关窗体" Begin="开始打开窗体" End="完成打开窗体"></Item>
+  <Item Name="查询报表" Begin="开始查询报表" End="完成查询报表" ></Item>
   <Item Name="客户端启动" Begin="登录成功" End="初始化完成-----------">
     <Item Name="检查更新" Begin="检查最新版本开始----" End="检查最新版本结束----">
     </Item>

@@ -9,27 +9,31 @@ using xQuantLogFactory.Utils.Trace;
 namespace xQuantLogFactory.BIZ.Analysiser
 {
     /// <summary>
-    /// 窗口操作分析器
+    /// 通用前缀分析器
     /// </summary>
-    public class FormOperationAnalysiser : DirectedLogAnalysiserBase
+    public class CommonPrefixAnalysiser : DirectedLogAnalysiserBase
     {
-        //根据监视规则名称查找窗口操作相关分析结果，获取分析结果所在窗口名称，根据窗口名称为监视规则新建子监视规则，并将分析结果赋值给子监视规则
 
         /// <summary>
         /// 针对的监视规则名称
         /// </summary>
-        protected override string TargetMonitorName { get; set; } = "开关窗体";
+        public override string TargetMonitorName { get; set; }
 
-        public FormOperationAnalysiser() { }
+        public CommonPrefixAnalysiser() { }
 
-        public FormOperationAnalysiser(ITracer trace) : base(trace) { }
+        public CommonPrefixAnalysiser(ITracer trace) : base(trace) { }
 
         /// <summary>
-        /// 分析窗口操作日志
+        /// 分析监视内容作为前缀的操作日志
         /// </summary>
         /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
+            if (string.IsNullOrEmpty(TargetMonitorName))
+                throw new ArgumentNullException(nameof(this.TargetMonitorName));
+            if (argument == null)
+                throw new ArgumentNullException(nameof(argument));
+
             argument.AnalysisResults
                 .Where(result => result.MonitorItem.Name == this.TargetMonitorName)
                 .GroupBy(result => (result.LogFile, result.MonitorItem))
@@ -38,7 +42,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     MonitorItem targetMonitor = resultGroup.Key.MonitorItem;
                     MonitorItem childMonitor = null;
                     MonitorResult firstResult = null;
-                    string formName = string.Empty;
+                    string customeData = string.Empty;
                     string childMonitorName = string.Empty;
 
                     foreach (var result in resultGroup)
@@ -46,8 +50,8 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         firstResult = result.StartMonitorResult ?? result.FinishMonitorResult;
                         if (firstResult == null) continue;
 
-                        formName = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length);
-                        childMonitorName = $"{this.TargetMonitorName}-{formName}";
+                        customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length);
+                        childMonitorName = $"{this.TargetMonitorName}-{customeData}";
 
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
 
