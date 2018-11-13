@@ -29,7 +29,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
-            if (string.IsNullOrEmpty(TargetMonitorName))
+            if (string.IsNullOrEmpty(this.TargetMonitorName))
                 throw new ArgumentNullException(nameof(this.TargetMonitorName));
             if (argument == null)
                 throw new ArgumentNullException(nameof(argument));
