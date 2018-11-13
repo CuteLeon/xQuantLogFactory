@@ -2,14 +2,15 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace xQuantLogFactory.Model.Tests
+namespace xQuantLogFactory.Model.Factory.Tests
 {
     [TestClass()]
-    public class TaskArgumentTests
+    public class TaskArgumentFactoryTests
     {
         [TestMethod()]
-        public void ParseTest()
+        public void CreateTaskArgumentTest()
         {
+            TaskArgumentFactory factory = new TaskArgumentFactory();
             string[] args = new string[] {
                 @"C:\TestDirectory",
                 "监视项目_0,监视项目_1,监视项目_2",
@@ -22,21 +23,21 @@ namespace xQuantLogFactory.Model.Tests
 
             TaskArgument argument = null;
 
-            argument = TaskArgument.Parse(args.Take(3).ToArray());
+            argument = factory.CreateTaskArgument(args.Take(3).ToArray());
             Assert.AreEqual(argument.LogDirectory, args[0]);
             Assert.AreEqual(argument.MonitorItemNames.Count, args[1].Split(',').Length);
             Assert.AreEqual(argument.LogStartTime?.ToString("yyyy-MM-dd HH:mm:ss"), args[2]);
 
-            argument = TaskArgument.Parse(args.Take(4).ToArray());
+            argument = factory.CreateTaskArgument(args.Take(4).ToArray());
             Assert.AreEqual(argument.LogFinishTime?.ToString("yyyy-MM-dd HH:mm:ss"), args[3]);
 
-            argument = TaskArgument.Parse(args.Take(5).ToArray());
+            argument = factory.CreateTaskArgument(args.Take(5).ToArray());
             Assert.AreEqual(argument.IncludeSystemInfo.ToString().ToUpper(), args[4].ToUpper());
 
-            argument = TaskArgument.Parse(args.Take(6).ToArray());
+            argument = factory.CreateTaskArgument(args.Take(6).ToArray());
             Assert.AreEqual(argument.IncludeClientInfo.ToString().ToUpper(), args[5].ToUpper());
 
-            argument = TaskArgument.Parse(args.Take(7).ToArray());
+            argument = factory.CreateTaskArgument(args.Take(7).ToArray());
             Assert.AreEqual(argument.ReportMode.ToString().ToUpper(), args[6].ToUpper());
         }
     }

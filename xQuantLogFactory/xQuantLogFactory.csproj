@@ -99,6 +99,8 @@
     <Compile Include="BIZ\Parser\ServerLogParser.cs" />
     <Compile Include="DAL\LogDBContext.cs" />
     <Compile Include="DAL\LogDBSeed.cs" />
+    <Compile Include="Model\Extensions\TaskArgumentExtension.cs" />
+    <Compile Include="Model\Factory\TaskArgumentFactory.cs" />
     <Compile Include="Model\Result\GroupAnalysisResult.cs" />
     <Compile Include="Model\Result\LogResultBase.cs" />
     <Compile Include="Model\Monitor\IMonitor.cs" />

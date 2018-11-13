@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.BIZ.FileFinder
@@ -38,14 +39,12 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 //按格式筛选日志文件，以免查找到无用的文件
                 if (!logRegex.IsMatch(fileName)) continue;
 
-                //不限制日志时间时不做筛选
-                if (argument.CheckLogTime)
-                {
-                    if ((CreationTime < argument.LogStartTime || CreationTime > argument.LogFinishTime) ||
-                        (LastWriteTime < argument.LogStartTime || LastWriteTime > argument.LogFinishTime)
-                        )
-                        continue;
-                }
+                if (!argument.CheckLogStartTime(CreationTime) &&
+                    !argument.CheckLogStartTime(LastWriteTime))
+                    continue;
+                if (!argument.CheckLogFinishTime(CreationTime) &&
+                    !argument.CheckLogFinishTime(LastWriteTime))
+                    continue;
 
                 logFiles.Add(new LogFile()
                 {

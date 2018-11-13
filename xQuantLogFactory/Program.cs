@@ -11,6 +11,7 @@ using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
@@ -220,7 +221,7 @@ namespace xQuantLogFactory
         {
             try
             {
-                UnityTaskArgument = TaskArgument.Parse(args);
+                UnityTaskArgument = new TaskArgumentFactory().CreateTaskArgument(args);
             }
             catch (Exception ex)
             {

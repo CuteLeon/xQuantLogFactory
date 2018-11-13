@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
@@ -68,14 +69,9 @@ namespace xQuantLogFactory.BIZ.Parser
                                 )
                                 continue;
 
-                            //不限制日志时间时不做筛选
-                            if (argument.CheckLogTime)
-                            {
-                                if (logTime < argument.LogStartTime ||
-                                    logTime > argument.LogFinishTime
-                                    )
-                                    continue;
-                            }
+                            if (!argument.CheckLogStartTime(logTime) ||
+                                !argument.CheckLogFinishTime(logTime))
+                                continue;
 
                             MiddlewareResult result = new MiddlewareResult()
                             {

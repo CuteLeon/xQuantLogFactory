@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
@@ -72,13 +73,9 @@ namespace xQuantLogFactory.BIZ.Parser
                             else
                                 continue;
 
-                            //不限制日志时间时不做筛选
-                            if (argument.CheckLogTime)
-                            {
-                                //筛选日志行时间戳
-                                if (logTime < argument.LogStartTime || logTime > argument.LogFinishTime)
-                                    continue;
-                            }
+                            if (!argument.CheckLogStartTime(logTime) ||
+                                !argument.CheckLogFinishTime(logTime))
+                                continue;
 
                             string logContent = match.Groups["LogContent"].Value;
                             //匹配所有监视规则
