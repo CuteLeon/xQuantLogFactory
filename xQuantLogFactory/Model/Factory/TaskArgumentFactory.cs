@@ -16,6 +16,9 @@ namespace xQuantLogFactory.Model.Factory
         /// <returns>任务参数对象</returns>
         public TaskArgument CreateTaskArgument(string[] args)
         {
+            //Nuget CommandLineParser
+            //https://github.com/commandlineparser/commandline
+
             /*
             0 {string_日志文件目录}
             1 {string.Format(,)_监控的项目名称列表}
