@@ -155,19 +155,19 @@ namespace xQuantLogFactory.Model
         [XmlIgnore]
         private readonly VersionedList<MonitorItem> monitorItems = new VersionedList<MonitorItem>();
         /// <summary>
-        /// 子监控项目前序遍历列表
+        /// 子监控项目遍历列表
         /// </summary>
         /// <remarks>树状结构更新时需要手动刷新二维列表 this.RefreshMonitorItems()</remarks>
         [XmlIgnore]
         [NotMapped]
-        [DisplayName("子监控项目前序遍历列表"), DataType(DataType.Duration)]
+        [DisplayName("子监控项目遍历列表"), DataType(DataType.Duration)]
         public virtual List<MonitorItem> MonitorItems
         {
             get
             {
                 //二维列表版本号低于树状列表时，更新二维列表
                 if (this.monitorItems.Version == 0 || //EF初始化 MonitorItemTree 时版本号不会自增
-                    this.monitorItems.Version < this.MonitorItemTree.Version
+                    this.monitorItems.Version != this.MonitorItemTree.Version
                     )
                     this.RefreshMonitorItems();
 
@@ -184,20 +184,23 @@ namespace xQuantLogFactory.Model
 
             if (this.MonitorItemTree.Count > 0)
             {
-                Queue<MonitorItem> parentList = new Queue<MonitorItem>();
+                this.MonitorItemTree.ForEach(monitorRoot =>
+                    {
+                        //深度优先
+                        Stack<IMonitor> parentStack = new Stack<IMonitor>();
+                        parentStack.Push(monitorRoot);
+                        this.monitorItems.Add(monitorRoot);
 
-                this.monitorItems.AddRange(this.MonitorItemTree);
-                this.MonitorItemTree.Where(monitor => monitor.HasChildren).ToList().ForEach(monitor => parentList.Enqueue(monitor));
+                        //当前父节点指针
+                        IMonitor currentMonitor = null;
+                        while (parentStack.Count > 0)
+                        {
+                            currentMonitor = parentStack.Pop();
 
-                //当前父节点指针
-                MonitorItem currentMonitor = null;
-                while (parentList.Count > 0)
-                {
-                    currentMonitor = parentList.Dequeue();
-
-                    this.monitorItems.AddRange(currentMonitor.MonitorItems);
-                    currentMonitor.MonitorItems.Where(monitor => monitor.HasChildren).ToList().ForEach(monitor => parentList.Enqueue(monitor));
-                }
+                            currentMonitor.MonitorItems.Where(monitor => monitor.HasChildren).ToList().ForEach(monitor => parentStack.Push(monitor));
+                            this.monitorItems.AddRange(currentMonitor.MonitorItems);
+                        }
+                    });
             }
 
             //同步完成后更新一次版本号，防止版本号一直为0而频繁刷新浪费性能

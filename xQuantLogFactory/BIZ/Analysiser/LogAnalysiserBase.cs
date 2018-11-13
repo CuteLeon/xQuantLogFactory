@@ -6,6 +6,9 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
 {
+    /// <summary>
+    /// 日志分析器基类
+    /// </summary>
     public abstract class LogAnalysiserBase : LogProcesserBase, ILogAnalysiser
     {
 

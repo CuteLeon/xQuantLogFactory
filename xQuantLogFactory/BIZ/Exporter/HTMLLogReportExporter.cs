@@ -87,11 +87,10 @@ namespace xQuantLogFactory.BIZ.Exporter
 </thead>
 <tbody>");
             foreach (var monitor in argument.MonitorItems
-                .OrderBy(monitor=>monitor.ItemID)
                 )
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-    <td>{monitor.Name.PadLeft(monitor.Name.Length + monitor.GetLayerDepth() , '+')}</td>
+    <td>{monitor.Name.PadLeft(monitor.Name.Length + monitor.GetLayerDepth(), '+')}</td>
     <td>{monitor.StartPattern}</td>
     <td>{monitor.FinishPatterny}</td>
     <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
