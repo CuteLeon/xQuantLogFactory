@@ -18,11 +18,11 @@ namespace xQuantLogFactory.BIZ.Parser
     public class ServerLogParser : LogParserBase
     {
         /// <summary>
-        /// 日志正则表达式
+        /// 日志详细内容正则表达式
         /// </summary>
-        public override Regex LogRegex { get; } = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<Client>.*?)\s(?<Version>.*?)\s(?<LogContent>.+)$",
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        public override Regex ParticularRegex { get; } = new Regex(
+            @"^(?<Client>.*?)\s(?<Version>.*?)\s(?<LogContent>.+)$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public ServerLogParser() { }
 
@@ -50,23 +50,31 @@ namespace xQuantLogFactory.BIZ.Parser
                     streamRreader = new StreamReader(fileStream, Encoding.Default);
 
                     int lineNumber = 0;
+                    string logLine = string.Empty,
+                        logLevel = string.Empty,
+                        client = string.Empty,
+                        version = string.Empty,
+                        logContent = string.Empty;
+                    Match generalMatch = null;
+                    Match particularMatch = null;
+
                     while (!streamRreader.EndOfStream)
                     {
                         lineNumber++;
                         //获取日志行
-                        string logLine = streamRreader.ReadLine();
-                        Match match = this.LogRegex.Match(logLine);
-                        if (match.Success)
+                        logLine = streamRreader.ReadLine();
+                        generalMatch = this.GeneralLogRegex.Match(logLine);
+                        if (generalMatch.Success)
                         {
                             //跳过未匹配到内容的日志行
-                            if (!match.Groups["LogContent"].Success) continue;
+                            if (!generalMatch.Groups["LogContent"].Success) continue;
 
                             DateTime logTime = DateTime.MinValue;
                             //跳过日志时间在任务时间范围外的日志行
-                            if (match.Groups["LogTime"].Success &&
-                                DateTime.TryParse(match.Groups["LogTime"].Value, out logTime) &&
-                                match.Groups["Millisecond"].Success &&
-                                double.TryParse(match.Groups["Millisecond"].Value, out double millisecond)
+                            if (generalMatch.Groups["LogTime"].Success &&
+                                DateTime.TryParse(generalMatch.Groups["LogTime"].Value, out logTime) &&
+                                generalMatch.Groups["Millisecond"].Success &&
+                                double.TryParse(generalMatch.Groups["Millisecond"].Value, out double millisecond)
                                 )
                                 logTime = logTime.AddMilliseconds(millisecond);
                             else
@@ -76,7 +84,18 @@ namespace xQuantLogFactory.BIZ.Parser
                                 !argument.CheckLogFinishTime(logTime))
                                 continue;
 
-                            string logContent = match.Groups["LogContent"].Value;
+                            logContent = generalMatch.Groups["LogContent"].Value;
+                            logLevel = generalMatch.Groups["LogLevel"].Success ? generalMatch.Groups["LogLevel"].Value : string.Empty;
+
+                            //精确匹配
+                            particularMatch = this.ParticularRegex.Match(logContent);
+                            if (particularMatch.Success)
+                            {
+                                version = particularMatch.Groups["Version"].Success ? particularMatch.Groups["Version"].Value : string.Empty;
+                                client = particularMatch.Groups["Client"].Success ? particularMatch.Groups["Client"].Value : string.Empty;
+                                logContent = particularMatch.Groups["LogContent"].Success ? particularMatch.Groups["LogContent"].Value : string.Empty;
+                            }
+
                             //匹配所有监视规则
                             foreach (MonitorItem monitor in argument.MonitorItems)
                             {
@@ -92,15 +111,9 @@ namespace xQuantLogFactory.BIZ.Parser
                                 result.GroupType = groupType;
                                 result.LineNumber = lineNumber;
                                 result.LogContent = logContent;
-
-                                if (match.Groups["LogLevel"].Success)
-                                    result.LogLevel = match.Groups["LogLevel"].Value;
-
-                                if (match.Groups["Version"].Success)
-                                    result.Version = match.Groups["Version"].Value;
-
-                                if (match.Groups["Client"].Success)
-                                    result.Client = match.Groups["Client"].Value;
+                                result.LogLevel = logLevel;
+                                result.Client = client;
+                                result.Version = version;
 
                                 this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }
@@ -123,7 +136,7 @@ namespace xQuantLogFactory.BIZ.Parser
                     streamRreader?.Dispose();
 
                     fileStream?.Close();
-                    fileStream.Dispose();
+                    fileStream?.Dispose();
                 }
             });
         }

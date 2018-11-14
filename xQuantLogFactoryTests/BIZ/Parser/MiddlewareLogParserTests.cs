@@ -33,7 +33,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
 
             ILogParser parser = new MiddlewareLogParser();
             parser.Parse(argument);
-            Assert.IsTrue(argument.MiddlewareResults.Count > 0);
+            Assert.IsFalse(File.Exists(argument.LogFiles.First().FilePath) && argument.MiddlewareResults.Count > 0);
             Console.WriteLine(argument.MiddlewareResults.Count);
         }
     }

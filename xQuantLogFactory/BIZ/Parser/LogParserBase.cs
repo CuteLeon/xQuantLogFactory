@@ -14,11 +14,20 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public abstract class LogParserBase : LogProcesserBase, ILogParser
     {
+        //TODO: 具体子类解析器字段格式（版本号加 \.），因为有些日志行依然被 ParticularRegex 识别成功，导致匹配失败（分析匹配时会检查版本和客户端）
+        //TODO: 提取子类中 GeneralLogRegex 匹配的公共代码到此基类（MiddlewareLogParser 不使用此正则表达式对象）
 
         /// <summary>
-        /// 日志正则表达式
+        /// 日志详细内容正则表达式
         /// </summary>
-        public abstract Regex LogRegex { get; }
+        public abstract Regex ParticularRegex { get; }
+
+        /// <summary>
+        /// 日志总体正则表达式
+        /// </summary>
+        public Regex GeneralLogRegex { get; } = new Regex(
+            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<LogContent>.+)$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public LogParserBase() { }
 

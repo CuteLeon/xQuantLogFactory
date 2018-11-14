@@ -18,11 +18,11 @@ namespace xQuantLogFactory.BIZ.Parser
     {
 
         /// <summary>
-        /// 日志正则表达式
+        /// 日志详细内容正则表达式
         /// </summary>
-        public override Regex LogRegex { get; } = new Regex(
+        public override Regex ParticularRegex { get; } = new Regex(
             @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Client>.*?)\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>.*?)\s(?<RequestURI>.*?)\s(?<MethodName>.*?)\s(?<StreamLength>.*?)\s(?<Message>.+)$",
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public MiddlewareLogParser() { }
 
@@ -60,7 +60,7 @@ namespace xQuantLogFactory.BIZ.Parser
                         lineNumber++;
                         //获取日志行
                         logLine = streamRreader.ReadLine();
-                        match = this.LogRegex.Match(logLine);
+                        match = this.ParticularRegex.Match(logLine);
                         if (match.Success)
                         {
                             //跳过日志时间在任务时间范围外的日志行
@@ -131,7 +131,7 @@ namespace xQuantLogFactory.BIZ.Parser
                     streamRreader?.Dispose();
 
                     fileStream?.Close();
-                    fileStream.Dispose();
+                    fileStream?.Dispose();
                 }
             });
         }
