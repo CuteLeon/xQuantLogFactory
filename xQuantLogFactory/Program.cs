@@ -19,6 +19,7 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
+    //TODO: 参数传入监视规则文件名称，而非监视规则名称列表
     //TODO: 导出 Excel 报告，分析结果组序号（以行号区间约束分析结果之间的关系树）
     //TODO: 序列化 UnityTaskArgument 为xml
     //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
@@ -48,20 +49,6 @@ namespace xQuantLogFactory
         /// 全局追踪器
         /// </summary>
         public volatile static ITracer UnityTrace = new ConsoleTracer();
-
-        /* 启动参数：{string_日志文件目录} {string.Format(,)_监控的项目名称列表} "{datetime_日志开始时间}" "[datetime_日志截止时间 =DateTime.Now]" [boolean_包含系统信息 =false] [boolean_包含客户端信息 =false] [reportmodes_报告导出模式 =RepostModes.Html]
-         * 注意：
-         *  1. 任何参数值内含有空格时需要在值外嵌套英文双引号；
-         *  2. 不允许离散地省略参数，只可以选择省略某可选参数及其后所有的参数
-         * 参数介绍：
-         * {string_日志文件目录}：目录含有空格时需要在值外嵌套英文双引号；如：C:\TEST_DIR 或 "C:\TEST DIR" 
-         * {string.Format(,)_监控的项目名称列表}：可省略，默认为所有监视规则；程序监控的项目名称列表；当存在多个值时，值间以英文逗号分隔(不加空格)；含有空格时需要在值外嵌套英文双引号，如：监控项目_Demo 或 监控项目_0,监控项目_1 或 "监控项目_0,监控项目 1"
-         * {datetime_日志开始时间}：可省略，以格式化日期时间传入；采用24小时制；格式如：yyyy-MM-dd HH:mm:ss
-         * {datetime_日志截止时间 =DateTime.Now}：可省略，默认值为当前时间；格式同日志开始时间；采用24小时制；
-         * {boolean_包含系统信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
-         * {boolean_包含客户端信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
-         * {reportmodes_报告导出模式 =RepostModes.Html}：可省略，默认值为 Html；可取值为：{html/word/excel}，可忽略大小写
-         */
 
         /// <summary>
         /// 入口
@@ -221,11 +208,12 @@ namespace xQuantLogFactory
         {
             try
             {
-                UnityTaskArgument = new TaskArgumentFactory().CreateTaskArgument(args);
+                UnityTaskArgument = TaskArgumentFactory.Intance.CreateTaskArgument(args);
             }
             catch (Exception ex)
             {
                 UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
+                UnityTrace.WriteLine(TaskArgumentFactory.Intance.Usage);
                 Exit(1);
             }
             UnityDBContext.TaskArguments.Add(UnityTaskArgument);

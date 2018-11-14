@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using xQuantLogFactory.Model.Factory;
+using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,7 +13,7 @@ namespace xQuantLogFactory.Model.Factory.Tests
         {
             TaskArgumentFactory factory = new TaskArgumentFactory();
             string[] args = new string[] {
-                @"C:\TestDirectory",
+                @"logdir=C:\TestDirectory",
                 "监视项目_0,监视项目_1,监视项目_2",
                 "2018-10-30 15:25:01",
                 "2018-10-30 18:10:05",
