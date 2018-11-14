@@ -16,37 +16,37 @@ namespace xQuantLogFactory.Model.Factory
         /// <summary>
         /// 日志文件目录
         /// </summary>
-        private const string LOG_DIR = "logdir";
+        public const string LOG_DIR = "logdir";
 
         /// <summary>
         /// 监视规则文件名称
         /// </summary>
-        private const string MONITOR_NAME = "monitor";
+        public const string MONITOR_NAME = "monitor";
 
         /// <summary>
         /// 日志开始时间
         /// </summary>
-        private const string START_TIME = "start";
+        public const string START_TIME = "start";
 
         /// <summary>
         /// 日志截止时间
         /// </summary>
-        private const string FINISH_TIME = "finish";
+        public const string FINISH_TIME = "finish";
 
         /// <summary>
         /// 包含系统信息
         /// </summary>
-        private const string SYS_INFO = "sysinfo";
+        public const string SYS_INFO = "sysinfo";
 
         /// <summary>
         /// 包含客户端信息
         /// </summary>
-        private const string CLIENT_INFO = "cltinfo";
+        public const string CLIENT_INFO = "cltinfo";
 
         /// <summary>
         /// 报告导出模式
         /// </summary>
-        private const string REPORT_MODE = "report";
+        public const string REPORT_MODE = "report";
 
         /*
          * logdir={string_日志文件目录}：目录含有空格时需要在值外嵌套英文双引号；如：C:\TEST_DIR 或 "C:\TEST DIR" 
@@ -124,8 +124,7 @@ namespace xQuantLogFactory.Model.Factory
         /// </summary>
         private readonly Dictionary<string, string> argumentDictionary = new Dictionary<string, string>();
 
-        private static readonly Regex argRegex = new Regex(@"(?<ArgName>.*)=(?<ArgValue>.*)", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
+        private static readonly Regex argRegex = new Regex(@"^(?<ArgName>.*)=(?<ArgValue>.*?)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
         /// <summary>
         /// 根据工具启动参数创建任务参数对象
         /// </summary>
@@ -140,7 +139,7 @@ namespace xQuantLogFactory.Model.Factory
             Match argMatch = null;
             foreach (var arg in args)
             {
-                argMatch = argRegex.Match(arg);
+                argMatch = argRegex.Match(arg.Trim('\"'));
                 if (argMatch.Success &&
                     argMatch.Groups["ArgName"].Success &&
                     argMatch.Groups["ArgValue"].Success
@@ -153,11 +152,11 @@ namespace xQuantLogFactory.Model.Factory
             //检查必选字段
             if (!this.argumentDictionary.ContainsKey(LOG_DIR))
             {
-                throw new ArgumentNullException("不存在日志文件存放目录参数。参数名称：logdir");
+                throw new ArgumentNullException($"不存在日志文件存放目录参数。参数名称：{LOG_DIR}");
             }
             if (!this.argumentDictionary.ContainsKey(MONITOR_NAME))
             {
-                throw new ArgumentNullException("不存在监视规则文件名称参数。参数名称：monitor");
+                throw new ArgumentNullException($"不存在监视规则文件名称参数。参数名称：{MONITOR_NAME}");
             }
 
             //根据字典创建任务参数对象
@@ -200,7 +199,7 @@ namespace xQuantLogFactory.Model.Factory
                 taskArgument.IncludeClientInfo = bool.TryParse(argumentValue, out bool clientInfo) ? clientInfo : false;
 
             if (this.argumentDictionary.TryGetValue(REPORT_MODE, out argumentValue))
-                taskArgument.ReportMode = Enum.TryParse(argumentValue, out ReportModes reportModel) ? reportModel : ConfigHelper.DefaultReportMode;
+                taskArgument.ReportMode = Enum.TryParse(argumentValue, true, out ReportModes reportModel) ? reportModel : ConfigHelper.DefaultReportMode;
 
             return taskArgument;
         }
