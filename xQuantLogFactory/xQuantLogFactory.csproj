@@ -129,10 +129,16 @@
     <Compile Include="Utils\Trace\SQLTracer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Monitor\Client.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Monitor\Monitor.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Monitor_Template.xml" />
+    <Content Include="Monitor\Server.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="xQuantLogFactoryIcon.ico" />
   </ItemGroup>
   <ItemGroup>

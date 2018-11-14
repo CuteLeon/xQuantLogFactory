@@ -19,7 +19,6 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
-    //TODO: 参数传入监视规则文件名称，而非监视规则名称列表
     //TODO: 导出 Excel 报告，分析结果组序号（以行号区间约束分析结果之间的关系树）
     //TODO: 序列化 UnityTaskArgument 为xml
     //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
@@ -64,7 +63,7 @@ namespace xQuantLogFactory
 
 #if (DEBUG)
             //输出SQL日志
-            UnityDBContext.Database.Log = SQLTrace.WriteLine;
+            //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
 #if (!DEBUG)

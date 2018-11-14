@@ -131,11 +131,11 @@ namespace xQuantLogFactory.Model
         public string LastReportPath { get; set; }
 
         /// <summary>
-        /// 监控的项目名称列表
+        /// 监视规则文件名称
         /// </summary>
         [Required]
-        [DisplayName("监控的项目名称列表")]
-        public virtual List<string> MonitorItemNames { get; set; } = new List<string>();
+        [DisplayName("时间规则文件名称"), DataType(DataType.Text)]
+        public string MonitorFileName { get; set; }
 
         /// <summary>
         /// 子监控项目树根节点列表
@@ -148,7 +148,6 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 子监控项目遍历列表
         /// </summary>
-        /// <remarks>树状结构更新时需要手动刷新二维列表 this.RefreshMonitorItems()</remarks>
         [XmlIgnore]
         [NotMapped]
         [DisplayName("子监控项目遍历列表"), DataType(DataType.Duration)]
@@ -226,8 +225,8 @@ namespace xQuantLogFactory.Model
 
         public override string ToString()
         {
-            return $"\t日志文件目录：{this.LogDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视项目列表：{(this.MonitorItemNames.Count > 0 ? string.Join("、", this.MonitorItemNames) : "[全部规则]")}\n\t日志开始时间：{this.LogStartTime?.ToString() ?? "[不限制]"}\n\t日志截止时间：{this.LogFinishTime?.ToString() ?? "[不限制]"}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
+            return $"\t日志文件目录：{this.LogDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视规则文件：{(string.IsNullOrEmpty(this.MonitorFileName) ? this.MonitorFileName : "[全部规则文件]")}\n\t日志开始时间：{this.LogStartTime?.ToString() ?? "[不限制]"}\n\t日志截止时间：{this.LogFinishTime?.ToString() ?? "[不限制]"}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
         }
-        
+
     }
 }

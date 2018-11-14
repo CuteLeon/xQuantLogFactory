@@ -60,50 +60,18 @@ namespace xQuantLogFactory.BIZ.FileFinder
 
             //符合要求的监视规则
             List<MonitorItem> targetItems = new List<MonitorItem>();
-            //存在子级监视规则等待遍历的父级规则
-            Queue<IMonitor> parentItems = new Queue<IMonitor>();
 
             //创建所有容器对象
-            foreach (string xmlFile in this.GetChildFiles(directory, file => file.EndsWith(".XML", StringComparison.OrdinalIgnoreCase)))
+            foreach (string xmlFile in this.GetChildFiles(directory,
+                file => file.EndsWith(argument.MonitorFileName, StringComparison.OrdinalIgnoreCase)
+                ))
             {
                 //维护监视规则容器列表
                 MonitorContainer container = File.ReadAllText(xmlFile, Encoding.UTF8).DeserializeToObject<MonitorContainer>();
                 if (container != null && container.HasChildren)
                 {
-                    //容器入队
-                    parentItems.Enqueue(container);
-                }
-            }
-
-            //循环指针
-            IMonitor CurrentMonitor = null;
-            while (parentItems.Count > 0)
-            {
-                //首元素出队
-                CurrentMonitor = parentItems.Dequeue();
-                //不约束监视规则时使用全部监视规则
-                if (argument.MonitorItemNames.Count == 0)
-                {
-                    targetItems.AddRange(CurrentMonitor.MonitorItems);
-                    //不需要遍历子规则
-                    continue;
-                }
-                else
-                {
-                    //查询匹配的监视规则对象并一并关联子对象
-                    targetItems.AddRange(
-                            from monitor in CurrentMonitor.MonitorItems
-                            where argument.MonitorItemNames.Contains(monitor.Name)
-                            select monitor
-                            );
-                }
-
-                //不符合的父级规则需要入队继续深度遍历
-                foreach (IMonitor monitor in CurrentMonitor.MonitorItems
-                    .Where(monitor => !argument.MonitorItemNames.Contains(monitor.Name) && monitor.HasChildren)
-                    )
-                {
-                    parentItems.Enqueue(monitor);
+                    //记录监视规则容器的根节点列表
+                    targetItems.AddRange(container.MonitorItems);
                 }
             }
 

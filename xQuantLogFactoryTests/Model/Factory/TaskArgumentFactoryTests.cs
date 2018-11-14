@@ -11,6 +11,16 @@ namespace xQuantLogFactory.Model.Factory.Tests
         [TestMethod()]
         public void CreateTaskArgumentTest()
         {
+            /* TODO: 测试要点：
+             * 缺失必选参数
+             * 缺失可选参数
+             * 参数重复
+             * 不符合正则的传参格式
+             * 缺失参数数据部分
+             * 意外的参数名称
+             * 意外格式的参数数据部分
+             */
+
             TaskArgumentFactory factory = new TaskArgumentFactory();
             string[] args = new string[] {
                 @"logdir=C:\TestDirectory",
@@ -26,7 +36,7 @@ namespace xQuantLogFactory.Model.Factory.Tests
 
             argument = factory.CreateTaskArgument(args.Take(3).ToArray());
             Assert.AreEqual(argument.LogDirectory, args[0]);
-            Assert.AreEqual(argument.MonitorItemNames.Count, args[1].Split(',').Length);
+            Assert.AreEqual(argument.MonitorFileName, args[1]);
             Assert.AreEqual(argument.LogStartTime?.ToString("yyyy-MM-dd HH:mm:ss"), args[2]);
 
             argument = factory.CreateTaskArgument(args.Take(4).ToArray());

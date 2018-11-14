@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using xQuantLogFactory.Utils;
+
 namespace xQuantLogFactory.Model.Factory
 {
 
@@ -11,13 +13,48 @@ namespace xQuantLogFactory.Model.Factory
     /// </summary>
     public class TaskArgumentFactory
     {
+        /// <summary>
+        /// 日志文件目录
+        /// </summary>
+        private const string LOG_DIR = "logdir";
+
+        /// <summary>
+        /// 监视规则文件名称
+        /// </summary>
+        private const string MONITOR_NAME = "monitor";
+
+        /// <summary>
+        /// 日志开始时间
+        /// </summary>
+        private const string START_TIME = "start";
+
+        /// <summary>
+        /// 日志截止时间
+        /// </summary>
+        private const string FINISH_TIME = "finish";
+
+        /// <summary>
+        /// 包含系统信息
+        /// </summary>
+        private const string SYS_INFO = "sysinfo";
+
+        /// <summary>
+        /// 包含客户端信息
+        /// </summary>
+        private const string CLIENT_INFO = "cltinfo";
+
+        /// <summary>
+        /// 报告导出模式
+        /// </summary>
+        private const string REPORT_MODE = "report";
+
         /*
          * logdir={string_日志文件目录}：目录含有空格时需要在值外嵌套英文双引号；如：C:\TEST_DIR 或 "C:\TEST DIR" 
-         * monitor={string.Format(,)_监控的项目名称列表}：可省略，默认为所有监视规则；程序监控的项目名称列表；当存在多个值时，值间以英文逗号分隔(不加空格)；含有空格时需要在值外嵌套英文双引号，如：监控项目_Demo 或 监控项目_0,监控项目_1 或 "监控项目_0,监控项目 1"
+         * monitor={string_监视规则文件名称}：可省略，默认为所有监视规则；程序监控的项目名称列表；如：监控项目.xml"
          * start={datetime_日志开始时间}：可省略，以格式化日期时间传入；采用24小时制；格式如：yyyy-MM-dd HH:mm:ss
          * finish={datetime_日志截止时间 =DateTime.Now}：可省略，默认值为当前时间；格式同日志开始时间；采用24小时制；
          * sysinfo={boolean_包含系统信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
-         * clntinfo={boolean_包含客户端信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
+         * cltinfo={boolean_包含客户端信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
          * report={reportmodes_报告导出模式 =RepostModes.Html}：可省略，默认值为 Html；可取值为：{html/word/excel}，可忽略大小写
          */
 
@@ -40,13 +77,13 @@ namespace xQuantLogFactory.Model.Factory
             {
                 if (!argumentDescription.IsValueCreated)
                 {
-                    argumentDescription.Value.Add("logdir", "日志文件存放目录，如：D:\\Log 或 \"E:\\Log Dir\"");
-                    argumentDescription.Value.Add("monitor", "监视规则文件名称，如：monitor.xml");
-                    argumentDescription.Value.Add("start", "日志开始时间，如：\"2018-10-01 17:30:00\"");
-                    argumentDescription.Value.Add("finish", "日志结束时间，如：\"2018-11-11 08:40:00\"");
-                    argumentDescription.Value.Add("sysinfo", "是否记录系统信息，如：true 或 false");
-                    argumentDescription.Value.Add("cltinfo", "是否记录客户端信息，如：true 或 false");
-                    argumentDescription.Value.Add("report", "导出报告模式，如：excel 或 html 或 word");
+                    argumentDescription.Value.Add(LOG_DIR, "日志文件存放目录，如：D:\\Log 或 \"E:\\Log Dir\"");
+                    argumentDescription.Value.Add(MONITOR_NAME, "监视规则文件名称，如：monitor.xml");
+                    argumentDescription.Value.Add(START_TIME, "日志开始时间，如：\"2018-10-01 17:30:00\"");
+                    argumentDescription.Value.Add(FINISH_TIME, "日志结束时间，如：\"2018-11-11 08:40:00\"");
+                    argumentDescription.Value.Add(SYS_INFO, "是否记录系统信息，如：true 或 false");
+                    argumentDescription.Value.Add(CLIENT_INFO, "是否记录客户端信息，如：true 或 false");
+                    argumentDescription.Value.Add(REPORT_MODE, "导出报告模式，如：excel 或 html 或 word");
                 }
 
                 return argumentDescription.Value;
@@ -73,7 +110,7 @@ namespace xQuantLogFactory.Model.Factory
                     usageBuilder.Value.AppendLine();
 
                     usageBuilder.Value.AppendLine("参数说明：");
-                    usageBuilder.Value.AppendLine("\t[名称]\t\t[描述]");
+                    usageBuilder.Value.AppendLine("\t<名称>\t\t<描述>");
                     foreach (var arg in ArgumentDescriptions)
                         usageBuilder.Value.AppendLine($"\t{arg.Key}\t\t{arg.Value}");
                 }
@@ -114,13 +151,17 @@ namespace xQuantLogFactory.Model.Factory
             }
 
             //检查必选字段
-            if (!this.argumentDictionary.ContainsKey("logdir"))
+            if (!this.argumentDictionary.ContainsKey(LOG_DIR))
             {
-                throw new ArgumentNullException("不存在日志文件存放目录参数。");
+                throw new ArgumentNullException("不存在日志文件存放目录参数。参数名称：logdir");
+            }
+            if (!this.argumentDictionary.ContainsKey(MONITOR_NAME))
+            {
+                throw new ArgumentNullException("不存在监视规则文件名称参数。参数名称：monitor");
             }
 
             //根据字典创建任务参数对象
-            return this.ConvertTaskArgument(this.argumentDictionary);
+            return this.ConvertToTaskArgument(this.argumentDictionary);
         }
 
         /// <summary>
@@ -128,7 +169,7 @@ namespace xQuantLogFactory.Model.Factory
         /// </summary>
         /// <param name="argumentDic"></param>
         /// <returns></returns>
-        private TaskArgument ConvertTaskArgument(Dictionary<string, string> argumentDic)
+        private TaskArgument ConvertToTaskArgument(Dictionary<string, string> argumentDic)
         {
             if (argumentDic == null)
                 throw new ArgumentNullException(nameof(argumentDic));
@@ -140,26 +181,26 @@ namespace xQuantLogFactory.Model.Factory
                 TaskStartTime = DateTime.Now,
             };
 
-            if (this.argumentDictionary.TryGetValue("logdir", out argumentValue))
+            if (this.argumentDictionary.TryGetValue(LOG_DIR, out argumentValue))
                 taskArgument.LogDirectory = argumentValue;
 
-            if (this.argumentDictionary.TryGetValue("monitor", out argumentValue))
-                taskArgument.MonitorItemNames.AddRange(argumentValue.Split(','));
+            if (this.argumentDictionary.TryGetValue(MONITOR_NAME, out argumentValue))
+                taskArgument.MonitorFileName = argumentValue;
 
-            if (this.argumentDictionary.TryGetValue("start", out argumentValue))
+            if (this.argumentDictionary.TryGetValue(START_TIME, out argumentValue))
                 taskArgument.LogStartTime = DateTime.TryParse(argumentValue, out DateTime startTime) ? startTime : DateTime.Today;
 
-            if (this.argumentDictionary.TryGetValue("finish", out argumentValue))
+            if (this.argumentDictionary.TryGetValue(FINISH_TIME, out argumentValue))
                 taskArgument.LogFinishTime = DateTime.TryParse(argumentValue, out DateTime finishTime) ? finishTime : DateTime.Now;
 
-            if (this.argumentDictionary.TryGetValue("sysinfo", out argumentValue))
+            if (this.argumentDictionary.TryGetValue(SYS_INFO, out argumentValue))
                 taskArgument.IncludeSystemInfo = bool.TryParse(argumentValue, out bool systemInfo) ? systemInfo : false;
 
-            if (this.argumentDictionary.TryGetValue("clntinfo", out argumentValue))
+            if (this.argumentDictionary.TryGetValue(CLIENT_INFO, out argumentValue))
                 taskArgument.IncludeClientInfo = bool.TryParse(argumentValue, out bool clientInfo) ? clientInfo : false;
 
-            if (this.argumentDictionary.TryGetValue("report", out argumentValue))
-                taskArgument.ReportMode = Enum.TryParse(argumentValue, out ReportModes reportModel) ? reportModel : ReportModes.HTML;
+            if (this.argumentDictionary.TryGetValue(REPORT_MODE, out argumentValue))
+                taskArgument.ReportMode = Enum.TryParse(argumentValue, out ReportModes reportModel) ? reportModel : ConfigHelper.DefaultReportMode;
 
             return taskArgument;
         }
