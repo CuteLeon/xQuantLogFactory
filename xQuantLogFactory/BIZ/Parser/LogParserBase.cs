@@ -14,8 +14,6 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public abstract class LogParserBase : LogProcesserBase, ILogParser
     {
-        //TODO: 具体子类解析器字段格式（版本号加 \.），因为有些日志行依然被 ParticularRegex 识别成功，导致匹配失败（分析匹配时会检查版本和客户端）
-        //TODO: 提取子类中 GeneralLogRegex 匹配的公共代码到此基类（MiddlewareLogParser 不使用此正则表达式对象）
 
         /// <summary>
         /// 日志详细内容正则表达式

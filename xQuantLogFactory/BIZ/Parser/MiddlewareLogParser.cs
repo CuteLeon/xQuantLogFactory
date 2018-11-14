@@ -21,7 +21,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// 日志详细内容正则表达式
         /// </summary>
         public override Regex ParticularRegex { get; } = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Client>.*?)\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>.*?)\s(?<RequestURI>.*?)\s(?<MethodName>.*?)\s(?<StreamLength>.*?)\s(?<Message>.+)$",
+            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Client>\d{1,3}(\.\d{1,3}){3})\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>\/.*?)\s(?<MethodName>.*?)\s(?<StreamLength>\d*?)\s(?<Message>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public MiddlewareLogParser() { }

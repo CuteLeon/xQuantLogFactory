@@ -21,7 +21,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// 日志详细内容正则表达式
         /// </summary>
         public override Regex ParticularRegex { get; } = new Regex(
-            @"^(?<Client>.*?)\s(?<Version>.*?)\s(?<LogContent>.+)$",
+            @"^(?<Client>.*?)\s(?<Version>.*?(\.[^\s]*){3})\s(?<LogContent>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public ServerLogParser() { }
