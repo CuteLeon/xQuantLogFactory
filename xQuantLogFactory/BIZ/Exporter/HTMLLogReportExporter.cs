@@ -93,11 +93,11 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{monitor.Name.PadLeft(monitor.Name.Length + monitor.GetLayerDepth(), '+')}</td>
     <td>{monitor.StartPattern}</td>
     <td>{monitor.FinishPatterny}</td>
-    <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor))}</td>
-    <td>{monitor.MonitorResults.Count}</td>
-    <td>{monitor.AnalysisResults.Count}</td>
-    <td>{monitor.ElapsedMillisecond}</td>
-    <td>{monitor.AverageElapsedMillisecond.ToString("0.##")}</td>
+    <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor)).ToString("N0")}</td>
+    <td>{monitor.MonitorResults.Count.ToString("N0")}</td>
+    <td>{monitor.AnalysisResults.Count.ToString("N0")}</td>
+    <td>{monitor.ElapsedMillisecond.ToString("N")}</td>
+    <td>{monitor.AverageElapsedMillisecond.ToString("N")}</td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
@@ -135,15 +135,15 @@ namespace xQuantLogFactory.BIZ.Exporter
                     MonitorResult startResult = analysisResult.StartMonitorResult;
                     MonitorResult finishResult = analysisResult.FinishMonitorResult;
                     this.WriteCard(
-                        $"耗时：<b>{analysisResult.ElapsedMillisecond} ms</b>",
+                        $"耗时：<b>{analysisResult.ElapsedMillisecond.ToString("N")} ms</b>",
                         $@"监视规则：{analysisResult.MonitorItem?.Name}<br><hr>
-开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
-结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
+开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
+结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
                         );
                 }
             }
 
-            this.WriteCardFooter($"监视结果总数：<b>{logFile.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{logFile.AnalysisResults.Count().ToString()}</b> 组， 总耗时：<b>{logFile.ElapsedMillisecond}</b> 毫秒");
+            this.WriteCardFooter($"监视结果总数：<b>{logFile.MonitorResults.Count.ToString("N0")}</b> 个， 分析结果总数：<b>{logFile.AnalysisResults.Count().ToString("N0")}</b> 组， 总耗时：<b>{logFile.ElapsedMillisecond.ToString("N")}</b> 毫秒");
         }
 
         /// <summary>
@@ -168,15 +168,15 @@ namespace xQuantLogFactory.BIZ.Exporter
                     MonitorResult startResult = analysisResult.StartMonitorResult;
                     MonitorResult finishResult = analysisResult.FinishMonitorResult;
                     this.WriteCard(
-                        $"耗时：<b>{analysisResult.ElapsedMillisecond} ms</b>",
+                        $"耗时：<b>{analysisResult.ElapsedMillisecond.ToString("N")} ms</b>",
                         $@"日志文件：{analysisResult.LogFile?.FilePath}<br><hr>
-开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
-结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
+开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
+结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
                         );
                 }
             }
 
-            this.WriteCardFooter($"监视结果总数：<b>{monitor.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{monitor.AnalysisResults.Count().ToString()}</b> 组， 总耗时：<b>{monitor.ElapsedMillisecond}</b> 毫秒");
+            this.WriteCardFooter($"监视结果总数：<b>{monitor.MonitorResults.Count.ToString("N0")}</b> 个， 分析结果总数：<b>{monitor.AnalysisResults.Count.ToString("N0")}</b> 组， 总耗时：<b>{monitor.ElapsedMillisecond.ToString("N")}</b> 毫秒");
         }
 
         /// <summary>
@@ -249,9 +249,9 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
     <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem?.Name).Distinct())}</td>
-    <td>{logFile.MonitorResults.Count}</td>
-    <td>{logFile.AnalysisResults.Count}</td>
-    <td><b>{logFile.ElapsedMillisecond}</b></td>
+    <td>{logFile.MonitorResults.Count.ToString("N0")}</td>
+    <td>{logFile.AnalysisResults.Count.ToString("N0")}</td>
+    <td><b>{logFile.ElapsedMillisecond.ToString("N")}</b></td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
@@ -296,9 +296,9 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
     <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem?.Name).Distinct())}</td>
-    <td><b>{logFile.MonitorResults.Count}</b></td>
-    <td>{logFile.AnalysisResults.Count}</td>
-    <td>{logFile.ElapsedMillisecond}</td>
+    <td><b>{logFile.MonitorResults.Count.ToString("N0")}</b></td>
+    <td>{logFile.AnalysisResults.Count.ToString("N0")}</td>
+    <td>{logFile.ElapsedMillisecond.ToString("N")}</td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
@@ -337,19 +337,19 @@ namespace xQuantLogFactory.BIZ.Exporter
                     {
                         this.WriteCard(
                             $"方法名称：<b>{methodNameResult.Key}</b>",
-                            $@"<b>方法调用次数：{methodNameResult.Count()}</b><br>
-调用客户端数：<b>{methodNameResult.Select(result => result.Client).Distinct().Count()}</b><br>
-调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count()}</b><br>
+                            $@"<b>方法调用次数：{methodNameResult.Count().ToString("N0")}</b><br>
+调用客户端数：<b>{methodNameResult.Select(result => result.Client).Distinct().Count().ToString("N0")}</b><br>
+调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count().ToString("N0")}</b><br>
 返回总流长度：<b>{methodNameResult.Sum(result => result.StreamLength)}</b><br>
 流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>"
                             );
                     }
 
-                    this.WriteCardFooter($"方法总数：<b>{requesURIResult.Select(result => result.MethodName).Distinct().Count()}</b> 个， 调用总次数：<b>{requesURIResult.Count()}</b> 个， 总耗时：<b>{requesURIResult.Sum(result => result.Elapsed)}</b> 毫秒");
+                    this.WriteCardFooter($"方法总数：<b>{requesURIResult.Select(result => result.MethodName).Distinct().Count().ToString("N0")}</b> 个， 调用总次数：<b>{requesURIResult.Count().ToString("N0")}</b> 个， 总耗时：<b>{requesURIResult.Sum(result => result.Elapsed)}</b> 毫秒");
                 }
             }
 
-            this.WriteCardFooter($"监视结果总数：<b>{logFile.MonitorResults.Count.ToString()}</b> 个， 分析结果总数：<b>{logFile.AnalysisResults.Count().ToString()}</b> 组， 总耗时：<b>{logFile.ElapsedMillisecond}</b> 毫秒");
+            this.WriteCardFooter($"监视结果总数：<b>{logFile.MonitorResults.Count.ToString("N0")}</b> 个， 分析结果总数：<b>{logFile.AnalysisResults.Count.ToString("N0")}</b> 组， 总耗时：<b>{logFile.ElapsedMillisecond.ToString("N")}</b> 毫秒");
         }
 
         /// <summary>
@@ -380,7 +380,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{logFile.FilePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
-    <td><b>{logFile.MiddlewareResults.Count}</b></td>
+    <td><b>{logFile.MiddlewareResults.Count.ToString("N0")}</b></td>
 </tr>");
             }
             this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
@@ -408,8 +408,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
     <td><b>{resultGroup.Key.RequestURI}</b></td>
     <td><b>{resultGroup.Key.MethodName}</b></td>
-    <td>{resultGroup.Count()}</td>
-    <td>{resultGroup.Select(result => result.Client).Distinct().Count()}</td>
+    <td>{resultGroup.Count().ToString("N0")}</td>
+    <td>{resultGroup.Select(result => result.Client).Distinct().Count().ToString("N0")}</td>
     <td>{resultGroup.Min(result => result.StreamLength)}</td>
     <td>{resultGroup.Max(result => result.StreamLength)}</td>
     <td>{resultGroup.Sum(result => result.StreamLength)}</td>
@@ -441,8 +441,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
     <td>{resultGroup.Key.RequestURI}</td>
     <td>{resultGroup.Key.MethodName}</td>
-    <td>{resultGroup.Count()}</td>
-    <td>{resultGroup.Select(result => result.Client).Distinct().Count()}</td>
+    <td>{resultGroup.Count().ToString("N0")}</td>
+    <td>{resultGroup.Select(result => result.Client).Distinct().Count().ToString("N0")}</td>
     <td>{resultGroup.Min(result => result.StreamLength)}</td>
     <td>{resultGroup.Max(result => result.StreamLength)}</td>
     <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
@@ -474,7 +474,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{resultGroup.Key.Client}</td>
     <td>{resultGroup.Key.RequestURI}</td>
     <td>{resultGroup.Key.MethodName}</td>
-    <td>{resultGroup.Count()}</td>
+    <td>{resultGroup.Count().ToString("N0")}</td>
     <td>{resultGroup.Min(result => result.StreamLength)}</td>
     <td>{resultGroup.Max(result => result.StreamLength)}</td>
     <td>{resultGroup.Sum(result => result.StreamLength)}</td>
@@ -590,7 +590,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">监控规则数量：</td>
-            <td class=""value"">{argument.MonitorItems.Count().ToString()}</td>
+            <td class=""value"">{argument.MonitorItems.Count.ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">监控规则名称：</td>
@@ -598,7 +598,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">日志文件数量：</td>
-            <td class=""value"">{argument.LogFiles.Count().ToString()}</td>
+            <td class=""value"">{argument.LogFiles.Count.ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">报告导出模式：</td>
@@ -606,15 +606,15 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">日志监视结果数量：</td>
-            <td class=""value"">{argument.MonitorResults.Count()}</td>
+            <td class=""value"">{argument.MonitorResults.Count().ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">中间件日志结果数量：</td>
-            <td class=""value"">{argument.MiddlewareResults.Count()}</td>
+            <td class=""value"">{argument.MiddlewareResults.Count().ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">监视分析结果数量：</td>
-            <td class=""value"">{argument.AnalysisResults.Count()}</td>
+            <td class=""value"">{argument.AnalysisResults.Count().ToString("N0")}</td>
         </tr>
     </tbody>
 </table>");

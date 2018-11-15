@@ -8,7 +8,7 @@
     <Item Name="数据加载TTRD_OTC_COUNTERPARTY" Begin="加载TTRD_OTC_COUNTERPARTY：开始查询" End="加载TTRD_OTC_COUNTERPARTY 内存消耗" Memory="True"/>
     <Item Name="初始化第二阶段" Begin="初始化第二阶段开始" End="初始化第二阶段结束"/>
   </Item>
-  <Item Name="内存消耗" Begin="内存消耗" End="" Memory="True" Sheet="内存"/>
+  <!--<Item Name="内存消耗" Begin="内存消耗" End="" Memory="True" Sheet="内存"/>-->
   <Item Name="打开功能模块" Begin="开始打开窗体" End="完成打开窗体" Sheet="模块"/>
   <Item Name="查询报表" Begin="开始查询报表" End="完成报表报表" Sheet="报表"/>
   <Item Name="交易查询" Begin="开始交易查询" End="完成交易查询" Sheet="通用"/>
