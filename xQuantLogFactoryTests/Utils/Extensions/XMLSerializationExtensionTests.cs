@@ -22,6 +22,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 Name = "客户端启动",
                 StartPattern = "客户端启动开始",
                 FinishPatterny = "初始化第二阶段开始",
+                Memory = false,
                 MonitorItems = new VersionedList<MonitorItem>(),
             };
             MonitorItem dataItem = new MonitorItem()
@@ -29,6 +30,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 Name = "数据加载",
                 StartPattern = "加载中债参数设置表",
                 FinishPatterny = "加载当前登录部门",
+                Memory = true,
                 MonitorItems = new VersionedList<MonitorItem>(),
             };
             MonitorItem bondItem = new MonitorItem()

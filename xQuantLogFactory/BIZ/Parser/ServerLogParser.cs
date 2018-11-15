@@ -15,7 +15,7 @@ namespace xQuantLogFactory.BIZ.Parser
     /// <summary>
     /// 服务端日志解析器
     /// </summary>
-    public class ServerLogParser : LogParserBase
+    public class ServerLogParser : CSLogParserBase
     {
         /// <summary>
         /// 日志详细内容正则表达式
@@ -115,7 +115,9 @@ namespace xQuantLogFactory.BIZ.Parser
                                 result.Client = client;
                                 result.Version = version;
 
-                                result.MonitorData["Memory"] = 100.0;
+                                //TODO: 记录内存（同 Client）
+                                if (monitor.Memory)
+                                    result.MemoryConsumed = this.GetMemoryInLogContent(logContent);
 
                                 this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }

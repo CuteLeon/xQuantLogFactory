@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -60,10 +59,10 @@ namespace xQuantLogFactory.Model.Result
         public string LogContent { get; set; }
 
         /// <summary>
-        /// 附加监视数据
+        /// 内存消耗
         /// </summary>
         [DisplayName("附加监视数据")]
-        public Dictionary<string, object> MonitorData { get; set; } = new Dictionary<string, object>();
+        public double MemoryConsumed { get; set; }
 
     }
 }

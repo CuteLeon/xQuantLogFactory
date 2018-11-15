@@ -15,7 +15,7 @@ namespace xQuantLogFactory.BIZ.Parser
     /// <summary>
     /// 客户端日志解析器
     /// </summary>
-    public class ClientLogParser : LogParserBase
+    public class ClientLogParser : CSLogParserBase
     {
         /// <summary>
         /// 日志详细内容正则表达式

@@ -67,6 +67,13 @@ namespace xQuantLogFactory.Model.Monitor
         public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
+        /// 记录内存消耗
+        /// </summary>
+        [XmlAttribute("Memory")]
+        [DisplayName("记录内存消耗")]
+        public bool Memory { get; set; } = false;
+
+        /// <summary>
         /// 父级监视规则
         /// </summary>
         [XmlIgnore]

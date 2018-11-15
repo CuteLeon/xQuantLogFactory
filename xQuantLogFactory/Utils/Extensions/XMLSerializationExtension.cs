@@ -62,7 +62,7 @@ namespace xQuantLogFactory.Utils.Extensions
             }
             catch
             {
-                return null;
+                throw;
             }
         }
     }

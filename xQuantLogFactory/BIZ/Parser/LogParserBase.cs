@@ -16,16 +16,9 @@ namespace xQuantLogFactory.BIZ.Parser
     {
 
         /// <summary>
-        /// 日志详细内容正则表达式
-        /// </summary>
-        public abstract Regex ParticularRegex { get; }
-
-        /// <summary>
         /// 日志总体正则表达式
         /// </summary>
-        public Regex GeneralLogRegex { get; } = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<LogContent>.+)$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        public abstract Regex GeneralLogRegex { get; }
 
         public LogParserBase() { }
 

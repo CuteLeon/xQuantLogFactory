@@ -19,7 +19,8 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
-    //TODO: 监视规则分析内存消耗
+    //TODO: 内存数据存放在 Excel 导出模板的 '内存' sheet 内
+    //TODO: 提取客户端和服务端日志解析器内 GeneralRegex 的使用代码为方法公开于 SCLogParserBase 内，进一步提高代码复用率
     //TODO: 精简 Excel 导出模板
     //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
 

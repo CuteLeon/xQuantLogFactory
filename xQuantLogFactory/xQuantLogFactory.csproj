@@ -92,6 +92,7 @@
     <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
     <Compile Include="BIZ\Parser\ClientLogParser.cs" />
     <Compile Include="BIZ\Analysiser\ILogAnalysiser.cs" />
+    <Compile Include="BIZ\Parser\CSLogParserBase.cs" />
     <Compile Include="BIZ\Parser\ILogParser.cs" />
     <Compile Include="BIZ\Parser\LogParserBase.cs" />
     <Compile Include="BIZ\Processer\LogProcesserBase.cs" />
