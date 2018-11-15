@@ -100,16 +100,14 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="startResult"></param>
         /// <param name="finishResult"></param>
         /// <returns></returns>
-        private bool CheckMatch(MonitorResult startResult, MonitorResult finishResult)
+        public bool CheckMatch(MonitorResult startResult, MonitorResult finishResult)
         {
             if (startResult == null || finishResult == null) return false;
 
-            //判断解析结果是否匹配的逻辑放在这里
-            bool matched = (
-                startResult.Version == finishResult.Version &&
-                startResult.Client == finishResult.Client &&
-                startResult.LogTime <= finishResult.LogTime
-                );
+            bool matched =
+                (string.IsNullOrEmpty(startResult.Version) || string.IsNullOrEmpty(finishResult.Version) || startResult.Version == finishResult.Version) &&
+                (string.IsNullOrEmpty(startResult.Client) || string.IsNullOrEmpty(finishResult.Client) || startResult.Client == finishResult.Client) &&
+                (startResult.LogTime <= finishResult.LogTime);
 
             return matched;
         }

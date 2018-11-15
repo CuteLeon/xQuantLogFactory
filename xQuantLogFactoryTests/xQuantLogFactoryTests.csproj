@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BIZ\Analysiser\GroupLogAnalysiserTests.cs" />
     <Compile Include="BIZ\Parser\LogParserTests.cs" />
     <Compile Include="BIZ\Parser\MiddlewareLogParserTests.cs" />
     <Compile Include="Model\Factory\TaskArgumentFactoryTests.cs" />
