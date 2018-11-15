@@ -23,8 +23,6 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument">任务参数</param>
         public void ExportReport(string reportPath, TaskArgument argument)
         {
-            //TODO: 无法导出数据库内已有任务的数据
-
             //导出模板
             try
             {

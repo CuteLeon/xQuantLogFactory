@@ -19,7 +19,6 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
-    //TODO: 序列化 UnityTaskArgument 为xml
     //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
 
     //TODO: [全局任务] 使用4.0或5.0语言版本...
@@ -66,7 +65,12 @@ namespace xQuantLogFactory
 #endif
 
 #if (!DEBUG)
-            UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
+            UnityTaskArgument = UnityDBContext.TaskArguments.LastOrDefault();//.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
+            if(UnityTaskArgument == null)
+            {
+                Console.WriteLine("未在数据库返回任务对象，请切换 [DEBUG] 状态完成一次任务！");
+                Exit(int.MaxValue-1);
+            }
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
 #else
@@ -110,8 +114,8 @@ namespace xQuantLogFactory
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
             UnityDBContext.SaveChanges();
 
-            SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
             TryToExportLogReport();
+            SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
 
             Exit(0);
         }
@@ -146,7 +150,7 @@ namespace xQuantLogFactory
             if (UnityTaskArgument.LogFiles.Count == 0)
             {
                 UnityTrace.WriteLine("未发现任务相关日志文件，程序将退出");
-                Exit(4);
+                Exit(3);
             }
             else
             {
@@ -170,7 +174,7 @@ namespace xQuantLogFactory
             catch (Exception ex)
             {
                 UnityTrace.WriteLine($"获取任务相关监视规则失败：{ex.Message}");
-                Exit(5);
+                Exit(4);
             }
 
             if (monitorItems.Count() > 0)
