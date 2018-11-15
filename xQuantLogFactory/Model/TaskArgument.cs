@@ -43,6 +43,7 @@ namespace xQuantLogFactory.Model
     /// </summary>
     [Serializable]
     [XmlRoot("TaskArgumentRoot")]
+    [XmlInclude(typeof(TaskArgument))]
     [Table("TaskArguments")]
     public class TaskArgument
     {
@@ -51,7 +52,7 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [Key]
         [Required]
-        [XmlAttribute("TaskID")]
+        [XmlElement("TaskID")]
         [DisplayName("任务ID"), DataType(DataType.Text)]
         public string TaskID { get; set; }
 
@@ -59,21 +60,21 @@ namespace xQuantLogFactory.Model
         /// 日志文件目录
         /// </summary>
         [Required]
-        [XmlAttribute("LogDirectory")]
+        [XmlElement("LogDirectory")]
         [DisplayName("日志文件目录"), DataType(DataType.Text)]
         public string LogDirectory { get; set; }
 
         /// <summary>
         /// 日志开始时间
         /// </summary>
-        [XmlAttribute("LogStartTime")]
+        [XmlElement("LogStartTime")]
         [DisplayName("日志开始时间"), DataType(DataType.DateTime)]
         public DateTime? LogStartTime { get; set; }
 
         /// <summary>
         /// 日志截止时间
         /// </summary>
-        [XmlAttribute("LogFinishTime")]
+        [XmlElement("LogFinishTime")]
         [DisplayName("日志截止时间"), DataType(DataType.DateTime)]
         public DateTime? LogFinishTime { get; set; }
 
@@ -81,14 +82,14 @@ namespace xQuantLogFactory.Model
         /// 任务开始时间
         /// </summary>
         [Required]
-        [XmlAttribute("TaskStartTime")]
+        [XmlElement("TaskStartTime")]
         [DisplayName("任务开始时间"), DataType(DataType.DateTime)]
         public DateTime TaskStartTime { get; set; }
 
         /// <summary>
         /// 任务完成时间
         /// </summary>
-        [XmlAttribute("TaskFinishTime")]
+        [XmlElement("TaskFinishTime")]
         [DisplayName("任务完成时间"), DataType(DataType.DateTime)]
         public DateTime TaskFinishTime { get; set; }
 
@@ -96,14 +97,13 @@ namespace xQuantLogFactory.Model
         /// 包含系统信息
         /// </summary>
         [Required]
-        [XmlAttribute("IncludeSystemInfo")]
+        [XmlElement("IncludeSystemInfo")]
         [DisplayName("包含系统信息")]
         public bool IncludeSystemInfo { get; set; } = false;
 
         /// <summary>
         /// 系统信息
         /// </summary>
-        [XmlAttribute("SystemInfo")]
         [DisplayName("系统信息")]
         public SystemInfo SystemInfo { get; set; }
 
@@ -111,7 +111,7 @@ namespace xQuantLogFactory.Model
         /// 包含客户端文件信息
         /// </summary>
         [Required]
-        [XmlAttribute("IncludeClientInfo")]
+        [XmlElement("IncludeClientInfo")]
         [DisplayName("包含客户端文件信息")]
         public bool IncludeClientInfo { get; set; } = false;
 
@@ -119,14 +119,14 @@ namespace xQuantLogFactory.Model
         /// 日志分析报告输出模式
         /// </summary>
         [Required]
-        [XmlAttribute("ReportMode")]
+        [XmlElement("ReportMode")]
         [DisplayName("日志分析报告输出模式")]
         public ReportModes ReportMode { get; set; } = ConfigHelper.DefaultReportMode;
 
         /// <summary>
         /// 最近一次导出的日志报告路径
         /// </summary>
-        [XmlAttribute("LastReportPath")]
+        [XmlElement("LastReportPath")]
         [DisplayName("最近一次导出的日志报告路径"), DataType(DataType.Text)]
         public string LastReportPath { get; set; }
 
@@ -134,16 +134,17 @@ namespace xQuantLogFactory.Model
         /// 监视规则文件名称
         /// </summary>
         [Required]
+        [XmlElement("MonitorFileName")]
         [DisplayName("时间规则文件名称"), DataType(DataType.Text)]
         public string MonitorFileName { get; set; }
 
         /// <summary>
         /// 子监控项目树根节点列表
         /// </summary>
+        [XmlIgnore]
         [DisplayName("子监控项目树根节点列表")]
         public virtual VersionedList<MonitorItem> MonitorItemTree { get; set; } = new VersionedList<MonitorItem>();
 
-        [XmlIgnore]
         private readonly VersionedList<MonitorItem> monitorItems = new VersionedList<MonitorItem>();
         /// <summary>
         /// 子监控项目遍历列表
@@ -202,24 +203,28 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 日志文件列表
         /// </summary>
+        [XmlIgnore]
         [DisplayName("日志文件列表")]
         public virtual List<LogFile> LogFiles { get; set; } = new List<LogFile>();
 
         /// <summary>
         /// 监视日志解析结果表
         /// </summary>
+        [XmlIgnore]
         [DisplayName("监视日志解析结果表")]
         public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
 
         /// <summary>
         /// 中间件日志解析结果表
         /// </summary>
+        [XmlIgnore]
         [DisplayName("中间件日志解析结果表")]
         public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();
 
         /// <summary>
         /// 日志分析结果表
         /// </summary>
+        [XmlIgnore]
         [DisplayName("日志分析结果表")]
         public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
 

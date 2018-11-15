@@ -110,7 +110,7 @@ namespace xQuantLogFactory
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
             UnityDBContext.SaveChanges();
 
-            //SaveTaskArgumentToXML();
+            SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
             TryToExportLogReport();
 
             Exit(0);
@@ -339,14 +339,19 @@ namespace xQuantLogFactory
         /// <summary>
         /// 将任务储存为XML文件
         /// </summary>
-        private static void SaveTaskArgumentToXML()
+        /// <param name="argument">任务参数对象</param>
+        private static void SaveTaskArgumentToXML(TaskArgument argument)
         {
+            if (argument == null) throw new ArgumentNullException(nameof(argument));
+
             try
             {
-                string taskXMLPath = GetXMLFilePath(UnityTaskArgument);
-                string xmlContent = UnityTaskArgument.SerializeToXML();
+                string taskXMLPath = GetXMLFilePath(argument);
+                string xmlContent = argument.SerializeToXML();
                 File.WriteAllText(taskXMLPath, xmlContent);
                 UnityTrace.WriteLine($"任务对象存储到XML成功：{taskXMLPath}");
+                
+                //Process.Start("notepad.exe", taskXMLPath);
             }
             catch (Exception ex)
             {
@@ -361,7 +366,7 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetXMLFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}.xml";
+            return $@"{ConfigHelper.ReportExportDirectory}\任务数据转储-{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml";
         }
 
         /// <summary>
@@ -448,7 +453,7 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetReportFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
+            return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
         #endregion

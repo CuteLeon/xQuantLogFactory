@@ -35,7 +35,7 @@ namespace xQuantLogFactory.Utils.Extensions
             }
             catch
             {
-                return string.Empty;
+                throw;
             }
         }
 
