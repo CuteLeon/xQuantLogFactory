@@ -115,6 +115,8 @@ namespace xQuantLogFactory.BIZ.Parser
                                 result.Client = client;
                                 result.Version = version;
 
+                                result.MonitorData["Memory"] = 100.0;
+
                                 this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }
                         }

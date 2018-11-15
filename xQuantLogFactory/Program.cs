@@ -19,6 +19,8 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
+    //TODO: 监视规则分析内存消耗
+    //TODO: 精简 Excel 导出模板
     //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
 
     //TODO: [全局任务] 使用4.0或5.0语言版本...
