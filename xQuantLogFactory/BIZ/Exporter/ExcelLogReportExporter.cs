@@ -51,16 +51,18 @@ namespace xQuantLogFactory.BIZ.Exporter
                     //数据区域从 [2, 1] 开始
                     using (ExcelRange range = sourceDataSheet.Cells[2, 1, argument.AnalysisResults.Count + 1, 8])
                     {
-                        int rowID = 2;
+                        int rowID = 2, executeID = 0;
                         foreach (var result in argument.AnalysisResults
                             .Where(result => result.StartMonitorResult != null && result.FinishMonitorResult != null)
                             .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
                             )
                         {
+                            if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
+
                             range[rowID, 1].Value = result.MonitorItem?.Name;
                             range[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
                             range[rowID, 3].Value = result.Version;
-                            range[rowID, 4].Value = result.LogFile?.FileID;
+                            range[rowID, 4].Value = executeID;
                             range[rowID, 5].Value = result.ElapsedMillisecond;
                             range[rowID, 6].Value = result.StartMonitorResult?.LogContent;
                             range[rowID, 7].Value = result.FinishMonitorResult?.LogContent;
