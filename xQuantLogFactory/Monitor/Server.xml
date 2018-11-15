@@ -3,6 +3,16 @@
   <!--<Item Name="内存消耗" Begin="内存消耗" End="" Memory="True" Sheet="内存"/>-->
   <Item Name="中间件启动" Begin="中间件远程服务接口注册完成" End="显示主窗口结束">
     <Item Name="启动服务数据保存内核服务" Begin="启动服务数据保存内核服务" End="加载中债参数设置表" Memory="True"/>
-    <Item Name="中间件数据加载" Begin="加载中债参数设置表" End="显示主窗口结束"/>
+    <!--<Item Name="中间件数据加载" Begin="加载中债参数设置表" End="显示主窗口结束"/>-->
+    <Item Name="金融工具分组加载" Begin="加载中债参数设置表" End="完成金融工具分组加载">
+      <Item Name="真实券载入" Begin="加载COM初始化 " End="TBND完成真实券载入"/>
+      <Item Name="虚拟券载入" Begin="TBND完成真实券缓存，个数" End="TBND完成虚拟券载入"/>
+      <Item Name="加载TTRD" Begin="加载TSTK_IDX_FUTURE：" End="加载业务字典名称转换表："/>
+      <Item Name="加载字典表" Begin="加载业务字典名称转换表：" End="加载指标缓存字典："/>
+      <Item Name="数据加载服务" Begin="-数据加载服务1|执行触-" End="-数据加载服务1|结束:16529-"/>
+      <Item Name="后续数据加载服务" Begin="数据加载服务 加载后续数据开始" End="数据加载服务 加载后续数据结束"/>
+      <Item Name="启动服务线程" Begin="PoolCore 线程启动！" End="显示主窗口开始..."/>
+      <Item Name="显示主窗口" Begin="显示主窗口开始..." End="显示主窗口结束"/>
+    </Item>
   </Item>
 </MonitorRoot>
