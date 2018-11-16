@@ -76,7 +76,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     {
                         int rowID = memoryRectangle.Top;
                         foreach (var result in argument.MonitorResults
-                            .Where(result => result.MonitorItem?.Memory ?? false)
+                            .Where(result => result.MemoryConsumed != null)
                             .OrderBy(result => result.LogTime)
                             //.OrderBy(result => (result.MonitorItem?.ItemID, result.Version, result.Client))
                             )

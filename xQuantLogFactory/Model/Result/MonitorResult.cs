@@ -62,7 +62,7 @@ namespace xQuantLogFactory.Model.Result
         /// 内存消耗
         /// </summary>
         [DisplayName("附加监视数据")]
-        public double MemoryConsumed { get; set; }
+        public double? MemoryConsumed { get; set; }
 
     }
 }

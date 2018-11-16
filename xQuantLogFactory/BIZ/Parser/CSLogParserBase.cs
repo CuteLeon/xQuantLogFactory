@@ -161,7 +161,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                     //使用缓存减少计算次数，记得换行后重置缓存
                                     if (memoryCache == null) memoryCache = this.GetMemoryInLogContent(logContent);
 
-                                    result.MemoryConsumed = memoryCache ?? 0.0;
+                                    result.MemoryConsumed = memoryCache;
                                 }
 
                                 this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
