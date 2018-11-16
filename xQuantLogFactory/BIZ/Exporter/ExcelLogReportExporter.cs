@@ -7,6 +7,8 @@ using OfficeOpenXml;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.EqualityComparer;
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Extensions;
 
 namespace xQuantLogFactory.BIZ.Exporter
@@ -77,8 +79,10 @@ namespace xQuantLogFactory.BIZ.Exporter
                         int rowID = memoryRectangle.Top;
                         foreach (var result in argument.MonitorResults
                             .Where(result => result.MemoryConsumed != null)
+                            //(result => (result.MonitorItem?.ItemID, result.Version, result.Client)
                             .OrderBy(result => result.LogTime)
-                            //.OrderBy(result => (result.MonitorItem?.ItemID, result.Version, result.Client))
+                            //存在：同一行日志被多个监视内存的监视规则匹配到而造成同一条日志产生多个内存数据，去重
+                            .Distinct(new LogResultEqualityComparer<MonitorResult>())
                             )
                         {
                             memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
