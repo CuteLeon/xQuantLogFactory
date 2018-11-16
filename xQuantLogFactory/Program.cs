@@ -66,13 +66,27 @@ namespace xQuantLogFactory
             //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
-            UnityTaskArgument = UnityDBContext.TaskArguments.LastOrDefault();//.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
-            if(UnityTaskArgument == null)
+#if (DEBUG)
+            UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
+            if (UnityTaskArgument == null)
             {
                 Console.WriteLine("未在数据库返回任务对象，请切换 [DEBUG] 状态完成一次任务！");
-                Exit(int.MaxValue-1);
+                Exit(int.MaxValue - 1);
             }
+            //手动加载导航数据
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorItemTree).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorItemTree).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).Load();
+
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
 #else
@@ -356,7 +370,7 @@ namespace xQuantLogFactory
                 string xmlContent = argument.SerializeToXML();
                 File.WriteAllText(taskXMLPath, xmlContent);
                 UnityTrace.WriteLine($"任务对象存储到XML成功：{taskXMLPath}");
-                
+
                 //Process.Start("notepad.exe", taskXMLPath);
             }
             catch (Exception ex)

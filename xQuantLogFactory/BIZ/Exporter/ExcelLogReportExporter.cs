@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -46,12 +47,13 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
 
                     ExcelWorksheet sourceDataSheet = excel.Workbook.Worksheets["原始"];
+                    ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
 
-                    //数据区域从 [2, 1] 开始
-                    using (ExcelRange range = sourceDataSheet.Cells[2, 1, argument.AnalysisResults.Count + 1, 8])
+                    Rectangle sourceRectangle = new Rectangle(1, 2, 5, argument.AnalysisResults.Count);
+                    using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
                     {
-                        int rowID = 2, executeID = 0;
+                        int rowID = sourceRectangle.Top + 1, executeID = 0;
                         foreach (var result in argument.AnalysisResults
                             .Where(result => result.StartMonitorResult != null && result.FinishMonitorResult != null)
                             .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
@@ -59,22 +61,39 @@ namespace xQuantLogFactory.BIZ.Exporter
                         {
                             if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
 
-                            range[rowID, 1].Value = result.MonitorItem?.Name;
-                            range[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
-                            range[rowID, 3].Value = result.Version;
-                            range[rowID, 4].Value = executeID;
-                            range[rowID, 5].Value = result.ElapsedMillisecond;
-                            range[rowID, 6].Value = result.StartMonitorResult?.LogContent;
-                            range[rowID, 7].Value = result.FinishMonitorResult?.LogContent;
-                            range[rowID, 8].Value = result.LineNumber;
+                            sourceRange[rowID, 1].Value = result.MonitorItem?.Name;
+                            sourceRange[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
+                            sourceRange[rowID, 3].Value = result.Version;
+                            sourceRange[rowID, 4].Value = executeID;
+                            sourceRange[rowID, 5].Value = result.ElapsedMillisecond;
 
                             rowID++;
                         }
                     }
 
-                    //TODO: 数据透视表更新？？？
-                    excel.Workbook.FullCalcOnLoad = true;
+                    //TODO: 执行序号
+                    Rectangle memoryRectangle = new Rectangle(1, 2, 5, argument.MonitorResults.Count);
+                    using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
+                    {
+                        int rowID = memoryRectangle.Top + 1, executeID = 0;
+                        foreach (var result in argument.MonitorResults
+                            .Where(result => result.MonitorItem?.Memory ?? false)
+                            .OrderBy(result => result.LogTime)
+                            )
+                        {
+                            if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
 
+                            memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
+                            memoryRange[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
+                            memoryRange[rowID, 3].Value = result.Version;
+                            memoryRange[rowID, 4].Value = executeID;
+                            memoryRange[rowID, 5].Value = result.MemoryConsumed;
+
+                            rowID++;
+                        }
+                    }
+
+                    excel.Workbook.FullCalcOnLoad = true;
                     analysisSheet.PivotTables.ToList().ForEach(table => table?.ToString());
                     analysisSheet.Calculate();
                     excel.Workbook.Calculate();
