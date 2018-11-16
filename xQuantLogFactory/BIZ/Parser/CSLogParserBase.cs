@@ -87,6 +87,7 @@ namespace xQuantLogFactory.BIZ.Parser
                     streamRreader = new StreamReader(fileStream, Encoding.Default);
 
                     int lineNumber = 0;
+                    double? memoryCache = null;
                     string logLine = string.Empty,
                         logLevel = string.Empty,
                         logContent = string.Empty;
@@ -95,7 +96,9 @@ namespace xQuantLogFactory.BIZ.Parser
 
                     while (!streamRreader.EndOfStream)
                     {
+                        memoryCache = null;
                         lineNumber++;
+
                         //获取日志行
                         logLine = streamRreader.ReadLine();
                         generalMatch = this.GeneralLogRegex.Match(logLine);
@@ -154,7 +157,12 @@ namespace xQuantLogFactory.BIZ.Parser
                                     this.ApplyParticularMatch(result, particularMatch);
 
                                 if (monitor.Memory)
-                                    result.MemoryConsumed = this.GetMemoryInLogContent(logContent);
+                                {
+                                    //使用缓存减少计算次数，记得换行后重置缓存
+                                    if (memoryCache == null) memoryCache = this.GetMemoryInLogContent(logContent);
+
+                                    result.MemoryConsumed = memoryCache ?? 0.0;
+                                }
 
                                 this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }

@@ -105,7 +105,7 @@ namespace xQuantLogFactory
                 ParseClientLog();
                 ParseServerLog();
             }
-            ParseMiddlewareLog();
+           ParseMiddlewareLog();
             ShowParseResult();
 
             UnityTrace.WriteLine("开始分析日志解析结果...");
