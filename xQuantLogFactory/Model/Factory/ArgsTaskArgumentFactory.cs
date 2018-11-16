@@ -9,9 +9,9 @@ namespace xQuantLogFactory.Model.Factory
 {
 
     /// <summary>
-    /// 任务参数对象工厂
+    /// 命令行-任务参数对象工厂
     /// </summary>
-    public class TaskArgumentFactory
+    public class ArgsTaskArgumentFactory
     {
         /// <summary>
         /// 日志文件目录
@@ -58,11 +58,11 @@ namespace xQuantLogFactory.Model.Factory
          * report={reportmodes_报告导出模式 =RepostModes.Html}：可省略，默认值为 Html；可取值为：{html/word/excel}，可忽略大小写
          */
 
-        private static Lazy<TaskArgumentFactory> factory = new Lazy<TaskArgumentFactory>();
+        private static Lazy<ArgsTaskArgumentFactory> factory = new Lazy<ArgsTaskArgumentFactory>();
         /// <summary>
         /// 任务参数工厂实例
         /// </summary>
-        public static TaskArgumentFactory Intance
+        public static ArgsTaskArgumentFactory Intance
         {
             get => factory.Value;
         }

@@ -12,19 +12,19 @@ namespace xQuantLogFactory.Model.Factory.Tests
         [TestMethod()]
         public void CreateTaskArgumentTest()
         {
-            TaskArgumentFactory factory = TaskArgumentFactory.Intance;
+            ArgsTaskArgumentFactory factory = ArgsTaskArgumentFactory.Intance;
             string[] args = new string[] {
-                $@"{TaskArgumentFactory.LOG_DIR}=C:\TestDirectory1",
-                $@"{TaskArgumentFactory.LOG_DIR}=C:\TestDirectory",
-                $@"{TaskArgumentFactory.MONITOR_NAME}=monitor.xml",
+                $@"{ArgsTaskArgumentFactory.LOG_DIR}=C:\TestDirectory1",
+                $@"{ArgsTaskArgumentFactory.LOG_DIR}=C:\TestDirectory",
+                $@"{ArgsTaskArgumentFactory.MONITOR_NAME}=monitor.xml",
                 $@"sasdaasdlkw",
                 $@"sasdaasdlkw=",
                 $@"=sasdaasdlkw",
-                $@"{TaskArgumentFactory.START_TIME}=sadkaw",
-                $@"""{TaskArgumentFactory.FINISH_TIME}=2018-11-11 18:30:00""",
-                $@"{TaskArgumentFactory.SYS_INFO}=true",
-                $@"{TaskArgumentFactory.CLIENT_INFO}=false",
-                $@"{TaskArgumentFactory.REPORT_MODE}=word",
+                $@"{ArgsTaskArgumentFactory.START_TIME}=sadkaw",
+                $@"""{ArgsTaskArgumentFactory.FINISH_TIME}=2018-11-11 18:30:00""",
+                $@"{ArgsTaskArgumentFactory.SYS_INFO}=true",
+                $@"{ArgsTaskArgumentFactory.CLIENT_INFO}=false",
+                $@"{ArgsTaskArgumentFactory.REPORT_MODE}=word",
             };
 
             TaskArgument argument = null;

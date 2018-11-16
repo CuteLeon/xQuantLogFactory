@@ -88,5 +88,15 @@ namespace xQuantLogFactory {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
+        /// </summary>
+        internal static System.Drawing.Icon xQuantLogFactoryIcon {
+            get {
+                object obj = ResourceManager.GetObject("xQuantLogFactoryIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

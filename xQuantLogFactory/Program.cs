@@ -224,14 +224,16 @@ namespace xQuantLogFactory
         /// <param name="args"></param>
         private static void CreateTaskArgument(string[] args)
         {
+            //UnityTaskArgument = new GUITaskArgumentFactory().CreateTaskArgument();
+
             try
             {
-                UnityTaskArgument = TaskArgumentFactory.Intance.CreateTaskArgument(args);
+                UnityTaskArgument = ArgsTaskArgumentFactory.Intance.CreateTaskArgument(args);
             }
             catch (Exception ex)
             {
                 UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
-                UnityTrace.WriteLine(TaskArgumentFactory.Intance.Usage);
+                UnityTrace.WriteLine(ArgsTaskArgumentFactory.Intance.Usage);
                 Exit(1);
             }
             UnityDBContext.TaskArguments.Add(UnityTaskArgument);

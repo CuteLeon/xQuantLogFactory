@@ -103,7 +103,14 @@
     <Compile Include="Model\EqualityComparer\LogResultEqualityComparer.cs" />
     <Compile Include="Model\Extensions\GroupAnalysisResultExtension.cs" />
     <Compile Include="Model\Extensions\TaskArgumentExtension.cs" />
-    <Compile Include="Model\Factory\TaskArgumentFactory.cs" />
+    <Compile Include="Model\Factory\ArgsTaskArgumentFactory.cs" />
+    <Compile Include="Model\Factory\CreateTaskArgumentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Model\Factory\CreateTaskArgumentForm.Designer.cs">
+      <DependentUpon>CreateTaskArgumentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Factory\GUITaskArgumentFactory.cs" />
     <Compile Include="Model\Result\GroupAnalysisResult.cs" />
     <Compile Include="Model\Result\LogResultBase.cs" />
     <Compile Include="Model\Monitor\IMonitor.cs" />
@@ -136,11 +143,11 @@
     <Content Include="Monitor\Client.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="xQuantLogFactoryIcon.ico" />
     <None Include="Resources\Monitor_Template.xml" />
     <Content Include="Monitor\Server.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="xQuantLogFactoryIcon.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -150,6 +157,9 @@
     <None Include="Resources\xQuant_EXCEL_Templet.xlsx" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Model\Factory\CreateTaskArgumentForm.resx">
+      <DependentUpon>CreateTaskArgumentForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UnityResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>UnityResource.Designer.cs</LastGenOutput>
