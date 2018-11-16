@@ -74,6 +74,13 @@ namespace xQuantLogFactory.Model.Monitor
         public bool Memory { get; set; } = false;
 
         /// <summary>
+        /// 不作为源数据输出
+        /// </summary>
+        [XmlAttribute("NotSource")]
+        [DisplayName("不作为源数据输出")]
+        public bool NotSource { get; set; } = false;
+
+        /// <summary>
         /// 父级监视规则
         /// </summary>
         [XmlIgnore]

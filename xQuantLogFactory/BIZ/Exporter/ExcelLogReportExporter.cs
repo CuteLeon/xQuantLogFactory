@@ -57,7 +57,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     {
                         int rowID = sourceRectangle.Top, executeID = 0;
                         foreach (var result in argument.AnalysisResults
-                            .Where(result => result.StartMonitorResult != null && result.FinishMonitorResult != null)
+                            .Where(result => !result.MonitorItem?.NotSource ?? false)
                             .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
                             )
                         {

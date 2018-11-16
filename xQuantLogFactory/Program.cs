@@ -19,6 +19,7 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
+    //TODO: GUI TaskArgumentFactory
     //TODO: 未关闭分组依然输出，但是耗时置为 --
     //TODO: Excel 原始数据增加日志开始时间和结束时间
     //TODO: 原始数据记录开始结果的日志文件名称和行号

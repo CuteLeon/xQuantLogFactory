@@ -158,9 +158,8 @@ namespace xQuantLogFactory.BIZ.Parser
 
                                 if (monitor.Memory)
                                 {
-                                    //使用缓存减少计算次数，记得换行后重置缓存
+                                    //使用缓存减少计算次数，缓存初始化为 null
                                     if (memoryCache == null) memoryCache = this.GetMemoryInLogContent(logContent);
-
                                     result.MemoryConsumed = memoryCache;
                                 }
 
