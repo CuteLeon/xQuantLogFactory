@@ -19,9 +19,13 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
-    //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
+    //TODO: 未关闭分组依然输出，但是耗时置为 --
+    //TODO: Excel 原始数据增加日志开始时间和结束时间
+    //TODO: 原始数据记录开始结果的日志文件名称和行号
 
-    //TODO: [全局任务] 使用4.0或5.0语言版本...
+    //TODO: 服务端+客户端监视规则配置
+
+    //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试
 

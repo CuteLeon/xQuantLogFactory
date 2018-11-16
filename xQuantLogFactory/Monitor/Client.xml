@@ -3,9 +3,9 @@
   <Item Name="客户端启动" Begin="登录成功" End="主窗口初始化结束">
     <Item Name="版本升级" Begin="检查最新版本开始" End="检查最新版本结束"/>
     <Item Name="数据加载" Begin="加载中债参数设置表" End="初始化消息订阅连接"/>
-    <Item Name="数据加载TBND" Begin="加载行业二级分类查询" End="加载TBND 内存消耗" Memory="True"/>
-    <Item Name="数据加载TSTK_IDX_FUTURE" Begin="加载TSTK_IDX_FUTURE" End="加载TSTK_IDX_FUTURESET 内存消耗" Memory="True"/>
-    <Item Name="数据加载TTRD_OTC_COUNTERPARTY" Begin="加载TTRD_OTC_COUNTERPARTY：开始查询" End="加载TTRD_OTC_COUNTERPARTY 内存消耗" Memory="True"/>
+    <Item Name="数据加载TBND" Begin="加载行业二级分类查询" End="加载TBND 内存消耗" Memory="true"/>
+    <Item Name="数据加载TSTK_IDX_FUTURE" Begin="加载TSTK_IDX_FUTURE" End="加载TSTK_IDX_FUTURESET 内存消耗" Memory="true"/>
+    <Item Name="数据加载TTRD_OTC_COUNTERPARTY" Begin="加载TTRD_OTC_COUNTERPARTY：开始查询" End="加载TTRD_OTC_COUNTERPARTY 内存消耗" Memory="true"/>
     <Item Name="初始化第二阶段" Begin="初始化第二阶段开始" End="初始化第二阶段结束"/>
   </Item>
   <!--<Item Name="内存消耗" Begin="内存消耗" End="" Memory="True" Sheet="内存"/>-->
