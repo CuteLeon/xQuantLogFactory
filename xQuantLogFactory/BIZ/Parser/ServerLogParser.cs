@@ -1,12 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Extensions;
-using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
@@ -29,120 +25,22 @@ namespace xQuantLogFactory.BIZ.Parser
         public ServerLogParser(ITracer trace) : base(trace) { }
 
         /// <summary>
-        /// 日志解析
+        /// 文件过滤
         /// </summary>
-        /// <param name="argument">任务参数</param>
-        public override void Parse(TaskArgument argument)
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        protected override IEnumerable<LogFile> GetFileFiltered(TaskArgument argument)
+            => argument?.LogFiles.Where(file => file.LogFileType == LogFileTypes.Server);
+
+        /// <summary>
+        /// 应用精准匹配数据
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="particularMatch"></param>
+        protected override void ApplyParticularMatch(MonitorResult result, Match particularMatch)
         {
-            if (argument == null)
-                throw new ArgumentNullException(nameof(argument));
-
-            //遍历文件
-            argument.LogFiles.Where(file => file.LogFileType == LogFileTypes.Server).AsParallel().ForAll(logFile =>
-            {
-                this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
-
-                FileStream fileStream = null;
-                StreamReader streamRreader = null;
-                try
-                {
-                    fileStream = new FileStream(logFile.FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    streamRreader = new StreamReader(fileStream, Encoding.Default);
-
-                    int lineNumber = 0;
-                    string logLine = string.Empty,
-                        logLevel = string.Empty,
-                        client = string.Empty,
-                        version = string.Empty,
-                        logContent = string.Empty;
-                    Match generalMatch = null;
-                    Match particularMatch = null;
-
-                    while (!streamRreader.EndOfStream)
-                    {
-                        lineNumber++;
-                        //获取日志行
-                        logLine = streamRreader.ReadLine();
-                        generalMatch = this.GeneralLogRegex.Match(logLine);
-                        if (generalMatch.Success)
-                        {
-                            //跳过未匹配到内容的日志行
-                            if (!generalMatch.Groups["LogContent"].Success) continue;
-
-                            DateTime logTime = DateTime.MinValue;
-                            //跳过日志时间在任务时间范围外的日志行
-                            if (generalMatch.Groups["LogTime"].Success &&
-                                DateTime.TryParse(generalMatch.Groups["LogTime"].Value, out logTime) &&
-                                generalMatch.Groups["Millisecond"].Success &&
-                                double.TryParse(generalMatch.Groups["Millisecond"].Value, out double millisecond)
-                                )
-                                logTime = logTime.AddMilliseconds(millisecond);
-                            else
-                                continue;
-
-                            if (!argument.CheckLogStartTime(logTime) ||
-                                !argument.CheckLogFinishTime(logTime))
-                                continue;
-
-                            logContent = generalMatch.Groups["LogContent"].Value;
-                            logLevel = generalMatch.Groups["LogLevel"].Success ? generalMatch.Groups["LogLevel"].Value : string.Empty;
-
-                            //精确匹配
-                            particularMatch = this.ParticularRegex.Match(logContent);
-                            if (particularMatch.Success)
-                            {
-                                version = particularMatch.Groups["Version"].Success ? particularMatch.Groups["Version"].Value : string.Empty;
-                                client = particularMatch.Groups["Client"].Success ? particularMatch.Groups["Client"].Value : string.Empty;
-                                logContent = particularMatch.Groups["LogContent"].Success ? particularMatch.Groups["LogContent"].Value : string.Empty;
-                            }
-
-                            //匹配所有监视规则
-                            foreach (MonitorItem monitor in argument.MonitorItems)
-                            {
-                                GroupTypes groupType = this.MatchMonitor(monitor, logContent);
-                                if (groupType == GroupTypes.Unmatch)
-                                {
-                                    //未匹配到任何监视规则，尝试下一条规则
-                                    continue;
-                                }
-
-                                MonitorResult result = this.CreateMonitorResult(argument, logFile, monitor);
-                                result.LogTime = logTime;
-                                result.GroupType = groupType;
-                                result.LineNumber = lineNumber;
-                                result.LogContent = logContent;
-                                result.LogLevel = logLevel;
-                                result.Client = client;
-                                result.Version = version;
-
-                                //TODO: 记录内存（同 Client）
-                                if (monitor.Memory)
-                                    result.MemoryConsumed = this.GetMemoryInLogContent(logContent);
-
-                                this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
-                            }
-                        }
-                        else
-                        {
-                            //未识别的日志行
-                        }
-                    }
-
-                    this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
-                }
-                catch (Exception ex)
-                {
-                    this.Trace?.WriteLine($"解析日志文件(ID: {logFile.FileID}) {logFile.FilePath} 失败：{ex.Message}\n————————");
-                }
-                finally
-                {
-                    streamRreader?.Close();
-                    streamRreader?.Dispose();
-
-                    fileStream?.Close();
-                    fileStream?.Dispose();
-                }
-            });
+            result.Version = particularMatch.Groups["Version"].Success ? particularMatch.Groups["Version"].Value : string.Empty;
+            result.Client = particularMatch.Groups["Client"].Success ? particularMatch.Groups["Client"].Value : string.Empty;
         }
 
     }
