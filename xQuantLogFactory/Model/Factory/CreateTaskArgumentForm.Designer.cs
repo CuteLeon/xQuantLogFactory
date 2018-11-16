@@ -28,58 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.CancelButton = new System.Windows.Forms.Button();
             this.OKButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.DirectoryTextBox = new System.Windows.Forms.TextBox();
+            this.DirectoryButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.MonitorComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.StartTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.FinishTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.label4 = new System.Windows.Forms.Label();
+            this.SystemInfoCheckBox = new System.Windows.Forms.CheckBox();
+            this.ClientInfoCheckBox = new System.Windows.Forms.CheckBox();
+            this.ReportComboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.CancelButton, 1, 7);
-            this.tableLayoutPanel1.Controls.Add(this.OKButton, 2, 7);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.textBox1, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(10);
-            this.tableLayoutPanel1.RowCount = 8;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(354, 341);
-            this.tableLayoutPanel1.TabIndex = 2;
             // 
             // CancelButton
             // 
             this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.CancelButton.Location = new System.Drawing.Point(100, 294);
+            this.CancelButton.Location = new System.Drawing.Point(91, 242);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(106, 34);
+            this.CancelButton.Size = new System.Drawing.Size(127, 35);
             this.CancelButton.TabIndex = 4;
             this.CancelButton.Text = "取消";
             this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // OKButton
             // 
-            this.OKButton.Location = new System.Drawing.Point(212, 294);
+            this.OKButton.Location = new System.Drawing.Point(247, 242);
             this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(106, 34);
+            this.OKButton.Size = new System.Drawing.Size(129, 35);
             this.OKButton.TabIndex = 3;
             this.OKButton.Text = "确认";
             this.OKButton.UseVisualStyleBackColor = true;
@@ -87,25 +67,155 @@
             // 
             // label1
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(13, 10);
+            this.label1.Location = new System.Drawing.Point(24, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 32);
+            this.label1.Size = new System.Drawing.Size(100, 19);
             this.label1.TabIndex = 5;
-            this.label1.Text = "日志目录：";
+            this.label1.Text = "日志文件目录:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // textBox1
+            // DirectoryTextBox
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tableLayoutPanel1.SetColumnSpan(this.textBox1, 2);
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(98, 13);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(222, 21);
-            this.textBox1.TabIndex = 6;
+            this.DirectoryTextBox.BackColor = System.Drawing.Color.LightGray;
+            this.DirectoryTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.DirectoryTextBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.DirectoryTextBox.Location = new System.Drawing.Point(127, 25);
+            this.DirectoryTextBox.Name = "DirectoryTextBox";
+            this.DirectoryTextBox.Size = new System.Drawing.Size(262, 19);
+            this.DirectoryTextBox.TabIndex = 6;
+            this.DirectoryTextBox.Text = "D:\\Desktop\\Log";
+            // 
+            // DirectoryButton
+            // 
+            this.DirectoryButton.BackColor = System.Drawing.Color.Silver;
+            this.DirectoryButton.FlatAppearance.BorderSize = 0;
+            this.DirectoryButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Silver;
+            this.DirectoryButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
+            this.DirectoryButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DirectoryButton.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.DirectoryButton.ForeColor = System.Drawing.Color.DimGray;
+            this.DirectoryButton.Location = new System.Drawing.Point(389, 25);
+            this.DirectoryButton.Name = "DirectoryButton";
+            this.DirectoryButton.Size = new System.Drawing.Size(30, 19);
+            this.DirectoryButton.TabIndex = 7;
+            this.DirectoryButton.Text = "···";
+            this.DirectoryButton.UseVisualStyleBackColor = false;
+            this.DirectoryButton.Click += new System.EventHandler(this.DirectoryButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(24, 58);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(100, 19);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "监视规则文件:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // MonitorComboBox
+            // 
+            this.MonitorComboBox.BackColor = System.Drawing.Color.LightGray;
+            this.MonitorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MonitorComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MonitorComboBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.MonitorComboBox.FormattingEnabled = true;
+            this.MonitorComboBox.Location = new System.Drawing.Point(127, 53);
+            this.MonitorComboBox.Name = "MonitorComboBox";
+            this.MonitorComboBox.Size = new System.Drawing.Size(292, 28);
+            this.MonitorComboBox.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(24, 95);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(100, 19);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "日志开始时间:";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // StartTimePicker
+            // 
+            this.StartTimePicker.CalendarForeColor = System.Drawing.Color.LightGray;
+            this.StartTimePicker.CalendarMonthBackground = System.Drawing.Color.LightGray;
+            this.StartTimePicker.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.StartTimePicker.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.StartTimePicker.Location = new System.Drawing.Point(127, 92);
+            this.StartTimePicker.Name = "StartTimePicker";
+            this.StartTimePicker.ShowCheckBox = true;
+            this.StartTimePicker.Size = new System.Drawing.Size(292, 26);
+            this.StartTimePicker.TabIndex = 11;
+            this.StartTimePicker.Value = new System.DateTime(2018, 11, 16, 0, 0, 0, 0);
+            // 
+            // FinishTimePicker
+            // 
+            this.FinishTimePicker.CalendarForeColor = System.Drawing.Color.LightGray;
+            this.FinishTimePicker.CalendarMonthBackground = System.Drawing.Color.LightGray;
+            this.FinishTimePicker.CustomFormat = "yyyy-MM-dd HH:mm:ss";
+            this.FinishTimePicker.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FinishTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.FinishTimePicker.Location = new System.Drawing.Point(127, 124);
+            this.FinishTimePicker.Name = "FinishTimePicker";
+            this.FinishTimePicker.ShowCheckBox = true;
+            this.FinishTimePicker.Size = new System.Drawing.Size(292, 26);
+            this.FinishTimePicker.TabIndex = 13;
+            this.FinishTimePicker.Value = new System.DateTime(2018, 11, 16, 23, 59, 59, 0);
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(24, 127);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(100, 19);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "日志结束时间:";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // SystemInfoCheckBox
+            // 
+            this.SystemInfoCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.SystemInfoCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.SystemInfoCheckBox.Location = new System.Drawing.Point(51, 158);
+            this.SystemInfoCheckBox.Name = "SystemInfoCheckBox";
+            this.SystemInfoCheckBox.Size = new System.Drawing.Size(167, 24);
+            this.SystemInfoCheckBox.TabIndex = 14;
+            this.SystemInfoCheckBox.Text = "记录系统信息";
+            this.SystemInfoCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // ClientInfoCheckBox
+            // 
+            this.ClientInfoCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ClientInfoCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ClientInfoCheckBox.Location = new System.Drawing.Point(252, 158);
+            this.ClientInfoCheckBox.Name = "ClientInfoCheckBox";
+            this.ClientInfoCheckBox.Size = new System.Drawing.Size(167, 24);
+            this.ClientInfoCheckBox.TabIndex = 15;
+            this.ClientInfoCheckBox.Text = "记录系统信息";
+            this.ClientInfoCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // ReportComboBox
+            // 
+            this.ReportComboBox.BackColor = System.Drawing.Color.LightGray;
+            this.ReportComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ReportComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReportComboBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ReportComboBox.FormattingEnabled = true;
+            this.ReportComboBox.Location = new System.Drawing.Point(127, 188);
+            this.ReportComboBox.Name = "ReportComboBox";
+            this.ReportComboBox.Size = new System.Drawing.Size(292, 28);
+            this.ReportComboBox.TabIndex = 17;
+            // 
+            // label5
+            // 
+            this.label5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(24, 193);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(100, 19);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "导出报告格式:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // CreateTaskArgumentForm
             // 
@@ -113,23 +223,46 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelButton;
-            this.ClientSize = new System.Drawing.Size(354, 341);
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.ClientSize = new System.Drawing.Size(452, 289);
+            this.Controls.Add(this.ReportComboBox);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.ClientInfoCheckBox);
+            this.Controls.Add(this.SystemInfoCheckBox);
+            this.Controls.Add(this.FinishTimePicker);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.StartTimePicker);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.MonitorComboBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.DirectoryButton);
+            this.Controls.Add(this.DirectoryTextBox);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.OKButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "CreateTaskArgumentForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "创建任务：";
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox DirectoryTextBox;
+        private System.Windows.Forms.Button DirectoryButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox MonitorComboBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DateTimePicker StartTimePicker;
+        private System.Windows.Forms.DateTimePicker FinishTimePicker;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox SystemInfoCheckBox;
+        private System.Windows.Forms.CheckBox ClientInfoCheckBox;
+        private System.Windows.Forms.ComboBox ReportComboBox;
+        private System.Windows.Forms.Label label5;
     }
 }

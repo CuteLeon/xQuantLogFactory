@@ -53,6 +53,7 @@ namespace xQuantLogFactory
         /// 入口
         /// </summary>
         /// <param name="args">启动参数</param>
+        [STAThread]
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -109,7 +110,7 @@ namespace xQuantLogFactory
             GetMonitorItems(ConfigHelper.MonitorDirectory);
             UnityTrace.WriteLine($"发现 {UnityTaskArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorItems.Select(item => item.Name))}");
 
-            UnityTrace.WriteLine("开始获取时间段内日志文件...");
+            UnityTrace.WriteLine("开始获取任务相关日志文件...");
             GetTaskLogFiles(UnityTaskArgument.LogDirectory);
 
             UnityTrace.WriteLine("开始解析日志文件...");
@@ -119,7 +120,7 @@ namespace xQuantLogFactory
                 ParseClientLog();
                 ParseServerLog();
             }
-           ParseMiddlewareLog();
+            ParseMiddlewareLog();
             ShowParseResult();
 
             UnityTrace.WriteLine("开始分析日志解析结果...");
@@ -224,8 +225,26 @@ namespace xQuantLogFactory
         /// <param name="args"></param>
         private static void CreateTaskArgument(string[] args)
         {
-            //UnityTaskArgument = new GUITaskArgumentFactory().CreateTaskArgument();
+            if (ConfigHelper.UseGUITaskFactory)
+            {
+                GUICreateTask();
+            }
+            else
+            {
+                ArgsCreateTask(args);
+            }
 
+            UnityDBContext.TaskArguments.Add(UnityTaskArgument);
+            UnityDBContext.SaveChanges();
+            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
+        }
+
+        /// <summary>
+        /// 通过命令行参数创建任务
+        /// </summary>
+        /// <param name="args"></param>
+        private static void ArgsCreateTask(string[] args)
+        {
             try
             {
                 UnityTaskArgument = ArgsTaskArgumentFactory.Intance.CreateTaskArgument(args);
@@ -234,11 +253,31 @@ namespace xQuantLogFactory
             {
                 UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
                 UnityTrace.WriteLine(ArgsTaskArgumentFactory.Intance.Usage);
+
+                UnityTrace.WriteLine($"正在使用 GUI 创建任务：");
+                GUICreateTask();
+            }
+        }
+
+        /// <summary>
+        /// 通过GUI创建任务
+        /// </summary>
+        private static void GUICreateTask()
+        {
+            try
+            {
+                UnityTaskArgument = GUITaskArgumentFactory.Intance.CreateTaskArgument();
+            }
+            catch (OperationCanceledException ex)
+            {
+                UnityTrace.WriteLine($"取消创建任务~ {ex.Message}");
                 Exit(1);
             }
-            UnityDBContext.TaskArguments.Add(UnityTaskArgument);
-            UnityDBContext.SaveChanges();
-            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
+            catch (Exception ex)
+            {
+                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
+                Exit(1);
+            }
         }
 
         /// <summary>

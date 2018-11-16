@@ -174,11 +174,7 @@ namespace xQuantLogFactory.Model.Factory
                 throw new ArgumentNullException(nameof(argumentDic));
 
             string argumentValue = string.Empty;
-            var taskArgument = new TaskArgument
-            {
-                TaskID = Guid.NewGuid().ToString("N"),
-                TaskStartTime = DateTime.Now,
-            };
+            var taskArgument = new TaskArgument();
 
             if (this.argumentDictionary.TryGetValue(LOG_DIR, out argumentValue))
                 taskArgument.LogDirectory = argumentValue;

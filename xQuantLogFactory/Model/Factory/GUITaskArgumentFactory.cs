@@ -12,6 +12,15 @@ namespace xQuantLogFactory.Model.Factory
     public class GUITaskArgumentFactory
     {
 
+        private static Lazy<GUITaskArgumentFactory> factory = new Lazy<GUITaskArgumentFactory>();
+        /// <summary>
+        /// 任务参数工厂实例
+        /// </summary>
+        public static GUITaskArgumentFactory Intance
+        {
+            get => factory.Value;
+        }
+
         /// <summary>
         /// 根据工具启动参数创建任务参数对象
         /// </summary>
@@ -23,12 +32,12 @@ namespace xQuantLogFactory.Model.Factory
 
             using (CreateTaskArgumentForm factoryForm = new CreateTaskArgumentForm())
             {
-                if (factoryForm.ShowDialog() == DialogResult.OK)
+                if (factoryForm.ShowDialog() != DialogResult.OK)
                 {
-
+                    throw new OperationCanceledException();
                 }
 
-                return default;
+                return factoryForm.TargetTaskArgument;
             }
         }
 

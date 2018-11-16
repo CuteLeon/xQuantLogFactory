@@ -75,5 +75,13 @@ namespace xQuantLogFactory.Utils
             get => ReportModes.HTML;
         }
 
+        /// <summary>
+        /// 是否使用GUI任务工厂
+        /// </summary>
+        public static bool UseGUITaskFactory
+        {
+            get => Environment.GetCommandLineArgs().Length <= 1;
+        }
+
     }
 }

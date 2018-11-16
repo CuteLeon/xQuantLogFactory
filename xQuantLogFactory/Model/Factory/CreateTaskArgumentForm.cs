@@ -1,45 +1,139 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+
+using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Factory
 {
     public partial class CreateTaskArgumentForm : Form
     {
-        /*
-         * logdir={string_日志文件目录}：目录含有空格时需要在值外嵌套英文双引号；如：C:\TEST_DIR 或 "C:\TEST DIR" 
-         * monitor={string_监视规则文件名称}：可省略，默认为所有监视规则；程序监控的项目名称列表；如：监控项目.xml"
-         * start={datetime_日志开始时间}：可省略，以格式化日期时间传入；采用24小时制；格式如：yyyy-MM-dd HH:mm:ss
-         * finish={datetime_日志截止时间 =DateTime.Now}：可省略，默认值为当前时间；格式同日志开始时间；采用24小时制；
-         * sysinfo={boolean_包含系统信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
-         * cltinfo={boolean_包含客户端信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
-         * report={reportmodes_报告导出模式 =RepostModes.Html}：可省略，默认值为 Html；可取值为：{html/word/excel}，可忽略大小写
-         */
 
         public CreateTaskArgumentForm()
         {
             this.InitializeComponent();
             this.Icon = UnityResource.xQuantLogFactoryIcon;
+
+            this.InitControl();
         }
 
         /// <summary>
         /// 创建任务参数对象
         /// </summary>
-        public TaskArgument TragetTaskArgument { get; protected set; }
+        public TaskArgument TargetTaskArgument { get; protected set; }
+
+        private void InitControl()
+        {
+            this.DirectoryTextBox.Text = string.Empty;
+
+            this.MonitorComboBox.Items.AddRange(this.GetMonitorFiles(ConfigHelper.MonitorDirectory));
+            if (this.MonitorComboBox.Items.Count > 0) this.MonitorComboBox.SelectedIndex = 0;
+
+            this.StartTimePicker.Checked = false;
+            this.StartTimePicker.Value = DateTime.Today.Date;
+            this.FinishTimePicker.Checked = false;
+            this.FinishTimePicker.Value = DateTime.Now;
+
+            this.SystemInfoCheckBox.Checked = false;
+            this.ClientInfoCheckBox.Checked = false;
+
+            foreach (var mode in Enum.GetValues(typeof(ReportModes)))
+                this.ReportComboBox.Items.Add(mode);
+            if (this.ReportComboBox.Items.Count > 0) this.ReportComboBox.SelectedIndex = 0;
+        }
+
+        private bool CheckInputs()
+        {
+            if (!this.CheckInput(!string.IsNullOrWhiteSpace(this.DirectoryTextBox.Text), "请选择日志文件存放目录！", this.DirectoryTextBox))
+                return false;
+
+            if (!this.CheckInput(this.ReportComboBox.SelectedIndex != -1, "请选择导出日志模式！", this.ReportComboBox))
+                return false;
+
+            if (!this.CheckInput(this.MonitorComboBox.SelectedIndex != -1, "请选择监视规则文件！", this.MonitorComboBox))
+                return false;
+
+            return true;
+        }
+
+        private bool CheckInput(bool predicate, string message, Control control)
+        {
+            if (predicate)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show(message, "检查输入：", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                control?.Focus();
+                return false;
+            }
+        }
 
         private void OKButton_Click(object sender, EventArgs e)
         {
+            if (!this.CheckInputs()) return;
 
+            try
+            {
+                this.TargetTaskArgument = this.ConvertToTaskArgument();
+            }
+            catch
+            {
+                throw;
+            }
+
+            this.DialogResult = DialogResult.OK;
         }
 
-        private void CancelButton_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 转换任务参数对象
+        /// </summary>
+        /// <returns></returns>
+        private TaskArgument ConvertToTaskArgument()
         {
+            TaskArgument argument = new TaskArgument()
+            {
+                LogDirectory = this.DirectoryTextBox.Text,
+                MonitorFileName = this.MonitorComboBox.SelectedItem as string,
+                IncludeClientInfo = this.ClientInfoCheckBox.Checked,
+                IncludeSystemInfo = this.SystemInfoCheckBox.Checked,
+                ReportMode = (ReportModes)this.ReportComboBox.SelectedItem,
+            };
 
+            if (this.StartTimePicker.Checked) argument.LogStartTime = this.StartTimePicker.Value;
+            if (this.FinishTimePicker.Checked) argument.LogFinishTime = this.FinishTimePicker.Value;
+
+            return argument;
+        }
+
+        private void DirectoryButton_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog folderDialog = new FolderBrowserDialog()
+            {
+                Description = "请选择日志文件存放目录：",
+                ShowNewFolderButton = false,
+            })
+            {
+                if (folderDialog.ShowDialog() == DialogResult.OK)
+                {
+                    this.DirectoryTextBox.Text = folderDialog.SelectedPath;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取监视规则文件
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <returns></returns>
+        private string[] GetMonitorFiles(string directory)
+        {
+            if (!Directory.Exists(directory)) return default;
+
+            return Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(path => Path.GetFileName(path)).ToArray();
         }
 
     }
