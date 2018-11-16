@@ -19,8 +19,6 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
-    //TODO: 内存数据存放在 Excel 导出模板的 '内存' sheet 内
-    //TODO: 精简 Excel 导出模板
     //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
 
     //TODO: [全局任务] 使用4.0或5.0语言版本...
@@ -66,7 +64,7 @@ namespace xQuantLogFactory
             //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (DEBUG)
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             if (UnityTaskArgument == null)
             {

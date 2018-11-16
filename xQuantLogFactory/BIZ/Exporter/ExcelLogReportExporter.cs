@@ -53,7 +53,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     Rectangle sourceRectangle = new Rectangle(1, 2, 5, argument.AnalysisResults.Count);
                     using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
                     {
-                        int rowID = sourceRectangle.Top + 1, executeID = 0;
+                        int rowID = sourceRectangle.Top, executeID = 0;
                         foreach (var result in argument.AnalysisResults
                             .Where(result => result.StartMonitorResult != null && result.FinishMonitorResult != null)
                             .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
@@ -71,23 +71,21 @@ namespace xQuantLogFactory.BIZ.Exporter
                         }
                     }
 
-                    //TODO: 执行序号
-                    Rectangle memoryRectangle = new Rectangle(1, 2, 5, argument.MonitorResults.Count);
+                    Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
                     using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                     {
-                        int rowID = memoryRectangle.Top + 1, executeID = 0;
+                        int rowID = memoryRectangle.Top;
                         foreach (var result in argument.MonitorResults
                             .Where(result => result.MonitorItem?.Memory ?? false)
-                            .OrderBy(result => result.LogTime)
+                            .OrderBy(result => (result.MonitorItem?.ItemID, result.Version, result.Client))
                             )
                         {
-                            if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
-
                             memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
-                            memoryRange[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
-                            memoryRange[rowID, 3].Value = result.Version;
-                            memoryRange[rowID, 4].Value = executeID;
-                            memoryRange[rowID, 5].Value = result.MemoryConsumed;
+                            memoryRange[rowID, 2].Value = result.Version;
+                            memoryRange[rowID, 3].Value = result.Client;
+                            memoryRange[rowID, 4].Value = result.MemoryConsumed;
+                            memoryRange[rowID, 5].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            memoryRange[rowID, 6].Value = result.GroupType.ToString();
 
                             rowID++;
                         }
