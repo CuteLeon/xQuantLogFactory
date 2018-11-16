@@ -8,6 +8,7 @@ using OfficeOpenXml;
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.EqualityComparer;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Extensions;
 
@@ -67,7 +68,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                             sourceRange[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
                             sourceRange[rowID, 3].Value = result.Version;
                             sourceRange[rowID, 4].Value = executeID;
-                            sourceRange[rowID, 5].Value = result.ElapsedMillisecond;
+                            sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
 
                             rowID++;
                         }
