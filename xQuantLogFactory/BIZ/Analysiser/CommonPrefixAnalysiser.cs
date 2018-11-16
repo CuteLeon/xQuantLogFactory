@@ -2,6 +2,7 @@
 using System.Linq;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
@@ -47,7 +48,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                     foreach (var result in resultGroup)
                     {
-                        firstResult = result.StartMonitorResult ?? result.FinishMonitorResult;
+                        firstResult = result.FirstResultOrDefault();
                         if (firstResult == null) continue;
 
                         customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length);

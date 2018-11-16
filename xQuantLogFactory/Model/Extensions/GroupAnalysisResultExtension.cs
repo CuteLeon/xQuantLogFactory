@@ -22,5 +22,17 @@ namespace xQuantLogFactory.Model.Extensions
                 result.FinishMonitorResult != null;
         }
 
+        /// <summary>
+        /// 获取优先监视结果
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static MonitorResult FirstResultOrDefault(this GroupAnalysisResult result)
+        {
+            if (result == null) return null;
+
+            return result.StartMonitorResult ?? result.FinishMonitorResult;
+        }
+
     }
 }

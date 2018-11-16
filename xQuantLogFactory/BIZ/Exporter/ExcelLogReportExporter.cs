@@ -53,7 +53,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
 
-                    Rectangle sourceRectangle = new Rectangle(1, 2, 5, argument.AnalysisResults.Count);
+                    Rectangle sourceRectangle = new Rectangle(1, 2, 9, argument.AnalysisResults.Count);
                     using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
                     {
                         int rowID = sourceRectangle.Top, executeID = 0;
@@ -69,6 +69,10 @@ namespace xQuantLogFactory.BIZ.Exporter
                             sourceRange[rowID, 3].Value = result.Version;
                             sourceRange[rowID, 4].Value = executeID;
                             sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
+                            sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString();
+                            sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString();
+                            sourceRange[rowID, 8].Value = Path.GetFileName(result.LogFile.FilePath);
+                            sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
 
                             rowID++;
                         }
