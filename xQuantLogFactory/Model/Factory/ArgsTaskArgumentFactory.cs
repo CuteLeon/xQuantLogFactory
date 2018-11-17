@@ -50,9 +50,9 @@ namespace xQuantLogFactory.Model.Factory
 
         /*
          * logdir={string_日志文件目录}：目录含有空格时需要在值外嵌套英文双引号；如：C:\TEST_DIR 或 "C:\TEST DIR" 
-         * monitor={string_监视规则文件名称}：可省略，默认为所有监视规则；程序监控的项目名称列表；如：监控项目.xml"
+         * monitor={string_监视规则文件名称}：监视规则文件名称；如：监控项目.xml"
          * start={datetime_日志开始时间}：可省略，以格式化日期时间传入；采用24小时制；格式如：yyyy-MM-dd HH:mm:ss
-         * finish={datetime_日志截止时间 =DateTime.Now}：可省略，默认值为当前时间；格式同日志开始时间；采用24小时制；
+         * finish={datetime_日志截止时间}：可省略，格式同日志开始时间；采用24小时制；
          * sysinfo={boolean_包含系统信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
          * cltinfo={boolean_包含客户端信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
          * report={reportmodes_报告导出模式 =RepostModes.Html}：可省略，默认值为 Html；可取值为：{html/word/excel}，可忽略大小写
@@ -67,23 +67,23 @@ namespace xQuantLogFactory.Model.Factory
             get => factory.Value;
         }
 
-        private static Lazy<Dictionary<string, string>> argumentDescription = new Lazy<Dictionary<string, string>>();
+        private static Lazy<Dictionary<string, (string, string)>> argumentDescription = new Lazy<Dictionary<string, (string, string)>>();
         /// <summary>
         /// 参数描述
         /// </summary>
-        private static Dictionary<string, string> ArgumentDescriptions
+        private static Dictionary<string, (string, string)> ArgumentDescriptions
         {
             get
             {
                 if (!argumentDescription.IsValueCreated)
                 {
-                    argumentDescription.Value.Add(LOG_DIR, "日志文件存放目录，如：D:\\Log 或 \"E:\\Log Dir\"");
-                    argumentDescription.Value.Add(MONITOR_NAME, "监视规则文件名称，如：monitor.xml");
-                    argumentDescription.Value.Add(START_TIME, "日志开始时间，如：\"2018-10-01 17:30:00\"");
-                    argumentDescription.Value.Add(FINISH_TIME, "日志结束时间，如：\"2018-11-11 08:40:00\"");
-                    argumentDescription.Value.Add(SYS_INFO, "是否记录系统信息，如：true 或 false");
-                    argumentDescription.Value.Add(CLIENT_INFO, "是否记录客户端信息，如：true 或 false");
-                    argumentDescription.Value.Add(REPORT_MODE, "导出报告模式，如：excel 或 html 或 word");
+                    argumentDescription.Value.Add(LOG_DIR, ("必选", "日志文件存放目录，如：D:\\Log 或 \"E:\\Log Dir\""));
+                    argumentDescription.Value.Add(MONITOR_NAME, ("必选", "监视规则文件名称，如：monitor.xml"));
+                    argumentDescription.Value.Add(START_TIME, ("可选", "日志开始时间，如：\"2018-10-01 17:30:00\""));
+                    argumentDescription.Value.Add(FINISH_TIME, ("可选", "日志结束时间，如：\"2018-11-11 08:40:00\""));
+                    argumentDescription.Value.Add(SYS_INFO, ("可选", "是否记录系统信息，如：true 或 false"));
+                    argumentDescription.Value.Add(CLIENT_INFO, ("可选", "是否记录客户端信息，如：true 或 false"));
+                    argumentDescription.Value.Add(REPORT_MODE, ("必选", "导出报告模式，如：excel 或 html 或 word"));
                 }
 
                 return argumentDescription.Value;
@@ -110,9 +110,13 @@ namespace xQuantLogFactory.Model.Factory
                     usageBuilder.Value.AppendLine();
 
                     usageBuilder.Value.AppendLine("参数说明：");
-                    usageBuilder.Value.AppendLine("\t<名称>\t\t<描述>");
+                    usageBuilder.Value.AppendLine("\t<名称>\t\t<要求>\t\t<描述>");
                     foreach (var arg in ArgumentDescriptions)
-                        usageBuilder.Value.AppendLine($"\t{arg.Key}\t\t{arg.Value}");
+                        usageBuilder.Value.AppendLine($"\t{arg.Key}\t\t {arg.Value.Item1}\t\t{arg.Value.Item2}");
+                    usageBuilder.Value.AppendLine();
+
+                    usageBuilder.Value.AppendLine("参数示例：");
+                    usageBuilder.Value.AppendLine();
                 }
 
                 return usageBuilder.Value.ToString();

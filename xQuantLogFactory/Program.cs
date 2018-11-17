@@ -150,6 +150,8 @@ namespace xQuantLogFactory
 
             try
             {
+                if (!Directory.Exists(directory)) throw new DirectoryNotFoundException($"不存在的日志文件目录：{directory}");
+
                 logFiles = logFinder.GetFiles<LogFile>(UnityTaskArgument.LogDirectory, UnityTaskArgument);
             }
             catch (Exception ex)
