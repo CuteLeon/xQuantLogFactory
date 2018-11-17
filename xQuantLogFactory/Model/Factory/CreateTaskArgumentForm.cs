@@ -31,9 +31,7 @@ namespace xQuantLogFactory.Model.Factory
             this.MonitorComboBox.Items.AddRange(this.GetMonitorFiles(ConfigHelper.MonitorDirectory));
             if (this.MonitorComboBox.Items.Count > 0) this.MonitorComboBox.SelectedIndex = 0;
 
-            this.StartTimePicker.Checked = false;
-            this.StartTimePicker.Value = DateTime.Today.Date;
-            this.FinishTimePicker.Checked = false;
+            this.StartTimePicker.Value = DateTime.Now.AddDays(-1);
             this.FinishTimePicker.Value = DateTime.Now;
 
             this.SystemInfoCheckBox.Checked = false;
