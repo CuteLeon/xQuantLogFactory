@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace xQuantLogFactory.Model.Factory
@@ -8,6 +9,10 @@ namespace xQuantLogFactory.Model.Factory
     /// </summary>
     public class GUITaskArgumentFactory
     {
+        /// <summary>
+        /// 任务参数实例
+        /// </summary>
+        private TaskArgument TargetTaskArgument = null;
 
         private static Lazy<GUITaskArgumentFactory> factory = new Lazy<GUITaskArgumentFactory>();
         /// <summary>
@@ -27,6 +32,16 @@ namespace xQuantLogFactory.Model.Factory
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            Thread GUIThread = new Thread(new ThreadStart(this.ShowGUIFactory));
+            GUIThread.SetApartmentState(ApartmentState.STA);
+            GUIThread.Start();
+            GUIThread.Join();
+
+            return this.TargetTaskArgument;
+        }
+
+        private void ShowGUIFactory()
+        {
             using (CreateTaskArgumentForm factoryForm = new CreateTaskArgumentForm())
             {
                 if (factoryForm.ShowDialog() != DialogResult.OK)
@@ -34,7 +49,7 @@ namespace xQuantLogFactory.Model.Factory
                     throw new OperationCanceledException();
                 }
 
-                return factoryForm.TargetTaskArgument;
+                this.TargetTaskArgument = factoryForm.TargetTaskArgument;
             }
         }
 

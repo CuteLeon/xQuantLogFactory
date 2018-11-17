@@ -53,7 +53,6 @@ namespace xQuantLogFactory
         /// 入口
         /// </summary>
         /// <param name="args">启动参数</param>
-        [STAThread]
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
