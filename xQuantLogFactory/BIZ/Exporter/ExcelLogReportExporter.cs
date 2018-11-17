@@ -71,7 +71,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                             sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
                             sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString();
                             sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString();
-                            sourceRange[rowID, 8].Value = Path.GetFileName(result.LogFile.FilePath);
+                            sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
                             sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
 
                             rowID++;

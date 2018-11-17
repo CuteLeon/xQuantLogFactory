@@ -19,11 +19,11 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// 服务端日志文件
         /// </summary>
-        Server =2,
+        Server = 2,
         /// <summary>
         /// 中间件日志
         /// </summary>
-        Middleware=3,
+        Middleware = 3,
     }
 
     /// <summary>
@@ -47,6 +47,13 @@ namespace xQuantLogFactory.Model
         [Required]
         [DisplayName("日志文件路径"), DataType(DataType.Text)]
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// 日志文件相对路径
+        /// </summary>
+        [Required]
+        [DisplayName("日志文件相对路径"), DataType(DataType.Text)]
+        public string RelativePath { get; set; }
 
         /// <summary>
         /// 日志文件类型

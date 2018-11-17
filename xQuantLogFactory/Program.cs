@@ -173,7 +173,7 @@ namespace xQuantLogFactory
             }
             else
             {
-                UnityTrace.WriteLine($"发现 {UnityTaskArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityTaskArgument.LogFiles.Select(file => file.FilePath))}\n————————");
+                UnityTrace.WriteLine($"发现 {UnityTaskArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityTaskArgument.LogFiles.Select(file => file.RelativePath))}\n————————");
             }
         }
 

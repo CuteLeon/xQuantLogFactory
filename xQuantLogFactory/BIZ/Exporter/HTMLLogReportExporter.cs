@@ -119,7 +119,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="logFile"></param>
         private void WriteCSLogFileCard(LogFile logFile)
         {
-            this.WriteCardHeader($"日志文件：<b>{logFile.FilePath}</b>");
+            this.WriteCardHeader($"日志文件：<b>{logFile.RelativePath}</b>");
             this.HTMLBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
 
             if (logFile.AnalysisResults.Count == 0)
@@ -169,7 +169,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     MonitorResult finishResult = analysisResult.FinishMonitorResult;
                     this.WriteCard(
                         $"耗时：<b>{analysisResult.ElapsedMillisecond.ToString("N")} ms</b>",
-                        $@"日志文件：{analysisResult.LogFile?.FilePath}<br><hr>
+                        $@"日志文件：{analysisResult.LogFile?.RelativePath}<br><hr>
 开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
 结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
                         );
@@ -245,7 +245,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             foreach (var logFile in logFiles)
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-    <td>{logFile.FilePath}</td>
+    <td>{logFile.RelativePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
     <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem?.Name).Distinct())}</td>
@@ -292,7 +292,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             foreach (var logFile in logFiles)
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-    <td>{logFile.FilePath}</td>
+    <td>{logFile.RelativePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
     <td>{string.Join("、", logFile.MonitorResults.Select(result => result.MonitorItem?.Name).Distinct())}</td>
@@ -317,7 +317,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="logFile"></param>
         private void WriteMiddlewareLogFileCard(LogFile logFile)
         {
-            this.WriteCardHeader($"日志文件：<b>{logFile.FilePath}</b>");
+            this.WriteCardHeader($"日志文件：<b>{logFile.RelativePath}</b>");
             this.HTMLBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
 
             if (logFile.MiddlewareResults.Count == 0)
@@ -377,7 +377,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             foreach (var logFile in logFiles)
             {
                 this.HTMLBuilder.Value.AppendLine($@"<tr>
-    <td>{logFile.FilePath}</td>
+    <td>{logFile.RelativePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
     <td><b>{logFile.MiddlewareResults.Count.ToString("N0")}</b></td>

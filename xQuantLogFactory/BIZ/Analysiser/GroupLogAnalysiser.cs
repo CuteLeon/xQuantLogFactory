@@ -35,7 +35,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     return;
                 }
 
-                this.Trace?.WriteLine($"开始分析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
+                this.Trace?.WriteLine($"开始分析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
 
                 //对日志结果按监视规则分组，以匹配同一监视规则解析的日志解析结果
                 foreach (var monitorGroupResult in fileGroupResult.GroupBy(result => result.MonitorItem))

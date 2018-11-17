@@ -52,6 +52,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     FilePath = FullName,
                     CreateTime = CreationTime,
                     LastWriteTime = LastWriteTime,
+                    RelativePath = FullName.Remove(0, argument.LogDirectory.Length),
                 });
             }
 

@@ -77,7 +77,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
             this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
-                this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.FilePath}");
+                this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
 
                 FileStream fileStream = null;
                 StreamReader streamRreader = null;
@@ -176,7 +176,7 @@ namespace xQuantLogFactory.BIZ.Parser
                 }
                 catch (Exception ex)
                 {
-                    this.Trace?.WriteLine($"解析日志文件(ID: {logFile.FileID}) {logFile.FilePath} 失败：{ex.Message}\n————————");
+                    this.Trace?.WriteLine($"解析日志文件(ID: {logFile.FileID}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
                 }
                 finally
                 {
