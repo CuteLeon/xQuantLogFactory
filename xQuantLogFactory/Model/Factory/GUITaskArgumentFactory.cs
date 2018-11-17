@@ -7,7 +7,7 @@ namespace xQuantLogFactory.Model.Factory
     /// <summary>
     /// GUI-任务参数对象工厂
     /// </summary>
-    public class GUITaskArgumentFactory
+    public class GUITaskArgumentFactory : ITaskArgumentFactory
     {
         /// <summary>
         /// 工厂异常对象在线程交互对象
@@ -32,7 +32,7 @@ namespace xQuantLogFactory.Model.Factory
         /// 根据工具启动参数创建任务参数对象
         /// </summary>
         /// <returns>任务参数对象</returns>
-        public TaskArgument CreateTaskArgument()
+        public TaskArgument CreateTaskArgument<T>(T source = null) where T : class
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

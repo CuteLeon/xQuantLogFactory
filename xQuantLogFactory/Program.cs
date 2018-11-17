@@ -270,7 +270,7 @@ namespace xQuantLogFactory
         {
             try
             {
-                UnityTaskArgument = GUITaskArgumentFactory.Intance.CreateTaskArgument();
+                UnityTaskArgument = GUITaskArgumentFactory.Intance.CreateTaskArgument<object>();
             }
             catch (Exception ex)
             {

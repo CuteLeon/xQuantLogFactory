@@ -11,7 +11,7 @@ namespace xQuantLogFactory.Model.Factory
     /// <summary>
     /// 命令行-任务参数对象工厂
     /// </summary>
-    public class ArgsTaskArgumentFactory
+    public class ArgsTaskArgumentFactory : ITaskArgumentFactory
     {
         /// <summary>
         /// 日志文件目录
@@ -128,15 +128,19 @@ namespace xQuantLogFactory.Model.Factory
         /// </summary>
         private readonly Dictionary<string, string> argumentDictionary = new Dictionary<string, string>();
 
+        /// <summary>
+        /// 参数匹配正则表达式
+        /// </summary>
         private static readonly Regex argRegex = new Regex(@"^(?<ArgName>.*)=(?<ArgValue>.*?)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         /// <summary>
         /// 根据工具启动参数创建任务参数对象
         /// </summary>
-        /// <param name="args">工具启动参数</param>
+        /// <param name="source">工具启动参数</param>
         /// <returns>任务参数对象</returns>
-        public TaskArgument CreateTaskArgument(string[] args)
+        public TaskArgument CreateTaskArgument<T>(T source) where T : class
         {
-            if (args == null || args.Length == 0)
+            if (!(source is string[] args) || args.Length == 0)
                 throw new ArgumentNullException(nameof(args));
 
             //解析参数并录入字典
