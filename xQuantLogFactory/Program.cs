@@ -235,6 +235,9 @@ namespace xQuantLogFactory
                 ArgsCreateTask(args);
             }
 
+            if (UnityTaskArgument == null)
+                throw new ArgumentException("创建任务失败！");
+
             UnityDBContext.TaskArguments.Add(UnityTaskArgument);
             UnityDBContext.SaveChanges();
             UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
@@ -268,11 +271,6 @@ namespace xQuantLogFactory
             try
             {
                 UnityTaskArgument = GUITaskArgumentFactory.Intance.CreateTaskArgument();
-            }
-            catch (OperationCanceledException ex)
-            {
-                UnityTrace.WriteLine($"取消创建任务~ {ex.Message}");
-                Exit(1);
             }
             catch (Exception ex)
             {
@@ -567,7 +565,7 @@ namespace xQuantLogFactory
             }
 
             string ExceptionDescription = string.Format(
-                "应用域内发现未被捕获的异常：\r\n" +
+                "应用域内发现未被捕获的异常：(; ′⌒`)\r\n" +
                 "\t异常类型 : {0}\r\n" +
                 "\t异常地址 : {1}\r\n" +
                 "\t出错方法 : {2}\r\n" +

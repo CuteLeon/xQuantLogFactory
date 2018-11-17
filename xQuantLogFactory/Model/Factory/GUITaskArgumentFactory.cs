@@ -10,6 +10,11 @@ namespace xQuantLogFactory.Model.Factory
     public class GUITaskArgumentFactory
     {
         /// <summary>
+        /// 工厂异常对象在线程交互对象
+        /// </summary>
+        private Exception FactoryException = null;
+
+        /// <summary>
         /// 任务参数实例
         /// </summary>
         private TaskArgument TargetTaskArgument = null;
@@ -37,19 +42,32 @@ namespace xQuantLogFactory.Model.Factory
             GUIThread.Start();
             GUIThread.Join();
 
+            if (this.FactoryException != null)
+                throw this.FactoryException;
+
             return this.TargetTaskArgument;
         }
 
         private void ShowGUIFactory()
         {
-            using (CreateTaskArgumentForm factoryForm = new CreateTaskArgumentForm())
-            {
-                if (factoryForm.ShowDialog() != DialogResult.OK)
-                {
-                    throw new OperationCanceledException();
-                }
+            //初始化
+            this.FactoryException = null;
 
-                this.TargetTaskArgument = factoryForm.TargetTaskArgument;
+            try
+            {
+                using (CreateTaskArgumentForm factoryForm = new CreateTaskArgumentForm())
+                {
+                    if (factoryForm.ShowDialog() != DialogResult.OK)
+                    {
+                        throw new OperationCanceledException();
+                    }
+
+                    this.TargetTaskArgument = factoryForm.TargetTaskArgument;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.FactoryException = ex;
             }
         }
 
