@@ -36,15 +36,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
             MonitorItem monitor,
             MonitorResult monitorResult)
         {
-            GroupAnalysisResult analysisResult = new GroupAnalysisResult()
-            {
-                LogFile = logFile,
-                MonitorItem = monitor,
-                TaskArgument = argument,
-                Client = monitorResult?.Client,
-                Version = monitorResult?.Version,
-                LineNumber = monitorResult.LineNumber,
-            };
+            GroupAnalysisResult analysisResult = new GroupAnalysisResult(argument, logFile, monitor, monitorResult);
 
             //反向关联日志监视结果
             lock (argument)

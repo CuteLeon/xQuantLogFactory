@@ -112,6 +112,11 @@ namespace xQuantLogFactory.Model.Monitor
 
         #region 方法
 
+        public MonitorItem() { }
+
+        public MonitorItem(string name)
+            => this.Name = name;
+
         /// <summary>
         /// 是否有子监控项目
         /// </summary>

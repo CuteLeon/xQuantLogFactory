@@ -70,11 +70,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 !argument.CheckLogFinishTime(logTime))
                                 continue;
 
-                            MiddlewareResult result = new MiddlewareResult()
-                            {
-                                LogTime = logTime,
-                                LineNumber = lineNumber,
-                            };
+                            MiddlewareResult result = new MiddlewareResult(logTime, lineNumber);
 
                             //反向关联日志解析结果
                             lock (argument)  //lock 任务而非 LockSeed 为了多任务并行考虑

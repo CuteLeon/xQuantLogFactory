@@ -78,5 +78,21 @@ namespace xQuantLogFactory.Model.Result
         [DisplayName("结果耗时（单位：毫秒）"), DataType(DataType.Duration)]
         public double ElapsedMillisecond { get; set; }
 
+        public GroupAnalysisResult() { }
+
+        public GroupAnalysisResult(TaskArgument argument, LogFile logFile, MonitorItem monitor, MonitorResult monitorResult)
+        {
+            this.LogFile = logFile;
+            this.MonitorItem = monitor;
+            this.TaskArgument = argument;
+
+            if (monitorResult != null)
+            {
+                this.Client = monitorResult.Client;
+                this.Version = monitorResult.Version;
+                this.LineNumber = monitorResult.LineNumber;
+            }
+        }
+
     }
 }

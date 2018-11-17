@@ -46,14 +46,13 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     !argument.CheckLogFinishTime(LastWriteTime))
                     continue;
 
-                logFiles.Add(new LogFile()
-                {
-                    LogFileType = this.GetLogFileType(fileName),
-                    FilePath = FullName,
-                    CreateTime = CreationTime,
-                    LastWriteTime = LastWriteTime,
-                    RelativePath = FullName.Remove(0, argument.LogDirectory.Length),
-                });
+                logFiles.Add(new LogFile(
+                    this.GetLogFileType(fileName),
+                    FullName,
+                    CreationTime,
+                    LastWriteTime,
+                    FullName.Remove(0, argument.LogDirectory.Length)
+                    ));
             }
 
             return logFiles as IEnumerable<T>;

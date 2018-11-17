@@ -99,5 +99,16 @@ namespace xQuantLogFactory.Model
         [DisplayName("日志分析结果表")]
         public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
 
+        public LogFile() { }
+
+        public LogFile(LogFileTypes logFileTypes, string filePath, DateTime createTime, DateTime lastWriteTime, string relativePath)
+        {
+            this.LogFileType = logFileTypes;
+            this.FilePath = filePath;
+            this.CreateTime = createTime;
+            this.LastWriteTime = lastWriteTime;
+            this.RelativePath = relativePath;
+        }
+
     }
 }

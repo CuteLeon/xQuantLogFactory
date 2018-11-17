@@ -64,15 +64,11 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <returns></returns>
         protected MonitorResult CreateMonitorResult(TaskArgument argument, LogFile logFile, MonitorItem monitor)
         {
-            MonitorResult monitorResult = new MonitorResult();
+            MonitorResult monitorResult = new MonitorResult(argument, logFile, monitor);
 
             //反向关联日志监视结果
             lock (argument)  //lock 任务而非 LockSeed 为了多任务并行考虑
             {
-                monitorResult.TaskArgument = argument;
-                monitorResult.LogFile = logFile;
-                monitorResult.MonitorItem = monitor;
-
                 argument.MonitorResults.Add(monitorResult);
                 logFile.MonitorResults.Add(monitorResult);
                 monitor.MonitorResults.Add(monitorResult);

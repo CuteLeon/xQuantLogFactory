@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -58,6 +59,14 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         [DisplayName("消息"), DataType(DataType.Text)]
         public string Message { get; set; }
+
+        public MiddlewareResult() { }
+
+        public MiddlewareResult(DateTime logTime, int lineNumber)
+        {
+            this.LogTime = logTime;
+            this.LineNumber = lineNumber;
+        }
 
     }
 

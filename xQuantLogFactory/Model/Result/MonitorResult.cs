@@ -64,5 +64,14 @@ namespace xQuantLogFactory.Model.Result
         [DisplayName("附加监视数据")]
         public double? MemoryConsumed { get; set; }
 
+        public MonitorResult() { }
+
+        public MonitorResult(TaskArgument argument, LogFile logFile, MonitorItem monitor)
+        {
+            this.TaskArgument = argument;
+            this.LogFile = logFile;
+            this.MonitorItem = monitor;
+        }
+
     }
 }

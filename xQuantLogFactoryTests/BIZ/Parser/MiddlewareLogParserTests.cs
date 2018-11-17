@@ -14,8 +14,10 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
         [TestMethod()]
         public void ParseTest()
         {
+            string filePath = @"D:\xQuant\TT\日志分析工具\Log.Zip\log_2018-10-31_11-01\log\performanceLog20181030.txt";
             TaskArgument argument = new TaskArgument()
             {
+                LogDirectory = @"D:\xQuant\TT\日志分析工具\Log.Zip\log_2018-10-31_11-01\log",
                 TaskID = Guid.NewGuid().ToString("N"),
                 LogStartTime = new DateTime(2018, 10, 30, 12, 04, 0, 0),
             };
@@ -23,12 +25,14 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             argument.LogFiles.Add(new LogFile()
             {
                 LogFileType = LogFileTypes.Middleware,
-                FilePath = @"D:\xQuant\TT\日志分析工具\Log.Zip\log_2018-10-31_11-01\log\performanceLog20181030.txt",
+                FilePath = filePath,
+                RelativePath = filePath.Remove(0, argument.LogDirectory.Length),
             });
 
             Assert.AreEqual("2018-10-30 12:04:00.000", argument.LogStartTime?.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             Assert.AreEqual("2018-10-30 12:04:05.000", argument.LogFinishTime?.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             Assert.AreEqual(1, argument.LogFiles.Count);
+            Assert.AreEqual("\\performanceLog20181030.txt", argument.LogFiles.First().RelativePath);
             Assert.AreEqual("performanceLog20181030.txt", Path.GetFileName(argument.LogFiles.First().FilePath));
 
             ILogParser parser = new MiddlewareLogParser();
