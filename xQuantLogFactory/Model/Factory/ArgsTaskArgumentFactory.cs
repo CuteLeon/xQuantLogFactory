@@ -77,13 +77,13 @@ namespace xQuantLogFactory.Model.Factory
             {
                 if (!argumentDescription.IsValueCreated)
                 {
-                    argumentDescription.Value.Add(LOG_DIR, ("必选", "日志文件存放目录，如：D:\\Log 或 \"E:\\Log Dir\""));
-                    argumentDescription.Value.Add(MONITOR_NAME, ("必选", "监视规则文件名称，如：monitor.xml"));
-                    argumentDescription.Value.Add(START_TIME, ("可选", "日志开始时间，如：\"2018-10-01 17:30:00\""));
-                    argumentDescription.Value.Add(FINISH_TIME, ("可选", "日志结束时间，如：\"2018-11-11 08:40:00\""));
-                    argumentDescription.Value.Add(SYS_INFO, ("可选", "是否记录系统信息，如：true 或 false"));
-                    argumentDescription.Value.Add(CLIENT_INFO, ("可选", "是否记录客户端信息，如：true 或 false"));
-                    argumentDescription.Value.Add(REPORT_MODE, ("必选", "导出报告模式，如：excel 或 html 或 word"));
+                    argumentDescription.Value.Add(LOG_DIR, ("*必选", "日志文件存放目录，如：D:\\Log 或 \"E:\\Log Dir\""));
+                    argumentDescription.Value.Add(MONITOR_NAME, ("*必选", "监视规则文件名称，如：monitor.xml"));
+                    argumentDescription.Value.Add(START_TIME, (" 可选", "日志开始时间，如：\"2018-10-01 17:30:00\""));
+                    argumentDescription.Value.Add(FINISH_TIME, (" 可选", "日志结束时间，如：\"2018-11-11 08:40:00\""));
+                    argumentDescription.Value.Add(SYS_INFO, (" 可选", "是否记录系统信息，如：true 或 false"));
+                    argumentDescription.Value.Add(CLIENT_INFO, (" 可选", "是否记录客户端信息，如：true 或 false"));
+                    argumentDescription.Value.Add(REPORT_MODE, ("*必选", "导出报告模式，如：excel 或 html 或 word"));
                 }
 
                 return argumentDescription.Value;
@@ -112,11 +112,11 @@ namespace xQuantLogFactory.Model.Factory
                     usageBuilder.Value.AppendLine("参数说明：");
                     usageBuilder.Value.AppendLine("\t<名称>\t\t<要求>\t\t<描述>");
                     foreach (var arg in ArgumentDescriptions)
-                        usageBuilder.Value.AppendLine($"\t{arg.Key}\t\t {arg.Value.Item1}\t\t{arg.Value.Item2}");
+                        usageBuilder.Value.AppendLine($"\t{arg.Key}\t\t{arg.Value.Item1}\t\t{arg.Value.Item2}");
                     usageBuilder.Value.AppendLine();
 
                     usageBuilder.Value.AppendLine("参数示例：");
-                    usageBuilder.Value.AppendLine();
+                    usageBuilder.Value.AppendLine("\tlogdir=D:\\Desktop\\LogDir \"finish = 2018-11-11 18:30:00\" monitor=client.xml report=excel");
                 }
 
                 return usageBuilder.Value.ToString();
