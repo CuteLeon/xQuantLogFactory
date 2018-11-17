@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.CancelButton = new System.Windows.Forms.Button();
-            this.OKButton = new System.Windows.Forms.Button();
+            this.Btn_Cancel = new System.Windows.Forms.Button();
+            this.Btn_OK = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.DirectoryTextBox = new System.Windows.Forms.TextBox();
             this.DirectoryButton = new System.Windows.Forms.Button();
@@ -45,25 +45,25 @@
             this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // CancelButton
+            // Btn_Cancel
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(91, 242);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(127, 35);
-            this.CancelButton.TabIndex = 4;
-            this.CancelButton.Text = "取消";
-            this.CancelButton.UseVisualStyleBackColor = true;
+            this.Btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Btn_Cancel.Location = new System.Drawing.Point(91, 242);
+            this.Btn_Cancel.Name = "Btn_Cancel";
+            this.Btn_Cancel.Size = new System.Drawing.Size(127, 35);
+            this.Btn_Cancel.TabIndex = 4;
+            this.Btn_Cancel.Text = "取消";
+            this.Btn_Cancel.UseVisualStyleBackColor = true;
             // 
-            // OKButton
+            // Btn_OK
             // 
-            this.OKButton.Location = new System.Drawing.Point(247, 242);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(129, 35);
-            this.OKButton.TabIndex = 3;
-            this.OKButton.Text = "确认";
-            this.OKButton.UseVisualStyleBackColor = true;
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
+            this.Btn_OK.Location = new System.Drawing.Point(247, 242);
+            this.Btn_OK.Name = "Btn_OK";
+            this.Btn_OK.Size = new System.Drawing.Size(129, 35);
+            this.Btn_OK.TabIndex = 3;
+            this.Btn_OK.Text = "确认";
+            this.Btn_OK.UseVisualStyleBackColor = true;
+            this.Btn_OK.Click += new System.EventHandler(this.OKButton_Click);
             // 
             // label1
             // 
@@ -219,10 +219,10 @@
             // 
             // CreateTaskArgumentForm
             // 
-            this.AcceptButton = this.OKButton;
+            this.AcceptButton = this.Btn_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
+            this.CancelButton = this.Btn_Cancel;
             this.ClientSize = new System.Drawing.Size(452, 289);
             this.Controls.Add(this.ReportComboBox);
             this.Controls.Add(this.label5);
@@ -237,8 +237,8 @@
             this.Controls.Add(this.DirectoryButton);
             this.Controls.Add(this.DirectoryTextBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CancelButton);
-            this.Controls.Add(this.OKButton);
+            this.Controls.Add(this.Btn_Cancel);
+            this.Controls.Add(this.Btn_OK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "CreateTaskArgumentForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -249,8 +249,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Button OKButton;
+        private System.Windows.Forms.Button Btn_Cancel;
+        private System.Windows.Forms.Button Btn_OK;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox DirectoryTextBox;
         private System.Windows.Forms.Button DirectoryButton;
