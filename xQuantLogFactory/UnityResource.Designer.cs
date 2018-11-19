@@ -61,35 +61,6 @@ namespace xQuantLogFactory {
         }
         
         /// <summary>
-        ///   查找类似 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;MonitorRoot xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; Name=&quot;监听客户端启动方案&quot;&gt;
-        ///  &lt;Item Name=&quot;客户端启动&quot; Begin=&quot;登录成功&quot; End=&quot;初始化完成--&quot;&gt;
-        ///    &lt;Item Name=&quot;数据加载&quot; Begin=&quot;加载中债参数设置表&quot; End=&quot;加载当前登录部门&quot;&gt;
-        ///      &lt;Item Name=&quot;债券加载&quot; Begin=&quot;加载TBND查询&quot; End=&quot;加载TBND&quot; /&gt;
-        ///    &lt;/Item&gt;
-        ///    &lt;Item Name=&quot;额外空任务&quot; /&gt;
-        ///  &lt;/Item&gt;
-        ///  &lt;Item Name=&quot;直联服务&quot;&gt;
-        ///    &lt;Item Name=&quot;直联服务1234&quot; Begin=&quot;直联服务1234|执行&quot; End=&quot;直联服务1234|结束&quot; /&gt;
-        ///    &lt;Item Name=&quot;直联服务1194&quot; Begin=&quot;直联 [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string Monitor_Template {
-            get {
-                return ResourceManager.GetString("Monitor_Template", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] xQuant_EXCEL_Templet {
-            get {
-                object obj = ResourceManager.GetObject("xQuant_EXCEL_Templet", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   查找类似于 (图标) 的 System.Drawing.Icon 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Icon xQuantLogFactoryIcon {

@@ -10,7 +10,7 @@ using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.EqualityComparer;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Result;
-using xQuantLogFactory.Utils.Extensions;
+using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
@@ -30,7 +30,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             //导出模板
             try
             {
-                UnityResource.xQuant_EXCEL_Templet.SaveToFile(reportPath);
+                File.Copy(ConfigHelper.ExcelReportTempletPath, reportPath, true);
             }
             catch { throw; }
 
@@ -50,88 +50,98 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
 
                     ExcelWorksheet sourceDataSheet = excel.Workbook.Worksheets["原始"];
-                    ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
-                    ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
-                    ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets["中间件日志"];
-
-                    Rectangle sourceRectangle = new Rectangle(1, 2, 9, argument.AnalysisResults.Count);
-                    using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
+                    if (sourceDataSheet != null)
                     {
-                        int rowID = sourceRectangle.Top, executeID = 0;
-                        foreach (var result in argument.AnalysisResults
-                            .Where(result => !result.MonitorItem?.NotSource ?? false)
-                            .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
-                            )
+                        Rectangle sourceRectangle = new Rectangle(1, 2, 9, argument.AnalysisResults.Count);
+                        using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
                         {
-                            if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
-
-                            if (result.MonitorItem != null)
+                            int rowID = sourceRectangle.Top, executeID = 0;
+                            foreach (var result in argument.AnalysisResults
+                                .Where(result => !result.MonitorItem?.NotSource ?? false)
+                                .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
+                                )
                             {
-                                sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
-                                sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+                                if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
+
+                                if (result.MonitorItem != null)
+                                {
+                                    sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
+                                    sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+                                }
+                                sourceRange[rowID, 3].Value = result.Version;
+                                sourceRange[rowID, 4].Value = executeID;
+                                sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
+                                sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
+                                sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
+
+                                rowID++;
                             }
-                            sourceRange[rowID, 3].Value = result.Version;
-                            sourceRange[rowID, 4].Value = executeID;
-                            sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
-                            sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
-                            sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
-
-                            rowID++;
                         }
                     }
 
-                    Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
-                    using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
+                    ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
+                    if (memoryDataSheet != null)
                     {
-                        int rowID = memoryRectangle.Top;
-                        foreach (var result in argument.MonitorResults
-                            .Where(result => result.MemoryConsumed != null)
-                            //(result => (result.MonitorItem?.ItemID, result.Version, result.Client)
-                            .OrderBy(result => result.LogTime)
-                            //存在：同一行日志被多个监视内存的监视规则匹配到而造成同一条日志产生多个内存数据，去重
-                            .Distinct(new LogResultEqualityComparer<MonitorResult>())
-                            )
+                        Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
+                        using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                         {
-                            memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
-                            memoryRange[rowID, 2].Value = result.Version;
-                            memoryRange[rowID, 3].Value = result.Client;
-                            memoryRange[rowID, 4].Value = result.MemoryConsumed;
-                            memoryRange[rowID, 5].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            memoryRange[rowID, 6].Value = result.GroupType.ToString();
+                            int rowID = memoryRectangle.Top;
+                            foreach (var result in argument.MonitorResults
+                                .Where(result => result.MemoryConsumed != null)
+                                //(result => (result.MonitorItem?.ItemID, result.Version, result.Client)
+                                .OrderBy(result => result.LogTime)
+                                //存在：同一行日志被多个监视内存的监视规则匹配到而造成同一条日志产生多个内存数据，去重
+                                .Distinct(new LogResultEqualityComparer<MonitorResult>())
+                                )
+                            {
+                                memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
+                                memoryRange[rowID, 2].Value = result.Version;
+                                memoryRange[rowID, 3].Value = result.Client;
+                                memoryRange[rowID, 4].Value = result.MemoryConsumed;
+                                memoryRange[rowID, 5].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                memoryRange[rowID, 6].Value = result.GroupType.ToString();
 
-                            rowID++;
+                                rowID++;
+                            }
                         }
                     }
 
-                    //日志时间	客户端	用户代码	开始时间	耗时	请求路径	方法名称	流长度	消息
-                    Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
-                    using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
+                    ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets["中间件日志"];
+                    if (middlewareDataSheet != null)
                     {
-                        int rowID = middlewareRectangle.Top;
-                        foreach (var result in argument.MiddlewareResults
-                            .OrderBy(result => result.LogTime)
-                            )
+                        Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
+                        using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
                         {
-                            middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            middlewareRange[rowID, 2].Value = result.Client;
-                            middlewareRange[rowID, 3].Value = result.UserCode;
-                            middlewareRange[rowID, 4].Value = result.StartTime;
-                            middlewareRange[rowID, 5].Value = result.Elapsed;
-                            middlewareRange[rowID, 6].Value = result.RequestURI;
-                            middlewareRange[rowID, 7].Value = result.MethodName;
-                            middlewareRange[rowID, 8].Value = result.StreamLength;
-                            middlewareRange[rowID, 9].Value = result.Message;
+                            int rowID = middlewareRectangle.Top;
+                            foreach (var result in argument.MiddlewareResults
+                                .OrderBy(result => result.LogTime)
+                                )
+                            {
+                                middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                middlewareRange[rowID, 2].Value = result.Client;
+                                middlewareRange[rowID, 3].Value = result.UserCode;
+                                middlewareRange[rowID, 4].Value = result.StartTime;
+                                middlewareRange[rowID, 5].Value = result.Elapsed;
+                                middlewareRange[rowID, 6].Value = result.RequestURI;
+                                middlewareRange[rowID, 7].Value = result.MethodName;
+                                middlewareRange[rowID, 8].Value = result.StreamLength;
+                                middlewareRange[rowID, 9].Value = result.Message;
 
-                            rowID++;
+                                rowID++;
+                            }
                         }
                     }
 
-                    excel.Workbook.FullCalcOnLoad = true;
-                    analysisSheet.PivotTables.ToList().ForEach(table => table?.ToString());
-                    analysisSheet.Calculate();
-                    excel.Workbook.Calculate();
+                    ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
+                    if (analysisSheet != null)
+                    {
+                        excel.Workbook.FullCalcOnLoad = true;
+                        analysisSheet.PivotTables.ToList().ForEach(table => table?.ToString());
+                        analysisSheet.Calculate();
+                        excel.Workbook.Calculate();
+                    }
                 }
                 catch
                 {

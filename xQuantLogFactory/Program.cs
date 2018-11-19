@@ -104,6 +104,9 @@ namespace xQuantLogFactory
             UnityTrace.WriteLine("准备日志报告导出目录：{0}", ConfigHelper.ReportExportDirectory);
             CheckDirectory(ConfigHelper.ReportExportDirectory);
 
+            UnityTrace.WriteLine("准备报告导出模板目录：{0}", ConfigHelper.ReportTempletDirectory);
+            CheckDirectory(ConfigHelper.ReportTempletDirectory);
+
             UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
             GetMonitorItems(ConfigHelper.MonitorDirectory);
             UnityTrace.WriteLine($"发现 {UnityTaskArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorItems.Select(item => item.Name))}");

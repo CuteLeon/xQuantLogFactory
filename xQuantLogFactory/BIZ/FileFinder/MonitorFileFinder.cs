@@ -26,19 +26,6 @@ namespace xQuantLogFactory.BIZ.FileFinder
         public IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null, string searchPattern = "*")
         {
             string[] files = Directory.GetFiles(directory, searchPattern);
-
-            //使用内嵌资源当做默认监视规则
-            if (files.Length == 0)
-            {
-                try
-                {
-                    UnityResource.Monitor_Template.SaveToFile(ConfigHelper.DefaultMonitorXMLPath);
-                }
-                catch { throw; }
-
-                return new string[] { ConfigHelper.DefaultMonitorXMLPath };
-            }
-
             if (predicate != null) files = Array.FindAll(files, predicate);
 
             return files;

@@ -52,6 +52,22 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
+        /// 报告导出模板目录
+        /// </summary>
+        public static string ReportTempletDirectory
+        {
+            get => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ReportTemplet");
+        }
+
+        /// <summary>
+        /// Excel报告导出模板文件名称
+        /// </summary>
+        public static string ExcelReportTempletPath
+        {
+            get => Path.Combine(ReportTempletDirectory, "xQuant_EXCEL_Templet.xlsx");
+        }
+
+        /// <summary>
         /// 默认监视规则XML文件路径
         /// </summary>
         public static string DefaultMonitorXMLPath
