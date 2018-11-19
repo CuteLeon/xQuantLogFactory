@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Utils.Collections;
@@ -9,7 +10,6 @@ namespace xQuantLogFactory.Model.Monitor
 {
     public abstract class MonitorBase : IMonitor
     {
-        //TODO: 监视规则 父级节点 关联错误，需要修复
 
         /// <summary>
         /// 项目名称
@@ -27,12 +27,13 @@ namespace xQuantLogFactory.Model.Monitor
         public VersionedList<MonitorItem> MonitorTreeRoots { get; set; } = new VersionedList<MonitorItem>();
 
         [XmlIgnore]
-        protected Lazy<VersionedList<MonitorItem>> monitorList = new Lazy<VersionedList<MonitorItem>>();
+        protected readonly Lazy<VersionedList<MonitorItem>> monitorList = new Lazy<VersionedList<MonitorItem>>();
         /// <summary>
         /// 子监视规则的深度优先列表
         /// </summary>
         [XmlIgnore]
-        public VersionedList<MonitorItem> MonitorItems
+        [NotMapped]
+        public virtual VersionedList<MonitorItem> MonitorItems
         {
             get
             {
