@@ -40,7 +40,7 @@ namespace xQuantLogFactory.Utils
         /// <remarks>神奇，勿动！</remarks>
         public static string LogFileNameFormat
         {
-            get => $@"^(({ServerLogFileNamePrefix}|{ClientLogFileNamePrefix})Log_(Trace|Debug|Info|Warn|Error)\.txt(|\.\d*))|(performanceLog\d{{8}}\.txt)$";
+            get => $@"^(({ServerLogFileNamePrefix}|{ClientLogFileNamePrefix})Log_{LogFileLevel}\.txt(|\.\d*))|(performanceLog\d{{8}}\.txt)$";
         }
 
         /// <summary>
@@ -58,6 +58,11 @@ namespace xQuantLogFactory.Utils
         {
             get => "Clt";
         }
+
+        /// <summary>
+        /// 日志文件等级
+        /// </summary>
+        public static string LogFileLevel { get; set; } = "DEBUG";
 
         /// <summary>
         /// 中间件日志文件名称前缀
