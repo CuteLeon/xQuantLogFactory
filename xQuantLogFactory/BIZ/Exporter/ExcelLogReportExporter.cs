@@ -64,13 +64,16 @@ namespace xQuantLogFactory.BIZ.Exporter
                         {
                             if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
 
-                            sourceRange[rowID, 1].Value = result.MonitorItem?.Name;
-                            sourceRange[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
+                            if (result.MonitorItem != null)
+                            {
+                                sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
+                                sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+                            }
                             sourceRange[rowID, 3].Value = result.Version;
                             sourceRange[rowID, 4].Value = executeID;
                             sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
-                            sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString();
-                            sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString();
+                            sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
                             sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
 
