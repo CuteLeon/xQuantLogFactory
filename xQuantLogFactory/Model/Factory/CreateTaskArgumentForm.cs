@@ -33,8 +33,6 @@ namespace xQuantLogFactory.Model.Factory
 
             this.StartTimePicker.Value = DateTime.Now.AddDays(-1);
             this.FinishTimePicker.Value = DateTime.Now;
-            this.StartTimePicker.Checked = false;
-            this.FinishTimePicker.Checked = false;
 
             this.SystemInfoCheckBox.Checked = false;
             this.ClientInfoCheckBox.Checked = false;
@@ -79,8 +77,6 @@ namespace xQuantLogFactory.Model.Factory
             try
             {
                 this.TargetTaskArgument = this.ConvertToTaskArgument();
-
-                ConfigHelper.LogFileLevel = this.LogLevelTextBox.Text;
             }
             catch
             {

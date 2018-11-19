@@ -43,15 +43,12 @@
             this.ClientInfoCheckBox = new System.Windows.Forms.CheckBox();
             this.ReportComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.LogLevelTextBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Btn_Cancel
             // 
             this.Btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Btn_Cancel.Location = new System.Drawing.Point(96, 268);
+            this.Btn_Cancel.Location = new System.Drawing.Point(91, 242);
             this.Btn_Cancel.Name = "Btn_Cancel";
             this.Btn_Cancel.Size = new System.Drawing.Size(127, 35);
             this.Btn_Cancel.TabIndex = 4;
@@ -60,7 +57,7 @@
             // 
             // Btn_OK
             // 
-            this.Btn_OK.Location = new System.Drawing.Point(252, 268);
+            this.Btn_OK.Location = new System.Drawing.Point(247, 242);
             this.Btn_OK.Name = "Btn_OK";
             this.Btn_OK.Size = new System.Drawing.Size(129, 35);
             this.Btn_OK.TabIndex = 3;
@@ -220,48 +217,13 @@
             this.label5.Text = "导出报告格式:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // LogLevelTextBox
-            // 
-            this.LogLevelTextBox.BackColor = System.Drawing.Color.LightGray;
-            this.LogLevelTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LogLevelTextBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.LogLevelTextBox.Location = new System.Drawing.Point(127, 225);
-            this.LogLevelTextBox.Name = "LogLevelTextBox";
-            this.LogLevelTextBox.Size = new System.Drawing.Size(227, 19);
-            this.LogLevelTextBox.TabIndex = 19;
-            this.LogLevelTextBox.Text = "DEBUG";
-            // 
-            // label6
-            // 
-            this.label6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.Location = new System.Drawing.Point(24, 225);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(100, 19);
-            this.label6.TabIndex = 18;
-            this.label6.Text = "日志文件等级:";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // label7
-            // 
-            this.label7.BackColor = System.Drawing.Color.LightGray;
-            this.label7.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.Location = new System.Drawing.Point(352, 225);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(67, 19);
-            this.label7.TabIndex = 20;
-            this.label7.Text = "(支持正则)";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // CreateTaskArgumentForm
             // 
             this.AcceptButton = this.Btn_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Btn_Cancel;
-            this.ClientSize = new System.Drawing.Size(452, 316);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.LogLevelTextBox);
-            this.Controls.Add(this.label6);
+            this.ClientSize = new System.Drawing.Size(452, 289);
             this.Controls.Add(this.ReportComboBox);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.ClientInfoCheckBox);
@@ -302,8 +264,5 @@
         private System.Windows.Forms.CheckBox ClientInfoCheckBox;
         private System.Windows.Forms.ComboBox ReportComboBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox LogLevelTextBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
     }
 }
