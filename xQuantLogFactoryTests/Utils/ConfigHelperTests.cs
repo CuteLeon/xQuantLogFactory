@@ -68,7 +68,18 @@ namespace xQuantLogFactoryTests.Utils
                 "perfoceLog2018131.txt",
             };
             //有效文件名
-            string[] validlogFiles = new string[]
+            string[] validlogFiles_1 = new string[]
+            {
+                "pErformanceLog00000000.txt",
+                "perFormanceLog20181031.txt",
+                "perforManceLog20181031.TXT",
+                "performAnceLog20181031.tXt",
+                "performanCeLog20181031.txT",
+                "perfOrmanceLOG20181031.Txt",
+                "performanceLog20181031.txt",
+                "performanceLog20181031.txt",
+            };
+            string[] validlogFiles_0 = new string[]
             {
                 "SrvLog_DEbug.txt",
                 "SRVLog_TrAce.txt",
@@ -91,22 +102,22 @@ namespace xQuantLogFactoryTests.Utils
                 "CLtLOg_ErrOr.txt.25",
                 "CltLoG_InfO.txt.625",
                 "ClTLOg_Warn.txt.1500",
-                "pErformanceLog00000000.txt",
-                "perFormanceLog20181031.txt",
-                "perforManceLog20181031.TXT",
-                "performAnceLog20181031.tXt",
-                "performanCeLog20181031.txT",
-                "perfOrmanceLOG20181031.Txt",
-                "performanceLog20181031.txt",
-                "performanceLog20181031.txt",
             };
 
             Regex logFileRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase);
 
             Assert.IsTrue(invalidlogFiles.All(file => !logFileRegex.IsMatch(file)));
-            foreach (string file in validlogFiles)
+            foreach (string file in validlogFiles_0)
                 Assert.IsTrue(logFileRegex.IsMatch(file));
-            Assert.IsTrue(validlogFiles.All(file => logFileRegex.IsMatch(file)));
+            Assert.IsTrue(validlogFiles_0.All(file => logFileRegex.IsMatch(file)));
+
+            ConfigHelper.LogFileLevel = ConfigHelper.MiddlewareLogFileAlias;
+            logFileRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase);
+
+            foreach (string file in validlogFiles_1)
+                Assert.IsTrue(logFileRegex.IsMatch(file));
+            Assert.IsTrue(validlogFiles_1.All(file => logFileRegex.IsMatch(file)));
+
         }
     }
 }

@@ -61,7 +61,7 @@ namespace xQuantLogFactory.Model.Factory
          * sysinfo={boolean_包含系统信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
          * cltinfo={boolean_包含客户端信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
          * report={reportmodes_报告导出模式 =RepostModes.Html}：可省略，默认值为 Html；可取值为：{html/word/excel}，可忽略大小写
-         * level={string_日志等级 =DEBUG}：可省略，默认为 Debug；可取值：{DEBUG/TRACE/INFO 等}，支持正则，可忽略大小写；
+         * level={string_日志等级 =DEBUG}：可省略，默认为 Debug；可取值：{DEBUG/TRACE/INFO 等}，可忽略大小写；
          */
 
         private static Lazy<ArgsTaskArgumentFactory> factory = new Lazy<ArgsTaskArgumentFactory>();
@@ -90,7 +90,7 @@ namespace xQuantLogFactory.Model.Factory
                     argumentDescription.Value.Add(SYS_INFO, (" 可选", "是否记录系统信息，如：true 或 false"));
                     argumentDescription.Value.Add(CLIENT_INFO, (" 可选", "是否记录客户端信息，如：true 或 false"));
                     argumentDescription.Value.Add(REPORT_MODE, ("*必选", "导出报告模式，如：excel 或 html 或 word"));
-                    argumentDescription.Value.Add(LOG_LEVEL, (" 可选", "日志等级，支持正则，如：debug 或 trace 或 info 等"));
+                    argumentDescription.Value.Add(LOG_LEVEL, (" 可选", "日志等级，如：debug 或 trace 或 info 等"));
                 }
 
                 return argumentDescription.Value;
@@ -123,7 +123,7 @@ namespace xQuantLogFactory.Model.Factory
                     usageBuilder.Value.AppendLine();
 
                     usageBuilder.Value.AppendLine("参数示例：");
-                    usageBuilder.Value.AppendLine("\tlogdir=D:\\Desktop\\LogDir \"finish = 2018-11-11 18:30:00\" monitor=client.xml report=excel level=(debug|trace)");
+                    usageBuilder.Value.AppendLine("\tlogdir=D:\\Desktop\\LogDir \"finish = 2018-11-11 18:30:00\" monitor=client.xml report=excel level=debug");
                 }
 
                 return usageBuilder.Value.ToString();

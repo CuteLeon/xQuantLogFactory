@@ -11,6 +11,31 @@ namespace xQuantLogFactory.Utils
     {
 
         /// <summary>
+        /// 服务端日志文件名称前缀
+        /// </summary>
+        public const string ServerLogFileNamePrefix = "Srv";
+
+        /// <summary>
+        /// 客户端日志文件名称前缀
+        /// </summary>
+        public const string ClientLogFileNamePrefix = "Clt";
+
+        /// <summary>
+        /// 中间件日志文件名称前缀
+        /// </summary>
+        public const string MiddlewareLogFileNamePrefix = "performanceLog";
+
+        /// <summary>
+        /// 中间件日志文件别名
+        /// </summary>
+        public const string MiddlewareLogFileAlias = "PREF";
+
+        /// <summary>
+        /// 默认导出报告模式
+        /// </summary>
+        public const ReportModes DefaultReportMode = ReportModes.HTML;
+
+        /// <summary>
         /// 监视规则XML文件存储目录
         /// </summary>
         public static string MonitorDirectory
@@ -40,45 +65,23 @@ namespace xQuantLogFactory.Utils
         /// <remarks>神奇，勿动！</remarks>
         public static string LogFileNameFormat
         {
-            get => $@"^(({ServerLogFileNamePrefix}|{ClientLogFileNamePrefix})Log_{LogFileLevel}\.txt(|\.\d*))|(performanceLog\d{{8}}\.txt)$";
-        }
-
-        /// <summary>
-        /// 服务端日志文件名称前缀
-        /// </summary>
-        public static string ServerLogFileNamePrefix
-        {
-            get => "Srv";
-        }
-
-        /// <summary>
-        /// 客户端日志文件名称前缀
-        /// </summary>
-        public static string ClientLogFileNamePrefix
-        {
-            get => "Clt";
+            get
+            {
+                if (LogFileLevel == MiddlewareLogFileAlias)
+                {
+                    return $@"^{MiddlewareLogFileNamePrefix}\d{{8}}\.txt$";
+                }
+                else
+                {
+                    return $@"^({ServerLogFileNamePrefix}|{ClientLogFileNamePrefix})Log_{LogFileLevel}\.txt(|\.\d*)$";
+                }
+            }
         }
 
         /// <summary>
         /// 日志文件等级
         /// </summary>
         public static string LogFileLevel { get; set; } = "DEBUG";
-
-        /// <summary>
-        /// 中间件日志文件名称前缀
-        /// </summary>
-        public static string MiddlewareLogFileNamePrefix
-        {
-            get => "performanceLog";
-        }
-
-        /// <summary>
-        /// 默认导出报告模式
-        /// </summary>
-        public static ReportModes DefaultReportMode
-        {
-            get => ReportModes.HTML;
-        }
 
         /// <summary>
         /// 是否使用GUI任务工厂
