@@ -58,7 +58,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public virtual void CalcElapsed(TaskArgument argument)
         {
-            argument.MonitorItems.ForEach(monitor =>
+            argument.MonitorRoot.MonitorItems.ForEach(monitor =>
             {
                 monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result.ElapsedMillisecond);
                 int fullCoubleCount = monitor.AnalysisResults.Count(result => result.StartMonitorResult != null && result.FinishMonitorResult != null);

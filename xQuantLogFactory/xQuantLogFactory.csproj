@@ -112,6 +112,7 @@
     </Compile>
     <Compile Include="Model\Factory\GUITaskArgumentFactory.cs" />
     <Compile Include="Model\Factory\ITaskArgumentFactory.cs" />
+    <Compile Include="Model\Monitor\MonitorBase.cs" />
     <Compile Include="Model\Result\GroupAnalysisResult.cs" />
     <Compile Include="Model\Result\LogResultBase.cs" />
     <Compile Include="Model\Monitor\IMonitor.cs" />

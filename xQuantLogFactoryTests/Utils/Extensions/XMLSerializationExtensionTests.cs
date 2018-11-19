@@ -15,7 +15,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
         [TestMethod()]
         public void SerializeToXMLTest()
         {
-            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorItems = new VersionedList<MonitorItem>() };
+            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorTreeRoots = new VersionedList<MonitorItem>() };
 
             MonitorItem rootItem = new MonitorItem
             {
@@ -23,7 +23,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 StartPattern = "客户端启动开始",
                 FinishPatterny = "初始化第二阶段开始",
                 Memory = false,
-                MonitorItems = new VersionedList<MonitorItem>(),
+                MonitorTreeRoots = new VersionedList<MonitorItem>(),
             };
             MonitorItem dataItem = new MonitorItem()
             {
@@ -31,20 +31,20 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 StartPattern = "加载中债参数设置表",
                 FinishPatterny = "加载当前登录部门",
                 Memory = true,
-                MonitorItems = new VersionedList<MonitorItem>(),
+                MonitorTreeRoots = new VersionedList<MonitorItem>(),
             };
             MonitorItem bondItem = new MonitorItem()
             {
                 Name = "债券加载",
                 StartPattern = "加载TBND查询",
                 FinishPatterny = "加载TBND",
-                MonitorItems = new VersionedList<MonitorItem>(),
+                MonitorTreeRoots = new VersionedList<MonitorItem>(),
             };
 
-            container.MonitorItems.Add(rootItem);
-            rootItem.MonitorItems.Add(dataItem);
-            rootItem.MonitorItems.Add(new MonitorItem() { Name = "额外任务" });
-            dataItem.MonitorItems.Add(bondItem);
+            container.MonitorTreeRoots.Add(rootItem);
+            rootItem.MonitorTreeRoots.Add(dataItem);
+            rootItem.MonitorTreeRoots.Add(new MonitorItem() { Name = "额外任务" });
+            dataItem.MonitorTreeRoots.Add(bondItem);
 
             string xmlContent = container.SerializeToXML();
             Assert.IsNotNull(xmlContent);
@@ -63,7 +63,8 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
 
             Assert.IsNotNull(container);
             Assert.AreEqual("监听客户端启动方案", container.Name);
-            Assert.AreEqual(2, container.MonitorItems[0].MonitorItems.Count);
+            Assert.AreEqual(2, container.MonitorTreeRoots[0].MonitorTreeRoots.Count);
+            Assert.AreEqual(4, container.MonitorItems.Count);
         }
     }
 }

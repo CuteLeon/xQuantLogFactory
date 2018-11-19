@@ -240,11 +240,11 @@
             </tr>
             <tr>
                 <td class="label">监控规则数量：</td>
-                <td class="value">{argument.MonitorItems.Count().ToString()}</td>
+                <td class="value">{argument.MonitorRoot.MonitorItems.Count().ToString()}</td>
             </tr>
             <tr>
                 <td class="label">监控规则名称：</td>
-                <td class="value">{string.Join("、",argument.MonitorItems.Select(monitor=>monitor.Name))}</td>
+                <td class="value">{string.Join("、",argument.MonitorRoot.MonitorItems.Select(monitor=>monitor.Name))}</td>
             </tr>
             <tr>
                 <td class="label">日志文件数量:</td>

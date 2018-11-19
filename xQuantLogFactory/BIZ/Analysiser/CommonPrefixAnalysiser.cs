@@ -55,9 +55,8 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         childMonitorName = $"{this.TargetMonitorName}-{customeData}";
 
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
-
                         //更新树状列表版本
-                        argument.MonitorItemTree.UpdateVersion();
+                        targetMonitor.MonitorTreeRoots.UpdateVersion();
 
                         childMonitor.AnalysisResults.Add(result);
                         result.MonitorItem = childMonitor;
@@ -82,13 +81,13 @@ namespace xQuantLogFactory.BIZ.Analysiser
         {
             if (parentMonitor == null) throw new ArgumentNullException(nameof(parentMonitor));
 
-            MonitorItem childMonitor = parentMonitor.MonitorItems
+            MonitorItem childMonitor = parentMonitor.MonitorTreeRoots
                 .FirstOrDefault(monitor => monitor.Name == childMonitorName);
 
             if (childMonitor == null)
             {
                 childMonitor = new MonitorItem() { Name = childMonitorName };
-                parentMonitor.MonitorItems.Add(childMonitor);
+                parentMonitor.MonitorTreeRoots.Add(childMonitor);
             }
 
             if (childMonitor.ParentMonitorItem == null)

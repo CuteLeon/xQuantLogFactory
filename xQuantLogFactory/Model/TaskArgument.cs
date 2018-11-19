@@ -143,62 +143,7 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlIgnore]
         [DisplayName("子监控项目树根节点列表")]
-        public virtual VersionedList<MonitorItem> MonitorItemTree { get; set; } = new VersionedList<MonitorItem>();
-
-        private readonly VersionedList<MonitorItem> monitorItems = new VersionedList<MonitorItem>();
-        /// <summary>
-        /// 子监控项目遍历列表
-        /// </summary>
-        [XmlIgnore]
-        [NotMapped]
-        [DisplayName("子监控项目遍历列表"), DataType(DataType.Duration)]
-        public virtual List<MonitorItem> MonitorItems
-        {
-            get
-            {
-                //二维列表版本号低于树状列表时，更新二维列表
-                if (this.monitorItems.Version == 0 || //EF初始化 MonitorItemTree 时版本号不会自增
-                    this.monitorItems.Version != this.MonitorItemTree.Version
-                    )
-                    this.RefreshMonitorItems();
-
-                return this.monitorItems;
-            }
-        }
-
-        /// <summary>
-        /// 刷新监视规则树状结构至二维列表
-        /// </summary>
-        protected void RefreshMonitorItems()
-        {
-            this.monitorItems.Clear();
-
-            if (this.MonitorItemTree.Count > 0)
-            {
-                this.MonitorItemTree.ForEach(monitorRoot =>
-                    {
-                        //深度优先
-                        Stack<IMonitor> parentStack = new Stack<IMonitor>();
-                        parentStack.Push(monitorRoot);
-                        this.monitorItems.Add(monitorRoot);
-
-                        //当前父节点指针
-                        IMonitor currentMonitor = null;
-                        while (parentStack.Count > 0)
-                        {
-                            currentMonitor = parentStack.Pop();
-
-                            currentMonitor.MonitorItems.Where(monitor => monitor.HasChildren).ToList().ForEach(monitor => parentStack.Push(monitor));
-                            this.monitorItems.AddRange(currentMonitor.MonitorItems);
-                        }
-                    });
-            }
-
-            //同步完成后更新一次版本号，防止版本号一直为0而频繁刷新浪费性能
-            this.MonitorItemTree.UpdateVersion();
-            //同步二维列表版本号
-            this.monitorItems.SynchronizeVersion(this.MonitorItemTree);
-        }
+        public MonitorContainer MonitorRoot { get; set; } = new MonitorContainer() { Name = "任务监视规则树根节点" };
 
         /// <summary>
         /// 日志文件列表

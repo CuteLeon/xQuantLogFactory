@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Model.Result;
-using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -15,7 +14,7 @@ namespace xQuantLogFactory.Model.Monitor
     /// </summary>
     [Serializable]
     [Table("MonitorItems")]
-    public class MonitorItem : IMonitor
+    public class MonitorItem : MonitorBase
     {
 
         #region 数据库字段
@@ -29,14 +28,6 @@ namespace xQuantLogFactory.Model.Monitor
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [XmlIgnore]
         public int ItemID { get; set; }
-
-        /// <summary>
-        /// 项目名称
-        /// </summary>
-        [XmlAttribute("Name")]
-        [Required]
-        [DisplayName("项目名称"), DataType(DataType.Text)]
-        public string Name { get; set; }
 
         /// <summary>
         /// 起始匹配模式
@@ -88,13 +79,6 @@ namespace xQuantLogFactory.Model.Monitor
         public MonitorItem ParentMonitorItem { get; set; }
 
         /// <summary>
-        /// 监控规则列表
-        /// </summary>
-        [XmlElement("Item")]
-        [DisplayName("监控规则列表")]
-        public virtual VersionedList<MonitorItem> MonitorItems { get; set; } = new VersionedList<MonitorItem>();
-
-        /// <summary>
         /// 监视日志解析结果表
         /// </summary>
         [XmlIgnore]
@@ -118,14 +102,6 @@ namespace xQuantLogFactory.Model.Monitor
             => this.Name = name;
 
         /// <summary>
-        /// 是否有子监控项目
-        /// </summary>
-        public bool HasChildren
-        {
-            get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
-        }
-
-        /// <summary>
         /// 获取监视规则层深度
         /// </summary>
         /// <returns></returns>
@@ -133,7 +109,7 @@ namespace xQuantLogFactory.Model.Monitor
         {
             int depth = 0;
             //记录父级节点，防止陷入环路死循环
-            List<MonitorItem> monitors = new List<MonitorItem>();
+            List<MonitorBase> monitors = new List<MonitorBase>();
             MonitorItem parent = this;
 
             while (parent.ParentMonitorItem != null)

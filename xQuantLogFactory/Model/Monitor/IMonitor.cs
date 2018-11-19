@@ -13,9 +13,9 @@ namespace xQuantLogFactory.Model.Monitor
         string Name { get; set; }
 
         /// <summary>
-        /// 监控项目列表
+        /// 监控项目树根节点列表
         /// </summary>
-        VersionedList<MonitorItem> MonitorItems { get; set; }
+        VersionedList<MonitorItem> MonitorTreeRoots { get; set; }
 
         /// <summary>
         /// 是否有子监控项目

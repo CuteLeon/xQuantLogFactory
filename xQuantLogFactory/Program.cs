@@ -22,7 +22,6 @@ namespace xQuantLogFactory
 
     //TODO: 服务端+客户端监视规则配置
 
-    //TODO: 命令行参数增加一个日志级别，可以只分析指定日志级别的日志文件，默认为 DEBUG，多个时按"|"分割直接插入Config日志文件名
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试
 
@@ -109,14 +108,14 @@ namespace xQuantLogFactory
 
             UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
             GetMonitorItems(ConfigHelper.MonitorDirectory);
-            UnityTrace.WriteLine($"发现 {UnityTaskArgument.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorItems.Select(item => item.Name))}");
+            UnityTrace.WriteLine($"发现 {UnityTaskArgument.MonitorRoot.MonitorItems.Count} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorRoot.MonitorItems.Select(item => item.Name))}");
 
             UnityTrace.WriteLine("开始获取任务相关日志文件...");
             GetTaskLogFiles(UnityTaskArgument.LogDirectory);
 
             UnityTrace.WriteLine("开始解析日志文件...");
             //未发现监视规则对象，不解析客户端和服务端日志文件
-            if (UnityTaskArgument.MonitorItems.Count > 0)
+            if (UnityTaskArgument.MonitorRoot.MonitorItems.Count > 0)
             {
                 ParseClientLog();
                 ParseServerLog();
@@ -196,10 +195,10 @@ namespace xQuantLogFactory
                 UnityTrace.WriteLine($"获取任务相关监视规则失败：{ex.Message}");
                 Exit(4);
             }
-
+            
             if (monitorItems.Count() > 0)
             {
-                UnityTaskArgument.MonitorItemTree.AddRange(monitorItems);
+                UnityTaskArgument.MonitorRoot.MonitorTreeRoots.AddRange(monitorItems);
                 UnityDBContext.SaveChanges();
             }
         }
@@ -313,7 +312,7 @@ namespace xQuantLogFactory
 
                 UnityTrace.WriteLine("[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
-                    UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
+                    UnityTaskArgument.MonitorRoot.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
                     UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Client)
                     );
             }
@@ -336,7 +335,7 @@ namespace xQuantLogFactory
 
                 UnityTrace.WriteLine("[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
-                    UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
+                    UnityTaskArgument.MonitorRoot.MonitorItems.Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
                     UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server)
                     );
             }
@@ -377,7 +376,7 @@ namespace xQuantLogFactory
             UnityDBContext.AnalysisResults.RemoveRange(UnityTaskArgument.AnalysisResults);
             UnityTaskArgument.AnalysisResults.Clear();
             UnityTaskArgument.LogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
-            UnityTaskArgument.MonitorItems.ForEach(monitor => monitor.AnalysisResults.Clear());
+            UnityTaskArgument.MonitorRoot.MonitorItems.ForEach(monitor => monitor.AnalysisResults.Clear());
             lock (UnityDBContext)
                 UnityDBContext.SaveChanges();
 
@@ -613,7 +612,7 @@ namespace xQuantLogFactory
         {
             UnityTrace.WriteLine("所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个监视结果和 {3} 个中间件结果\n————————",
                 UnityTaskArgument.LogFiles.Count(file => file.MonitorResults.Count > 0 || file.MiddlewareResults.Count > 0),
-                UnityTaskArgument.MonitorItems.Count(monitor => monitor.MonitorResults.Count > 0),
+                UnityTaskArgument.MonitorRoot.MonitorItems.Count(monitor => monitor.MonitorResults.Count > 0),
                 UnityTaskArgument.MonitorResults.Count,
                 UnityTaskArgument.MiddlewareResults.Count()
                 );
@@ -626,7 +625,7 @@ namespace xQuantLogFactory
         {
             UnityTrace.WriteLine("日志解析结果分析完成：\n\t在 {0} 个文件中匹配到 {1} 个监视规则的 {2} 组分析结果\n————————",
                 UnityTaskArgument.LogFiles.Count(file => file.AnalysisResults.Count > 0),
-                UnityTaskArgument.MonitorItems.Count(monitor => monitor.AnalysisResults.Count > 0),
+                UnityTaskArgument.MonitorRoot.MonitorItems.Count(monitor => monitor.AnalysisResults.Count > 0),
                 UnityTaskArgument.AnalysisResults.Count
                 );
         }

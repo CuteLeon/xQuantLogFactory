@@ -1,7 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
-
-using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -10,27 +11,17 @@ namespace xQuantLogFactory.Model.Monitor
     /// </summary>
     [Serializable]
     [XmlRoot("MonitorRoot")]
-    public class MonitorContainer : IMonitor
+    [Table("MonitorContainers")]
+    public class MonitorContainer : MonitorBase
     {
         /// <summary>
-        /// 规则容器名称
+        /// 监视规则ID
         /// </summary>
-        [XmlAttribute("Name")]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 监控项目列表
-        /// </summary>
-        [XmlElement("Item")]
-        public virtual VersionedList<MonitorItem> MonitorItems { get; set; } = new VersionedList<MonitorItem>();
-
-        /// <summary>
-        /// 是否有子监控项目
-        /// </summary>
-        public bool HasChildren
-        {
-            get { return this.MonitorItems != null && this.MonitorItems.Count > 0; }
-        }
-
+        [Key]
+        [Required]
+        [DisplayName("监视规则容器ID")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [XmlIgnore]
+        public int ContainerID { get; set; }
     }
 }

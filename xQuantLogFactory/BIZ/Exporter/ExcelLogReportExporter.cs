@@ -115,8 +115,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                                 memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
                                 memoryRange[rowID, 2].Value = result.Version;
                                 memoryRange[rowID, 3].Value = result.Client;
-                                memoryRange[rowID, 4].Value = result.MemoryConsumed;
-                                memoryRange[rowID, 5].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                memoryRange[rowID, 4].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                                memoryRange[rowID, 5].Value = result.MemoryConsumed;
                                 memoryRange[rowID, 6].Value = result.GroupType.ToString();
 
                                 rowID++;

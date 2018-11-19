@@ -58,7 +58,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 if (container != null && container.HasChildren)
                 {
                     //记录监视规则容器的根节点列表
-                    targetItems.AddRange(container.MonitorItems);
+                    targetItems.AddRange(container.MonitorTreeRoots);
                 }
             }
 

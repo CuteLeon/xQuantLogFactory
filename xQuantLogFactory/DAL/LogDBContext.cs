@@ -23,6 +23,11 @@ namespace xQuantLogFactory.DAL
         public DbSet<SystemInfo> SystemInfos { get; set; }
 
         /// <summary>
+        /// 监视规则容器表
+        /// </summary>
+        public DbSet<MonitorContainer> MonitorContainers { get; set; }
+
+        /// <summary>
         /// 监视规则表
         /// </summary>
         public DbSet<MonitorItem> MonitorItems { get; set; }
