@@ -22,7 +22,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
         public CommonPrefixAnalysiser() { }
 
-        public CommonPrefixAnalysiser(ITracer trace) : base(trace) { }
+        public CommonPrefixAnalysiser(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 分析监视内容作为前缀的操作日志

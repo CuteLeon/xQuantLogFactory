@@ -20,7 +20,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
         public LogAnalysiserHost() { }
 
-        public LogAnalysiserHost(ITracer trace) : base(trace) { }
+        public LogAnalysiserHost(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 增加自定义日志分析器

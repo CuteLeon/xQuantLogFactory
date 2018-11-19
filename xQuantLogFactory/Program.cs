@@ -481,7 +481,7 @@ namespace xQuantLogFactory
             {
                 case ReportModes.Excel:
                     {
-                        reportExporter = new ExcelLogReportExporter();
+                        reportExporter = new ExcelLogReportExporter(UnityTrace);
                         break;
                     }
                 case ReportModes.HTML:

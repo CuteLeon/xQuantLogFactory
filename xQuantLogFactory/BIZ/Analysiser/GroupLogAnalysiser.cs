@@ -15,7 +15,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
     {
         public GroupLogAnalysiser() { }
 
-        public GroupLogAnalysiser(ITracer trace) : base(trace) { }
+        public GroupLogAnalysiser(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 分析日志
@@ -31,21 +31,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
             {
                 if (!(fileGroupResult.Key is LogFile logFile))
                 {
-                    this.Trace?.WriteLine("无法分析空的日志文件");
+                    this.Tracer?.WriteLine("无法分析空的日志文件");
                     return;
                 }
 
-                this.Trace?.WriteLine($"开始分析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
+                this.Tracer?.WriteLine($"开始分析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
 
                 //对日志结果按监视规则分组，以匹配同一监视规则解析的日志解析结果
                 foreach (var monitorGroupResult in fileGroupResult.GroupBy(result => result.MonitorItem))
                 {
                     if (!(monitorGroupResult.Key is MonitorItem monitor))
                     {
-                        this.Trace?.WriteLine("无法分析空的监视规则");
+                        this.Tracer?.WriteLine("无法分析空的监视规则");
                         return;
                     }
-                    this.Trace?.WriteLine($"分析监视规则：(文件ID: {logFile.FileID}, Type: {logFile.LogFileType}) {monitor.Name}");
+                    this.Tracer?.WriteLine($"分析监视规则：(文件ID: {logFile.FileID}, Type: {logFile.LogFileType}) {monitor.Name}");
 
                     GroupAnalysisResult analysisResult = null;
                     foreach (MonitorResult monitorResult in monitorGroupResult.OrderBy(result => result.LineNumber))
@@ -87,10 +87,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         }
                     }
 
-                    this.Trace?.WriteLine($"监视规则(文件ID: {logFile.FileID}, Type: {logFile.LogFileType}) {monitor.Name} 分析完成");
+                    this.Tracer?.WriteLine($"监视规则(文件ID: {logFile.FileID}, Type: {logFile.LogFileType}) {monitor.Name} 分析完成");
                 }
 
-                this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})分析完成\n————————");
+                this.Tracer?.WriteLine($"当前日志文件(ID: {logFile.FileID})分析完成\n————————");
             });
         }
 

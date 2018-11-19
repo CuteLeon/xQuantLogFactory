@@ -14,6 +14,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
         public DirectedLogAnalysiserBase() { }
 
-        public DirectedLogAnalysiserBase(ITracer trace) : base(trace) { }
+        public DirectedLogAnalysiserBase(ITracer tracer) : base(tracer) { }
     }
 }

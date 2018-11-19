@@ -16,12 +16,12 @@ namespace xQuantLogFactory.BIZ.Processer
         /// <summary>
         /// 追踪器
         /// </summary>
-        public ITracer Trace { get; protected set; }
+        public ITracer Tracer { get; protected set; }
 
         public LogProcesserBase() { }
 
-        public LogProcesserBase(ITracer trace)
-            => this.Trace = trace;
+        public LogProcesserBase(ITracer tracer)
+            => this.Tracer = tracer;
 
     }
 }

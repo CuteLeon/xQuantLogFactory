@@ -21,7 +21,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
         public CSLogParserBase() { }
 
-        public CSLogParserBase(ITracer trace) : base(trace) { }
+        public CSLogParserBase(ITracer tracer) : base(tracer) { }
 
         public override Regex GeneralLogRegex { get; } = new Regex(
             @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<LogContent>.+)$",
@@ -77,7 +77,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
             this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
-                this.Trace?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
+                this.Tracer?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
 
                 FileStream fileStream = null;
                 StreamReader streamRreader = null;
@@ -163,7 +163,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                     result.MemoryConsumed = memoryCache;
                                 }
 
-                                this.Trace.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
+                                this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }
                         }
                         else
@@ -172,11 +172,11 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    this.Trace?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
+                    this.Tracer?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
                 }
                 catch (Exception ex)
                 {
-                    this.Trace?.WriteLine($"解析日志文件(ID: {logFile.FileID}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
+                    this.Tracer?.WriteLine($"解析日志文件(ID: {logFile.FileID}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
                 }
                 finally
                 {

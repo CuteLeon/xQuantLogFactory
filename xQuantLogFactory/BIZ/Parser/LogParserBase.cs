@@ -22,7 +22,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
         public LogParserBase() { }
 
-        public LogParserBase(ITracer trace) : base(trace) { }
+        public LogParserBase(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 日志解析

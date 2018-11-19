@@ -11,6 +11,7 @@ using xQuantLogFactory.Model.EqualityComparer;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
+using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
@@ -19,6 +20,8 @@ namespace xQuantLogFactory.BIZ.Exporter
     /// </summary>
     public class ExcelLogReportExporter : LogProcesserBase, ILogReportExporter
     {
+
+        public ExcelLogReportExporter(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 导出Excel报告
@@ -30,15 +33,18 @@ namespace xQuantLogFactory.BIZ.Exporter
             //导出模板
             try
             {
+                this.Tracer?.WriteLine("正在拷贝 Excel 报告模板...");
                 File.Copy(ConfigHelper.ExcelReportTempletPath, reportPath, true);
             }
             catch { throw; }
 
+            this.Tracer?.WriteLine("正在连接 Excel 报告文件...");
             //连接Excel文件
             using (ExcelPackage excel = new ExcelPackage(new FileInfo(reportPath)))
             {
                 try
                 {
+                    this.Tracer?.WriteLine("正在设置 Excel 报告属性信息 ...");
                     OfficeProperties properties = excel.Workbook.Properties;
                     properties.Author = "xQuant日志分析工具";
                     properties.Category = "xQuant日志分析报告";
@@ -50,8 +56,13 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
 
                     ExcelWorksheet sourceDataSheet = excel.Workbook.Worksheets["原始"];
-                    if (sourceDataSheet != null)
+                    if (sourceDataSheet == null)
                     {
+                        this.Tracer?.WriteLine("未发现原始数据表，写入失败！");
+                    }
+                    else
+                    {
+                        this.Tracer?.WriteLine("正在写入原始数据 ...");
                         Rectangle sourceRectangle = new Rectangle(1, 2, 9, argument.AnalysisResults.Count);
                         using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
                         {
@@ -82,8 +93,13 @@ namespace xQuantLogFactory.BIZ.Exporter
                     }
 
                     ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
-                    if (memoryDataSheet != null)
+                    if (memoryDataSheet == null)
                     {
+                        this.Tracer?.WriteLine("未发现内存数据表，写入失败！");
+                    }
+                    else
+                    {
+                        this.Tracer?.WriteLine("正在写入内存数据 ...");
                         Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
                         using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                         {
@@ -109,8 +125,13 @@ namespace xQuantLogFactory.BIZ.Exporter
                     }
 
                     ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets["中间件日志"];
-                    if (middlewareDataSheet != null)
+                    if (middlewareDataSheet == null)
                     {
+                        this.Tracer?.WriteLine("未发现中间件数据表，写入失败！");
+                    }
+                    else
+                    {
+                        this.Tracer?.WriteLine("正在写入中间件数据 ...");
                         Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
                         using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
                         {
@@ -150,6 +171,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 finally
                 {
                     excel.Save();
+                    this.Tracer?.WriteLine("Excel 报告文档关闭");
                 }
             }
         }
