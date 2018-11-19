@@ -31,7 +31,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
 
             List<LogFile> logFiles = new List<LogFile>();
             DirectoryInfo directoryInfo = new DirectoryInfo(directory);
-            Regex logRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            Regex logRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
 
             foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo.GetFiles("*.txt*", SearchOption.AllDirectories).Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
             {

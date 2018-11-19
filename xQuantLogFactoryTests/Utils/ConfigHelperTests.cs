@@ -12,6 +12,8 @@ namespace xQuantLogFactoryTests.Utils
         [TestMethod()]
         public void LogFileNameFormatTest()
         {
+            ConfigHelper.LogFileLevel = "(DEBUG|TRACE|ERROR|INFO|WARN|)";
+
             //无效文件名
             string[] invalidlogFiles = new string[]
             {
