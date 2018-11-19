@@ -52,6 +52,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     ExcelWorksheet sourceDataSheet = excel.Workbook.Worksheets["原始"];
                     ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
+                    ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets["中间件日志"];
 
                     Rectangle sourceRectangle = new Rectangle(1, 2, 9, argument.AnalysisResults.Count);
                     using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
@@ -99,6 +100,29 @@ namespace xQuantLogFactory.BIZ.Exporter
                             memoryRange[rowID, 4].Value = result.MemoryConsumed;
                             memoryRange[rowID, 5].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             memoryRange[rowID, 6].Value = result.GroupType.ToString();
+
+                            rowID++;
+                        }
+                    }
+
+                    //日志时间	客户端	用户代码	开始时间	耗时	请求路径	方法名称	流长度	消息
+                    Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
+                    using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
+                    {
+                        int rowID = middlewareRectangle.Top;
+                        foreach (var result in argument.MiddlewareResults
+                            .OrderBy(result => result.LogTime)
+                            )
+                        {
+                            middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            middlewareRange[rowID, 2].Value = result.Client;
+                            middlewareRange[rowID, 3].Value = result.UserCode;
+                            middlewareRange[rowID, 4].Value = result.StartTime;
+                            middlewareRange[rowID, 5].Value = result.Elapsed;
+                            middlewareRange[rowID, 6].Value = result.RequestURI;
+                            middlewareRange[rowID, 7].Value = result.MethodName;
+                            middlewareRange[rowID, 8].Value = result.StreamLength;
+                            middlewareRange[rowID, 9].Value = result.Message;
 
                             rowID++;
                         }

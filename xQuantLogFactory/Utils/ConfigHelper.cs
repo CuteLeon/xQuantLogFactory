@@ -67,7 +67,7 @@ namespace xQuantLogFactory.Utils
         {
             get
             {
-                if (LogFileLevel == MiddlewareLogFileAlias)
+                if (string.Equals(LogFileLevel, MiddlewareLogFileAlias, StringComparison.OrdinalIgnoreCase))
                 {
                     return $@"^{MiddlewareLogFileNamePrefix}\d{{8}}\.txt$";
                 }
