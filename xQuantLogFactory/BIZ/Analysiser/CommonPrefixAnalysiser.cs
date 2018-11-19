@@ -83,16 +83,19 @@ namespace xQuantLogFactory.BIZ.Analysiser
             if (parentMonitor == null) throw new ArgumentNullException(nameof(parentMonitor));
 
             MonitorItem childMonitor = parentMonitor.MonitorItems
-                .FirstOrDefault(monitor => monitor.Name == childMonitorName) ??
-                new MonitorItem() { Name = childMonitorName };
+                .FirstOrDefault(monitor => monitor.Name == childMonitorName);
+
+            if (childMonitor == null)
+            {
+                childMonitor = new MonitorItem() { Name = childMonitorName };
+                parentMonitor.MonitorItems.Add(childMonitor);
+            }
 
             if (childMonitor.ParentMonitorItem == null)
             {
                 childMonitor.ParentMonitorItem = parentMonitor;
                 childMonitor.StartPattern = parentMonitor.StartPattern;
                 childMonitor.FinishPatterny = parentMonitor.FinishPatterny;
-
-                parentMonitor.MonitorItems.Add(childMonitor);
             }
 
             return childMonitor;

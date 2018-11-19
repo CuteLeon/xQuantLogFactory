@@ -19,7 +19,6 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
-    //TODO: GUI TaskArgumentFactory
 
     //TODO: 服务端+客户端监视规则配置
 
@@ -426,7 +425,7 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetXMLFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\任务数据转储-{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml";
+            return $@"{ConfigHelper.ReportExportDirectory}\任务数据转储-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml";
         }
 
         /// <summary>
@@ -513,7 +512,7 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetReportFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告{argument.TaskID}-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
+            return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
         #endregion
