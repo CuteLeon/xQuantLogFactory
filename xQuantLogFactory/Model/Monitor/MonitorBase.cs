@@ -24,7 +24,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlElement("Item")]
         [DisplayName("监控规则列表")]
-        public VersionedList<MonitorItem> MonitorTreeRoots { get; set; } = new VersionedList<MonitorItem>();
+        public virtual VersionedList<MonitorItem> MonitorTreeRoots { get; set; } = new VersionedList<MonitorItem>();
 
         [XmlIgnore]
         protected readonly Lazy<VersionedList<MonitorItem>> monitorList = new Lazy<VersionedList<MonitorItem>>();

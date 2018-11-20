@@ -15,7 +15,7 @@ namespace xQuantLogFactory.Model.Monitor
     public class MonitorContainer : MonitorBase
     {
         /// <summary>
-        /// 监视规则ID
+        /// 监视规则容器ID
         /// </summary>
         [Key]
         [Required]

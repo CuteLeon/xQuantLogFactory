@@ -64,7 +64,7 @@ namespace xQuantLogFactory
             //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
+#if (DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             if (UnityTaskArgument == null)
             {
@@ -78,12 +78,14 @@ namespace xQuantLogFactory
                 UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).Load();
             if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).IsLoaded)
                 UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorItemTree).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorItemTree).Load();
             if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).IsLoaded)
                 UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).Load();
             if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).IsLoaded)
                 UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).Load();
+            //if (!UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).IsLoaded)
+            //    UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).Load();
 
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
@@ -195,7 +197,7 @@ namespace xQuantLogFactory
                 UnityTrace.WriteLine($"获取任务相关监视规则失败：{ex.Message}");
                 Exit(4);
             }
-            
+
             if (monitorItems.Count() > 0)
             {
                 UnityTaskArgument.MonitorRoot.MonitorTreeRoots.AddRange(monitorItems);
@@ -566,7 +568,7 @@ namespace xQuantLogFactory
             }
 
             string ExceptionDescription = string.Format(
-                "应用域内发现未被捕获的异常：(; ′⌒`)\r\n" +
+                "应用域内发现未被捕获的异常：(;′⌒`)\r\n" +
                 "\t异常类型 : {0}\r\n" +
                 "\t异常地址 : {1}\r\n" +
                 "\t出错方法 : {2}\r\n" +
