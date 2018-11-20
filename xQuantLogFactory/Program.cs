@@ -64,7 +64,7 @@ namespace xQuantLogFactory
             //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (DEBUG)
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             if (UnityTaskArgument == null)
             {

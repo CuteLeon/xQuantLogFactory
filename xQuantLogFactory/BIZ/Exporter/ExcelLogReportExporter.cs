@@ -67,8 +67,9 @@ namespace xQuantLogFactory.BIZ.Exporter
                         using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
                         {
                             int rowID = sourceRectangle.Top, executeID = 0;
+                            //TODO: 考虑树关系
                             foreach (var result in argument.AnalysisResults
-                                .Where(result => !result.MonitorItem?.NotSource ?? false)
+                                .Where(result => string.IsNullOrEmpty(result.MonitorItem?.SheetName) || result.MonitorItem?.SheetName == "原始")
                                 .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
                                 )
                             {

@@ -58,20 +58,6 @@ namespace xQuantLogFactory.Model.Monitor
         public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
-        /// 记录内存消耗
-        /// </summary>
-        [XmlAttribute("Memory")]
-        [DisplayName("记录内存消耗")]
-        public bool Memory { get; set; } = false;
-
-        /// <summary>
-        /// 不作为源数据输出
-        /// </summary>
-        [XmlAttribute("NotSource")]
-        [DisplayName("不作为源数据输出")]
-        public bool NotSource { get; set; } = false;
-
-        /// <summary>
         /// 父级监视规则
         /// </summary>
         [XmlIgnore]
@@ -98,6 +84,24 @@ namespace xQuantLogFactory.Model.Monitor
         [XmlIgnore]
         [DisplayName("日志分析结果表")]
         public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
+
+        #endregion
+
+        #region 监视配置
+
+        /// <summary>
+        /// 记录内存消耗
+        /// </summary>
+        [XmlAttribute("Memory")]
+        [DisplayName("记录内存消耗")]
+        public bool Memory { get; set; } = false;
+
+        /// <summary>
+        /// 输出表名
+        /// </summary>
+        [XmlAttribute("Sheet")]
+        [DisplayName("输出表名")]
+        public string SheetName { get; set; }
 
         #endregion
 
