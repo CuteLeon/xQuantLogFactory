@@ -13,7 +13,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
     /// <summary>
     /// 日志文件查找器
     /// </summary>
-    public class LogFileFinder : ITaskFileFinder
+    public class LogFileFinder : TaskFileFinderBase
     {
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <param name="directory">文件存放目录</param>
         /// <param name="param">任务参数</param>
         /// <returns>返回符合日志分析参数的待分析日志文件清单</returns>
-        public IEnumerable<T> GetFiles<T>(string directory, TaskArgument argument) where T : class
+        public override T GetTaskObject<T>(string directory, TaskArgument argument)
         {
             if (!Directory.Exists(directory))
                 throw new DirectoryNotFoundException(nameof(directory));
@@ -55,7 +55,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     ));
             }
 
-            return logFiles as IEnumerable<T>;
+            return logFiles as T;
         }
 
         /// <summary>

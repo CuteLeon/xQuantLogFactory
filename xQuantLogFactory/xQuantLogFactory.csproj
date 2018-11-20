@@ -86,10 +86,10 @@
     <Compile Include="BIZ\Exporter\ExcelLogReportExporter.cs" />
     <Compile Include="BIZ\Exporter\ILogReportExporter.cs" />
     <Compile Include="BIZ\Exporter\HTMLLogReportExporter.cs" />
-    <Compile Include="BIZ\FileFinder\IChildFileFinder.cs" />
-    <Compile Include="BIZ\FileFinder\ITaskFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\IFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\LogFileFinder.cs" />
     <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\TaskFileFinderBase.cs" />
     <Compile Include="BIZ\Parser\ClientLogParser.cs" />
     <Compile Include="BIZ\Analysiser\ILogAnalysiser.cs" />
     <Compile Include="BIZ\Parser\CSLogParserBase.cs" />

@@ -15,7 +15,6 @@ namespace xQuantLogFactory.Model.Monitor
         /// 项目名称
         /// </summary>
         [XmlAttribute("Name")]
-        [Required]
         [DisplayName("项目名称"), DataType(DataType.Text)]
         public string Name { get; set; }
 
@@ -74,6 +73,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// 是否有子监控项目
         /// </summary>
         [XmlIgnore]
+        [NotMapped]
         public bool HasChildren
         {
             get => this.MonitorTreeRoots != null && this.MonitorTreeRoots.Count > 0;

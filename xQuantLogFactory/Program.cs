@@ -64,7 +64,7 @@ namespace xQuantLogFactory
             //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
+#if (DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             if (UnityTaskArgument == null)
             {
@@ -147,14 +147,14 @@ namespace xQuantLogFactory
         /// <param name="directory"></param>
         private static void GetTaskLogFiles(string directory)
         {
-            ITaskFileFinder logFinder = new LogFileFinder();
+            TaskFileFinderBase logFinder = new LogFileFinder();
             IEnumerable<LogFile> logFiles = null;
 
             try
             {
                 if (!Directory.Exists(directory)) throw new DirectoryNotFoundException($"不存在的日志文件目录：{directory}");
 
-                logFiles = logFinder.GetFiles<LogFile>(UnityTaskArgument.LogDirectory, UnityTaskArgument);
+                logFiles = logFinder.GetTaskObject<IEnumerable<LogFile>>(UnityTaskArgument.LogDirectory, UnityTaskArgument);
             }
             catch (Exception ex)
             {
@@ -185,12 +185,12 @@ namespace xQuantLogFactory
         /// <param name="directory"></param>
         private static void GetMonitorItems(string directory)
         {
-            ITaskFileFinder monitorFinder = new MonitorFileFinder();
-            IEnumerable<MonitorItem> monitorItems = null;
+            TaskFileFinderBase monitorFinder = new MonitorFileFinder();
+            MonitorContainer monitorContainer = null;
 
             try
             {
-                monitorItems = monitorFinder.GetFiles<MonitorItem>(directory, UnityTaskArgument);
+                monitorContainer = monitorFinder.GetTaskObject<MonitorContainer>(directory, UnityTaskArgument);
             }
             catch (Exception ex)
             {
@@ -198,12 +198,14 @@ namespace xQuantLogFactory
                 Exit(4);
             }
 
-            if (monitorItems.Count() > 0)
+            if (monitorContainer != null)
             {
-                //TODO: 优化去掉
-                if (UnityTaskArgument.MonitorRoot == null) UnityTaskArgument.MonitorRoot = new MonitorContainer();
-                UnityTaskArgument.MonitorRoot.MonitorTreeRoots.AddRange(monitorItems);
+                UnityTaskArgument.MonitorRoot = monitorContainer;
                 UnityDBContext.SaveChanges();
+            }
+            else
+            {
+                UnityTrace.WriteLine($"获取监视规则容器对象为空！");
             }
         }
 
