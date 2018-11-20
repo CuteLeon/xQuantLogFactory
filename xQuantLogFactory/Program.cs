@@ -64,7 +64,7 @@ namespace xQuantLogFactory
             //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (!DEBUG)
+#if (DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             if (UnityTaskArgument == null)
             {
@@ -72,20 +72,20 @@ namespace xQuantLogFactory
                 Exit(int.MaxValue - 1);
             }
             //手动加载导航数据
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).Load();
             if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).IsLoaded)
                 UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).Load();
             if (!UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).IsLoaded)
                 UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).Load();
 
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
