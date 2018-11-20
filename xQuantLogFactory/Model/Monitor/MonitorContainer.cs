@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
+using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -32,24 +33,15 @@ namespace xQuantLogFactory.Model.Monitor
         {
             this.ScanMonitor((rootStack, currentMonitor) =>
                 {
-                    //遇到表名不为空的表名，初始化其子节点表名
-                    if (!string.IsNullOrEmpty(currentMonitor.SheetName))
+                    if (string.IsNullOrEmpty(currentMonitor.SheetName))
+                        currentMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
+
+                    //应用表名并入栈
+                    currentMonitor.MonitorTreeRoots.ForEach(monitor =>
                     {
-                        //应用表名并入栈
-                        currentMonitor.MonitorTreeRoots.ForEach(monitor =>
-                        {
-                            monitor.SheetName = currentMonitor.SheetName;
-                            if (monitor.HasChildren) rootStack.Push(monitor);
-                        });
-                    }
-                    else
-                    {
-                        //仅入栈
-                        currentMonitor.MonitorTreeRoots.ForEach(monitor =>
-                        {
-                            if (monitor.HasChildren) rootStack.Push(monitor);
-                        });
-                    }
+                        monitor.SheetName = currentMonitor.SheetName;
+                        if (monitor.HasChildren) rootStack.Push(monitor);
+                    });
                 });
         }
 

@@ -36,6 +36,11 @@ namespace xQuantLogFactory.Utils
         public const ReportModes DefaultReportMode = ReportModes.HTML;
 
         /// <summary>
+        /// Excel原始数据表名称
+        /// </summary>
+        public const string ExcelSourceSheetName = "原始";
+
+        /// <summary>
         /// 监视规则XML文件存储目录
         /// </summary>
         public static string MonitorDirectory

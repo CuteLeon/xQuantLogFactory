@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,11 @@ namespace xQuantLogFactory.BIZ.Exporter
     /// </summary>
     public class ExcelLogReportExporter : LogProcesserBase, ILogReportExporter
     {
+
+        /// <summary>
+        /// 特殊表名列表
+        /// </summary>
+        private readonly static string[] SpecialSheetNames = new string[] { "内存" };
 
         public ExcelLogReportExporter(ITracer tracer) : base(tracer) { }
 
@@ -54,27 +60,36 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Manager = "xQuant日志分析工具";
                     properties.Subject = $"xQuant日志分析报告-{argument.TaskID}";
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
+                    
+                    //按表名分组导出
+                    foreach (var monitorGroup in argument.MonitorRoot.MonitorItems.GroupBy(monitor => monitor.SheetName))
+                    {
+                        //特殊表名单独处理
+                        if (SpecialSheetNames.Contains(monitorGroup.Key)) continue;
 
-                    ExcelWorksheet sourceDataSheet = excel.Workbook.Worksheets["原始"];
-                    if (sourceDataSheet == null)
-                    {
-                        this.Tracer?.WriteLine("未发现原始数据表，写入失败！");
-                    }
-                    else
-                    {
-                        this.Tracer?.WriteLine("正在写入原始数据 ...");
-                        Rectangle sourceRectangle = new Rectangle(1, 2, 9, argument.AnalysisResults.Count);
-                        using (ExcelRange sourceRange = sourceDataSheet.Cells[sourceRectangle.Top, sourceRectangle.Left, sourceRectangle.Bottom - 1, sourceRectangle.Right - 1])
+                        ExcelWorksheet worksheet = excel.Workbook.Worksheets[monitorGroup.Key];
+                        if (worksheet == null)
                         {
-                            int rowID = sourceRectangle.Top, executeID = 0;
-                            //TODO: 考虑树关系
-                            foreach (var result in argument.AnalysisResults
-                                .Where(result => string.IsNullOrEmpty(result.MonitorItem?.SheetName) || result.MonitorItem?.SheetName == "原始")
+                            this.Tracer?.WriteLine($"未发现名称为 {monitorGroup.Key} 的数据表，跳过导出 ...");
+                            continue;
+                        }
+
+                        this.Tracer?.WriteLine($"正在写入 {monitorGroup.Key} 表数据 ...");
+                        //通用表列头格式需保持与原始数据表一致
+                        Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
+                        using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
+                        {
+                            int rowID = sheetRectangle.Top, executeID = 0;
+
+                            //合并所有分析结果数据
+                            var analysiserResults = new List<GroupAnalysisResult>();
+                            monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
+                                .ForEach(resultList => analysiserResults.AddRange(resultList));
+
+                            foreach (var result in analysiserResults
                                 .OrderBy(result => (result.LogFile?.FileID, result.LineNumber))
                                 )
                             {
-                                if (result.MonitorItem?.ParentMonitorItem == null) executeID++;
-
                                 if (result.MonitorItem != null)
                                 {
                                     sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
@@ -107,9 +122,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                             int rowID = memoryRectangle.Top;
                             foreach (var result in argument.MonitorResults
                                 .Where(result => result.MemoryConsumed != null)
-                                //(result => (result.MonitorItem?.ItemID, result.Version, result.Client)
                                 .OrderBy(result => result.LogTime)
-                                //存在：同一行日志被多个监视内存的监视规则匹配到而造成同一条日志产生多个内存数据，去重
                                 .Distinct(new LogResultEqualityComparer<MonitorResult>())
                                 )
                             {

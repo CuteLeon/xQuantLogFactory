@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Model.Result;
+using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -101,7 +102,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlAttribute("Sheet")]
         [DisplayName("输出表名")]
-        public string SheetName { get; set; }
+        public string SheetName { get; set; } = ConfigHelper.ExcelSourceSheetName;
 
         #endregion
 
