@@ -64,7 +64,7 @@ namespace xQuantLogFactory
             //UnityDBContext.Database.Log = SQLTrace.WriteLine;
 #endif
 
-#if (DEBUG)
+#if (!DEBUG)
             UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
             if (UnityTaskArgument == null)
             {
@@ -84,8 +84,8 @@ namespace xQuantLogFactory
                 UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).Load();
             if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).IsLoaded)
                 UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).Load();
-            //if (!UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).IsLoaded)
-            //    UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).Load();
+            if (!UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).IsLoaded)
+                UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).Load();
 
             UnityTaskArgument.TaskStartTime = DateTime.Now;
             UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
@@ -200,6 +200,8 @@ namespace xQuantLogFactory
 
             if (monitorItems.Count() > 0)
             {
+                //TODO: 优化去掉
+                if (UnityTaskArgument.MonitorRoot == null) UnityTaskArgument.MonitorRoot = new MonitorContainer();
                 UnityTaskArgument.MonitorRoot.MonitorTreeRoots.AddRange(monitorItems);
                 UnityDBContext.SaveChanges();
             }

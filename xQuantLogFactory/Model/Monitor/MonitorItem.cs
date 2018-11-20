@@ -76,7 +76,14 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlIgnore]
         [DisplayName("父级监视规则")]
-        public MonitorItem ParentMonitorItem { get; set; }
+        public virtual MonitorItem ParentMonitorItem { get; set; }
+
+        /// <summary>
+        /// 父级监视规则容器
+        /// </summary>
+        [XmlIgnore]
+        [DisplayName("父级监视规则容器")]
+        public virtual MonitorContainer ParentMonitorContainer { get; set; }
 
         /// <summary>
         /// 监视日志解析结果表

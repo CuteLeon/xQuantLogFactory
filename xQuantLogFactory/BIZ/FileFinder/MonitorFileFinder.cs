@@ -47,7 +47,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
 
             //符合要求的监视规则
             List<MonitorItem> targetItems = new List<MonitorItem>();
-
+            //TODO: 直接返回容器对象
             //创建所有容器对象
             foreach (string xmlFile in this.GetChildFiles(directory,
                 file => file.EndsWith(argument.MonitorFileName, StringComparison.OrdinalIgnoreCase)

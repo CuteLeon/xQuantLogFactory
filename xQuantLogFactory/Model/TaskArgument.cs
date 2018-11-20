@@ -143,7 +143,7 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlIgnore]
         [DisplayName("子监控项目树根节点列表")]
-        public MonitorContainer MonitorRoot { get; set; } = new MonitorContainer() { Name = "任务监视规则树根节点" };
+        public virtual MonitorContainer MonitorRoot { get; set; }
 
         /// <summary>
         /// 日志文件列表
