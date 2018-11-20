@@ -115,7 +115,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     }
                     else
                     {
-                        this.Tracer?.WriteLine("正在写入内存数据 ...");
+                        this.Tracer?.WriteLine("正在写入 内存 表数据 ...");
                         Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
                         using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                         {
@@ -145,7 +145,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     }
                     else
                     {
-                        this.Tracer?.WriteLine("正在写入中间件数据 ...");
+                        this.Tracer?.WriteLine("正在写入 中间件 表数据 ...");
                         Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
                         using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
                         {

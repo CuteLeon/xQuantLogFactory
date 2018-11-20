@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
-using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -25,54 +23,6 @@ namespace xQuantLogFactory.Model.Monitor
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [XmlIgnore]
         public int ContainerID { get; set; }
-
-        /// <summary>
-        /// 初始化子节点表名
-        /// </summary>
-        public void InitMonitorSheetName()
-        {
-            this.ScanMonitor((rootStack, currentMonitor) =>
-                {
-                    if (string.IsNullOrEmpty(currentMonitor.SheetName))
-                        currentMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
-
-                    //应用表名并入栈
-                    currentMonitor.MonitorTreeRoots.ForEach(monitor =>
-                    {
-                        monitor.SheetName = currentMonitor.SheetName;
-                        if (monitor.HasChildren) rootStack.Push(monitor);
-                    });
-                });
-        }
-
-        /// <summary>
-        /// 通用树深度优先扫描方法
-        /// </summary>
-        /// <param name="scanAction">扫描Action</param>
-        /// <param name="stackInitPredicate">首批根节点入栈条件</param>
-        /// <remarks>Action 参数分别为父级节点堆栈和当前节点，每次执行时顶级节点会出栈，下次需要扫描的子节点入栈即可</remarks>
-        /// <example>使用方法见上方初始化子节点表名的方法</example>
-        public void ScanMonitor(Action<Stack<MonitorItem>, MonitorItem> scanAction, Predicate<MonitorItem> stackInitPredicate = null)
-        {
-            if (scanAction == null)
-                throw new ArgumentNullException(nameof(scanAction));
-
-            Stack<MonitorItem> monitorRoots = new Stack<MonitorItem>();
-            MonitorItem currentMonitor = null;
-
-            //初始化栈
-            ((stackInitPredicate == null) ?
-                this.MonitorTreeRoots :
-                this.MonitorTreeRoots.FindAll(stackInitPredicate))
-                .ForEach(root => monitorRoots.Push(root));
-
-            while (monitorRoots.Count > 0)
-            {
-                currentMonitor = monitorRoots.Pop();
-
-                scanAction(monitorRoots, currentMonitor);
-            }
-        }
 
     }
 }
