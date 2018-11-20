@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -34,6 +33,8 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 ))
             {
                 MonitorContainer container = File.ReadAllText(xmlFile, Encoding.UTF8).DeserializeToObject<MonitorContainer>();
+                container?.InitMonitorSheetName();
+
                 return container as T;
             }
 
