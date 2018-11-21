@@ -48,7 +48,7 @@ namespace xQuantLogFactory.Model.Monitor
             }
         }
 
-        //TODO: 问题：每个根节点的深度优先列表都会记录下面所有的子节点，空间复杂度为n^2，有改进空间
+        //TODO: [问题] 每个根节点的深度优先列表都会记录下面所有的子节点，空间复杂度为n^2，有改进空间
         /// <summary>
         /// 刷新监视规则树状结构至二维列表
         /// </summary>

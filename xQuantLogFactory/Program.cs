@@ -20,8 +20,6 @@ using xQuantLogFactory.Utils.Trace;
 namespace xQuantLogFactory
 {
 
-    //TODO: 服务端+客户端监视规则配置
-
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试
 
@@ -387,6 +385,7 @@ namespace xQuantLogFactory
                 UnityDBContext.SaveChanges();
 
             LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTrace);
+            //TODO: 为监视规则设置字段，根据字段判断使用哪种子分析器
             DirectedLogAnalysiserBase formLogAnalysiser = new CommonPrefixAnalysiser(UnityTrace) { TargetMonitorName = "打开功能模块" };
             DirectedLogAnalysiserBase reportLogAnalysiser = new CommonPrefixAnalysiser(UnityTrace) { TargetMonitorName = "查询报表" };
 

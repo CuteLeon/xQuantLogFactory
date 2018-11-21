@@ -26,8 +26,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new MonitorItem() { Name = "规则_2" });
             Assert.AreEqual(2, container.MonitorTreeRoots.Count);
 
-            //TODO: 子节点列表更新时，依然无法触发父节点更新，思路需要改一下（效率+空间复杂度）
-            //临时解决方案：更新树根节点
+            //临时解决方案：更新树根节点，请求刷新缓存列表
             container.MonitorTreeRoots.UpdateVersion();
 
             Assert.AreEqual(3, container.MonitorItems.Count);
@@ -53,8 +52,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             Console.WriteLine($"根节点 ({container.MonitorTreeRoots.Count}个)：{string.Join("、", container.MonitorTreeRoots.Select(monitor => monitor.Name))}");
             Console.WriteLine($"所有节点 ({container.MonitorItems.Count}个)：{string.Join("、", container.MonitorItems.Select(monitor => monitor.Name))}");
 
-
-            int exceuteCount = 150000;
+            int exceuteCount = 15000;
             string monitorName = string.Empty;
             //测试-1：
             DateTime time_0 = DateTime.Now;
