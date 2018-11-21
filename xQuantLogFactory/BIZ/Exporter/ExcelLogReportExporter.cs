@@ -25,7 +25,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <summary>
         /// 特殊表名列表
         /// </summary>
-        private readonly static string[] SpecialSheetNames = new string[] { "内存" };
+        private readonly static string[] SpecialSheetNames = new string[] { "内存", "中间件日志", "分析" };
 
         public ExcelLogReportExporter(ITracer tracer) : base(tracer) { }
 
@@ -60,12 +60,17 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Manager = "xQuant日志分析工具";
                     properties.Subject = $"xQuant日志分析报告-{argument.TaskID}";
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
-                    
+
                     //按表名分组导出
+                    this.Tracer?.WriteLine("开始导出通用表数据 ...");
                     foreach (var monitorGroup in argument.MonitorRoot.MonitorItems.GroupBy(monitor => monitor.SheetName))
                     {
                         //特殊表名单独处理
-                        if (SpecialSheetNames.Contains(monitorGroup.Key)) continue;
+                        if (SpecialSheetNames.Contains(monitorGroup.Key))
+                        {
+                            this.Tracer?.WriteLine($"表名 [{monitorGroup.Key}] 为保留表名，延迟导出 ...");
+                            continue;
+                        }
 
                         ExcelWorksheet worksheet = excel.Workbook.Worksheets[monitorGroup.Key];
                         if (worksheet == null)
@@ -79,6 +84,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
                         using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
                         {
+                            //TODO: 分表导出如何分析执行序号？
                             int rowID = sheetRectangle.Top, executeID = 0;
 
                             //合并所有分析结果数据
@@ -108,6 +114,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         }
                     }
 
+                    this.Tracer?.WriteLine("开始导出保留表数据 ...");
                     ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
                     if (memoryDataSheet == null)
                     {
@@ -145,7 +152,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     }
                     else
                     {
-                        this.Tracer?.WriteLine("正在写入 中间件 表数据 ...");
+                        this.Tracer?.WriteLine("正在写入 中间件日志 表数据 ...");
                         Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
                         using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
                         {
