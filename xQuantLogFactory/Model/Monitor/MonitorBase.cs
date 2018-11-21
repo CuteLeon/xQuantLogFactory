@@ -48,7 +48,38 @@ namespace xQuantLogFactory.Model.Monitor
             }
         }
 
-        //TODO: [问题] 每个根节点的深度优先列表都会记录下面所有的子节点，空间复杂度为n^2，有改进空间
+        public static int executeCount = 0;
+        /// <summary>
+        /// 获取所有节点及其子节点
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<MonitorItem> GetMonitorItems()
+        {
+            executeCount++;
+            Stack<MonitorItem> monitorRoots = new Stack<MonitorItem>();
+            MonitorItem currentMonitor = null;
+
+            //根节点入栈并返回
+            foreach (var root in this.MonitorTreeRoots)
+            {
+                monitorRoots.Push(root);
+                yield return root;
+            }
+
+            //扫描栈
+            while (monitorRoots.Count > 0)
+            {
+                currentMonitor = monitorRoots.Pop();
+
+                foreach (var monitor in currentMonitor.MonitorTreeRoots)
+                {
+                    if (monitor.HasChildren) monitorRoots.Push(monitor);
+
+                    yield return monitor;
+                }
+            }
+        }
+
         /// <summary>
         /// 刷新监视规则树状结构至二维列表
         /// </summary>

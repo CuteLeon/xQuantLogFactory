@@ -65,7 +65,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                             childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
 
-                            //TODO: 任务监视规则容器与目标监视规则节点之间跨越了不需要刷新的节点，因为任务监视规则容器不会深度刷新，导致创建的子监视规则无法刷新进缓存列表并输出
                             argument.MonitorRoot.MonitorTreeRoots.UpdateVersion();
 
                             if (logMatch.Groups["Elapsed"].Success &&
@@ -82,7 +81,29 @@ namespace xQuantLogFactory.BIZ.Analysiser
                             result.MonitorItem = childMonitor;
                             result.StartMonitorResult.MonitorItem = childMonitor;
                         }
-
+                        /* TODO: 无效的结果在落实数据库时无法正常删除
+                        if (result.StartMonitorResult != null)
+                        {
+                            result.StartMonitorResult.LogFile = null;
+                            result.StartMonitorResult.TaskArgument = null;
+                            result.StartMonitorResult.MonitorItem = null;
+                            result.StartMonitorResult.MonitorItem = null;
+                            targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
+                            argument.MonitorResults.Remove(result.StartMonitorResult);
+                        }
+                        if (result.FinishMonitorResult != null)
+                        {
+                            result.FinishMonitorResult.LogFile = null;
+                            result.FinishMonitorResult.TaskArgument = null;
+                            result.FinishMonitorResult.MonitorItem = null;
+                            targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
+                            argument.MonitorResults.Remove(result.FinishMonitorResult);
+                        }
+                        result.TaskArgument = null;
+                        result.MonitorItem = null;
+                        result.LogFile = null;
+                        argument.AnalysisResults.Remove(result);
+                         */
                         targetMonitor.AnalysisResults.Remove(result);
                     }
                 });

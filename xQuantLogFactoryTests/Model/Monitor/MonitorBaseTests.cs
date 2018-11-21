@@ -15,22 +15,21 @@ namespace xQuantLogFactory.Model.Monitor.Tests
 
             container.MonitorTreeRoots.Add(new MonitorItem() { Name = "规则_0" });
             Assert.AreEqual(1, container.MonitorTreeRoots.Count);
-            Assert.AreEqual(1, container.MonitorItems.Count);
-            Assert.AreEqual(1, container.MonitorItems.Count);
+            Assert.AreEqual(1, container.GetMonitorItems().Count());
+            Assert.AreEqual(1, container.GetMonitorItems().Count());
 
             container.MonitorTreeRoots.Add(new MonitorItem() { Name = "规则_1" });
             Assert.AreEqual(2, container.MonitorTreeRoots.Count);
-            Assert.AreEqual(2, container.MonitorItems.Count);
-            Assert.AreEqual(2, container.MonitorItems.Count);
+            Assert.AreEqual(2, container.GetMonitorItems().Count());
+            Assert.AreEqual(2, container.GetMonitorItems().Count());
 
             container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new MonitorItem() { Name = "规则_2" });
             Assert.AreEqual(2, container.MonitorTreeRoots.Count);
 
-            //TODO: 如果需要更新的节点和根节点之间跨越了缓存已经同步的节点时，底层需要更新的节点将无法更新
             //临时解决方案：更新树根节点，请求刷新缓存列表
             container.MonitorTreeRoots.UpdateVersion();
 
-            Assert.AreEqual(3, container.MonitorItems.Count);
+            Assert.AreEqual(3, container.GetMonitorItems().Count());
         }
 
         [TestMethod()]
@@ -51,7 +50,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
 
             currentMonitor.MonitorTreeRoots.UpdateVersion();
             Console.WriteLine($"根节点 ({container.MonitorTreeRoots.Count}个)：{string.Join("、", container.MonitorTreeRoots.Select(monitor => monitor.Name))}");
-            Console.WriteLine($"所有节点 ({container.MonitorItems.Count}个)：{string.Join("、", container.MonitorItems.Select(monitor => monitor.Name))}");
+            Console.WriteLine($"所有节点 ({container.GetMonitorItems().Count()}个)：{string.Join("、", container.GetMonitorItems().Select(monitor => monitor.Name))}");
 
             int exceuteCount = 15000;
             string monitorName = string.Empty;
@@ -60,7 +59,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             container.MonitorTreeRoots.UpdateVersion();
             for (int index = 0; index < exceuteCount; index++)
             {
-                container.MonitorItems.ForEach(monitor => monitorName = monitor.Name);
+                container.GetMonitorItems().ToList().ForEach(monitor => monitorName = monitor.Name);
             }
             //测试-2
             DateTime time_1 = DateTime.Now;

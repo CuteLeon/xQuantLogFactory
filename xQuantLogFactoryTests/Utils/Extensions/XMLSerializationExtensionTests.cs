@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -69,7 +70,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             Assert.IsNotNull(container);
             Assert.AreEqual("监听客户端启动方案", container.Name);
             Assert.AreEqual(2, container.MonitorTreeRoots[0].MonitorTreeRoots.Count);
-            Assert.AreEqual(5, container.MonitorItems.Count);
+            Assert.AreEqual(5, container.GetMonitorItems().Count());
             Assert.IsTrue(container.MonitorTreeRoots[1].Memory);
             Assert.AreEqual("内存",container.MonitorTreeRoots[1].SheetName);
         }

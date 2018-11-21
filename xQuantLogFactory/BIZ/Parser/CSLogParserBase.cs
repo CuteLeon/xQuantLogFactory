@@ -136,7 +136,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             }
 
                             //匹配所有监视规则
-                            foreach (MonitorItem monitor in argument.MonitorRoot.MonitorItems)
+                            foreach (MonitorItem monitor in argument.MonitorRoot.GetMonitorItems())
                             {
                                 GroupTypes groupType = this.MatchMonitor(monitor, logContent);
                                 if (groupType == GroupTypes.Unmatch)
