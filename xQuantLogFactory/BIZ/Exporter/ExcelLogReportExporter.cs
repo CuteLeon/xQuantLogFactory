@@ -84,7 +84,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
                         using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
                         {
-                            //TODO: 分表导出如何分析执行序号？
+                            //TODO: 分表导出如何分析执行序号：为监视规则设置属性，遇到即更新序号？
                             int rowID = sheetRectangle.Top, executeID = 0;
 
                             //合并所有分析结果数据

@@ -388,9 +388,11 @@ namespace xQuantLogFactory
             //TODO: 为监视规则设置字段，根据字段判断使用哪种子分析器
             DirectedLogAnalysiserBase formLogAnalysiser = new CommonPrefixAnalysiser(UnityTrace) { TargetMonitorName = "打开功能模块" };
             DirectedLogAnalysiserBase reportLogAnalysiser = new CommonPrefixAnalysiser(UnityTrace) { TargetMonitorName = "查询报表" };
+            DirectedLogAnalysiserBase loadLogAnalysiser = new CommonLoadAnalysiser(UnityTrace) { TargetMonitorName = "通用加载资源" };
 
             logAnalysiserHost.AddAnalysiser(formLogAnalysiser);
             logAnalysiserHost.AddAnalysiser(reportLogAnalysiser);
+            logAnalysiserHost.AddAnalysiser(loadLogAnalysiser);
 
             logAnalysiserHost.Analysis(UnityTaskArgument);
 

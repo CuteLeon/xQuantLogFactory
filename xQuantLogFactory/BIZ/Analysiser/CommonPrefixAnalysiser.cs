@@ -59,48 +59,26 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         //targetMonitor.MonitorTreeRoots.UpdateVersion();
                         argument.MonitorRoot.MonitorTreeRoots.UpdateVersion();
 
+                        targetMonitor.AnalysisResults.Remove(result);
                         childMonitor.AnalysisResults.Add(result);
                         result.MonitorItem = childMonitor;
 
                         if (result.StartMonitorResult != null)
+                        {
                             result.StartMonitorResult.MonitorItem = childMonitor;
+                            //EF6框架帮我们完成了这部分
+                            //childMonitor.MonitorResults.Add(result.StartMonitorResult);
+                            //targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
+                        }
                         if (result.FinishMonitorResult != null)
+                        {
                             result.FinishMonitorResult.MonitorItem = childMonitor;
-
-                        targetMonitor.AnalysisResults.Remove(result);
+                            //EF6框架帮我们完成了这部分
+                            //childMonitor.MonitorResults.Add(result.FinishMonitorResult);
+                            //targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
+                        }
                     }
                 });
-        }
-
-        /// <summary>
-        /// 尝试获取或新建子监视规则
-        /// </summary>
-        /// <param name="parentMonitor">父监视规则</param>
-        /// <param name="childMonitorName">子监视规则名称</param>
-        /// <returns></returns>
-        public MonitorItem TryGetOrAddChildMonitor(MonitorItem parentMonitor, string childMonitorName)
-        {
-            if (parentMonitor == null) throw new ArgumentNullException(nameof(parentMonitor));
-
-            MonitorItem childMonitor = parentMonitor.MonitorTreeRoots
-                .FirstOrDefault(monitor => monitor.Name == childMonitorName);
-
-            if (childMonitor == null)
-            {
-                childMonitor = new MonitorItem() { Name = childMonitorName };
-                parentMonitor.MonitorTreeRoots.Add(childMonitor);
-            }
-
-            if (childMonitor.ParentMonitorItem == null)
-            {
-                //TODO: [提醒] 需要赋值父节点配置信息
-                childMonitor.ParentMonitorItem = parentMonitor;
-                childMonitor.StartPattern = parentMonitor.StartPattern;
-                childMonitor.FinishPatterny = parentMonitor.FinishPatterny;
-                childMonitor.SheetName = parentMonitor.SheetName;
-            }
-
-            return childMonitor;
         }
 
     }
