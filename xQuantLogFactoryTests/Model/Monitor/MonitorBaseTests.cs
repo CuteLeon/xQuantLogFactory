@@ -26,6 +26,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new MonitorItem() { Name = "规则_2" });
             Assert.AreEqual(2, container.MonitorTreeRoots.Count);
 
+            //TODO: 如果需要更新的节点和根节点之间跨越了缓存已经同步的节点时，底层需要更新的节点将无法更新
             //临时解决方案：更新树根节点，请求刷新缓存列表
             container.MonitorTreeRoots.UpdateVersion();
 
