@@ -56,7 +56,8 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
                         //更新树状列表版本
-                        targetMonitor.MonitorTreeRoots.UpdateVersion();
+                        //targetMonitor.MonitorTreeRoots.UpdateVersion();
+                        argument.MonitorRoot.MonitorTreeRoots.UpdateVersion();
 
                         childMonitor.AnalysisResults.Add(result);
                         result.MonitorItem = childMonitor;

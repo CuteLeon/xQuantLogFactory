@@ -1,9 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using xQuantLogFactory.Model.Monitor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace xQuantLogFactory.Model.Monitor.Tests
 {
@@ -29,6 +24,9 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             Assert.AreEqual(2, container.MonitorTreeRoots.Count);
 
             //TODO: 子节点列表更新时，依然无法触发父节点更新，思路需要改一下（效率+空间复杂度）
+            //临时解决方案：更新树根节点
+            container.MonitorTreeRoots.UpdateVersion();
+
             Assert.AreEqual(3, container.MonitorItems.Count);
         }
     }
