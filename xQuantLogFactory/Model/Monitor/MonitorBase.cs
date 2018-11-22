@@ -32,26 +32,25 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         /// <remarks>IEnumerable<>对象即使储存为变量，每次访问依然会进入此方法，若要减少计算量，需要将此方法返回数据 .ToList()</remarks>
         /// <returns></returns>
-        public virtual IEnumerable<MonitorItem> GetMonitorItems()
+        public IEnumerable<MonitorItem> GetMonitorItems()
         {
-            if (!this.HasChildren) yield break;
+            Stack<MonitorBase> monitorRoots = new Stack<MonitorBase>();
+            MonitorBase currentMonitor = this;
 
-            Stack<MonitorItem> monitorRoots = new Stack<MonitorItem>();
-            MonitorItem currentMonitor = null;
-
-            //根节点倒序入栈
-            foreach (var root in this.MonitorTreeRoots.AsEnumerable().Reverse())
-                monitorRoots.Push(root);
-
-            //扫描栈
-            while (monitorRoots.Count > 0)
+            while (true)
             {
-                currentMonitor = monitorRoots.Pop();
-                yield return currentMonitor;
+                if (currentMonitor.HasChildren)
+                {
+                    foreach (var monitor in currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse())
+                        monitorRoots.Push(monitor);
+                }
 
-                if (!currentMonitor.HasChildren) continue;
-                foreach (var monitor in currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse())
-                    monitorRoots.Push(monitor);
+                if (monitorRoots.Count > 0)
+                {
+                    currentMonitor = monitorRoots.Pop();
+                    yield return currentMonitor as MonitorItem;
+                }
+                else break;
             }
         }
 
