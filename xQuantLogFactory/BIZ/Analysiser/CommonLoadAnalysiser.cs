@@ -65,8 +65,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                             childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
 
-                            argument.MonitorRoot.MonitorTreeRoots.UpdateVersion();
-
                             if (logMatch.Groups["Elapsed"].Success &&
                                 double.TryParse(logMatch.Groups["Elapsed"].Value, out double elapsed))
                             {

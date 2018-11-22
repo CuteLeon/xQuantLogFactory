@@ -93,6 +93,8 @@ namespace xQuantLogFactory.BIZ.Parser
                         logContent = string.Empty;
                     Match generalMatch = null;
                     Match particularMatch = null;
+                    //缓存变量，减少树扫描次数，需要 .ToList()
+                    List<MonitorItem> monitorItems = argument.MonitorRoot.GetMonitorItems().ToList();
 
                     while (!streamRreader.EndOfStream)
                     {
@@ -136,7 +138,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             }
 
                             //匹配所有监视规则
-                            foreach (MonitorItem monitor in argument.MonitorRoot.GetMonitorItems())
+                            foreach (MonitorItem monitor in monitorItems)
                             {
                                 GroupTypes groupType = this.MatchMonitor(monitor, logContent);
                                 if (groupType == GroupTypes.Unmatch)

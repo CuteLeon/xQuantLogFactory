@@ -1,4 +1,4 @@
-﻿using xQuantLogFactory.Utils.Collections;
+﻿using System.Collections.Generic;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -15,7 +15,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// <summary>
         /// 监控项目树根节点列表
         /// </summary>
-        VersionedList<MonitorItem> MonitorTreeRoots { get; set; }
+        List<MonitorItem> MonitorTreeRoots { get; set; }
 
         /// <summary>
         /// 是否有子监控项目

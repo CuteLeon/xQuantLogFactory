@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using xQuantLogFactory.Model.Monitor;
-using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Utils.Extensions.Tests
 {
@@ -16,7 +16,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
         [TestMethod()]
         public void SerializeToXMLTest()
         {
-            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorTreeRoots = new VersionedList<MonitorItem>() };
+            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorTreeRoots = new List<MonitorItem>() };
 
             MonitorItem clientItem = new MonitorItem
             {

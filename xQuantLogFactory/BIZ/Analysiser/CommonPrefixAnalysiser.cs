@@ -55,9 +55,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         childMonitorName = $"{this.TargetMonitorName}-{customeData}";
 
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
-                        //更新树状列表版本
-                        //targetMonitor.MonitorTreeRoots.UpdateVersion();
-                        argument.MonitorRoot.MonitorTreeRoots.UpdateVersion();
 
                         targetMonitor.AnalysisResults.Remove(result);
                         childMonitor.AnalysisResults.Add(result);

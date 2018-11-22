@@ -19,8 +19,6 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory
 {
-    //TODO: 弃用 MonitorItems 方法，改用 GetMonitorItems() 返回实时监视规则树列表
-    //TODO: GetMonitorItems() 方法调用频繁的地方维护成临时变量，IEnumerable<> 为懒加载类型
     //TODO: [全局任务] 移除和排除 using
     //TODO: [全局任务] 编写单元测试
 
@@ -131,7 +129,6 @@ namespace xQuantLogFactory
 
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
             UnityDBContext.SaveChanges();
-
             TryToExportLogReport();
             SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
 

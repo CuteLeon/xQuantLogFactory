@@ -7,7 +7,6 @@ using System.Linq;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Utils;
-using xQuantLogFactory.Utils.Collections;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -26,39 +25,15 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlElement("Item")]
         [DisplayName("监控规则列表")]
-        public virtual VersionedList<MonitorItem> MonitorTreeRoots { get; set; } = new VersionedList<MonitorItem>();
+        public virtual List<MonitorItem> MonitorTreeRoots { get; set; } = new List<MonitorItem>();
 
-        [XmlIgnore]
-        protected readonly Lazy<VersionedList<MonitorItem>> monitorList = new Lazy<VersionedList<MonitorItem>>();
-        /// <summary>
-        /// 子监视规则的深度优先列表
-        /// </summary>
-        [XmlIgnore]
-        [NotMapped]
-        public virtual VersionedList<MonitorItem> MonitorItems
-        {
-            get
-            {
-                //EF初始化 MonitorItemTree 时版本号不会自增
-                if ((this.MonitorTreeRoots.Version == 0 && this.MonitorTreeRoots.Count > 0) ||
-                    this.monitorList.Value.Version != this.MonitorTreeRoots.Version
-                    )
-                    this.RefreshMonitorItems();
-
-                return this.monitorList.Value;
-            }
-        }
-
-        //TODO: 测试后删掉此行
-        public static int executeCount = 0;
         /// <summary>
         /// 获取所有节点及其子节点
         /// </summary>
+        /// <remarks>IEnumerable<>对象即使储存为变量，每次访问依然会进入此方法，若要减少计算量，需要将此方法返回数据 .ToList()</remarks>
         /// <returns></returns>
         public virtual IEnumerable<MonitorItem> GetMonitorItems()
         {
-            executeCount++;
-
             if (!this.HasChildren) yield break;
 
             Stack<MonitorItem> monitorRoots = new Stack<MonitorItem>();
@@ -78,28 +53,6 @@ namespace xQuantLogFactory.Model.Monitor
                 foreach (var monitor in currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse())
                     monitorRoots.Push(monitor);
             }
-        }
-
-        /// <summary>
-        /// 刷新监视规则树状结构至二维列表
-        /// </summary>
-        protected void RefreshMonitorItems()
-        {
-            this.monitorList.Value.Clear();
-
-            if (this.MonitorTreeRoots.Count > 0)
-            {
-                this.MonitorTreeRoots.ForEach(monitorRoot =>
-                {
-                    this.monitorList.Value.Add(monitorRoot);
-                    this.monitorList.Value.AddRange(monitorRoot.MonitorItems);
-                });
-            }
-
-            //同步完成后更新一次版本号，防止版本号一直为0而频繁刷新浪费性能
-            this.MonitorTreeRoots.UpdateVersion();
-            //同步二维列表版本号
-            this.monitorList.Value.SynchronizeVersion(this.MonitorTreeRoots);
         }
 
         /// <summary>

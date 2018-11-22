@@ -7,6 +7,7 @@ namespace xQuantLogFactory.Utils.Collections
     /// 版本号控制的泛型列表
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Obsolete]
     public class VersionedList<T> : List<T>
     {
         /// <summary>
