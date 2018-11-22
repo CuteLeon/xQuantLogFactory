@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Utils;
@@ -57,27 +58,25 @@ namespace xQuantLogFactory.Model.Monitor
         public virtual IEnumerable<MonitorItem> GetMonitorItems()
         {
             executeCount++;
+
+            if (!this.HasChildren) yield break;
+
             Stack<MonitorItem> monitorRoots = new Stack<MonitorItem>();
             MonitorItem currentMonitor = null;
 
-            //根节点入栈并返回
-            foreach (var root in this.MonitorTreeRoots)
-            {
+            //根节点倒序入栈
+            foreach (var root in this.MonitorTreeRoots.AsEnumerable().Reverse())
                 monitorRoots.Push(root);
-                yield return root;
-            }
 
             //扫描栈
             while (monitorRoots.Count > 0)
             {
                 currentMonitor = monitorRoots.Pop();
+                yield return currentMonitor;
 
-                foreach (var monitor in currentMonitor.MonitorTreeRoots)
-                {
-                    if (monitor.HasChildren) monitorRoots.Push(monitor);
-
-                    yield return monitor;
-                }
+                if (!currentMonitor.HasChildren) continue;
+                foreach (var monitor in currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse())
+                    monitorRoots.Push(monitor);
             }
         }
 
@@ -125,7 +124,7 @@ namespace xQuantLogFactory.Model.Monitor
                     currentMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
 
                 //应用表名并入栈
-                currentMonitor.MonitorTreeRoots.ForEach(monitor =>
+                currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse().ToList().ForEach(monitor =>
                 {
                     monitor.SheetName = currentMonitor.SheetName;
                     if (monitor.HasChildren) rootStack.Push(monitor);
@@ -138,7 +137,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         /// <param name="scanAction">扫描Action</param>
         /// <param name="stackInitPredicate">首批根节点入栈条件</param>
-        /// <remarks>Action 参数分别为父级节点堆栈和当前节点，每次执行时顶级节点会出栈，下次需要扫描的子节点入栈即可</remarks>
+        /// <remarks>Action 参数分别为父级节点堆栈和当前节点，每次执行时顶级节点会出栈，下次需要扫描的子节点入栈即可，注意倒序入栈：currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse().ToList()ForEach(root => stack.Push(root)</remarks>
         /// <example>使用方法见上方初始化子节点表名的方法</example>
         public void ScanMonitor(Action<Stack<MonitorItem>, MonitorItem> scanAction, Predicate<MonitorItem> stackInitPredicate = null)
         {
@@ -152,6 +151,7 @@ namespace xQuantLogFactory.Model.Monitor
             ((stackInitPredicate == null) ?
                 this.MonitorTreeRoots :
                 this.MonitorTreeRoots.FindAll(stackInitPredicate))
+                .AsEnumerable().Reverse().ToList() //倒序入栈
                 .ForEach(root => monitorRoots.Push(root));
 
             while (monitorRoots.Count > 0)
