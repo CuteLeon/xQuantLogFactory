@@ -38,9 +38,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 throw new ArgumentNullException(nameof(parentMonitor));
             }
 
-            MonitorItem childMonitor = parentMonitor.MonitorTreeRoots
-                .FirstOrDefault(monitor => monitor.Name == childMonitorName);
-
+            MonitorItem childMonitor = this.GetFirstOrDefaultMonitorItem(parentMonitor, childMonitorName);
             if (childMonitor == null)
             {
                 childMonitor = new MonitorItem(childMonitorName);
@@ -58,6 +56,30 @@ namespace xQuantLogFactory.BIZ.Analysiser
             }
 
             return childMonitor;
+        }
+
+        /// <summary>
+        /// 查找目标名称的自监视规则
+        /// </summary>
+        /// <param name="parentMonitor"></param>
+        /// <param name="targetName"></param>
+        /// <returns></returns>
+        private MonitorItem GetFirstOrDefaultMonitorItem(MonitorItem parentMonitor, string targetName)
+        {
+            int index = 0;
+            MonitorItem currentMonitor = null;
+            while (index < parentMonitor.MonitorTreeRoots.Count)
+            {
+                currentMonitor = parentMonitor.MonitorTreeRoots[index];
+                if (string.Equals(currentMonitor.Name, targetName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return currentMonitor;
+                }
+
+                index++;
+            }
+
+            return default;
         }
     }
 }

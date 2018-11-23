@@ -40,6 +40,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
+            // TODO: 处理完成后，通用加载资源 出现null分析结果组对象
             if (string.IsNullOrEmpty(this.TargetMonitorName))
             {
                 throw new ArgumentNullException(nameof(this.TargetMonitorName));
