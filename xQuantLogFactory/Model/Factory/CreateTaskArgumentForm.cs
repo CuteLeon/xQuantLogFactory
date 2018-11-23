@@ -10,7 +10,6 @@ namespace xQuantLogFactory.Model.Factory
 {
     public partial class CreateTaskArgumentForm : Form
     {
-
         public CreateTaskArgumentForm()
         {
             this.InitializeComponent();
@@ -20,7 +19,7 @@ namespace xQuantLogFactory.Model.Factory
         }
 
         /// <summary>
-        /// 创建任务参数对象
+        /// Gets or sets 创建任务参数对象
         /// </summary>
         public TaskArgument TargetTaskArgument { get; protected set; }
 
@@ -29,7 +28,10 @@ namespace xQuantLogFactory.Model.Factory
             this.DirectoryTextBox.Text = string.Empty;
 
             this.MonitorComboBox.Items.AddRange(this.GetMonitorFiles(ConfigHelper.MonitorDirectory));
-            if (this.MonitorComboBox.Items.Count > 0) this.MonitorComboBox.SelectedIndex = 0;
+            if (this.MonitorComboBox.Items.Count > 0)
+            {
+                this.MonitorComboBox.SelectedIndex = 0;
+            }
 
             this.StartTimePicker.Value = DateTime.Now.AddDays(-1);
             this.FinishTimePicker.Value = DateTime.Now;
@@ -40,20 +42,32 @@ namespace xQuantLogFactory.Model.Factory
             this.ClientInfoCheckBox.Checked = false;
 
             foreach (var mode in Enum.GetValues(typeof(ReportModes)))
+            {
                 this.ReportComboBox.Items.Add(mode);
-            if (this.ReportComboBox.Items.Count > 0) this.ReportComboBox.SelectedIndex = 0;
+            }
+
+            if (this.ReportComboBox.Items.Count > 0)
+            {
+                this.ReportComboBox.SelectedIndex = 0;
+            }
         }
 
         private bool CheckInputs()
         {
             if (!this.CheckInput(!string.IsNullOrWhiteSpace(this.DirectoryTextBox.Text), "请选择日志文件存放目录！", this.DirectoryTextBox))
+            {
                 return false;
+            }
 
             if (!this.CheckInput(this.ReportComboBox.SelectedIndex != -1, "请选择导出日志模式！", this.ReportComboBox))
+            {
                 return false;
+            }
 
             if (!this.CheckInput(this.MonitorComboBox.SelectedIndex != -1, "请选择监视规则文件！", this.MonitorComboBox))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -74,7 +88,10 @@ namespace xQuantLogFactory.Model.Factory
 
         private void OKButton_Click(object sender, EventArgs e)
         {
-            if (!this.CheckInputs()) return;
+            if (!this.CheckInputs())
+            {
+                return;
+            }
 
             try
             {
@@ -105,8 +122,15 @@ namespace xQuantLogFactory.Model.Factory
                 ReportMode = (ReportModes)this.ReportComboBox.SelectedItem,
             };
 
-            if (this.StartTimePicker.Checked) argument.LogStartTime = this.StartTimePicker.Value;
-            if (this.FinishTimePicker.Checked) argument.LogFinishTime = this.FinishTimePicker.Value;
+            if (this.StartTimePicker.Checked)
+            {
+                argument.LogStartTime = this.StartTimePicker.Value;
+            }
+
+            if (this.FinishTimePicker.Checked)
+            {
+                argument.LogFinishTime = this.FinishTimePicker.Value;
+            }
 
             return argument;
         }
@@ -133,10 +157,12 @@ namespace xQuantLogFactory.Model.Factory
         /// <returns></returns>
         private string[] GetMonitorFiles(string directory)
         {
-            if (!Directory.Exists(directory)) return default;
+            if (!Directory.Exists(directory))
+            {
+                return default;
+            }
 
             return Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(path => Path.GetFileName(path)).ToArray();
         }
-
     }
 }

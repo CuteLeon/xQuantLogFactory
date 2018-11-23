@@ -20,6 +20,5 @@ namespace xQuantLogFactory.Model.EqualityComparer
 
         public int GetHashCode(T obj)
             => obj.GetHashCode();
-
     }
 }

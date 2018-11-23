@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace xQuantLogFactory.Model.Extensions
 {
@@ -51,6 +48,5 @@ namespace xQuantLogFactory.Model.Extensions
         {
             return !(argument.CanCheckLogFinishTime() && logTime > argument.LogFinishTime);
         }
-
     }
 }

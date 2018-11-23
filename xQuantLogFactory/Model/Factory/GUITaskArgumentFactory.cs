@@ -9,19 +9,20 @@ namespace xQuantLogFactory.Model.Factory
     /// </summary>
     public class GUITaskArgumentFactory : ITaskArgumentFactory
     {
+        private static Lazy<GUITaskArgumentFactory> factory = new Lazy<GUITaskArgumentFactory>();
+
         /// <summary>
         /// 工厂异常对象在线程交互对象
         /// </summary>
-        private Exception FactoryException = null;
+        private Exception factoryException = null;
 
         /// <summary>
         /// 任务参数实例
         /// </summary>
-        private TaskArgument TargetTaskArgument = null;
+        private TaskArgument targetTaskArgument = null;
 
-        private static Lazy<GUITaskArgumentFactory> factory = new Lazy<GUITaskArgumentFactory>();
         /// <summary>
-        /// 任务参数工厂实例
+        /// Gets 任务参数工厂实例
         /// </summary>
         public static GUITaskArgumentFactory Intance
         {
@@ -31,27 +32,32 @@ namespace xQuantLogFactory.Model.Factory
         /// <summary>
         /// 根据工具启动参数创建任务参数对象
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
         /// <returns>任务参数对象</returns>
-        public TaskArgument CreateTaskArgument<T>(T source = null) where T : class
+        public TaskArgument CreateTaskArgument<T>(T source = null)
+            where T : class
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Thread GUIThread = new Thread(new ThreadStart(this.ShowGUIFactory));
-            GUIThread.SetApartmentState(ApartmentState.STA);
-            GUIThread.Start();
-            GUIThread.Join();
+            Thread guiThread = new Thread(new ThreadStart(this.ShowGUIFactory));
+            guiThread.SetApartmentState(ApartmentState.STA);
+            guiThread.Start();
+            guiThread.Join();
 
-            if (this.FactoryException != null)
-                throw this.FactoryException;
+            if (this.factoryException != null)
+            {
+                throw this.factoryException;
+            }
 
-            return this.TargetTaskArgument;
+            return this.targetTaskArgument;
         }
 
         private void ShowGUIFactory()
         {
-            //初始化
-            this.FactoryException = null;
+            // 初始化
+            this.factoryException = null;
 
             try
             {
@@ -62,14 +68,13 @@ namespace xQuantLogFactory.Model.Factory
                         throw new OperationCanceledException();
                     }
 
-                    this.TargetTaskArgument = factoryForm.TargetTaskArgument;
+                    this.targetTaskArgument = factoryForm.TargetTaskArgument;
                 }
             }
             catch (Exception ex)
             {
-                this.FactoryException = ex;
+                this.factoryException = ex;
             }
         }
-
     }
 }

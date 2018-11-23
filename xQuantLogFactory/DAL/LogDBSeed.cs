@@ -10,7 +10,9 @@ namespace xQuantLogFactory.DAL
     public class LogDBSeed : SqliteDropCreateDatabaseWhenModelChanges<LogDBContext>
     {
         public LogDBSeed(DbModelBuilder modelBuilder)
-            : base(modelBuilder) { }
+            : base(modelBuilder)
+        {
+        }
 
         protected override void Seed(LogDBContext context)
         {

@@ -7,7 +7,6 @@ namespace xQuantLogFactory.Model.Extensions
     /// </summary>
     public static class GroupAnalysisResultExtension
     {
-
         /// <summary>
         /// 是否为完整组
         /// </summary>
@@ -15,7 +14,10 @@ namespace xQuantLogFactory.Model.Extensions
         /// <returns></returns>
         public static bool IsIntactGroup(this GroupAnalysisResult result)
         {
-            if (result == null) return false;
+            if (result == null)
+            {
+                return false;
+            }
 
             return
                 result.StartMonitorResult != null &&
@@ -29,10 +31,12 @@ namespace xQuantLogFactory.Model.Extensions
         /// <returns></returns>
         public static MonitorResult FirstResultOrDefault(this GroupAnalysisResult result)
         {
-            if (result == null) return null;
+            if (result == null)
+            {
+                return null;
+            }
 
             return result.StartMonitorResult ?? result.FinishMonitorResult;
         }
-
     }
 }

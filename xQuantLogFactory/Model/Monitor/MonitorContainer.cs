@@ -15,7 +15,7 @@ namespace xQuantLogFactory.Model.Monitor
     public class MonitorContainer : MonitorBase
     {
         /// <summary>
-        /// 监视规则容器ID
+        /// Gets or sets 监视规则容器ID
         /// </summary>
         [Key]
         [Required]
@@ -23,6 +23,5 @@ namespace xQuantLogFactory.Model.Monitor
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [XmlIgnore]
         public int ContainerID { get; set; }
-
     }
 }

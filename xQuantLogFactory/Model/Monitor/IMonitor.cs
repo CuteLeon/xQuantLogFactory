@@ -8,17 +8,17 @@ namespace xQuantLogFactory.Model.Monitor
     public interface IMonitor
     {
         /// <summary>
-        /// 规则名称
+        /// Gets or sets 规则名称
         /// </summary>
         string Name { get; set; }
 
         /// <summary>
-        /// 监控项目树根节点列表
+        /// Gets or sets 监控项目树根节点列表
         /// </summary>
         List<MonitorItem> MonitorTreeRoots { get; set; }
 
         /// <summary>
-        /// 是否有子监控项目
+        /// Gets a value indicating whether 是否有子监控项目
         /// </summary>
         bool HasChildren { get; }
     }

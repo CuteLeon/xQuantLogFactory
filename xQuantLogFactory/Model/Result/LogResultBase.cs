@@ -14,10 +14,12 @@ namespace xQuantLogFactory.Model.Result
         /// 未匹配
         /// </summary>
         Unmatch = 0,
+
         /// <summary>
         /// 开始匹配
         /// </summary>
         Start = 1,
+
         /// <summary>
         /// 结束匹配
         /// </summary>
@@ -30,7 +32,7 @@ namespace xQuantLogFactory.Model.Result
     public abstract class LogResultBase
     {
         /// <summary>
-        /// 解析结果ID
+        /// Gets or sets 解析结果ID
         /// </summary>
         [Key]
         [Required]
@@ -39,31 +41,31 @@ namespace xQuantLogFactory.Model.Result
         public int ResultID { get; set; }
 
         /// <summary>
-        /// 任务参数
+        /// Gets or sets 任务参数
         /// </summary>
         [Required]
         [DisplayName("任务参数")]
         public TaskArgument TaskArgument { get; set; }
 
         /// <summary>
-        /// 日志文件
+        /// Gets or sets 日志文件
         /// </summary>
         [Required]
         [DisplayName("日志文件")]
         public LogFile LogFile { get; set; }
 
         /// <summary>
-        /// 日志文件中的行号
+        /// Gets or sets 日志文件中的行号
         /// </summary>
         [Required]
         [DisplayName("日志文件中的行号")]
         public int LineNumber { get; set; }
 
         /// <summary>
-        /// 日志写入时间
+        /// Gets or sets 日志写入时间
         /// </summary>
-        [DisplayName("日志写入时间"), DataType(DataType.DateTime)]
+        [DisplayName("日志写入时间")]
+        [DataType(DataType.DateTime)]
         public DateTime LogTime { get; set; }
-
     }
 }
