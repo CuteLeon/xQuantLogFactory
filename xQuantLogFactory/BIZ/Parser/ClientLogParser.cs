@@ -13,16 +13,21 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public class ClientLogParser : CSLogParserBase
     {
+        public ClientLogParser()
+        {
+        }
+
+        public ClientLogParser(ITracer tracer)
+            : base(tracer)
+        {
+        }
+
         /// <summary>
-        /// 日志详细内容正则表达式
+        /// Gets 日志详细内容正则表达式
         /// </summary>
         public override Regex ParticularRegex { get; } = new Regex(
             @"^(?<Client>.*?)\s(?<Version>.*?(\.[^\s]*){3})\s(?<IPAddress>\d{1,3}(\.\d{1,3}){3})\s(?<LogContent>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-        public ClientLogParser() { }
-
-        public ClientLogParser(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 文件过滤
@@ -43,6 +48,5 @@ namespace xQuantLogFactory.BIZ.Parser
             result.Client = particularMatch.Groups["Client"].Success ? particularMatch.Groups["Client"].Value : string.Empty;
             result.IPAddress = particularMatch.Groups["IPAddress"].Success ? particularMatch.Groups["IPAddress"].Value : string.Empty;
         }
-
     }
 }

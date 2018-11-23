@@ -14,15 +14,19 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public abstract class LogParserBase : LogProcesserBase, ILogParser
     {
+        public LogParserBase()
+        {
+        }
+
+        public LogParserBase(ITracer tracer)
+            : base(tracer)
+        {
+        }
 
         /// <summary>
-        /// 日志总体正则表达式
+        /// Gets 日志总体正则表达式
         /// </summary>
         public abstract Regex GeneralLogRegex { get; }
-
-        public LogParserBase() { }
-
-        public LogParserBase(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 日志解析
@@ -38,7 +42,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <returns>匹配监视规则类型</returns>
         protected GroupTypes MatchMonitor(MonitorItem monitor, string logContent)
         {
-            //以下字符串判空方法会获得比 ""==string.Empty 更好的性能
+            // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
             if (monitor.StartPattern?.Length > 0 &&
                 logContent.IndexOf(monitor.StartPattern, StringComparison.Ordinal) > -1)
             {
@@ -66,8 +70,8 @@ namespace xQuantLogFactory.BIZ.Parser
         {
             MonitorResult monitorResult = new MonitorResult(argument, logFile, monitor);
 
-            //反向关联日志监视结果
-            lock (argument)  //lock 任务而非 LockSeed 为了多任务并行考虑
+            // 反向关联日志监视结果
+            lock (argument)
             {
                 argument.MonitorResults.Add(monitorResult);
                 logFile.MonitorResults.Add(monitorResult);
@@ -76,6 +80,5 @@ namespace xQuantLogFactory.BIZ.Parser
 
             return monitorResult;
         }
-
     }
 }

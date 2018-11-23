@@ -16,6 +16,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <summary>
         /// 将目录内XML文件反序列化为监视规则容器对象
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="directory">文件目录</param>
         /// <param name="argument">任务参数</param>
         /// <returns></returns>
@@ -23,14 +24,19 @@ namespace xQuantLogFactory.BIZ.FileFinder
         public override T GetTaskObject<T>(string directory, TaskArgument argument)
         {
             if (!Directory.Exists(directory))
+            {
                 throw new DirectoryNotFoundException(nameof(directory));
-            if (argument == null)
-                throw new ArgumentNullException(nameof(argument));
+            }
 
-            //创建所有容器对象
-            foreach (string xmlFile in this.GetChildFiles(directory,
-                file => file.EndsWith(argument.MonitorFileName, StringComparison.OrdinalIgnoreCase)
-                ))
+            if (argument == null)
+            {
+                throw new ArgumentNullException(nameof(argument));
+            }
+
+            // 创建所有容器对象
+            foreach (string xmlFile in this.GetChildFiles(
+                directory,
+                file => file.EndsWith(argument.MonitorFileName, StringComparison.OrdinalIgnoreCase)))
             {
                 MonitorContainer container = File.ReadAllText(xmlFile, Encoding.UTF8).DeserializeToObject<MonitorContainer>();
                 container?.InitMonitorSheetName();
@@ -40,6 +46,5 @@ namespace xQuantLogFactory.BIZ.FileFinder
 
             return null;
         }
-
     }
 }

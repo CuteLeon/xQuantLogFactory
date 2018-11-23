@@ -13,16 +13,21 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public class ServerLogParser : CSLogParserBase
     {
+        public ServerLogParser()
+        {
+        }
+
+        public ServerLogParser(ITracer tracer)
+            : base(tracer)
+        {
+        }
+
         /// <summary>
-        /// 日志详细内容正则表达式
+        /// Gets 日志详细内容正则表达式
         /// </summary>
         public override Regex ParticularRegex { get; } = new Regex(
             @"^(?<Client>.*?)\s(?<Version>.*?(\.[^\s]*){3})\s(?<LogContent>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-        public ServerLogParser() { }
-
-        public ServerLogParser(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 文件过滤
@@ -42,6 +47,5 @@ namespace xQuantLogFactory.BIZ.Parser
             result.Version = particularMatch.Groups["Version"].Success ? particularMatch.Groups["Version"].Value : string.Empty;
             result.Client = particularMatch.Groups["Client"].Success ? particularMatch.Groups["Client"].Value : string.Empty;
         }
-
     }
 }

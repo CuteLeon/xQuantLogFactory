@@ -18,25 +18,31 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public abstract class CSLogParserBase : LogParserBase
     {
+        public CSLogParserBase()
+        {
+        }
 
-        public CSLogParserBase() { }
+        public CSLogParserBase(ITracer tracer)
+            : base(tracer)
+        {
+        }
 
-        public CSLogParserBase(ITracer tracer) : base(tracer) { }
-
+        /// <summary>
+        /// Gets 日志总体正则表达式
+        /// </summary>
         public override Regex GeneralLogRegex { get; } = new Regex(
             @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<LogContent>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
-        /// 内存信息正则表达式
+        /// Gets 内存信息正则表达式
         /// </summary>
         public virtual Regex MemoryRegex { get; } = new Regex(
             @"内存消耗：.*?VirtualMem=(?<Memory>\d*\.\d*).*",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline
-            );
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
-        /// 日志详细内容正则表达式
+        /// Gets 日志详细内容正则表达式
         /// </summary>
         public abstract Regex ParticularRegex { get; }
 
@@ -47,14 +53,16 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <returns></returns>
         protected double GetMemoryInLogContent(string logContent)
         {
-            if (string.IsNullOrEmpty(logContent)) return 0.0;
+            if (string.IsNullOrEmpty(logContent))
+            {
+                return 0.0;
+            }
 
             Match memoryMatch = this.MemoryRegex.Match(logContent);
 
             if (memoryMatch.Success &&
                 memoryMatch.Groups["Memory"].Success &&
-                double.TryParse(memoryMatch.Groups["Memory"].Value, out double memory)
-                )
+                double.TryParse(memoryMatch.Groups["Memory"].Value, out double memory))
             {
                 return memory;
             }
@@ -71,10 +79,11 @@ namespace xQuantLogFactory.BIZ.Parser
         public override void Parse(TaskArgument argument)
         {
             if (argument == null)
+            {
                 throw new ArgumentNullException(nameof(argument));
+            }
 
-            //遍历文件
-
+            // 遍历文件
             this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
                 this.Tracer?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
@@ -93,7 +102,8 @@ namespace xQuantLogFactory.BIZ.Parser
                         logContent = string.Empty;
                     Match generalMatch = null;
                     Match particularMatch = null;
-                    //缓存变量，减少树扫描次数，需要 .ToList()
+
+                    // 缓存变量，减少树扫描次数，需要 .ToList()
                     List<MonitorItem> monitorItems = argument.MonitorRoot.GetMonitorItems().ToList();
 
                     while (!streamRreader.EndOfStream)
@@ -101,33 +111,42 @@ namespace xQuantLogFactory.BIZ.Parser
                         memoryCache = null;
                         lineNumber++;
 
-                        //获取日志行
+                        // 获取日志行
                         logLine = streamRreader.ReadLine();
                         generalMatch = this.GeneralLogRegex.Match(logLine);
                         if (generalMatch.Success)
                         {
-                            //跳过未匹配到内容的日志行
-                            if (!generalMatch.Groups["LogContent"].Success) continue;
+                            // 跳过未匹配到内容的日志行
+                            if (!generalMatch.Groups["LogContent"].Success)
+                            {
+                                continue;
+                            }
 
                             DateTime logTime = DateTime.MinValue;
-                            //跳过日志时间在任务时间范围外的日志行
+
+                            // 跳过日志时间在任务时间范围外的日志行
                             if (generalMatch.Groups["LogTime"].Success &&
                                 DateTime.TryParse(generalMatch.Groups["LogTime"].Value, out logTime) &&
                                 generalMatch.Groups["Millisecond"].Success &&
-                                double.TryParse(generalMatch.Groups["Millisecond"].Value, out double millisecond)
-                                )
+                                double.TryParse(generalMatch.Groups["Millisecond"].Value, out double millisecond))
+                            {
                                 logTime = logTime.AddMilliseconds(millisecond);
+                            }
                             else
+                            {
                                 continue;
+                            }
 
                             if (!argument.CheckLogStartTime(logTime) ||
                                 !argument.CheckLogFinishTime(logTime))
+                            {
                                 continue;
+                            }
 
                             logContent = generalMatch.Groups["LogContent"].Value;
                             logLevel = generalMatch.Groups["LogLevel"].Success ? generalMatch.Groups["LogLevel"].Value : string.Empty;
 
-                            //精确匹配
+                            // 精确匹配
                             if (this.ParticularRegex != null)
                             {
                                 particularMatch = this.ParticularRegex.Match(logContent);
@@ -137,13 +156,13 @@ namespace xQuantLogFactory.BIZ.Parser
                                 }
                             }
 
-                            //匹配所有监视规则
+                            // 匹配所有监视规则
                             foreach (MonitorItem monitor in monitorItems)
                             {
                                 GroupTypes groupType = this.MatchMonitor(monitor, logContent);
                                 if (groupType == GroupTypes.Unmatch)
                                 {
-                                    //未匹配到任何监视规则，尝试下一条规则
+                                    // 未匹配到任何监视规则，尝试下一条规则
                                     continue;
                                 }
 
@@ -154,14 +173,20 @@ namespace xQuantLogFactory.BIZ.Parser
                                 result.LogContent = logContent;
                                 result.LogLevel = logLevel;
 
-                                //应用精准匹配数据
+                                // 应用精准匹配数据
                                 if (particularMatch.Success)
+                                {
                                     this.ApplyParticularMatch(result, particularMatch);
+                                }
 
                                 if (monitor.Memory)
                                 {
-                                    //使用缓存减少计算次数，缓存初始化为 null
-                                    if (memoryCache == null) memoryCache = this.GetMemoryInLogContent(logContent);
+                                    // 使用缓存减少计算次数，缓存初始化为 null
+                                    if (memoryCache == null)
+                                    {
+                                        memoryCache = this.GetMemoryInLogContent(logContent);
+                                    }
+
                                     result.MemoryConsumed = memoryCache;
                                 }
 
@@ -170,7 +195,7 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                         else
                         {
-                            //未识别的日志行
+                            // 未识别的日志行
                         }
                     }
 
@@ -204,6 +229,5 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <param name="result"></param>
         /// <param name="particularMatch"></param>
         protected abstract void ApplyParticularMatch(MonitorResult result, Match particularMatch);
-
     }
 }

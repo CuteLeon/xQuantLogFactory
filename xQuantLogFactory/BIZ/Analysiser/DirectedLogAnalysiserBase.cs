@@ -11,14 +11,19 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// </summary>
     public abstract class DirectedLogAnalysiserBase : LogAnalysiserBase
     {
+        public DirectedLogAnalysiserBase()
+        {
+        }
+
+        public DirectedLogAnalysiserBase(ITracer tracer)
+            : base(tracer)
+        {
+        }
+
         /// <summary>
-        /// 针对的监视规则名称
+        /// Gets or sets 针对的监视规则名称
         /// </summary>
         public abstract string TargetMonitorName { get; set; }
-
-        public DirectedLogAnalysiserBase() { }
-
-        public DirectedLogAnalysiserBase(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 尝试获取或新建子监视规则
@@ -28,7 +33,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <returns></returns>
         public virtual MonitorItem TryGetOrAddChildMonitor(MonitorItem parentMonitor, string childMonitorName)
         {
-            if (parentMonitor == null) throw new ArgumentNullException(nameof(parentMonitor));
+            if (parentMonitor == null)
+            {
+                throw new ArgumentNullException(nameof(parentMonitor));
+            }
 
             MonitorItem childMonitor = parentMonitor.MonitorTreeRoots
                 .FirstOrDefault(monitor => monitor.Name == childMonitorName);
@@ -41,7 +49,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
             if (childMonitor.ParentMonitorItem == null)
             {
-                //TODO: [提醒] 需要赋值父节点配置信息
+                // TODO: [提醒] 需要赋值父节点配置信息
                 childMonitor.ParentMonitorItem = parentMonitor;
                 childMonitor.StartPattern = parentMonitor.StartPattern;
                 childMonitor.FinishPatterny = parentMonitor.FinishPatterny;
@@ -51,6 +59,5 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
             return childMonitor;
         }
-
     }
 }

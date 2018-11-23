@@ -21,7 +21,10 @@ namespace xQuantLogFactory.BIZ.FileFinder
         public IEnumerable<string> GetChildFiles(string directory, Predicate<string> predicate = null, string searchPattern = "*")
         {
             string[] files = Directory.GetFiles(directory, searchPattern);
-            if (predicate != null) files = Array.FindAll(files, predicate);
+            if (predicate != null)
+            {
+                files = Array.FindAll(files, predicate);
+            }
 
             return files;
         }
@@ -33,6 +36,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <param name="directory">文件存放目录</param>
         /// <param name="argument">任务参数</param>
         /// <returns></returns>
-        public abstract T GetTaskObject<T>(string directory, TaskArgument argument) where T : class;
+        public abstract T GetTaskObject<T>(string directory, TaskArgument argument)
+            where T : class;
     }
 }

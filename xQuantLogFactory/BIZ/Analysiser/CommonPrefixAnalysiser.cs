@@ -14,15 +14,19 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// </summary>
     public class CommonPrefixAnalysiser : DirectedLogAnalysiserBase
     {
+        public CommonPrefixAnalysiser()
+        {
+        }
+
+        public CommonPrefixAnalysiser(ITracer tracer)
+            : base(tracer)
+        {
+        }
 
         /// <summary>
-        /// 针对的监视规则名称
+        /// Gets or sets 针对的监视规则名称
         /// </summary>
         public override string TargetMonitorName { get; set; }
-
-        public CommonPrefixAnalysiser() { }
-
-        public CommonPrefixAnalysiser(ITracer tracer) : base(tracer) { }
 
         /// <summary>
         /// 分析监视内容作为前缀的操作日志
@@ -31,9 +35,14 @@ namespace xQuantLogFactory.BIZ.Analysiser
         public override void Analysis(TaskArgument argument)
         {
             if (string.IsNullOrEmpty(this.TargetMonitorName))
+            {
                 throw new ArgumentNullException(nameof(this.TargetMonitorName));
+            }
+
             if (argument == null)
+            {
                 throw new ArgumentNullException(nameof(argument));
+            }
 
             argument.AnalysisResults
                 .Where(result => result.MonitorItem.Name == this.TargetMonitorName)
@@ -49,7 +58,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     foreach (var result in resultGroup)
                     {
                         firstResult = result.FirstResultOrDefault();
-                        if (firstResult == null) continue;
+                        if (firstResult == null)
+                        {
+                            continue;
+                        }
 
                         customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length);
                         childMonitorName = $"{this.TargetMonitorName}-{customeData}";
@@ -63,20 +75,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         if (result.StartMonitorResult != null)
                         {
                             result.StartMonitorResult.MonitorItem = childMonitor;
-                            //EF6框架帮我们完成了这部分
-                            //childMonitor.MonitorResults.Add(result.StartMonitorResult);
-                            //targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
+
+                            // EF6框架帮我们完成了这部分
+                            // childMonitor.MonitorResults.Add(result.StartMonitorResult);
+                            // targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
                         }
                         if (result.FinishMonitorResult != null)
                         {
                             result.FinishMonitorResult.MonitorItem = childMonitor;
-                            //EF6框架帮我们完成了这部分
-                            //childMonitor.MonitorResults.Add(result.FinishMonitorResult);
-                            //targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
+
+                            // EF6框架帮我们完成了这部分
+                            // childMonitor.MonitorResults.Add(result.FinishMonitorResult);
+                            // targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
                         }
                     }
                 });
         }
-
     }
 }

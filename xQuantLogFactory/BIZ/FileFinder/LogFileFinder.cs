@@ -15,44 +15,59 @@ namespace xQuantLogFactory.BIZ.FileFinder
     /// </summary>
     public class LogFileFinder : TaskFileFinderBase
     {
-
         /// <summary>
         /// 查找符合日志分析参数的待分析日志文件清单
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="directory">文件存放目录</param>
-        /// <param name="param">任务参数</param>
+        /// <param name="argument">任务参数</param>
         /// <returns>返回符合日志分析参数的待分析日志文件清单</returns>
         public override T GetTaskObject<T>(string directory, TaskArgument argument)
         {
             if (!Directory.Exists(directory))
+            {
                 throw new DirectoryNotFoundException(nameof(directory));
+            }
+
             if (argument == null)
+            {
                 throw new ArgumentNullException(nameof(argument));
+            }
 
             List<LogFile> logFiles = new List<LogFile>();
             DirectoryInfo directoryInfo = new DirectoryInfo(directory);
             Regex logRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
 
-            foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo.GetFiles("*.txt*", SearchOption.AllDirectories).Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
+            foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo
+                .GetFiles("*.txt*", SearchOption.AllDirectories)
+                .Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
             {
                 string fileName = Path.GetFileName(FullName);
-                //按格式筛选日志文件，以免查找到无用的文件
-                if (!logRegex.IsMatch(fileName)) continue;
+
+                // 按格式筛选日志文件，以免查找到无用的文件
+                if (!logRegex.IsMatch(fileName))
+                {
+                    continue;
+                }
 
                 if (!argument.CheckLogStartTime(CreationTime) &&
                     !argument.CheckLogStartTime(LastWriteTime))
+                {
                     continue;
+                }
+
                 if (!argument.CheckLogFinishTime(CreationTime) &&
                     !argument.CheckLogFinishTime(LastWriteTime))
+                {
                     continue;
+                }
 
                 logFiles.Add(new LogFile(
                     this.GetLogFileType(fileName),
                     FullName,
                     CreationTime,
                     LastWriteTime,
-                    FullName.Remove(0, argument.LogDirectory.Length)
-                    ));
+                    FullName.Remove(0, argument.LogDirectory.Length)));
             }
 
             return logFiles as T;
@@ -66,14 +81,19 @@ namespace xQuantLogFactory.BIZ.FileFinder
         private LogFileTypes GetLogFileType(string fileName)
         {
             if (fileName.StartsWith(ConfigHelper.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            {
                 return LogFileTypes.Server;
+            }
             else if (fileName.StartsWith(ConfigHelper.ClientLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            {
                 return LogFileTypes.Client;
+            }
             else if (fileName.StartsWith(ConfigHelper.MiddlewareLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            {
                 return LogFileTypes.Middleware;
+            }
 
             return default;
         }
-
     }
 }

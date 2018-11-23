@@ -19,7 +19,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <summary>
         /// 报告文本构建器
         /// </summary>
-        protected Lazy<StringBuilder> HTMLBuilder = new Lazy<StringBuilder>();
+        private readonly Lazy<StringBuilder> htmlBuilder = new Lazy<StringBuilder>();
 
         /// <summary>
         /// 导出日志报告
@@ -28,17 +28,19 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument">任务参数</param>
         public void ExportReport(string reportPath, TaskArgument argument)
         {
-            this.HTMLBuilder.Value.AppendLine("<html>\n<head>");
+            this.htmlBuilder.Value.AppendLine("<html>\n<head>");
 
             this.WriteCSS(@"body{margin:10 auto;width:80%}pre{color:#333;background-color:#f5f5f5;border:1px solid #ccc;border-radius:5px}h1{font-family:'微软雅黑';text-align:center}#tasktable{margin:0 auto;border:1px #fff solid}caption{text-align:left}hr{margin:10 auto;border:0;height:1px;background-image:linear-gradient(to right,rgba(0,0,0,0),rgba(75,75,75,0.5),rgba(0,0,0,0))}td.label{width:40%;font-size:15px;text-align:right}td.value{font-weight:bold;word-wrap:break-word;text-align:left}ul{list-style:none}#tab{padding:0;width:100%;height:auto;border:1px solid #ddd;box-shadow:0 0 2px #ddd;margin:0 auto;overflow:hidden}#tab-header{margin:0;padding:0;background-color:#f7f7f7;height:50px;text-align:center;position:relative}#tab-header ul{margin:0;padding:0;width:auto;position:absolute;left:-1px}#tab-header ul li{float:left;width:fit-content;height:50px;line-height:50px;padding:0 10 0 10;border-bottom:1px solid #ddd}#tab-header ul li.selected{background-color:white;font-weight:bolder;border-bottom:0;border-left:1px solid #ddd;border-right:1px solid #ddd}#tab-header ul li:hover{color:orangered}#tab-container .tabContent{min-height: 500px;display:none;padding:10px}.datatable{margin:0 auto;width:100%;border-collapse:collapse}.datatable th{line-height: 36px;border:1px #ccc solid;background-color:#eee}.datatable td{padding: 0 5 0 5;line-height: 30px;border:1px #ddd solid}");
             this.WriteCSS(@".card{margin: 10 36 10 36; auto;position:relative;display:-ms-flexbox;display:flex;-ms-flex-direction:column;flex-direction:column;min-width:0;word-wrap:break-word;background-color:#fff;background-clip:border-box;border:1px solid rgba(0,0,0,0.125);border-radius:.25rem}.card-body{-ms-flex:1 1 auto;flex:1 1 auto;padding: 1rem 1.5rem;}.card-title{margin:0}.card-header{padding:.5rem 1rem;margin-bottom:0;background-color:rgba(0,0,0,0.03);border-bottom:1px solid rgba(0,0,0,0.125)}.card-footer{padding:.5rem 1rem;background-color:rgba(0,0,0,0.03);border-top:1px solid rgba(0,0,0,0.125)}");
-            //切换Tab容器JS
-            this.WriteJS(@"function $(id){return typeof id === 'string' ? document.getElementById(id):id}window.onload = function(){var titles = $('tab-header').getElementsByTagName('li');var divs = $('tab-container').getElementsByClassName('tabContent');for(var i = 0;i < titles.length;i++){var li = titles[i];li.id = i;li.onmousemove = function(){for(var j = 0;j < titles.length;j++){titles[j].className = '';divs[j].style.display = 'none'}this.className = 'selected';divs[this.id].style.display = 'block'}}}");
-            //显隐Card容器JS
-            this.WriteJS(@"function onCardClick(){var card;if(event.target.className==""card-title""){card=event.target.parentNode.parentNode}else{if(event.target.className==""card-header""){card=event.target.parentNode}}var cardbody=card.getElementsByClassName(""card-body"")[0];cardbody.style.display=cardbody.style.display==""none""?""block"":""none""};");
-            this.HTMLBuilder.Value.AppendFormat("<meta charset=\"UTF-8\">\n<title>xQuant-日志分析报告：{0}</title>\n", argument.TaskID);
 
-            this.HTMLBuilder.Value.AppendLine("</head>\n<body>");
+            // 切换Tab容器JS
+            this.WriteJS(@"function $(id){return typeof id === 'string' ? document.getElementById(id):id}window.onload = function(){var titles = $('tab-header').getElementsByTagName('li');var divs = $('tab-container').getElementsByClassName('tabContent');for(var i = 0;i < titles.length;i++){var li = titles[i];li.id = i;li.onmousemove = function(){for(var j = 0;j < titles.length;j++){titles[j].className = '';divs[j].style.display = 'none'}this.className = 'selected';divs[this.id].style.display = 'block'}}}");
+
+            // 显隐Card容器JS
+            this.WriteJS(@"function onCardClick(){var card;if(event.target.className==""card-title""){card=event.target.parentNode.parentNode}else{if(event.target.className==""card-header""){card=event.target.parentNode}}var cardbody=card.getElementsByClassName(""card-body"")[0];cardbody.style.display=cardbody.style.display==""none""?""block"":""none""};");
+            this.htmlBuilder.Value.AppendFormat("<meta charset=\"UTF-8\">\n<title>xQuant-日志分析报告：{0}</title>\n", argument.TaskID);
+
+            this.htmlBuilder.Value.AppendLine("</head>\n<body>");
 
             this.WriteReportTitle("xQuant-日志分析报告");
             this.WriteHR();
@@ -47,22 +49,22 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.WriteHR();
 
             this.WriteNodeTitle("日志分析结果：");
-            this.HTMLBuilder.Value.AppendLine("<div id=\"tab\">");
+            this.htmlBuilder.Value.AppendLine("<div id=\"tab\">");
             this.WriteTabTitles("监视规则", "客户端日志文件", "服务端日志文件", "中间件日志文件");
-            this.HTMLBuilder.Value.AppendLine("<div id=\"tab-container\">");
+            this.htmlBuilder.Value.AppendLine("<div id=\"tab-container\">");
 
             this.WriteMonitorItemTabContent(argument);
             this.WriteClientLogFileTabContent(argument);
             this.WriteServerLogFileTabContent(argument);
             this.WriteMiddlewareLogFileTabContent(argument);
 
-            this.HTMLBuilder.Value.AppendLine("</div>\n</div>");
-            this.HTMLBuilder.Value.AppendLine("</body>\n</html>");
+            this.htmlBuilder.Value.AppendLine("</div>\n</div>");
+            this.htmlBuilder.Value.AppendLine("</body>\n</html>");
 
             this.SaveReportFile(reportPath);
 
-            //清理 StringBuilder 内数据
-            this.HTMLBuilder.Value.Clear();
+            // 清理 StringBuilder 内数据
+            this.htmlBuilder.Value.Clear();
         }
 
         /// <summary>
@@ -71,9 +73,9 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void WriteMonitorItemTabContent(TaskArgument argument)
         {
-            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"" style=""display: block;"">");
+            this.htmlBuilder.Value.AppendLine(@"<div class=""tabContent"" style=""display: block;"">");
 
-            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+            this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
 <caption><h3>监视规则查看：</h3></caption>
 <thead>
     <th>项目名称</th>
@@ -86,10 +88,9 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>匹配组平均耗时</th>
 </thead>
 <tbody>");
-            foreach (var monitor in argument.MonitorRoot.GetMonitorItems()
-                )
+            foreach (var monitor in argument.MonitorRoot.GetMonitorItems())
             {
-                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{monitor.Name.PadLeft(monitor.Name.Length + monitor.GetLayerDepth(), '+')}</td>
     <td>{monitor.StartPattern}</td>
     <td>{monitor.FinishPatterny}</td>
@@ -100,7 +101,8 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{monitor.AverageElapsedMillisecond.ToString("N")}</td>
 </tr>");
             }
-            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.htmlBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
             this.WriteSectionTitle("监视规则详情：");
@@ -110,7 +112,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 this.WriteMonitorItemCard(monitor);
             }
 
-            this.HTMLBuilder.Value.AppendLine("</div>");
+            this.htmlBuilder.Value.AppendLine("</div>");
         }
 
         /// <summary>
@@ -120,11 +122,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         private void WriteCSLogFileCard(LogFile logFile)
         {
             this.WriteCardHeader($"日志文件：<b>{logFile.RelativePath}</b>");
-            this.HTMLBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
+            this.htmlBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
 
             if (logFile.AnalysisResults.Count == 0)
             {
-                this.HTMLBuilder.Value.Append("无");
+                this.htmlBuilder.Value.Append("无");
             }
             else
             {
@@ -153,11 +155,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         private void WriteMonitorItemCard(MonitorItem monitor)
         {
             this.WriteCardHeader($"监视规则：<b>{monitor.Name}</b>");
-            this.HTMLBuilder.Value.Append($"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPatterny ?? "无"}</b><hr>匹配结果：");
+            this.htmlBuilder.Value.Append($"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPatterny ?? "无"}</b><hr>匹配结果：");
 
             if (monitor.AnalysisResults.Count == 0)
             {
-                this.HTMLBuilder.Value.Append("无");
+                this.htmlBuilder.Value.Append("无");
             }
             else
             {
@@ -187,11 +189,10 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="footer">底部</param>
         private void WriteCard(string title, string body, string footer = null)
         {
-            //处理换行符转义
-            //body = body.Replace("\r\n", "<br>").Replace("\n", "<br>").Replace("\r", "<br>");
-
+            // 处理换行符转义
+            // body = body.Replace("\r\n", "<br>").Replace("\n", "<br>").Replace("\r", "<br>");
             this.WriteCardHeader(title);
-            this.HTMLBuilder.Value.AppendLine(body);
+            this.htmlBuilder.Value.AppendLine(body);
             this.WriteCardFooter(footer);
         }
 
@@ -201,9 +202,9 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="title"></param>
         private void WriteCardHeader(string title)
         {
-            this.HTMLBuilder.Value.AppendLine("<div class=\"card\">");
-            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-header\" onclick=\"onCardClick()\"><div class=\"card-title\">{title}</div></div>");
-            this.HTMLBuilder.Value.AppendLine($"<div class=\"card-body\">");
+            this.htmlBuilder.Value.AppendLine("<div class=\"card\">");
+            this.htmlBuilder.Value.AppendLine($"<div class=\"card-header\" onclick=\"onCardClick()\"><div class=\"card-title\">{title}</div></div>");
+            this.htmlBuilder.Value.AppendLine($"<div class=\"card-body\">");
         }
 
         /// <summary>
@@ -212,9 +213,13 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="footer"></param>
         private void WriteCardFooter(string footer = null)
         {
-            this.HTMLBuilder.Value.AppendLine("</div>");
-            if (footer?.Length > 0) this.HTMLBuilder.Value.AppendLine($"<div class=\"card-footer\">{footer}</div>");
-            this.HTMLBuilder.Value.AppendLine($"</div>");
+            this.htmlBuilder.Value.AppendLine("</div>");
+            if (footer?.Length > 0)
+            {
+                this.htmlBuilder.Value.AppendLine($"<div class=\"card-footer\">{footer}</div>");
+            }
+
+            this.htmlBuilder.Value.AppendLine($"</div>");
         }
 
         /// <summary>
@@ -223,9 +228,9 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void WriteClientLogFileTabContent(TaskArgument argument)
         {
-            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
+            this.htmlBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
-            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+            this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
 <caption><h3>客户端日志文件查看：</h3></caption>
 <thead>
     <th>文件路径</th>
@@ -244,7 +249,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             foreach (var logFile in logFiles)
             {
-                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{logFile.RelativePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
@@ -254,14 +259,17 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td><b>{logFile.ElapsedMillisecond.ToString("N")}</b></td>
 </tr>");
             }
-            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.htmlBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
             this.WriteSectionTitle("日志文件详情：");
             foreach (var logFile in logFiles)
+            {
                 this.WriteCSLogFileCard(logFile);
+            }
 
-            this.HTMLBuilder.Value.AppendLine("</div>");
+            this.htmlBuilder.Value.AppendLine("</div>");
         }
 
         /// <summary>
@@ -270,9 +278,9 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void WriteServerLogFileTabContent(TaskArgument argument)
         {
-            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
+            this.htmlBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
-            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+            this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
 <caption><h3>服务端日志文件查看：</h3></caption>
 <thead>
     <th>文件路径</th>
@@ -291,7 +299,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             foreach (var logFile in logFiles)
             {
-                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{logFile.RelativePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
@@ -301,14 +309,17 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{logFile.ElapsedMillisecond.ToString("N")}</td>
 </tr>");
             }
-            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.htmlBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
             this.WriteSectionTitle("日志文件详情：");
             foreach (var logFile in logFiles)
+            {
                 this.WriteCSLogFileCard(logFile);
+            }
 
-            this.HTMLBuilder.Value.AppendLine("</div>");
+            this.htmlBuilder.Value.AppendLine("</div>");
         }
 
         /// <summary>
@@ -318,11 +329,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         private void WriteMiddlewareLogFileCard(LogFile logFile)
         {
             this.WriteCardHeader($"日志文件：<b>{logFile.RelativePath}</b>");
-            this.HTMLBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
+            this.htmlBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
 
             if (logFile.MiddlewareResults.Count == 0)
             {
-                this.HTMLBuilder.Value.Append("无");
+                this.htmlBuilder.Value.Append("无");
             }
             else
             {
@@ -341,8 +352,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 调用客户端数：<b>{methodNameResult.Select(result => result.Client).Distinct().Count().ToString("N0")}</b><br>
 调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count().ToString("N0")}</b><br>
 返回总流长度：<b>{methodNameResult.Sum(result => result.StreamLength)}</b><br>
-流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>"
-                            );
+流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>");
                     }
 
                     this.WriteCardFooter($"方法总数：<b>{requesURIResult.Select(result => result.MethodName).Distinct().Count().ToString("N0")}</b> 个， 调用总次数：<b>{requesURIResult.Count().ToString("N0")}</b> 个， 总耗时：<b>{requesURIResult.Sum(result => result.Elapsed)}</b> 毫秒");
@@ -358,9 +368,9 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void WriteMiddlewareLogFileTabContent(TaskArgument argument)
         {
-            this.HTMLBuilder.Value.AppendLine(@"<div class=""tabContent"">");
+            this.htmlBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
-            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+            this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
 <caption><h3>中间件日志文件查看：</h3></caption>
 <thead>
     <th>文件路径</th>
@@ -376,17 +386,18 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             foreach (var logFile in logFiles)
             {
-                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{logFile.RelativePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
     <td><b>{logFile.MiddlewareResults.Count.ToString("N0")}</b></td>
 </tr>");
             }
-            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.htmlBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
-            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+            this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
 <caption><h3>请求路径：</h3></caption>
 <thead>
     <th>请求路径</th>
@@ -402,10 +413,9 @@ namespace xQuantLogFactory.BIZ.Exporter
 <tbody>");
             foreach (var resultGroup in argument.MiddlewareResults
                 .GroupBy(result => (result.RequestURI, result.MethodName))
-                .OrderBy(result => (result.Key.RequestURI, result.Key.MethodName))
-                )
+                .OrderBy(result => (result.Key.RequestURI, result.Key.MethodName)))
             {
-                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                this.htmlBuilder.Value.AppendLine($@"<tr>
     <td><b>{resultGroup.Key.RequestURI}</b></td>
     <td><b>{resultGroup.Key.MethodName}</b></td>
     <td>{resultGroup.Count().ToString("N0")}</td>
@@ -417,10 +427,11 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{resultGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
 </tr>");
             }
-            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.htmlBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
-            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+            this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
 <caption><h3>请求耗时：</h3></caption>
 <thead>
     <th>请求路径</th>
@@ -435,10 +446,9 @@ namespace xQuantLogFactory.BIZ.Exporter
 <tbody>");
             foreach (var resultGroup in argument.MiddlewareResults
                 .GroupBy(result => (result.RequestURI, result.MethodName))
-                .OrderByDescending(results => results.Sum(result => result.Elapsed))
-                )
+                .OrderByDescending(results => results.Sum(result => result.Elapsed)))
             {
-                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{resultGroup.Key.RequestURI}</td>
     <td>{resultGroup.Key.MethodName}</td>
     <td>{resultGroup.Count().ToString("N0")}</td>
@@ -449,10 +459,11 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{resultGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
 </tr>");
             }
-            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.htmlBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
-            this.HTMLBuilder.Value.AppendLine(@"<table class=""datatable"">
+            this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
 <caption><h3>客户端：</h3></caption>
 <thead>
     <th>客户端IP</th>
@@ -467,10 +478,9 @@ namespace xQuantLogFactory.BIZ.Exporter
 <tbody>");
             foreach (var resultGroup in argument.MiddlewareResults
                 .GroupBy(result => (result.Client, result.RequestURI, result.MethodName))
-                .OrderByDescending(results => results.Sum(result => result.Elapsed))
-                )
+                .OrderByDescending(results => results.Sum(result => result.Elapsed)))
             {
-                this.HTMLBuilder.Value.AppendLine($@"<tr>
+                this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{resultGroup.Key.Client}</td>
     <td>{resultGroup.Key.RequestURI}</td>
     <td>{resultGroup.Key.MethodName}</td>
@@ -481,14 +491,17 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
 </tr>");
             }
-            this.HTMLBuilder.Value.AppendLine("</tbody>\n</table>");
+
+            this.htmlBuilder.Value.AppendLine("</tbody>\n</table>");
             this.WriteHR();
 
             this.WriteSectionTitle("日志文件详情：");
             foreach (var logFile in logFiles)
+            {
                 this.WriteMiddlewareLogFileCard(logFile);
+            }
 
-            this.HTMLBuilder.Value.AppendLine("</div>");
+            this.htmlBuilder.Value.AppendLine("</div>");
         }
 
         /// <summary>
@@ -497,16 +510,19 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="titles"></param>
         private void WriteTabTitles(params string[] titles)
         {
-            this.HTMLBuilder.Value.AppendLine("<div id=\"tab-header\">\n<ul>");
+            this.htmlBuilder.Value.AppendLine("<div id=\"tab-header\">\n<ul>");
+
             if (titles.Length > 0)
             {
-                this.HTMLBuilder.Value.AppendLine($"<li class=\"selected\">{titles[0]}</li>");
+                this.htmlBuilder.Value.AppendLine($"<li class=\"selected\">{titles[0]}</li>");
             }
+
             if (titles.Length > 1)
             {
-                titles.Skip(1).ToList().ForEach(title => this.HTMLBuilder.Value.AppendLine($"<li>{title}</li>"));
+                titles.Skip(1).ToList().ForEach(title => this.htmlBuilder.Value.AppendLine($"<li>{title}</li>"));
             }
-            this.HTMLBuilder.Value.AppendLine("</ul>\n</div>");
+
+            this.htmlBuilder.Value.AppendLine("</ul>\n</div>");
         }
 
         /// <summary>
@@ -517,7 +533,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         {
             try
             {
-                File.WriteAllText(reportPath, this.HTMLBuilder.Value.ToString(), Encoding.UTF8);
+                File.WriteAllText(reportPath, this.htmlBuilder.Value.ToString(), Encoding.UTF8);
             }
             catch
             {
@@ -531,7 +547,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="css"></param>
         private void WriteCSS(string css)
         {
-            this.HTMLBuilder.Value.AppendLine($"<style>\n{css}\n</style>");
+            this.htmlBuilder.Value.AppendLine($"<style>\n{css}\n</style>");
         }
 
         /// <summary>
@@ -540,7 +556,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="js"></param>
         private void WriteJS(string js)
         {
-            this.HTMLBuilder.Value.AppendLine($"<script>\n{js}\n</script>\n");
+            this.htmlBuilder.Value.AppendLine($"<script>\n{js}\n</script>\n");
         }
 
         /// <summary>
@@ -549,9 +565,12 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void WriteTaskArgument(TaskArgument argument)
         {
-            if (argument == null) throw new ArgumentNullException(nameof(argument));
+            if (argument == null)
+            {
+                throw new ArgumentNullException(nameof(argument));
+            }
 
-            this.HTMLBuilder.Value.AppendLine($@"<table id =""tasktable"">
+            this.htmlBuilder.Value.AppendLine($@"<table id =""tasktable"">
     <caption>
         <h2>任务信息：</h3>
     </caption>
@@ -625,7 +644,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// </summary>
         private void WriteHR()
         {
-            this.HTMLBuilder.Value.AppendLine("<hr>");
+            this.htmlBuilder.Value.AppendLine("<hr>");
         }
 
         /// <summary>
@@ -634,7 +653,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="title"></param>
         private void WriteReportTitle(string title)
         {
-            this.HTMLBuilder.Value.AppendLine($"<pre><h1>{title}</h1></pre>");
+            this.htmlBuilder.Value.AppendLine($"<pre><h1>{title}</h1></pre>");
         }
 
         /// <summary>
@@ -643,7 +662,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="title"></param>
         private void WriteNodeTitle(string title)
         {
-            this.HTMLBuilder.Value.AppendLine($"<h2>{title}</h2>");
+            this.htmlBuilder.Value.AppendLine($"<h2>{title}</h2>");
         }
 
         /// <summary>
@@ -652,8 +671,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="title"></param>
         private void WriteSectionTitle(string title)
         {
-            this.HTMLBuilder.Value.AppendLine($"<h3>{title}</h3>");
+            this.htmlBuilder.Value.AppendLine($"<h3>{title}</h3>");
         }
-
     }
 }

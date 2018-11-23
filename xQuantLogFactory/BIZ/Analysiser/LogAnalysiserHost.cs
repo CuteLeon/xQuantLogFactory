@@ -7,7 +7,6 @@ using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
 {
-
     /// <summary>
     /// 日志分析器宿主
     /// </summary>
@@ -18,9 +17,14 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// </summary>
         public readonly List<ILogAnalysiser> AnalysiserProvider = new List<ILogAnalysiser>();
 
-        public LogAnalysiserHost() { }
+        public LogAnalysiserHost()
+        {
+        }
 
-        public LogAnalysiserHost(ITracer tracer) : base(tracer) { }
+        public LogAnalysiserHost(ITracer tracer)
+            : base(tracer)
+        {
+        }
 
         /// <summary>
         /// 增加自定义日志分析器
@@ -34,15 +38,17 @@ namespace xQuantLogFactory.BIZ.Analysiser
         public override void Analysis(TaskArgument argument)
         {
             if (argument == null)
+            {
                 throw new ArgumentNullException(nameof(argument));
+            }
 
-            //优先调用宿主分析方法
+            // 优先调用宿主分析方法
             this.AnalysisTask(argument);
 
-            //调用后续自定义分析器分析方法
+            // 调用后续自定义分析器分析方法
             this.AnalysiserProvider?.ForEach(analysiser => analysiser.Analysis(argument));
 
-            //计算日志耗时
+            // 计算日志耗时
             this.CalcElapsed(argument);
         }
 
@@ -62,11 +68,13 @@ namespace xQuantLogFactory.BIZ.Analysiser
             {
                 monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result.ElapsedMillisecond);
                 int fullCoubleCount = monitor.AnalysisResults.Count(result => result.StartMonitorResult != null && result.FinishMonitorResult != null);
-                if (fullCoubleCount > 0) monitor.AverageElapsedMillisecond = monitor.ElapsedMillisecond / fullCoubleCount;
+                if (fullCoubleCount > 0)
+                {
+                    monitor.AverageElapsedMillisecond = monitor.ElapsedMillisecond / fullCoubleCount;
+                }
             });
 
             argument.LogFiles.ForEach(logFile => logFile.ElapsedMillisecond = logFile.AnalysisResults.Sum(result => result.ElapsedMillisecond));
         }
-
     }
 }

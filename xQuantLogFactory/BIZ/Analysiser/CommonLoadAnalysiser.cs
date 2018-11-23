@@ -13,22 +13,26 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// </summary>
     public class CommonLoadAnalysiser : DirectedLogAnalysiserBase
     {
+        public CommonLoadAnalysiser()
+        {
+        }
+
+        public CommonLoadAnalysiser(ITracer tracer)
+            : base(tracer)
+        {
+        }
+
         /// <summary>
-        /// 针对的监视规则名称
+        /// Gets or sets 针对的监视规则名称
         /// </summary>
         public override string TargetMonitorName { get; set; }
 
         /// <summary>
-        /// 加载日志内容正则
+        /// Gets or sets 加载日志内容正则
         /// </summary>
         public Regex AnalysisRegex { get; protected set; } = new Regex(
             @"^加载(?<ResourceName>[a-zA-Z_]+)：(?<Elapsed>\d*)$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline
-            );
-
-        public CommonLoadAnalysiser() { }
-
-        public CommonLoadAnalysiser(ITracer tracer) : base(tracer) { }
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
         /// 分析监视内容作为前缀的操作日志
@@ -37,16 +41,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
         public override void Analysis(TaskArgument argument)
         {
             if (string.IsNullOrEmpty(this.TargetMonitorName))
+            {
                 throw new ArgumentNullException(nameof(this.TargetMonitorName));
+            }
+
             if (argument == null)
+            {
                 throw new ArgumentNullException(nameof(argument));
+            }
 
             argument.AnalysisResults
                 .Where(result => result.MonitorItem.Name == this.TargetMonitorName)
-                .GroupBy(result => (/*result.LogFile,*/ result.MonitorItem))
+                .GroupBy(result => (result.LogFile, result.MonitorItem))
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key/*.MonitorItem*/;
+                    MonitorItem targetMonitor = resultGroup.Key.MonitorItem;
                     MonitorItem childMonitor = null;
                     Match logMatch = null;
                     string resourceName = string.Empty;
@@ -54,8 +63,15 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                     foreach (var result in resultGroup)
                     {
-                        if (result.StartMonitorResult == null) continue;
-                        if (result.FinishMonitorResult != null) continue;
+                        if (result.StartMonitorResult == null)
+                        {
+                            continue;
+                        }
+
+                        if (result.FinishMonitorResult != null)
+                        {
+                            continue;
+                        }
 
                         logMatch = this.AnalysisRegex.Match(result.StartMonitorResult.LogContent);
                         if (logMatch.Success && logMatch.Groups["ResourceName"].Success)
@@ -68,17 +84,19 @@ namespace xQuantLogFactory.BIZ.Analysiser
                             if (logMatch.Groups["Elapsed"].Success &&
                                 double.TryParse(logMatch.Groups["Elapsed"].Value, out double elapsed))
                             {
-                                //构建完整组
+                                // 构建完整组
                                 result.FinishMonitorResult = result.StartMonitorResult;
                                 result.ElapsedMillisecond = elapsed;
                             }
 
                             childMonitor.AnalysisResults.Add(result);
-                            //childMonitor.MonitorResults.Add(result.StartMonitorResult);
-                            //targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
+
+                            // childMonitor.MonitorResults.Add(result.StartMonitorResult);
+                            // targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
                             result.MonitorItem = childMonitor;
                             result.StartMonitorResult.MonitorItem = childMonitor;
                         }
+
                         /* TODO: 无效的结果在落实数据库时无法正常删除
                         if (result.StartMonitorResult != null)
                         {
@@ -106,6 +124,5 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     }
                 });
         }
-
     }
 }

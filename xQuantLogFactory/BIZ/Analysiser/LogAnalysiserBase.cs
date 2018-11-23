@@ -11,10 +11,14 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// </summary>
     public abstract class LogAnalysiserBase : LogProcesserBase, ILogAnalysiser
     {
+        public LogAnalysiserBase()
+        {
+        }
 
-        public LogAnalysiserBase() { }
-
-        public LogAnalysiserBase(ITracer tracer) : base(tracer) { }
+        public LogAnalysiserBase(ITracer tracer)
+            : base(tracer)
+        {
+        }
 
         /// <summary>
         /// 分析任务
@@ -38,7 +42,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         {
             GroupAnalysisResult analysisResult = new GroupAnalysisResult(argument, logFile, monitor, monitorResult);
 
-            //反向关联日志监视结果
+            // 反向关联日志监视结果
             lock (argument)
             {
                 argument.AnalysisResults.Add(analysisResult);
@@ -53,6 +57,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         analysisResult.StartMonitorResult = monitorResult;
                         break;
                     }
+
                 case GroupTypes.Finish:
                     {
                         analysisResult.FinishMonitorResult = monitorResult;
@@ -62,6 +67,5 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
             return analysisResult;
         }
-
     }
 }

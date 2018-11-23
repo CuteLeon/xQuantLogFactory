@@ -26,7 +26,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <param name="directory">文件存放目录</param>
         /// <param name="argument">任务参数</param>
         /// <returns></returns>
-        T GetTaskObject<T>(string directory, TaskArgument argument) where T : class;
-
+        T GetTaskObject<T>(string directory, TaskArgument argument)
+            where T : class;
     }
 }
