@@ -15,7 +15,8 @@
         }
 
         [System.Obsolete]
-        public void WriteLine(string info, params object[] values) { }
-
+        public void WriteLine(string info, params object[] values)
+        {
+        }
     }
 }

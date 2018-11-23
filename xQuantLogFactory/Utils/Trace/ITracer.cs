@@ -1,6 +1,5 @@
 ﻿namespace xQuantLogFactory.Utils.Trace
 {
-
     /// <summary>
     /// 追踪器接口
     /// </summary>

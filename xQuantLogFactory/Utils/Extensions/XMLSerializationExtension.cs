@@ -10,16 +10,19 @@ namespace xQuantLogFactory.Utils.Extensions
     /// </summary>
     public static class XMLSerializationExtension
     {
-
         /// <summary>
         /// 序列化为XML内容
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="source">对象</param>
         /// <returns>XML内容</returns>
-        public static string SerializeToXML<T>(this T source) where T : class, new()
+        public static string SerializeToXML<T>(this T source)
+            where T : class, new()
         {
-            if (source == null) throw new ArgumentNullException(nameof(source));
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
 
             try
             {
@@ -45,9 +48,13 @@ namespace xQuantLogFactory.Utils.Extensions
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="xml">XML内容</param>
         /// <returns>对象</returns>
-        public static T DeserializeToObject<T>(this string xml) where T : class, new()
+        public static T DeserializeToObject<T>(this string xml)
+            where T : class, new()
         {
-            if (xml == null) throw new ArgumentNullException(nameof(xml));
+            if (xml == null)
+            {
+                throw new ArgumentNullException(nameof(xml));
+            }
 
             try
             {

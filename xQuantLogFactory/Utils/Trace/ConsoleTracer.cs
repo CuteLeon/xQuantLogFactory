@@ -2,7 +2,6 @@
 
 namespace xQuantLogFactory.Utils.Trace
 {
-
     /// <summary>
     /// 控制台追踪器
     /// </summary>
@@ -20,12 +19,11 @@ namespace xQuantLogFactory.Utils.Trace
         /// <summary>
         /// 输出信息
         /// </summary>
-        /// <param name="info">输出信息</param>
-        /// <param name="values">输出数据</param>
+        /// <param name="info"></param>
+        /// <param name="values"></param>
         public void WriteLine(string info, params object[] values)
         {
             this.WriteLine(string.Format(info, values));
         }
     }
-
 }

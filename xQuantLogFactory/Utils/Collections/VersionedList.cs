@@ -11,7 +11,7 @@ namespace xQuantLogFactory.Utils.Collections
     public class VersionedList<T> : List<T>
     {
         /// <summary>
-        /// 当前数据的版本号
+        /// Gets or sets 当前数据的版本号
         /// </summary>
         public int Version { get; protected set; } = 0;
 
@@ -23,7 +23,9 @@ namespace xQuantLogFactory.Utils.Collections
         public virtual void SynchronizeVersion<S>(VersionedList<S> targetList)
         {
             if (targetList != null)
+            {
                 this.Version = targetList.Version;
+            }
         }
 
         /// <summary>
@@ -127,6 +129,5 @@ namespace xQuantLogFactory.Utils.Collections
             base.Sort(comparer);
             this.UpdateVersion();
         }
-
     }
 }

@@ -2,13 +2,11 @@
 
 namespace xQuantLogFactory.Utils.Extensions
 {
-
     /// <summary>
     /// 字节数组扩展类
     /// </summary>
     public static class SaveToFileExtension
     {
-
         /// <summary>
         /// 存储到文件
         /// </summary>
@@ -20,7 +18,10 @@ namespace xQuantLogFactory.Utils.Extensions
             {
                 File.WriteAllBytes(filePath, source);
             }
-            catch { throw; }
+            catch
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -34,8 +35,10 @@ namespace xQuantLogFactory.Utils.Extensions
             {
                 File.WriteAllText(filePath, source);
             }
-            catch { throw; }
+            catch
+            {
+                throw;
+            }
         }
-
     }
 }

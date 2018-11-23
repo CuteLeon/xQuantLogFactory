@@ -18,16 +18,17 @@ namespace xQuantLogFactory.Utils.Extensions
         public static T DeepClone<T>(this T targetInstance)
         {
             if (targetInstance == null)
+            {
                 throw new ArgumentNullException(nameof(targetInstance));
+            }
 
             T cloneInstance = Activator.CreateInstance<T>();
             Type targetType = typeof(T);
 
-            //拷贝属性
+            // 拷贝属性
             foreach (var property in targetType
                 .GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
-                .Where(property => property.GetSetMethod(true) != null)
-                )
+                .Where(property => property.GetSetMethod(true) != null))
             {
                 property.SetValue(cloneInstance, property.GetValue(targetInstance, null), null);
             }

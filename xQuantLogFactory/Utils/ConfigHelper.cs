@@ -9,7 +9,6 @@ namespace xQuantLogFactory.Utils
     /// </summary>
     public static class ConfigHelper
     {
-
         /// <summary>
         /// 服务端日志文件名称前缀
         /// </summary>
@@ -41,7 +40,7 @@ namespace xQuantLogFactory.Utils
         public const string ExcelSourceSheetName = "原始";
 
         /// <summary>
-        /// 监视规则XML文件存储目录
+        /// Gets 监视规则XML文件存储目录
         /// </summary>
         public static string MonitorDirectory
         {
@@ -49,7 +48,7 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
-        /// 日志报告导出目录
+        /// Gets 日志报告导出目录
         /// </summary>
         public static string ReportExportDirectory
         {
@@ -57,7 +56,7 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
-        /// 报告导出模板目录
+        /// Gets 报告导出模板目录
         /// </summary>
         public static string ReportTempletDirectory
         {
@@ -65,7 +64,7 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
-        /// Excel报告导出模板文件名称
+        /// Gets excel报告导出模板文件名称
         /// </summary>
         public static string ExcelReportTempletPath
         {
@@ -73,7 +72,7 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
-        /// 默认监视规则XML文件路径
+        /// Gets 默认监视规则XML文件路径
         /// </summary>
         public static string DefaultMonitorXMLPath
         {
@@ -81,7 +80,7 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
-        /// 日志文件名称格式
+        /// Gets 日志文件名称格式
         /// </summary>
         /// <remarks>神奇，勿动！</remarks>
         public static string LogFileNameFormat
@@ -100,17 +99,16 @@ namespace xQuantLogFactory.Utils
         }
 
         /// <summary>
-        /// 日志文件等级
+        /// Gets or sets 日志文件等级
         /// </summary>
         public static string LogFileLevel { get; set; } = "DEBUG";
 
         /// <summary>
-        /// 是否使用GUI任务工厂
+        /// Gets a value indicating whether 是否使用GUI任务工厂
         /// </summary>
         public static bool UseGUITaskFactory
         {
             get => Environment.GetCommandLineArgs().Length <= 1;
         }
-
     }
 }

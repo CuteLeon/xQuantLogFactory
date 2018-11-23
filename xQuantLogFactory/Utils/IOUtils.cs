@@ -11,10 +11,13 @@ namespace xQuantLogFactory.Utils
         /// <summary>
         /// 准备目录
         /// </summary>
+        /// <param name="directory"></param>
         public static void PrepareDirectory(string directory)
         {
             if (string.IsNullOrWhiteSpace(directory))
+            {
                 throw new ArgumentNullException(nameof(directory));
+            }
 
             if (!Directory.Exists(directory))
             {
@@ -28,6 +31,5 @@ namespace xQuantLogFactory.Utils
                 }
             }
         }
-
     }
 }
