@@ -97,7 +97,9 @@ namespace xQuantLogFactory.BIZ.Exporter
                             // 合并所有分析结果数据
                             var analysiserResults = new List<GroupAnalysisResult>();
                             monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
-                                .ForEach(resultList => analysiserResults.AddRange(resultList));
+                                .ForEach(resultList => analysiserResults.AddRange(
+                                    // TODO: 权宜之计，修复加载分析器后删除
+                                    resultList.Where(result => result != null)));
 
                             foreach (var result in analysiserResults
                                 .OrderBy(result => (result.LogFile?.FileID, result.LineNumber)))

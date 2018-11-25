@@ -406,7 +406,7 @@ namespace xQuantLogFactory
 
             logAnalysiserHost.AddAnalysiser(formLogAnalysiser);
             logAnalysiserHost.AddAnalysiser(reportLogAnalysiser);
-            logAnalysiserHost.AddAnalysiser(loadLogAnalysiser);
+            // logAnalysiserHost.AddAnalysiser(loadLogAnalysiser);
 
             logAnalysiserHost.Analysis(UnityTaskArgument);
 

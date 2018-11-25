@@ -70,6 +70,16 @@ namespace xQuantLogFactory.DAL
 
             // 初始化数据种子，用于 CodeFirst 模式自动创建或修改数据库
             Database.SetInitializer(new LogDBSeed(modelBuilder));
+
+            // 监视规则级联删除
+            modelBuilder.Entity<MonitorItem>()
+                .HasMany(monitor => monitor.MonitorResults)
+                .WithRequired(result => result.MonitorItem)
+                .WillCascadeOnDelete();
+            modelBuilder.Entity<MonitorItem>()
+                .HasMany(monitor => monitor.AnalysisResults)
+                .WithRequired(result => result.MonitorItem)
+                .WillCascadeOnDelete();
         }
     }
 }
