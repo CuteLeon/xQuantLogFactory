@@ -164,8 +164,6 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 foreach (var analysisResult in monitor.AnalysisResults
-                    // TODO: 权宜之计，修复加载分析器后删除
-                    .Where(result => result != null)
                     .OrderByDescending(result => result.ElapsedMillisecond))
                 {
                     MonitorResult startResult = analysisResult.StartMonitorResult;

@@ -66,12 +66,9 @@ namespace xQuantLogFactory.BIZ.Analysiser
         {
             argument.MonitorRoot.GetMonitorItems().ToList().ForEach(monitor =>
             {
-                // TODO: 权宜之计，修复加载分析器后删除 []?.[]??0.0
-                monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result?.ElapsedMillisecond ?? 0.0);
+                monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result.ElapsedMillisecond);
 
                 int fullCoubleCount = monitor.AnalysisResults.Count(result =>
-                    // TODO: 权宜之计，修复加载分析器后删除
-                    result != null &&
                     result.StartMonitorResult != null &&
                     result.FinishMonitorResult != null);
 

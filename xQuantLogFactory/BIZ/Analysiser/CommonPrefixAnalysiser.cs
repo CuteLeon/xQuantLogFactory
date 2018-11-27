@@ -76,7 +76,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         {
                             result.StartMonitorResult.MonitorItem = childMonitor;
 
-                            // EF6框架帮我们完成了这部分
+                            // TODO [ORM] EF6框架帮我们完成了这部分
                             // childMonitor.MonitorResults.Add(result.StartMonitorResult);
                             // targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
                         }
@@ -84,7 +84,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         {
                             result.FinishMonitorResult.MonitorItem = childMonitor;
 
-                            // EF6框架帮我们完成了这部分
+                            // TODO [ORM] EF6框架帮我们完成了这部分
                             // childMonitor.MonitorResults.Add(result.FinishMonitorResult);
                             // targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
                         }

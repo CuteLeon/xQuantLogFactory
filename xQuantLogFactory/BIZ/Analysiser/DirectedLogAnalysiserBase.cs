@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils.Trace;
@@ -38,24 +37,27 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 throw new ArgumentNullException(nameof(parentMonitor));
             }
 
-            MonitorItem childMonitor = this.GetFirstOrDefaultMonitorItem(parentMonitor, childMonitorName);
-            if (childMonitor == null)
+            lock (parentMonitor)
             {
-                childMonitor = new MonitorItem(childMonitorName);
-                parentMonitor.MonitorTreeRoots.Add(childMonitor);
-            }
+                MonitorItem childMonitor = this.GetFirstOrDefaultMonitorItem(parentMonitor, childMonitorName);
+                if (childMonitor == null)
+                {
+                    childMonitor = new MonitorItem(childMonitorName);
+                    parentMonitor.MonitorTreeRoots.Add(childMonitor);
+                }
 
-            if (childMonitor.ParentMonitorItem == null)
-            {
-                // TODO: [提醒] 需要赋值父节点配置信息
-                childMonitor.ParentMonitorItem = parentMonitor;
-                childMonitor.StartPattern = parentMonitor.StartPattern;
-                childMonitor.FinishPatterny = parentMonitor.FinishPatterny;
-                childMonitor.SheetName = parentMonitor.SheetName;
-                childMonitor.Memory = parentMonitor.Memory;
-            }
+                if (childMonitor.ParentMonitorItem == null)
+                {
+                    // TODO: [提醒] 需要赋值父节点配置信息
+                    childMonitor.ParentMonitorItem = parentMonitor;
+                    childMonitor.StartPattern = parentMonitor.StartPattern;
+                    childMonitor.FinishPatterny = parentMonitor.FinishPatterny;
+                    childMonitor.SheetName = parentMonitor.SheetName;
+                    childMonitor.Memory = parentMonitor.Memory;
+                }
 
-            return childMonitor;
+                return childMonitor;
+            }
         }
 
         /// <summary>

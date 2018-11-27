@@ -40,7 +40,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
-            // TODO: 处理完成后，通用加载资源 出现null分析结果组对象
             if (string.IsNullOrEmpty(this.TargetMonitorName))
             {
                 throw new ArgumentNullException(nameof(this.TargetMonitorName));
@@ -53,10 +52,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
             argument.AnalysisResults
                 .Where(result => result.MonitorItem.Name == this.TargetMonitorName)
-                .GroupBy(result => (result.LogFile, result.MonitorItem))
+                .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key.MonitorItem;
+                    MonitorItem targetMonitor = resultGroup.Key;
                     MonitorItem childMonitor = null;
                     Match logMatch = null;
                     string resourceName = string.Empty;
