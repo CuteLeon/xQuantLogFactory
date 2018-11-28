@@ -104,23 +104,24 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         }
                         else
                         {
+                            // TODO: 耗时严重
                             // 匹配失败，删除无效的结果
                             LogDBContext.UnityDBContext.MonitorResults.Remove(monitorResult);
                             LogDBContext.UnityDBContext.AnalysisResults.Remove(analysisResult);
 
                             /*
                             monitorResult.TaskArgument.MonitorResults.Remove(monitorResult);
-                            monitorResult.TaskArgument = null;
                             monitorResult.MonitorItem.MonitorResults.Remove(monitorResult);
-                            monitorResult.MonitorItem = null;
                             monitorResult.LogFile.MonitorResults.Remove(monitorResult);
+                            monitorResult.TaskArgument = null;
+                            monitorResult.MonitorItem = null;
                             monitorResult.LogFile = null;
 
                             analysisResult.TaskArgument.AnalysisResults.Remove(analysisResult);
-                            analysisResult.TaskArgument = null;
                             analysisResult.MonitorItem.AnalysisResults.Remove(analysisResult);
-                            analysisResult.MonitorItem = null;
                             analysisResult.LogFile.AnalysisResults.Remove(analysisResult);
+                            analysisResult.TaskArgument = null;
+                            analysisResult.MonitorItem = null;
                             analysisResult.LogFile = null;
                              */
                         }
