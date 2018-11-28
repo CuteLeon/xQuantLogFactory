@@ -20,11 +20,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
         }
 
         /// <summary>
-        /// Gets or sets 针对的监视规则名称
-        /// </summary>
-        public abstract string TargetMonitorName { get; set; }
-
-        /// <summary>
         /// 尝试获取或新建子监视规则
         /// </summary>
         /// <param name="parentMonitor">父监视规则</param>

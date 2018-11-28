@@ -25,11 +25,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
         }
 
         /// <summary>
-        /// Gets or sets 针对的监视规则名称
-        /// </summary>
-        public override string TargetMonitorName { get; set; }
-
-        /// <summary>
         /// Gets or sets 加载日志内容正则
         /// </summary>
         public Regex AnalysisRegex { get; protected set; } = new Regex(
@@ -42,18 +37,14 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
-            if (string.IsNullOrEmpty(this.TargetMonitorName))
-            {
-                throw new ArgumentNullException(nameof(this.TargetMonitorName));
-            }
-
             if (argument == null)
             {
                 throw new ArgumentNullException(nameof(argument));
             }
 
+            //TODO: 改写为搜索 监视规则 并按监视规则分组，处理监视规则的分析结果
             argument.AnalysisResults
-                .Where(result => result.MonitorItem.Name == this.TargetMonitorName)
+                .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Load)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
@@ -81,7 +72,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         if (logMatch.Success && logMatch.Groups["ResourceName"].Success)
                         {
                             resourceName = logMatch.Groups["ResourceName"].Value;
-                            childMonitorName = $"{this.TargetMonitorName}-{resourceName}";
+                            childMonitorName = $"{targetMonitor.Name}-{resourceName}";
 
                             childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
 
@@ -104,10 +95,15 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         }
                         else
                         {
-                            // TODO: 耗时严重
                             // 匹配失败，删除无效的结果
+                            /* TODO: [ORM] 耗时严重
+                             * 分析器 Host 增加前序分析器列表，此列表内的分析器将早于 Host 分析算法执行，并将处理后的监视结果标记状态，Host 不再处理被标记的监视结果
+                             * 但仍需删除无效的监视结果，是否耗时严重？
+                             */
+                            /*
                             LogDBContext.UnityDBContext.MonitorResults.Remove(monitorResult);
                             LogDBContext.UnityDBContext.AnalysisResults.Remove(analysisResult);
+                             */
 
                             /*
                             monitorResult.TaskArgument.MonitorResults.Remove(monitorResult);

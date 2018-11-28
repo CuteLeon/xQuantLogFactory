@@ -24,32 +24,23 @@ namespace xQuantLogFactory.BIZ.Analysiser
         }
 
         /// <summary>
-        /// Gets or sets 针对的监视规则名称
-        /// </summary>
-        public override string TargetMonitorName { get; set; }
-
-        /// <summary>
         /// 分析监视内容作为前缀的操作日志
         /// </summary>
         /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
-            if (string.IsNullOrEmpty(this.TargetMonitorName))
-            {
-                throw new ArgumentNullException(nameof(this.TargetMonitorName));
-            }
-
             if (argument == null)
             {
                 throw new ArgumentNullException(nameof(argument));
             }
 
+            //TODO: 改写为搜索 监视规则 并按监视规则分组，处理监视规则的分析结果
             argument.AnalysisResults
-                .Where(result => result.MonitorItem.Name == this.TargetMonitorName)
-                .GroupBy(result => (result.LogFile, result.MonitorItem))
+                .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Prefix)
+                .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key.MonitorItem;
+                    MonitorItem targetMonitor = resultGroup.Key;
                     MonitorItem childMonitor = null;
                     MonitorResult firstResult = null;
                     string customeData = string.Empty;
@@ -64,7 +55,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         }
 
                         customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length);
-                        childMonitorName = $"{this.TargetMonitorName}-{customeData}";
+                        childMonitorName = $"{targetMonitor.Name}-{customeData}";
 
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
 

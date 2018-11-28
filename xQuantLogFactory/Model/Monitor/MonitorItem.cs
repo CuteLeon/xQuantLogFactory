@@ -69,6 +69,13 @@ namespace xQuantLogFactory.Model.Monitor
         public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
+        /// Gets or sets 指定子分析器
+        /// </summary>
+        [XmlAttribute("Analysiser")]
+        [DisplayName("指定子分析器")]
+        public AnalysiserTypes Analysiser { get; set; }
+
+        /// <summary>
         /// Gets or sets 父级监视规则
         /// </summary>
         [XmlIgnore]

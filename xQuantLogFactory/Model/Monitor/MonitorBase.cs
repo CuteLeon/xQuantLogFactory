@@ -10,6 +10,27 @@ using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
 {
+    /// <summary>
+    /// 子分析器枚举
+    /// </summary>
+    public enum AnalysiserTypes
+    {
+        /// <summary>
+        /// 未指定子分析器
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        /// 通用前缀分析器
+        /// </summary>
+        Prefix = 1,
+
+        /// <summary>
+        /// 通用加载分析器
+        /// </summary>
+        Load = 2,
+    }
+
     public abstract class MonitorBase : IMonitor
     {
         /// <summary>

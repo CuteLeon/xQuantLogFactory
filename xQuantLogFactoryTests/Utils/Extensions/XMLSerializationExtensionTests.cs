@@ -23,6 +23,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 Name = "客户端启动",
                 StartPattern = "客户端启动开始",
                 FinishPatterny = "初始化第二阶段开始",
+                Analysiser = AnalysiserTypes.None,
                 Memory = false,
             };
             MonitorItem dataItem = new MonitorItem()
@@ -30,6 +31,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 Name = "数据加载",
                 StartPattern = "加载中债参数设置表",
                 FinishPatterny = "加载当前登录部门",
+                Analysiser = AnalysiserTypes.Load,
                 Memory = true,
             };
             MonitorItem bondItem = new MonitorItem()
@@ -37,6 +39,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 Name = "债券加载",
                 StartPattern = "加载TBND查询",
                 FinishPatterny = "加载TBND",
+                Analysiser = AnalysiserTypes.Prefix,
             };
             MonitorItem memoryItem = new MonitorItem()
             {
@@ -73,6 +76,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             Assert.AreEqual(5, container.GetMonitorItems().Count());
             Assert.IsTrue(container.MonitorTreeRoots[1].Memory);
             Assert.AreEqual("内存",container.MonitorTreeRoots[1].SheetName);
+            Assert.AreEqual(AnalysiserTypes.Load, container.MonitorTreeRoots[0].MonitorTreeRoots[0].Analysiser);
         }
     }
 }

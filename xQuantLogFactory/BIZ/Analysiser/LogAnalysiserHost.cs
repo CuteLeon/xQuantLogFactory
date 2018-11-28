@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
@@ -46,7 +47,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
             this.AnalysisTask(argument);
 
             // 调用后续自定义分析器分析方法
-            this.AnalysiserProvider?.ForEach(analysiser => analysiser.Analysis(argument));
+            this.PrepareDirectedLogAnalysiser(argument);
+            if (this.AnalysiserProvider.Count > 0)
+            {
+                this.AnalysiserProvider?.ForEach(analysiser => analysiser.Analysis(argument));
+            }
 
             // 计算日志耗时
             this.CalcElapsed(argument);
@@ -59,6 +64,27 @@ namespace xQuantLogFactory.BIZ.Analysiser
         public abstract void AnalysisTask(TaskArgument argument);
 
         /// <summary>
+        /// 准备定向分析器
+        /// </summary>
+        /// <param name="argument"></param>
+        public void PrepareDirectedLogAnalysiser(TaskArgument argument)
+        {
+            var monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
+            if (monitorItems.Count > 0)
+            {
+                if (monitorItems.Count(monitor => monitor.Analysiser == Model.Monitor.AnalysiserTypes.Prefix) > 0)
+                {
+                    this.AddAnalysiser(new CommonPrefixAnalysiser(this.Tracer));
+                }
+
+                if (monitorItems.Count(monitor => monitor.Analysiser == Model.Monitor.AnalysiserTypes.Load) > 0)
+                {
+                    this.AddAnalysiser(new CommonLoadAnalysiser(this.Tracer));
+                }
+            }
+        }
+
+        /// <summary>
         /// 计算耗时
         /// </summary>
         /// <param name="argument"></param>
@@ -68,13 +94,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
             {
                 monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result.ElapsedMillisecond);
 
-                int fullCoubleCount = monitor.AnalysisResults.Count(result =>
-                    result.StartMonitorResult != null &&
-                    result.FinishMonitorResult != null);
-
-                if (fullCoubleCount > 0)
+                int fullCoupleCount = monitor.AnalysisResults.Count(result => result.IsIntactGroup());
+                if (fullCoupleCount > 0)
                 {
-                    monitor.AverageElapsedMillisecond = monitor.ElapsedMillisecond / fullCoubleCount;
+                    monitor.AverageElapsedMillisecond = monitor.ElapsedMillisecond / fullCoupleCount;
                 }
             });
 

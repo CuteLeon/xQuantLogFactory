@@ -14,7 +14,7 @@
       <Item Name="COM初始化" Begin="COM初始化交易市场" End="COM初始化利率列表"/>
       <Item Name="完成金融工具分组加载" Begin="COM初始化利率列表" End="加载COM初始化 内存消耗" Memory="true"/>
 
-      <Item Name="通用加载资源" Begin="加载" End=""/>
+      <Item Name="通用加载资源" Begin="加载" End="" Analysiser="Load"/>
       
       <Item Name="加载其他数据" Begin="加载业务字典名称转换表" End="数据加载服务 加载后续数据开始"/>
       <Item Name="后续数据加载服务" Begin="数据加载服务 加载后续数据开始" End="数据加载服务 加载后续数据结束">
