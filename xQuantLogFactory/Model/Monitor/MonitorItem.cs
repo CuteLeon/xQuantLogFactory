@@ -118,6 +118,21 @@ namespace xQuantLogFactory.Model.Monitor
         #region 方法
 
         /// <summary>
+        /// 复制父级属性
+        /// </summary>
+        public void CopyPropertyFromParent()
+        {
+            // TODO: [提醒] 需要复制父节点配置信息
+            if (this.ParentMonitorItem != null)
+            {
+                this.StartPattern = this.ParentMonitorItem.StartPattern;
+                this.FinishPatterny = this.ParentMonitorItem.FinishPatterny;
+                this.SheetName = this.ParentMonitorItem.SheetName;
+                this.Memory = this.ParentMonitorItem.Memory;
+            }
+        }
+
+        /// <summary>
         /// 获取监视规则层深度
         /// </summary>
         /// <returns></returns>

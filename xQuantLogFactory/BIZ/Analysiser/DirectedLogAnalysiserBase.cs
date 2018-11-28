@@ -48,13 +48,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                 if (childMonitor.ParentMonitorItem == null)
                 {
-                    // TODO: [提醒] 需要赋值父节点配置信息
                     childMonitor.ParentMonitorItem = parentMonitor;
-                    childMonitor.StartPattern = parentMonitor.StartPattern;
-                    childMonitor.FinishPatterny = parentMonitor.FinishPatterny;
-                    childMonitor.SheetName = parentMonitor.SheetName;
-                    childMonitor.Memory = parentMonitor.Memory;
                 }
+
+                // 复制父节点配置信息
+                childMonitor.CopyPropertyFromParent();
 
                 return childMonitor;
             }
