@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Item Name="内存消耗" Begin="内存消耗" End="" Memory="true" NotSource="true" Sheet="内存"/>
+  <Item Name="日终清算" Begin="清算进度=0/1] 开始" End="清算进度=1/1] 完成------">
+    <Item Name="准备金融工具现金流" Begin="清算进度=0/1] 开始" End="准备金融工具现金流"></Item>
+    <Item Name="清算前准备初始化" Begin="准备金融工具现金流" End=" 清算前准备初始化完成"/>
+    <Item Name="清算前准备起始余额" Begin="清算前准备初始化完成" End=" 清算前准备起始余额完成"/>
+    <Item Name="清算前交易检查" Begin="清算前准备起始余额完成" End="清算前交易检查完成"/>
+    <Item Name="交易前持仓结算和托管转入" Begin="清算前交易检查完成" End=" 清算托管转入完成"/>
+    <Item Name="清算交易" Begin=" 清算托管转入完成" End=" 清算交易(不含转托管)完成"/>
+    <Item Name="清算基金拆分和基金合并转出交易" Begin=" 清算交易(不含转托管)完成" End="清算基金拆分和基金合并转出交易完成"/>
+    <Item Name="持仓清算" Begin=" 清算基金拆分和基金合并转出交易完成" End=" 持仓清算完成"/>
+    <Item Name="清算基金拆分和基金合并转入交易" Begin=" 持仓清算完成" End="清算基金拆分转入和基金合并交易完成"/>
+    <Item Name="清算托管转出" Begin=" 清算基金拆分转入和基金合并交易完成" End="清算托管转出完成"/>
+    <Item Name="移除无效指令完成" Begin=" 清算托管转出完成" End="移除无效指令完成"/>
+    <Item Name="刷新标准券和分销额度和计算占资" Begin="移除无效指令完成" End="计算占资费用完成"/>
+    <Item Name="获取清算后持仓" Begin=" 计算占资费用完成" End="获取清算后持仓完成"/>
+    <Item Name="余额归档" Begin=" 获取清算后持仓完成" End="余额归档完成"/>
+    <Item Name="清算T+1" Begin=" 余额归档完成" End="清算T+1完成"/>
+
+    <!--
+    <Item Name="非债券持仓结算查询基金分红信息" Begin="非债券持仓结算查询基金分红信息开始" End="非债券持仓结算查询基金分红信息结束"/>
+    <Item Name="非债券持仓结算查询股票分红信息" Begin="非债券持仓结算查询股票分红信息开始" End="非债券持仓结算查询股票分红信息结束"/>
+    <Item Name="非债券持仓结算查询分业务" Begin="非债券持仓结算查询股票分红信息结束" End="非债券持仓结算查询分业务结束"/>
+    <Item Name="债券持仓结算初始化" Begin="非债券持仓结算查询分业务结束" End=" 债券持仓结算初始化完成"/>
+    <Item Name="债券持仓结算" Begin=" 债券持仓结算初始化完成" End=" 债券持仓结算完成"/>
+    <Item Name="清算托管转入" Begin=" 债券持仓结算完成" End="清算托管转入完成"/>
+    <Item Name="清算交易(不含转托管)" Begin="清算托管转入完成" End="清算交易(不含转托管)完成"/>
+    <Item Name="清算基金拆分和基金合并转出交易" Begin="清算交易(不含转托管)完成" End="清算基金拆分和基金合并转出交易完成"/>
+    <Item Name="" Begin="" End="持仓清算完成"/>
+    <Item Name="" Begin="持仓清算完成" End="刷新数据库标准券余额开始"/>
+    -->
+  </Item>
+  <!---->
+</MonitorRoot>

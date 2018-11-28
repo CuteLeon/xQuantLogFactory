@@ -17,6 +17,8 @@ using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
+// TODO: [ORM] 去除 ORM
+
 // TODO: [全局任务] 移除和排除 using
 // TODO: [全局任务] 编写单元测试
 namespace xQuantLogFactory
@@ -129,7 +131,7 @@ namespace xQuantLogFactory
             ShowAnalysisResult();
 
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
-            UnityDBContext.SaveChanges();
+            //UnityDBContext.SaveChanges();
             TryToExportLogReport();
             SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
 
@@ -165,7 +167,7 @@ namespace xQuantLogFactory
             if (logFiles.Count() > 0)
             {
                 UnityTaskArgument.LogFiles.AddRange(logFiles);
-                UnityDBContext.SaveChanges();
+                //UnityDBContext.SaveChanges();
             }
 
             if (UnityTaskArgument.LogFiles.Count == 0)
@@ -201,7 +203,7 @@ namespace xQuantLogFactory
             if (monitorContainer != null)
             {
                 UnityTaskArgument.MonitorContainerRoot = monitorContainer;
-                UnityDBContext.SaveChanges();
+                //UnityDBContext.SaveChanges();
             }
             else
             {
@@ -249,7 +251,7 @@ namespace xQuantLogFactory
             }
 
             UnityDBContext.TaskArguments.Add(UnityTaskArgument);
-            UnityDBContext.SaveChanges();
+            //UnityDBContext.SaveChanges();
             UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
         }
 
@@ -296,7 +298,7 @@ namespace xQuantLogFactory
         {
             SystemInfo systemInfo = new SystemInfo();
             UnityTaskArgument.SystemInfo = systemInfo;
-            UnityDBContext.SaveChanges();
+            //UnityDBContext.SaveChanges();
             ShowSystemInfo();
         }
 
@@ -318,7 +320,7 @@ namespace xQuantLogFactory
 
                 lock (UnityDBContext)
                 {
-                    UnityDBContext.SaveChanges();
+                    //UnityDBContext.SaveChanges();
                 }
 
                 UnityTrace.WriteLine(
@@ -343,7 +345,7 @@ namespace xQuantLogFactory
 
                 lock (UnityDBContext)
                 {
-                    UnityDBContext.SaveChanges();
+                    //UnityDBContext.SaveChanges();
                 }
 
                 UnityTrace.WriteLine(
@@ -368,7 +370,7 @@ namespace xQuantLogFactory
 
                 lock (UnityDBContext)
                 {
-                    UnityDBContext.SaveChanges();
+                    //UnityDBContext.SaveChanges();
                 }
 
                 UnityTrace.WriteLine(
@@ -394,7 +396,7 @@ namespace xQuantLogFactory
             UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().ToList().ForEach(monitor => monitor.AnalysisResults.Clear());
             lock (UnityDBContext)
             {
-                UnityDBContext.SaveChanges();
+                //UnityDBContext.SaveChanges();
             }
 
             LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTrace);
@@ -402,7 +404,7 @@ namespace xQuantLogFactory
 
             lock (UnityDBContext)
             {
-                UnityDBContext.SaveChanges();
+                //UnityDBContext.SaveChanges();
             }
         }
 
@@ -558,7 +560,7 @@ namespace xQuantLogFactory
                  UnityTaskArgument.TaskFinishTime == null))
             {
                 UnityTaskArgument.TaskFinishTime = DateTime.Now;
-                UnityDBContext.SaveChanges();
+                //UnityDBContext.SaveChanges();
             }
 
             UnityDBContext.Dispose();
