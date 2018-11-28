@@ -88,7 +88,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>匹配组平均耗时</th>
 </thead>
 <tbody>");
-            foreach (var monitor in argument.MonitorRoot.GetMonitorItems())
+            foreach (var monitor in argument.MonitorContainerRoot.GetMonitorItems())
             {
                 this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{monitor.Name.PadLeft(monitor.Name.Length + monitor.GetLayerDepth(), '+')}</td>
@@ -106,7 +106,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.WriteHR();
 
             this.WriteSectionTitle("监视规则详情：");
-            foreach (var monitor in argument.MonitorRoot.GetMonitorItems()
+            foreach (var monitor in argument.MonitorContainerRoot.GetMonitorItems()
                 .OrderByDescending(monitor => monitor.ElapsedMillisecond))
             {
                 this.WriteMonitorItemCard(monitor);
@@ -608,11 +608,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">监控规则数量：</td>
-            <td class=""value"">{argument.MonitorRoot.GetMonitorItems().Count().ToString("N0")}</td>
+            <td class=""value"">{argument.MonitorContainerRoot.GetMonitorItems().Count().ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">监控规则名称：</td>
-            <td class=""value"">{string.Join("、", argument.MonitorRoot.GetMonitorItems().Select(monitor => monitor.Name))}</td>
+            <td class=""value"">{string.Join("、", argument.MonitorContainerRoot.GetMonitorItems().Select(monitor => monitor.Name))}</td>
         </tr>
         <tr>
             <td class=""label"">日志文件数量：</td>

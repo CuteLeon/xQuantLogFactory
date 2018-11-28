@@ -104,7 +104,7 @@ namespace xQuantLogFactory.BIZ.Parser
                     Match particularMatch = null;
 
                     // 缓存变量，减少树扫描次数，需要 .ToList()
-                    List<MonitorItem> monitorItems = argument.MonitorRoot.GetMonitorItems().ToList();
+                    List<MonitorItem> monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
 
                     while (!streamRreader.EndOfStream)
                     {

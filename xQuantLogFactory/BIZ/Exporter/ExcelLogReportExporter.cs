@@ -69,7 +69,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                     // 按表名分组导出
                     this.Tracer?.WriteLine("开始导出通用表数据 ...");
-                    foreach (var monitorGroup in argument.MonitorRoot.GetMonitorItems().GroupBy(monitor => monitor.SheetName))
+                    foreach (var monitorGroup in argument.MonitorContainerRoot.GetMonitorItems().GroupBy(monitor => monitor.SheetName))
                     {
                         // 特殊表名单独处理
                         if (SpecialSheetNames.Contains(monitorGroup.Key))

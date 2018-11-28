@@ -150,11 +150,11 @@ namespace xQuantLogFactory.Model
         public string MonitorFileName { get; set; }
 
         /// <summary>
-        /// Gets or sets 子监控项目树根节点列表
+        /// Gets or sets 监控规则容器
         /// </summary>
         [XmlIgnore]
-        [DisplayName("子监控项目树根节点列表")]
-        public virtual MonitorContainer MonitorRoot { get; set; }
+        [DisplayName("监控规则容器")]
+        public virtual MonitorContainer MonitorContainerRoot { get; set; }
 
         /// <summary>
         /// Gets or sets 日志文件列表

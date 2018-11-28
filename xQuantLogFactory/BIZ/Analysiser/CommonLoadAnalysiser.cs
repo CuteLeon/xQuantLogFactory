@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
+using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Monitor;
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
@@ -57,23 +59,25 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 {
                     MonitorItem targetMonitor = resultGroup.Key;
                     MonitorItem childMonitor = null;
+                    MonitorResult monitorResult = null;
                     Match logMatch = null;
                     string resourceName = string.Empty;
                     string childMonitorName = string.Empty;
 
-                    foreach (var result in resultGroup)
+                    foreach (var analysisResult in resultGroup)
                     {
-                        if (result.StartMonitorResult == null)
+                        if (analysisResult.StartMonitorResult == null)
                         {
                             continue;
                         }
 
-                        if (result.FinishMonitorResult != null)
+                        if (analysisResult.FinishMonitorResult != null)
                         {
                             continue;
                         }
 
-                        logMatch = this.AnalysisRegex.Match(result.StartMonitorResult.LogContent);
+                        monitorResult = analysisResult.StartMonitorResult;
+                        logMatch = this.AnalysisRegex.Match(monitorResult.LogContent);
                         if (logMatch.Success && logMatch.Groups["ResourceName"].Success)
                         {
                             resourceName = logMatch.Groups["ResourceName"].Value;
@@ -85,42 +89,41 @@ namespace xQuantLogFactory.BIZ.Analysiser
                                 double.TryParse(logMatch.Groups["Elapsed"].Value, out double elapsed))
                             {
                                 // 构建完整组
-                                result.FinishMonitorResult = result.StartMonitorResult;
-                                result.ElapsedMillisecond = elapsed;
+                                analysisResult.FinishMonitorResult = monitorResult;
+                                analysisResult.ElapsedMillisecond = elapsed;
                             }
 
-                            childMonitor.AnalysisResults.Add(result);
+                            // 匹配成功，迁移结果到子监视规则
+                            analysisResult.MonitorItem = childMonitor;
+                            childMonitor.AnalysisResults.Add(analysisResult);
+                            targetMonitor.AnalysisResults.Remove(analysisResult);
 
-                            // childMonitor.MonitorResults.Add(result.StartMonitorResult);
-                            // targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
-                            result.MonitorItem = childMonitor;
-                            result.StartMonitorResult.MonitorItem = childMonitor;
+                            monitorResult.MonitorItem = childMonitor;
+                            childMonitor.MonitorResults.Add(monitorResult);
+                            targetMonitor.MonitorResults.Remove(monitorResult);
                         }
+                        else
+                        {
+                            // 匹配失败，删除无效的结果
+                            LogDBContext.UnityDBContext.MonitorResults.Remove(monitorResult);
+                            LogDBContext.UnityDBContext.AnalysisResults.Remove(analysisResult);
 
-                        /* TODO: 无效的结果在落实数据库时无法正常删除
-                        if (result.StartMonitorResult != null)
-                        {
-                            result.StartMonitorResult.LogFile = null;
-                            result.StartMonitorResult.TaskArgument = null;
-                            result.StartMonitorResult.MonitorItem = null;
-                            result.StartMonitorResult.MonitorItem = null;
-                            targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
-                            argument.MonitorResults.Remove(result.StartMonitorResult);
+                            /*
+                            monitorResult.TaskArgument.MonitorResults.Remove(monitorResult);
+                            monitorResult.TaskArgument = null;
+                            monitorResult.MonitorItem.MonitorResults.Remove(monitorResult);
+                            monitorResult.MonitorItem = null;
+                            monitorResult.LogFile.MonitorResults.Remove(monitorResult);
+                            monitorResult.LogFile = null;
+
+                            analysisResult.TaskArgument.AnalysisResults.Remove(analysisResult);
+                            analysisResult.TaskArgument = null;
+                            analysisResult.MonitorItem.AnalysisResults.Remove(analysisResult);
+                            analysisResult.MonitorItem = null;
+                            analysisResult.LogFile.AnalysisResults.Remove(analysisResult);
+                            analysisResult.LogFile = null;
+                             */
                         }
-                        if (result.FinishMonitorResult != null)
-                        {
-                            result.FinishMonitorResult.LogFile = null;
-                            result.FinishMonitorResult.TaskArgument = null;
-                            result.FinishMonitorResult.MonitorItem = null;
-                            targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
-                            argument.MonitorResults.Remove(result.FinishMonitorResult);
-                        }
-                        result.TaskArgument = null;
-                        result.MonitorItem = null;
-                        result.LogFile = null;
-                        argument.AnalysisResults.Remove(result);
-                         */
-                        targetMonitor.AnalysisResults.Remove(result);
                     }
                 });
         }
