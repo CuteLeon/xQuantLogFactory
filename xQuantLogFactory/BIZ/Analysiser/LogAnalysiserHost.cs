@@ -82,6 +82,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 {
                     this.AddAnalysiser(new CommonLoadAnalysiser(this.Tracer));
                 }
+
+                if (monitorItems.Count(monitor => monitor.Analysiser == AnalysiserTypes.Settle) > 0)
+                {
+                    this.AddAnalysiser(new TradeSettleAnalysiser(this.Tracer));
+                }
             }
         }
 

@@ -10,6 +10,7 @@ using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.EqualityComparer;
 using xQuantLogFactory.Model.Extensions;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Trace;
@@ -24,7 +25,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <summary>
         /// 特殊表名列表
         /// </summary>
-        private static readonly string[] SpecialSheetNames = new string[] { "内存", "中间件日志", "分析" };
+        private static readonly string[] SpecialSheetNames = new string[] { "内存", "中间件日志", "分析", "交易清算" };
 
         public ExcelLogReportExporter(ITracer tracer)
             : base(tracer)
@@ -67,119 +68,13 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Subject = $"xQuant日志分析报告-{argument.TaskID}";
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
 
-                    // 按表名分组导出
-                    this.Tracer?.WriteLine("开始导出通用表数据 ...");
-                    foreach (var monitorGroup in argument.MonitorContainerRoot.GetMonitorItems().GroupBy(monitor => monitor.SheetName))
-                    {
-                        // 特殊表名单独处理
-                        if (SpecialSheetNames.Contains(monitorGroup.Key))
-                        {
-                            this.Tracer?.WriteLine($"表名 [{monitorGroup.Key}] 为保留表名，延迟导出 ...");
-                            continue;
-                        }
-
-                        ExcelWorksheet worksheet = excel.Workbook.Worksheets[monitorGroup.Key];
-                        if (worksheet == null)
-                        {
-                            this.Tracer?.WriteLine($"未发现名称为 {monitorGroup.Key} 的数据表，跳过导出 ...");
-                            continue;
-                        }
-
-                        this.Tracer?.WriteLine($"正在写入 {monitorGroup.Key} 表数据 ...");
-
-                        // 通用表列头格式需保持与原始数据表一致
-                        Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
-                        using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
-                        {
-                            // TODO: 分表导出如何分析执行序号：为监视规则设置属性，遇到即更新序号？
-                            int rowID = sheetRectangle.Top, executeID = 0;
-
-                            // 合并所有分析结果数据
-                            var analysiserResults = new List<GroupAnalysisResult>();
-                            monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
-                                .ForEach(resultList => analysiserResults.AddRange(resultList));
-
-                            foreach (var result in analysiserResults
-                                .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
-                            {
-                                if (result.MonitorItem != null)
-                                {
-                                    sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
-                                    sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
-                                }
-
-                                sourceRange[rowID, 3].Value = result.Version;
-                                sourceRange[rowID, 4].Value = executeID;
-                                sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
-                                sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                                sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                                sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
-                                sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
-
-                                rowID++;
-                            }
-                        }
-                    }
+                    // 导出通用表数据
+                    this.ExportCommonSheet(excel, argument);
 
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
-                    ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
-                    if (memoryDataSheet == null)
-                    {
-                        this.Tracer?.WriteLine("未发现内存数据表，写入失败！");
-                    }
-                    else
-                    {
-                        this.Tracer?.WriteLine("正在写入 内存 表数据 ...");
-                        Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
-                        using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
-                        {
-                            int rowID = memoryRectangle.Top;
-                            foreach (var result in argument.MonitorResults
-                                .Where(result => result.MemoryConsumed != null)
-                                .OrderBy(result => result.LogTime)
-                                .Distinct(new LogResultEqualityComparer<MonitorResult>()))
-                            {
-                                memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
-                                memoryRange[rowID, 2].Value = result.Version;
-                                memoryRange[rowID, 3].Value = result.Client;
-                                memoryRange[rowID, 4].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                                memoryRange[rowID, 5].Value = result.MemoryConsumed;
-                                memoryRange[rowID, 6].Value = result.GroupType.ToString();
-
-                                rowID++;
-                            }
-                        }
-                    }
-
-                    ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets["中间件日志"];
-                    if (middlewareDataSheet == null)
-                    {
-                        this.Tracer?.WriteLine("未发现中间件数据表，写入失败！");
-                    }
-                    else
-                    {
-                        this.Tracer?.WriteLine("正在写入 中间件日志 表数据 ...");
-                        Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
-                        using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
-                        {
-                            int rowID = middlewareRectangle.Top;
-                            foreach (var result in argument.MiddlewareResults
-                                .OrderBy(result => result.LogTime))
-                            {
-                                middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                                middlewareRange[rowID, 2].Value = result.Client;
-                                middlewareRange[rowID, 3].Value = result.UserCode;
-                                middlewareRange[rowID, 4].Value = result.StartTime;
-                                middlewareRange[rowID, 5].Value = result.Elapsed;
-                                middlewareRange[rowID, 6].Value = result.RequestURI;
-                                middlewareRange[rowID, 7].Value = result.MethodName;
-                                middlewareRange[rowID, 8].Value = result.StreamLength;
-                                middlewareRange[rowID, 9].Value = result.Message;
-
-                                rowID++;
-                            }
-                        }
-                    }
+                    this.ExportMemorySheet(excel, argument);
+                    this.ExportMiddlewareSheet(excel, argument);
+                    this.ExportTradeSettleSheet(excel, argument);
 
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
                     if (analysisSheet != null)
@@ -198,6 +93,197 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     excel.Save();
                     this.Tracer?.WriteLine("Excel 报告文档关闭");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出通用表数据
+        /// </summary>
+        /// <param name="excel">excel文档</param>
+        /// <param name="argument">任务</param>
+        public void ExportCommonSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            this.Tracer?.WriteLine("开始导出通用表数据 ...");
+            foreach (var monitorGroup in argument.MonitorContainerRoot.GetMonitorItems()
+                .GroupBy(monitor => monitor.SheetName))
+            {
+                // 特殊表名单独处理
+                if (SpecialSheetNames.Contains(monitorGroup.Key))
+                {
+                    this.Tracer?.WriteLine($"表名 [{monitorGroup.Key}] 为保留表名，延迟导出 ...");
+                    continue;
+                }
+
+                ExcelWorksheet worksheet = excel.Workbook.Worksheets[monitorGroup.Key];
+                if (worksheet == null)
+                {
+                    this.Tracer?.WriteLine($"未发现名称为 {monitorGroup.Key} 的数据表，跳过导出 ...");
+                    continue;
+                }
+
+                this.Tracer?.WriteLine($"正在写入 {monitorGroup.Key} 表数据 ...");
+
+                // 通用表列头格式需保持与原始数据表一致
+                Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
+                using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
+                {
+                    // TODO: 分表导出如何分析执行序号：为监视规则设置属性，遇到即更新序号？
+                    int rowID = sheetRectangle.Top, executeID = 0;
+
+                    // 合并所有分析结果数据
+                    var analysiserResults = new List<GroupAnalysisResult>();
+                    monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
+                        .ForEach(resultList => analysiserResults.AddRange(resultList));
+
+                    foreach (var result in analysiserResults
+                        .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
+                    {
+                        if (result.MonitorItem != null)
+                        {
+                            sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
+                            sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+                        }
+
+                        sourceRange[rowID, 3].Value = result.Version;
+                        sourceRange[rowID, 4].Value = executeID;
+                        sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
+                        sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
+                        sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
+
+                        rowID++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出内存数据表
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportMemorySheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
+            if (memoryDataSheet == null)
+            {
+                this.Tracer?.WriteLine($"未发现 内存 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine($"正在写入 内存 表数据 ...");
+                Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
+                using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
+                {
+                    int rowID = memoryRectangle.Top;
+                    foreach (var result in argument.MonitorResults
+                        .Where(result => result.MemoryConsumed != null)
+                        .OrderBy(result => result.LogTime)
+                        .Distinct(new LogResultEqualityComparer<MonitorResult>()))
+                    {
+                        memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
+                        memoryRange[rowID, 2].Value = result.Version;
+                        memoryRange[rowID, 3].Value = result.Client;
+                        memoryRange[rowID, 4].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        memoryRange[rowID, 5].Value = result.MemoryConsumed;
+                        memoryRange[rowID, 6].Value = result.GroupType.ToString();
+
+                        rowID++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出中间件日志表
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportMiddlewareSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets["中间件日志"];
+            if (middlewareDataSheet == null)
+            {
+                this.Tracer?.WriteLine("未发现 中间件日志 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine("正在写入 中间件日志 表数据 ...");
+                Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
+                using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
+                {
+                    int rowID = middlewareRectangle.Top;
+                    foreach (var result in argument.MiddlewareResults
+                        .OrderBy(result => result.LogTime))
+                    {
+                        middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        middlewareRange[rowID, 2].Value = result.Client;
+                        middlewareRange[rowID, 3].Value = result.UserCode;
+                        middlewareRange[rowID, 4].Value = result.StartTime;
+                        middlewareRange[rowID, 5].Value = result.Elapsed;
+                        middlewareRange[rowID, 6].Value = result.RequestURI;
+                        middlewareRange[rowID, 7].Value = result.MethodName;
+                        middlewareRange[rowID, 8].Value = result.StreamLength;
+                        middlewareRange[rowID, 9].Value = result.Message;
+
+                        rowID++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出交易清算表
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportTradeSettleSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet tradeSettleDataSheet = excel.Workbook.Worksheets["交易清算"];
+            if (tradeSettleDataSheet == null)
+            {
+                this.Tracer?.WriteLine("未发现 交易清算 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine("正在写入 交易清算 表数据 ...");
+                Rectangle tradeSettleRectangle = new Rectangle(1, 2, 9, argument.MonitorResults.Count);
+                using (ExcelRange tradeSettleRange = tradeSettleDataSheet.Cells[tradeSettleRectangle.Top, tradeSettleRectangle.Left, tradeSettleRectangle.Bottom - 1, tradeSettleRectangle.Right - 1])
+                {
+                    int rowID = tradeSettleRectangle.Top, executeID = 0;
+                    foreach (var result in argument.AnalysisResults
+                        .Where(result => result.MonitorItem.Analysiser == Model.Fixed.AnalysiserTypes.Settle)
+                        .OrderBy(result => (result.LogFile, result.LineNumber)))
+                    {
+                        tradeSettleRange[rowID, 1].Value = result.MonitorItem?.Name;
+                        tradeSettleRange[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
+                        tradeSettleRange[rowID, 3].Value = result.Version;
+                        tradeSettleRange[rowID, 4].Value = executeID;
+                        tradeSettleRange[rowID, 5].Value = result.ElapsedMillisecond;
+                        if (result.AnalysisDatas.TryGetValue(FixedDatas.QSRQ, out object qsrq))
+                        {
+                            tradeSettleRange[rowID, 6].Value = qsrq;
+                        }
+
+                        if (result.AnalysisDatas.TryGetValue(FixedDatas.DQZH, out object dqzh))
+                        {
+                            tradeSettleRange[rowID, 7].Value = dqzh;
+                        }
+
+                        if (result.AnalysisDatas.TryGetValue(FixedDatas.WBZH, out object wbzh))
+                        {
+                            tradeSettleRange[rowID, 8].Value = wbzh;
+                        }
+
+                        tradeSettleRange[rowID, 9].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        tradeSettleRange[rowID, 10].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        tradeSettleRange[rowID, 11].Value = result.LogFile?.RelativePath;
+                        tradeSettleRange[rowID, 12].Value = result.FirstResultOrDefault()?.LineNumber;
+
+                        rowID++;
+                    }
                 }
             }
         }

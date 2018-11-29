@@ -27,7 +27,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <summary>
         /// Gets or sets 加载日志内容正则
         /// </summary>
-        public Regex AnalysisRegex { get; protected set; } = new Regex(
+        public override Regex AnalysisRegex { get; protected set; } = new Regex(
             @"^加载(?<ResourceName>[a-zA-Z_]+)：(?<Elapsed>\d*)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 

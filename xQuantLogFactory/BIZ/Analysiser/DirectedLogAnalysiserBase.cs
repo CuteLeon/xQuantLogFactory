@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils.Trace;
@@ -18,6 +19,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
             : base(tracer)
         {
         }
+
+        /// <summary>
+        /// Gets or sets 分析器正则表达式
+        /// </summary>
+        public virtual Regex AnalysisRegex { get; protected set; }
 
         /// <summary>
         /// 尝试获取或新建子监视规则
