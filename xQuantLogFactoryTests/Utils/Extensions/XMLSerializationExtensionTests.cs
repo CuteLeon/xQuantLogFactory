@@ -80,7 +80,6 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             Assert.AreEqual("内存", container.MonitorTreeRoots[1].SheetName);
             Assert.AreEqual(AnalysiserTypes.Load, container.MonitorTreeRoots[0].MonitorTreeRoots[0].Analysiser);
 
-            Assert.AreSame(container, container.MonitorTreeRoots[0].ParentMonitorContainer);
             Assert.AreSame(null, container.MonitorTreeRoots[0].ParentMonitorItem);
             Assert.AreSame(container.MonitorTreeRoots[0], container.MonitorTreeRoots[0].MonitorTreeRoots[0].ParentMonitorItem);
         }

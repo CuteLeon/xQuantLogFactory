@@ -16,6 +16,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.Tests
         {
             MonitorItem rootItem = new MonitorItem();
             rootItem.MonitorTreeRoots.Add(new MonitorItem("已存在的规则"));
+            rootItem.MonitorTreeRoots[0].BindParentMonitor(rootItem);
 
             CommonPrefixAnalysiser analysiser = new CommonPrefixAnalysiser();
 

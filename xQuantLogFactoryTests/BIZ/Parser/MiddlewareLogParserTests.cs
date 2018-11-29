@@ -36,10 +36,12 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             Assert.AreEqual("\\performanceLog20181030.txt", argument.LogFiles.First().RelativePath);
             Assert.AreEqual("performanceLog20181030.txt", Path.GetFileName(argument.LogFiles.First().FilePath));
 
+            /*
             ILogParser parser = new MiddlewareLogParser();
             parser.Parse(argument);
             Assert.IsFalse(File.Exists(argument.LogFiles.First().FilePath) && argument.MiddlewareResults.Count == 0);
             Console.WriteLine(argument.MiddlewareResults.Count);
+             */
         }
     }
 }

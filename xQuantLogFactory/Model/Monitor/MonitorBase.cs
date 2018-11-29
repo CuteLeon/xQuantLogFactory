@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-using xQuantLogFactory.Utils;
-
 namespace xQuantLogFactory.Model.Monitor
 {
     public abstract class MonitorBase : IMonitor
@@ -14,12 +12,6 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlAttribute("Name")]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets 父级监视规则容器
-        /// </summary>
-        [XmlIgnore]
-        public virtual MonitorContainer ParentMonitorContainer { get; set; }
 
         /// <summary>
         /// Gets or sets 监控项目树根节点列表
@@ -63,48 +55,6 @@ namespace xQuantLogFactory.Model.Monitor
                     break;
                 }
             }
-        }
-
-        /// <summary>
-        /// 初始化监视规则树
-        /// </summary>
-        public void InitMonitorTree()
-        {
-            // 初始化当前节点的第一层子节点
-            this.MonitorTreeRoots.ForEach(childMonitor =>
-            {
-                if (string.IsNullOrEmpty(childMonitor.SheetName))
-                {
-                    childMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
-                }
-
-                childMonitor.ParentMonitorContainer = this.ParentMonitorContainer;
-            });
-
-            this.ScanMonitor(
-                (rootStack, currentMonitor) =>
-                {
-                    currentMonitor.MonitorTreeRoots
-                    .AsEnumerable().Reverse()
-                    .ToList().ForEach(monitor =>
-                      {
-                          // TODO: [提醒] 监视规则树初始化代码放置此处
-
-                          // 初始化表名
-                          monitor.SheetName = currentMonitor.SheetName;
-
-                          // 初始化父级节点关系
-                          monitor.ParentMonitorContainer = currentMonitor.ParentMonitorContainer;
-                          monitor.ParentMonitorItem = currentMonitor;
-
-                          // 包含子节点的节点继续入栈
-                          if (monitor.HasChildren)
-                          {
-                              rootStack.Push(monitor);
-                          }
-                      });
-                },
-                null);
         }
 
         /// <summary>

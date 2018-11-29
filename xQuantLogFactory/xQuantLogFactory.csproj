@@ -96,7 +96,7 @@
     </Compile>
     <Compile Include="Model\Factory\GUITaskArgumentFactory.cs" />
     <Compile Include="Model\Factory\ITaskArgumentFactory.cs" />
-    <Compile Include="Model\Fixed\Consts.cs" />
+    <Compile Include="Model\Fixed\FixedDatas.cs" />
     <Compile Include="Model\Fixed\Enums.cs" />
     <Compile Include="Model\Monitor\MonitorBase.cs" />
     <Compile Include="Model\Result\GroupAnalysisResult.cs" />

@@ -38,16 +38,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 if (childMonitor == null)
                 {
                     childMonitor = new MonitorItem(childMonitorName);
-                    parentMonitor.MonitorTreeRoots.Add(childMonitor);
-                }
 
-                if (childMonitor.ParentMonitorItem == null)
-                {
-                    childMonitor.ParentMonitorItem = parentMonitor;
+                    // 绑定父节点并复制父节点配置信息
+                    childMonitor.BindParentMonitor(parentMonitor, true);
                 }
-
-                // 复制父节点配置信息
-                childMonitor.CopyPropertyFromParent();
 
                 return childMonitor;
             }

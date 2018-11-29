@@ -91,17 +91,37 @@ namespace xQuantLogFactory.Model.Monitor
         #region 方法
 
         /// <summary>
-        /// 复制父级属性
+        /// 绑定父级节点
         /// </summary>
-        public void CopyPropertyFromParent()
+        /// <param name="parentMonitor">父级节点</param>
+        /// <param name="createNew">是否为新建子节点，为true时将会赋值更多父级节点的配置</param>
+        public void BindParentMonitor(MonitorItem parentMonitor, bool createNew = false)
         {
             // TODO: [提醒] 需要复制父节点配置信息
-            if (this.ParentMonitorItem != null)
+            this.ParentMonitorItem = parentMonitor ?? throw new ArgumentNullException(nameof(parentMonitor));
+
+            if (this.ParentMonitorItem.Analysiser != AnalysiserTypes.None &&
+                this.Analysiser == AnalysiserTypes.None)
             {
-                this.StartPattern = this.ParentMonitorItem.StartPattern;
-                this.FinishPatterny = this.ParentMonitorItem.FinishPatterny;
-                this.SheetName = this.ParentMonitorItem.SheetName;
-                this.Memory = this.ParentMonitorItem.Memory;
+                this.Analysiser = this.ParentMonitorItem.Analysiser;
+            }
+
+            this.SheetName = this.ParentMonitorItem.SheetName;
+            this.Memory = this.ParentMonitorItem.Memory;
+
+            if (createNew)
+            {
+                if (string.IsNullOrEmpty(this.StartPattern))
+                {
+                    this.StartPattern = this.ParentMonitorItem.StartPattern;
+                }
+
+                if (string.IsNullOrEmpty(this.FinishPatterny))
+                {
+                    this.FinishPatterny = this.ParentMonitorItem.FinishPatterny;
+                }
+
+                parentMonitor.MonitorTreeRoots.Add(this);
             }
         }
 

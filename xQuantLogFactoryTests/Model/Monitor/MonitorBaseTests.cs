@@ -73,7 +73,6 @@ namespace xQuantLogFactory.Model.Monitor.Tests
 
             // 初始化树
             container.InitMonitorTree();
-            Assert.AreSame(container, A.ParentMonitorContainer);
             Assert.AreSame(A, D.ParentMonitorItem);
 
             string result = string.Join("-", container.GetMonitorItems().Select(monitor => monitor.Name));
