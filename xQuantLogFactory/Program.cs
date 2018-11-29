@@ -9,15 +9,12 @@ using xQuantLogFactory.BIZ.Analysiser;
 using xQuantLogFactory.BIZ.Exporter;
 using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
-using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
-
-// TODO: [ORM] 去除 ORM
 
 // TODO: [全局任务] 移除和排除 using
 // TODO: [全局任务] 编写单元测试
@@ -29,16 +26,6 @@ namespace xQuantLogFactory
         /// 全局任务参数
         /// </summary>
         public static volatile TaskArgument UnityTaskArgument = null;
-
-        /// <summary>
-        /// 全局数据库交互对象
-        /// </summary>
-        public static LogDBContext UnityDBContext = LogDBContext.UnityDBContext;
-
-        /// <summary>
-        /// SQL追踪器
-        /// </summary>
-        public static ITracer SQLTrace = new SQLTracer();
 
         /// <summary>
         /// 全局追踪器
@@ -57,37 +44,6 @@ namespace xQuantLogFactory
             UnityTrace.WriteLine($"{Console.Title} 已启动...");
             UnityTrace.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
 
-#if DEBUG
-            // 输出SQL日志
-            // UnityDBContext.Database.Log = SQLTrace.WriteLine;
-#endif
-
-#if !DEBUG
-            UnityTaskArgument = UnityDBContext.TaskArguments.OrderByDescending(task => task.TaskStartTime).FirstOrDefault();
-            if (UnityTaskArgument == null)
-            {
-                Console.WriteLine("未在数据库返回任务对象，请切换 [DEBUG] 状态完成一次任务！");
-                Exit(int.MaxValue - 1);
-            }
-            //手动加载导航数据
-            if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.MonitorRoot).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument.MonitorRoot).Collection(monitorRoot => monitorRoot.MonitorTreeRoots).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.LogFiles).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MonitorResults).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.AnalysisResults).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Collection(argument => argument.MiddlewareResults).Load();
-            if (!UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).IsLoaded)
-                UnityDBContext.Entry(UnityTaskArgument).Reference(argument => argument.SystemInfo).Load();
-
-            UnityTaskArgument.TaskStartTime = DateTime.Now;
-            UnityTrace.WriteLine("当前任务参数信息：\n————————\n{0}\n————————", UnityTaskArgument);
-#else
             UnityTrace.WriteLine("开始创建任务参数对象...");
             CreateTaskArgument(args);
 
@@ -127,11 +83,9 @@ namespace xQuantLogFactory
 
             UnityTrace.WriteLine("开始分析日志解析结果...");
             AnalysisLog();
-#endif
             ShowAnalysisResult();
 
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
-            //UnityDBContext.SaveChanges();
             TryToExportLogReport();
             SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
 
@@ -167,7 +121,6 @@ namespace xQuantLogFactory
             if (logFiles.Count() > 0)
             {
                 UnityTaskArgument.LogFiles.AddRange(logFiles);
-                //UnityDBContext.SaveChanges();
             }
 
             if (UnityTaskArgument.LogFiles.Count == 0)
@@ -203,7 +156,6 @@ namespace xQuantLogFactory
             if (monitorContainer != null)
             {
                 UnityTaskArgument.MonitorContainerRoot = monitorContainer;
-                //UnityDBContext.SaveChanges();
             }
             else
             {
@@ -250,8 +202,6 @@ namespace xQuantLogFactory
                 throw new ArgumentException("创建任务失败！");
             }
 
-            UnityDBContext.TaskArguments.Add(UnityTaskArgument);
-            //UnityDBContext.SaveChanges();
             UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
         }
 
@@ -298,7 +248,6 @@ namespace xQuantLogFactory
         {
             SystemInfo systemInfo = new SystemInfo();
             UnityTaskArgument.SystemInfo = systemInfo;
-            //UnityDBContext.SaveChanges();
             ShowSystemInfo();
         }
 
@@ -317,11 +266,6 @@ namespace xQuantLogFactory
 
                 ILogParser clientLogParser = new ClientLogParser(UnityTrace);
                 clientLogParser.Parse(UnityTaskArgument);
-
-                lock (UnityDBContext)
-                {
-                    //UnityDBContext.SaveChanges();
-                }
 
                 UnityTrace.WriteLine(
                     "[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
@@ -343,11 +287,6 @@ namespace xQuantLogFactory
                 ILogParser serverLogParser = new ServerLogParser(UnityTrace);
                 serverLogParser.Parse(UnityTaskArgument);
 
-                lock (UnityDBContext)
-                {
-                    //UnityDBContext.SaveChanges();
-                }
-
                 UnityTrace.WriteLine(
                     "[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
@@ -368,11 +307,6 @@ namespace xQuantLogFactory
                 ILogParser middlewareLogParser = new MiddlewareLogParser(UnityTrace);
                 middlewareLogParser.Parse(UnityTaskArgument);
 
-                lock (UnityDBContext)
-                {
-                    //UnityDBContext.SaveChanges();
-                }
-
                 UnityTrace.WriteLine(
                     "[中间件] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个结果\n————————",
                     UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Middleware && file.MiddlewareResults.Count > 0),
@@ -390,22 +324,12 @@ namespace xQuantLogFactory
         private static void AnalysisLog()
         {
             // 分析结果前先清空分析结果
-            UnityDBContext.AnalysisResults.RemoveRange(UnityTaskArgument.AnalysisResults);
             UnityTaskArgument.AnalysisResults.Clear();
             UnityTaskArgument.LogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
             UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().ToList().ForEach(monitor => monitor.AnalysisResults.Clear());
-            lock (UnityDBContext)
-            {
-                //UnityDBContext.SaveChanges();
-            }
 
             LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTrace);
             logAnalysiserHost.Analysis(UnityTaskArgument);
-
-            lock (UnityDBContext)
-            {
-                //UnityDBContext.SaveChanges();
-            }
         }
 
         #endregion
@@ -560,10 +484,7 @@ namespace xQuantLogFactory
                  UnityTaskArgument.TaskFinishTime == null))
             {
                 UnityTaskArgument.TaskFinishTime = DateTime.Now;
-                //UnityDBContext.SaveChanges();
             }
-
-            UnityDBContext.Dispose();
 
             GC.Collect();
 

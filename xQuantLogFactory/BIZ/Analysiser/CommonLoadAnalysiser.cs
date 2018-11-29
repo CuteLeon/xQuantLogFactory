@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using xQuantLogFactory.DAL;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
@@ -72,7 +71,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         if (logMatch.Success && logMatch.Groups["ResourceName"].Success)
                         {
                             resourceName = logMatch.Groups["ResourceName"].Value;
-                            childMonitorName = $"{targetMonitor.Name}-{resourceName}";
+                            childMonitorName = $"加载>{resourceName}";
 
                             childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
 
@@ -96,30 +95,13 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         else
                         {
                             // 匹配失败，删除无效的结果
-                            /* TODO: [ORM] 耗时严重
-                             * 分析器 Host 增加前序分析器列表，此列表内的分析器将早于 Host 分析算法执行，并将处理后的监视结果标记状态，Host 不再处理被标记的监视结果
-                             * 但仍需删除无效的监视结果，是否耗时严重？
-                             */
-                            /*
-                            LogDBContext.UnityDBContext.MonitorResults.Remove(monitorResult);
-                            LogDBContext.UnityDBContext.AnalysisResults.Remove(analysisResult);
-                             */
-
-                            /*
                             monitorResult.TaskArgument.MonitorResults.Remove(monitorResult);
                             monitorResult.MonitorItem.MonitorResults.Remove(monitorResult);
                             monitorResult.LogFile.MonitorResults.Remove(monitorResult);
-                            monitorResult.TaskArgument = null;
-                            monitorResult.MonitorItem = null;
-                            monitorResult.LogFile = null;
 
                             analysisResult.TaskArgument.AnalysisResults.Remove(analysisResult);
                             analysisResult.MonitorItem.AnalysisResults.Remove(analysisResult);
                             analysisResult.LogFile.AnalysisResults.Remove(analysisResult);
-                            analysisResult.TaskArgument = null;
-                            analysisResult.MonitorItem = null;
-                            analysisResult.LogFile = null;
-                             */
                         }
                     }
                 });

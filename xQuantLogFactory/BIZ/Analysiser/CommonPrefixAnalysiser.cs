@@ -44,7 +44,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     MonitorItem childMonitor = null;
                     MonitorResult firstResult = null;
                     string customeData = string.Empty;
-                    string childMonitorName = string.Empty;
 
                     foreach (var result in resultGroup)
                     {
@@ -54,10 +53,8 @@ namespace xQuantLogFactory.BIZ.Analysiser
                             continue;
                         }
 
-                        customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length);
-                        childMonitorName = $"{targetMonitor.Name}-{customeData}";
-
-                        childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, childMonitorName);
+                        customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length).Trim();
+                        childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, customeData);
 
                         targetMonitor.AnalysisResults.Remove(result);
                         childMonitor.AnalysisResults.Add(result);
@@ -66,18 +63,14 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         if (result.StartMonitorResult != null)
                         {
                             result.StartMonitorResult.MonitorItem = childMonitor;
-
-                            // TODO [ORM] EF6框架帮我们完成了这部分
-                            // childMonitor.MonitorResults.Add(result.StartMonitorResult);
-                            // targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
+                            childMonitor.MonitorResults.Add(result.StartMonitorResult);
+                            targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
                         }
                         if (result.FinishMonitorResult != null)
                         {
                             result.FinishMonitorResult.MonitorItem = childMonitor;
-
-                            // TODO [ORM] EF6框架帮我们完成了这部分
-                            // childMonitor.MonitorResults.Add(result.FinishMonitorResult);
-                            // targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
+                            childMonitor.MonitorResults.Add(result.FinishMonitorResult);
+                            targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
                         }
                     }
                 });

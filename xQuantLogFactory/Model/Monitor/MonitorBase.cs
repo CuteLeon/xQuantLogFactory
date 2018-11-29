@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Serialization;
 
@@ -37,22 +34,18 @@ namespace xQuantLogFactory.Model.Monitor
         /// Gets or sets 项目名称
         /// </summary>
         [XmlAttribute("Name")]
-        [DisplayName("项目名称")]
-        [DataType(DataType.Text)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets 监控项目树根节点列表
         /// </summary>
         [XmlElement("Item")]
-        [DisplayName("监控规则列表")]
         public virtual List<MonitorItem> MonitorTreeRoots { get; set; } = new List<MonitorItem>();
 
         /// <summary>
         /// Gets a value indicating whether 是否有子监控项目
         /// </summary>
         [XmlIgnore]
-        [NotMapped]
         public bool HasChildren => this.MonitorTreeRoots != null && this.MonitorTreeRoots.Count > 0;
 
         /// <summary>
