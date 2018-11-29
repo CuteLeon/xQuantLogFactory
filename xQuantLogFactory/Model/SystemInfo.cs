@@ -8,11 +8,6 @@ namespace xQuantLogFactory.Model
     public class SystemInfo
     {
         /// <summary>
-        /// Gets or sets 系统信息ID
-        /// </summary>
-        public int SystemInfoID { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether 是否为64位系统
         /// </summary>
         public bool Is64BitOperatingSystem { get; set; } = Environment.Is64BitOperatingSystem;

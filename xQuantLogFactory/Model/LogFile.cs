@@ -44,11 +44,6 @@ namespace xQuantLogFactory.Model
         }
 
         /// <summary>
-        /// Gets or sets 日志文件ID
-        /// </summary>
-        public int FileID { get; set; }
-
-        /// <summary>
         /// Gets or sets 日志文件路径
         /// </summary>
         public string FilePath { get; set; }

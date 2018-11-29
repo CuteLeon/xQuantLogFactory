@@ -29,11 +29,6 @@ namespace xQuantLogFactory.Model.Result
     public abstract class LogResultBase
     {
         /// <summary>
-        /// Gets or sets 解析结果ID
-        /// </summary>
-        public int ResultID { get; set; }
-
-        /// <summary>
         /// Gets or sets 任务参数
         /// </summary>
         public TaskArgument TaskArgument { get; set; }

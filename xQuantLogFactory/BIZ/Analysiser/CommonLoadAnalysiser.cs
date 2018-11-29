@@ -56,12 +56,8 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                     foreach (var analysisResult in resultGroup)
                     {
-                        if (analysisResult.StartMonitorResult == null)
-                        {
-                            continue;
-                        }
-
-                        if (analysisResult.FinishMonitorResult != null)
+                        if (analysisResult.StartMonitorResult == null ||
+                            analysisResult.FinishMonitorResult != null)
                         {
                             continue;
                         }

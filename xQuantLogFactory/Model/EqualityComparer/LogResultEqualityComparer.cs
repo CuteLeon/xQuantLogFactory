@@ -14,7 +14,10 @@ namespace xQuantLogFactory.Model.EqualityComparer
         public bool Equals(T x, T y)
         {
             return
-                x.LogFile?.FileID == y.LogFile?.FileID &&
+                string.Equals(
+                    x.LogFile?.FilePath,
+                    y.LogFile?.FilePath,
+                    System.StringComparison.OrdinalIgnoreCase) &&
                 x.LineNumber == y.LineNumber;
         }
 

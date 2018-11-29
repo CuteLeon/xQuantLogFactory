@@ -34,7 +34,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 throw new ArgumentNullException(nameof(argument));
             }
 
-            //TODO: 改写为搜索 监视规则 并按监视规则分组，处理监视规则的分析结果
             argument.AnalysisResults
                 .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Prefix)
                 .GroupBy(result => result.MonitorItem)
@@ -45,9 +44,9 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     MonitorResult firstResult = null;
                     string customeData = string.Empty;
 
-                    foreach (var result in resultGroup)
+                    foreach (var analysisResult in resultGroup)
                     {
-                        firstResult = result.FirstResultOrDefault();
+                        firstResult = analysisResult.FirstResultOrDefault();
                         if (firstResult == null)
                         {
                             continue;
@@ -56,21 +55,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length).Trim();
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, customeData);
 
-                        targetMonitor.AnalysisResults.Remove(result);
-                        childMonitor.AnalysisResults.Add(result);
-                        result.MonitorItem = childMonitor;
+                        targetMonitor.AnalysisResults.Remove(analysisResult);
+                        childMonitor.AnalysisResults.Add(analysisResult);
+                        analysisResult.MonitorItem = childMonitor;
 
-                        if (result.StartMonitorResult != null)
+                        if (analysisResult.StartMonitorResult != null)
                         {
-                            result.StartMonitorResult.MonitorItem = childMonitor;
-                            childMonitor.MonitorResults.Add(result.StartMonitorResult);
-                            targetMonitor.MonitorResults.Remove(result.StartMonitorResult);
+                            analysisResult.StartMonitorResult.MonitorItem = childMonitor;
+                            childMonitor.MonitorResults.Add(analysisResult.StartMonitorResult);
+                            targetMonitor.MonitorResults.Remove(analysisResult.StartMonitorResult);
                         }
-                        if (result.FinishMonitorResult != null)
+                        if (analysisResult.FinishMonitorResult != null)
                         {
-                            result.FinishMonitorResult.MonitorItem = childMonitor;
-                            childMonitor.MonitorResults.Add(result.FinishMonitorResult);
-                            targetMonitor.MonitorResults.Remove(result.FinishMonitorResult);
+                            analysisResult.FinishMonitorResult.MonitorItem = childMonitor;
+                            childMonitor.MonitorResults.Add(analysisResult.FinishMonitorResult);
+                            targetMonitor.MonitorResults.Remove(analysisResult.FinishMonitorResult);
                         }
                     }
                 });

@@ -15,17 +15,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.Tests
         public void TryGetOrAddChildMonitorTest()
         {
             MonitorItem rootItem = new MonitorItem();
-            rootItem.MonitorTreeRoots.Add(new MonitorItem("已存在的规则") { ItemID = 10 });
+            rootItem.MonitorTreeRoots.Add(new MonitorItem("已存在的规则"));
 
             CommonPrefixAnalysiser analysiser = new CommonPrefixAnalysiser();
 
             MonitorItem item_0 = analysiser.TryGetOrAddChildMonitor(rootItem, "已存在的规则");
-            Assert.AreEqual(10, item_0.ItemID);
+            Assert.AreEqual("已存在的规则", item_0.Name);
             Assert.AreEqual(rootItem, item_0.ParentMonitorItem);
             Assert.AreEqual(1, rootItem.MonitorTreeRoots.Count);
 
             MonitorItem item_1 = analysiser.TryGetOrAddChildMonitor(rootItem, "不存在的规则");
-            Assert.AreEqual(0, item_1.ItemID);
+            Assert.AreEqual("不存在的规则", item_1.Name);
             Assert.AreEqual(rootItem, item_1.ParentMonitorItem);
             Assert.AreEqual(2, rootItem.MonitorTreeRoots.Count);
         }

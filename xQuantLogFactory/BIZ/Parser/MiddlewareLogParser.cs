@@ -43,7 +43,7 @@ namespace xQuantLogFactory.BIZ.Parser
             // 遍历文件
             argument.LogFiles.Where(file => file.LogFileType == LogFileTypes.Middleware).AsParallel().ForAll(logFile =>
             {
-                this.Tracer?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
+                this.Tracer?.WriteLine($"开始解析日志文件：(ID: {logFile.RelativePath}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
 
                 FileStream fileStream = null;
                 StreamReader streamRreader = null;
@@ -138,11 +138,11 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    this.Tracer?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成：{logFile.MiddlewareResults.Count} 个结果\n————————");
+                    this.Tracer?.WriteLine($"当前日志文件(ID: {logFile.RelativePath})解析完成：{logFile.MiddlewareResults.Count} 个结果\n————————");
                 }
                 catch (Exception ex)
                 {
-                    this.Tracer?.WriteLine($"解析中间件日志文件(ID: {logFile.FileID}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
+                    this.Tracer?.WriteLine($"解析中间件日志文件(ID: {logFile.RelativePath}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
                 }
                 finally
                 {

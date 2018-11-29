@@ -100,7 +100,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                                 .ForEach(resultList => analysiserResults.AddRange(resultList));
 
                             foreach (var result in analysiserResults
-                                .OrderBy(result => (result.LogFile?.FileID, result.LineNumber)))
+                                .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
                             {
                                 if (result.MonitorItem != null)
                                 {

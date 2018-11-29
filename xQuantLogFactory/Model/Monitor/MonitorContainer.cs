@@ -10,10 +10,5 @@ namespace xQuantLogFactory.Model.Monitor
     [XmlRoot("MonitorRoot")]
     public class MonitorContainer : MonitorBase
     {
-        /// <summary>
-        /// Gets or sets 监视规则容器ID
-        /// </summary>
-        [XmlIgnore]
-        public int ContainerID { get; set; }
     }
 }

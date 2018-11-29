@@ -86,7 +86,7 @@ namespace xQuantLogFactory.BIZ.Parser
             // 遍历文件
             this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
-                this.Tracer?.WriteLine($"开始解析日志文件：(ID: {logFile.FileID}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
+                this.Tracer?.WriteLine($"开始解析日志文件：(ID: {logFile.RelativePath}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
 
                 FileStream fileStream = null;
                 StreamReader streamRreader = null;
@@ -190,7 +190,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                     result.MemoryConsumed = memoryCache;
                                 }
 
-                                this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.FileID} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
+                                this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.RelativePath} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }
                         }
                         else
@@ -199,11 +199,11 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    this.Tracer?.WriteLine($"当前日志文件(ID: {logFile.FileID})解析完成\n————————");
+                    this.Tracer?.WriteLine($"当前日志文件(ID: {logFile.RelativePath})解析完成\n————————");
                 }
                 catch (Exception ex)
                 {
-                    this.Tracer?.WriteLine($"解析日志文件(ID: {logFile.FileID}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
+                    this.Tracer?.WriteLine($"解析日志文件(ID: {logFile.RelativePath}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
                 }
                 finally
                 {

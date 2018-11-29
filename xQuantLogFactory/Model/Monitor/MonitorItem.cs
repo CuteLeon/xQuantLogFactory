@@ -23,12 +23,6 @@ namespace xQuantLogFactory.Model.Monitor
         #region 数据库字段
 
         /// <summary>
-        /// Gets or sets 监视规则ID
-        /// </summary>
-        [XmlIgnore]
-        public int ItemID { get; set; }
-
-        /// <summary>
         /// Gets or sets 起始匹配模式
         /// </summary>
         [XmlAttribute("Begin")]

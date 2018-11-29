@@ -27,11 +27,6 @@ namespace xQuantLogFactory.Model.Result
         }
 
         /// <summary>
-        /// Gets or sets 分析结果ID
-        /// </summary>
-        public int ResultID { get; set; }
-
-        /// <summary>
         /// Gets or sets 任务参数
         /// </summary>
         public TaskArgument TaskArgument { get; set; }
