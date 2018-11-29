@@ -64,7 +64,10 @@ namespace xQuantLogFactory.BIZ.Parser
 
                         // 获取日志行
                         logLine = streamRreader.ReadLine();
-                        match = this.GeneralLogRegex.Match(logLine);
+                        lock (this.GeneralLogRegex)
+                        {
+                            match = this.GeneralLogRegex.Match(logLine);
+                        }
                         if (match.Success)
                         {
                             // 跳过日志时间在任务时间范围外的日志行

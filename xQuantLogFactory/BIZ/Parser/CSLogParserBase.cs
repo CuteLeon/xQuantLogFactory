@@ -58,7 +58,11 @@ namespace xQuantLogFactory.BIZ.Parser
                 return 0.0;
             }
 
-            Match memoryMatch = this.MemoryRegex.Match(logContent);
+            Match memoryMatch = null;
+            lock (this.MemoryRegex)
+            {
+                memoryMatch = this.MemoryRegex.Match(logContent);
+            }
 
             if (memoryMatch.Success &&
                 memoryMatch.Groups["Memory"].Success &&
@@ -104,7 +108,11 @@ namespace xQuantLogFactory.BIZ.Parser
                     Match particularMatch = null;
 
                     // 缓存变量，减少树扫描次数，需要 .ToList()
-                    List<MonitorItem> monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
+                    List<MonitorItem> monitorItems = null;
+                    lock (argument.MonitorContainerRoot)
+                    {
+                        monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
+                    }
 
                     while (!streamRreader.EndOfStream)
                     {
@@ -113,7 +121,10 @@ namespace xQuantLogFactory.BIZ.Parser
 
                         // 获取日志行
                         logLine = streamRreader.ReadLine();
-                        generalMatch = this.GeneralLogRegex.Match(logLine);
+                        lock (this.GeneralLogRegex)
+                        {
+                            generalMatch = this.GeneralLogRegex.Match(logLine);
+                        }
                         if (generalMatch.Success)
                         {
                             // 跳过未匹配到内容的日志行
@@ -145,11 +156,14 @@ namespace xQuantLogFactory.BIZ.Parser
 
                             logContent = generalMatch.Groups["LogContent"].Value;
                             logLevel = generalMatch.Groups["LogLevel"].Success ? generalMatch.Groups["LogLevel"].Value : string.Empty;
-
+                            
                             // 精确匹配
                             if (this.ParticularRegex != null)
                             {
-                                particularMatch = this.ParticularRegex.Match(logContent);
+                                lock (this.ParticularRegex)
+                                {
+                                    particularMatch = this.ParticularRegex.Match(logContent);
+                                }
                                 if (particularMatch.Success && particularMatch.Groups["LogContent"].Success)
                                 {
                                     logContent = particularMatch.Groups["LogContent"].Value;
