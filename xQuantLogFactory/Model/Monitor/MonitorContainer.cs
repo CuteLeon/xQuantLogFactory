@@ -10,5 +10,10 @@ namespace xQuantLogFactory.Model.Monitor
     [XmlRoot("MonitorRoot")]
     public class MonitorContainer : MonitorBase
     {
+        public MonitorContainer()
+        {
+            // 容器禁止嵌套，容器的父级容器为自己
+            this.ParentMonitorContainer = this;
+        }
     }
 }

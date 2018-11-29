@@ -1,8 +1,9 @@
-﻿using xQuantLogFactory.Model.Factory;
+﻿using System;
 using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+
+using xQuantLogFactory.Model.Fixed;
 
 namespace xQuantLogFactory.Model.Factory.Tests
 {

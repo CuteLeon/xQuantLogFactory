@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Fixed;
 
 namespace xQuantLogFactory.BIZ.Parser.Tests
 {

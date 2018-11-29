@@ -1,4 +1,5 @@
-﻿using xQuantLogFactory.Model.Monitor;
+﻿using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
 {

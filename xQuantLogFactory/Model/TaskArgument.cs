@@ -1,38 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model
 {
-    /// <summary>
-    /// 日志分析报告输出模式
-    /// </summary>
-    public enum ReportModes
-    {
-        /// <summary>
-        /// 生成HTML
-        /// </summary>
-        [AmbientValue("html")]
-        HTML = 1,
-
-        /// <summary>
-        /// 生成Word
-        /// </summary>
-        [AmbientValue("doc")]
-        Word = 2,
-
-        /// <summary>
-        /// 生成Excel
-        /// </summary>
-        [AmbientValue("xlsx")]
-        Excel = 3
-    }
-
     /// <summary>
     /// 任务配置参数
     /// </summary>

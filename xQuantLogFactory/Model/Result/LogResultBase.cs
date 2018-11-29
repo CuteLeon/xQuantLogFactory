@@ -3,27 +3,6 @@
 namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
-    /// 组匹配类型
-    /// </summary>
-    public enum GroupTypes
-    {
-        /// <summary>
-        /// 未匹配
-        /// </summary>
-        Unmatch = 0,
-
-        /// <summary>
-        /// 开始匹配
-        /// </summary>
-        Start = 1,
-
-        /// <summary>
-        /// 结束匹配
-        /// </summary>
-        Finish = 2,
-    }
-
-    /// <summary>
     /// 日志解析结果抽象类
     /// </summary>
     public abstract class LogResultBase

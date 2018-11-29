@@ -4,6 +4,7 @@ using System.Linq;
 
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
@@ -72,12 +73,12 @@ namespace xQuantLogFactory.BIZ.Analysiser
             var monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
             if (monitorItems.Count > 0)
             {
-                if (monitorItems.Count(monitor => monitor.Analysiser == Model.Monitor.AnalysiserTypes.Prefix) > 0)
+                if (monitorItems.Count(monitor => monitor.Analysiser == AnalysiserTypes.Prefix) > 0)
                 {
                     this.AddAnalysiser(new CommonPrefixAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Count(monitor => monitor.Analysiser == Model.Monitor.AnalysiserTypes.Load) > 0)
+                if (monitorItems.Count(monitor => monitor.Analysiser == AnalysiserTypes.Load) > 0)
                 {
                     this.AddAnalysiser(new CommonLoadAnalysiser(this.Tracer));
                 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Factory

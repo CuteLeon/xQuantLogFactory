@@ -1,30 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.Model
 {
-    /// <summary>
-    /// 日志文件类型
-    /// </summary>
-    public enum LogFileTypes
-    {
-        /// <summary>
-        /// 客户端日志文件
-        /// </summary>
-        Client = 1,
-
-        /// <summary>
-        /// 服务端日志文件
-        /// </summary>
-        Server = 2,
-
-        /// <summary>
-        /// 中间件日志
-        /// </summary>
-        Middleware = 3,
-    }
-
     /// <summary>
     /// 日志文件
     /// </summary>

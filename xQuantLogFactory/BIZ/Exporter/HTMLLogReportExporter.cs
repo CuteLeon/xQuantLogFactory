@@ -5,6 +5,7 @@ using System.Text;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 

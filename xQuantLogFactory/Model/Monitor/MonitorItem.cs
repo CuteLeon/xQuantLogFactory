@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
 
@@ -57,12 +58,6 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlIgnore]
         public virtual MonitorItem ParentMonitorItem { get; set; }
-
-        /// <summary>
-        /// Gets or sets 父级监视规则容器
-        /// </summary>
-        [XmlIgnore]
-        public virtual MonitorContainer ParentMonitorContainer { get; set; }
 
         /// <summary>
         /// Gets or sets 监视日志解析结果表

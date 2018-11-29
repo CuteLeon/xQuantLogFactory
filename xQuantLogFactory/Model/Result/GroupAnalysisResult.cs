@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
@@ -70,5 +71,10 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 结果耗时（单位：毫秒）
         /// </summary>
         public double ElapsedMillisecond { get; set; }
+
+        /// <summary>
+        /// Gets 分析数据
+        /// </summary>
+        public Dictionary<string, object> AnalysisDatas { get; } = new Dictionary<string, object>();
     }
 }

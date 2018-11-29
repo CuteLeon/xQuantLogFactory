@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Factory

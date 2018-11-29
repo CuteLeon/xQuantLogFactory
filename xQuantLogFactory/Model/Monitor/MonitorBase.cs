@@ -7,27 +7,6 @@ using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
 {
-    /// <summary>
-    /// 子分析器枚举
-    /// </summary>
-    public enum AnalysiserTypes
-    {
-        /// <summary>
-        /// 未指定子分析器
-        /// </summary>
-        None = 0,
-
-        /// <summary>
-        /// 通用前缀分析器
-        /// </summary>
-        Prefix = 1,
-
-        /// <summary>
-        /// 通用加载分析器
-        /// </summary>
-        Load = 2,
-    }
-
     public abstract class MonitorBase : IMonitor
     {
         /// <summary>
@@ -35,6 +14,12 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlAttribute("Name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets 父级监视规则容器
+        /// </summary>
+        [XmlIgnore]
+        public virtual MonitorContainer ParentMonitorContainer { get; set; }
 
         /// <summary>
         /// Gets or sets 监控项目树根节点列表
@@ -81,27 +66,45 @@ namespace xQuantLogFactory.Model.Monitor
         }
 
         /// <summary>
-        /// 初始化子节点表名
+        /// 初始化监视规则树
         /// </summary>
-        public void InitMonitorSheetName()
+        public void InitMonitorTree()
         {
-            this.ScanMonitor((rootStack, currentMonitor) =>
+            // 初始化当前节点的第一层子节点
+            this.MonitorTreeRoots.ForEach(childMonitor =>
             {
-                if (string.IsNullOrEmpty(currentMonitor.SheetName))
+                if (string.IsNullOrEmpty(childMonitor.SheetName))
                 {
-                    currentMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
+                    childMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
                 }
 
-                // 应用表名并入栈
-                currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse().ToList().ForEach(monitor =>
-                {
-                    monitor.SheetName = currentMonitor.SheetName;
-                    if (monitor.HasChildren)
-                    {
-                        rootStack.Push(monitor);
-                    }
-                });
+                childMonitor.ParentMonitorContainer = this.ParentMonitorContainer;
             });
+
+            this.ScanMonitor(
+                (rootStack, currentMonitor) =>
+                {
+                    currentMonitor.MonitorTreeRoots
+                    .AsEnumerable().Reverse()
+                    .ToList().ForEach(monitor =>
+                      {
+                          // TODO: [提醒] 监视规则树初始化代码放置此处
+
+                          // 初始化表名
+                          monitor.SheetName = currentMonitor.SheetName;
+
+                          // 初始化父级节点关系
+                          monitor.ParentMonitorContainer = currentMonitor.ParentMonitorContainer;
+                          monitor.ParentMonitorItem = currentMonitor;
+
+                          // 包含子节点的节点继续入栈
+                          if (monitor.HasChildren)
+                          {
+                              rootStack.Push(monitor);
+                          }
+                      });
+                },
+                null);
         }
 
         /// <summary>

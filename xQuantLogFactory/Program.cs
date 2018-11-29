@@ -11,10 +11,13 @@ using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Factory;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
+
+// TODO: 内存消耗数据放置在分析步骤，实现独立的内存定向分析器
 
 // TODO: [全局任务] 移除和排除 using
 // TODO: [全局任务] 编写单元测试

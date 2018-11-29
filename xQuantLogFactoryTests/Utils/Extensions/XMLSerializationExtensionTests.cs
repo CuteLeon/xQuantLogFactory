@@ -5,6 +5,7 @@ using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Utils.Extensions.Tests
@@ -69,14 +70,19 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 throw new ArgumentNullException(nameof(xmlContent));
 
             MonitorContainer container = xmlContent.DeserializeToObject<MonitorContainer>();
+            container.InitMonitorTree();
 
             Assert.IsNotNull(container);
             Assert.AreEqual("监听客户端启动方案", container.Name);
             Assert.AreEqual(2, container.MonitorTreeRoots[0].MonitorTreeRoots.Count);
             Assert.AreEqual(5, container.GetMonitorItems().Count());
             Assert.IsTrue(container.MonitorTreeRoots[1].Memory);
-            Assert.AreEqual("内存",container.MonitorTreeRoots[1].SheetName);
+            Assert.AreEqual("内存", container.MonitorTreeRoots[1].SheetName);
             Assert.AreEqual(AnalysiserTypes.Load, container.MonitorTreeRoots[0].MonitorTreeRoots[0].Analysiser);
+
+            Assert.AreSame(container, container.MonitorTreeRoots[0].ParentMonitorContainer);
+            Assert.AreSame(null, container.MonitorTreeRoots[0].ParentMonitorItem);
+            Assert.AreSame(container.MonitorTreeRoots[0], container.MonitorTreeRoots[0].MonitorTreeRoots[0].ParentMonitorItem);
         }
     }
 }

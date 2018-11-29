@@ -57,7 +57,6 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             MonitorItem N = new MonitorItem("N");
             MonitorItem O = new MonitorItem("O");
             MonitorItem P = new MonitorItem("P");
-
             container.MonitorTreeRoots.AddRange(new MonitorItem[] { A, B, C });
 
             A.MonitorTreeRoots.AddRange(new MonitorItem[] { D, E, F });
@@ -71,6 +70,11 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             G.MonitorTreeRoots.Add(N);
 
             I.MonitorTreeRoots.AddRange(new MonitorItem[] { O, P });
+
+            // 初始化树
+            container.InitMonitorTree();
+            Assert.AreSame(container, A.ParentMonitorContainer);
+            Assert.AreSame(A, D.ParentMonitorItem);
 
             string result = string.Join("-", container.GetMonitorItems().Select(monitor => monitor.Name));
             Assert.AreEqual("A-D-J-K-E-L-F-M-B-G-N-H-C-I-O-P", result);

@@ -2,6 +2,7 @@
 using System.Linq;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;

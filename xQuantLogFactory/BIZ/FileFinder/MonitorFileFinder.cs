@@ -39,7 +39,9 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 file => file.EndsWith(argument.MonitorFileName, StringComparison.OrdinalIgnoreCase)))
             {
                 MonitorContainer container = File.ReadAllText(xmlFile, Encoding.UTF8).DeserializeToObject<MonitorContainer>();
-                container?.InitMonitorSheetName();
+
+                // 初始化监视规则树
+                container?.InitMonitorTree();
 
                 return container as T;
             }
