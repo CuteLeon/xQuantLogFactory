@@ -41,7 +41,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 throw new ArgumentNullException(nameof(argument));
             }
 
-            //TODO: 改写为搜索 监视规则 并按监视规则分组，处理监视规则的分析结果
             argument.AnalysisResults
                 .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Load)
                 .GroupBy(result => result.MonitorItem)
