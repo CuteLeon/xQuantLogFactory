@@ -1,9 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using xQuantLogFactory.BIZ.Analysiser;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.BIZ.Analysiser.Tests

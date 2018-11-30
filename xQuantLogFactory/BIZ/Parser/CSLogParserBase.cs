@@ -36,46 +36,9 @@ namespace xQuantLogFactory.BIZ.Parser
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
-        /// Gets 内存信息正则表达式
-        /// </summary>
-        public virtual Regex MemoryRegex { get; } = new Regex(
-            @"内存消耗：.*?VirtualMem=(?<Memory>\d*\.\d*).*",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-        /// <summary>
         /// Gets 日志详细内容正则表达式
         /// </summary>
         public abstract Regex ParticularRegex { get; }
-
-        /// <summary>
-        /// 从日志内容获取消耗内存
-        /// </summary>
-        /// <param name="logContent"></param>
-        /// <returns></returns>
-        protected double GetMemoryInLogContent(string logContent)
-        {
-            if (string.IsNullOrEmpty(logContent))
-            {
-                return 0.0;
-            }
-
-            Match memoryMatch = null;
-            lock (this.MemoryRegex)
-            {
-                memoryMatch = this.MemoryRegex.Match(logContent);
-            }
-
-            if (memoryMatch.Success &&
-                memoryMatch.Groups["Memory"].Success &&
-                double.TryParse(memoryMatch.Groups["Memory"].Value, out double memory))
-            {
-                return memory;
-            }
-            else
-            {
-                return 0.0;
-            }
-        }
 
         /// <summary>
         /// 日志解析
@@ -101,7 +64,6 @@ namespace xQuantLogFactory.BIZ.Parser
                     streamRreader = new StreamReader(fileStream, Encoding.Default);
 
                     int lineNumber = 0;
-                    double? memoryCache = null;
                     string logLine = string.Empty,
                         logLevel = string.Empty,
                         logContent = string.Empty;
@@ -117,7 +79,6 @@ namespace xQuantLogFactory.BIZ.Parser
 
                     while (!streamRreader.EndOfStream)
                     {
-                        memoryCache = null;
                         lineNumber++;
 
                         // 获取日志行
@@ -157,7 +118,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
                             logContent = generalMatch.Groups["LogContent"].Value;
                             logLevel = generalMatch.Groups["LogLevel"].Success ? generalMatch.Groups["LogLevel"].Value : string.Empty;
-                            
+
                             // 精确匹配
                             if (this.ParticularRegex != null)
                             {
@@ -192,17 +153,6 @@ namespace xQuantLogFactory.BIZ.Parser
                                 if (particularMatch.Success)
                                 {
                                     this.ApplyParticularMatch(result, particularMatch);
-                                }
-
-                                if (monitor.Memory)
-                                {
-                                    // 使用缓存减少计算次数，缓存初始化为 null
-                                    if (memoryCache == null)
-                                    {
-                                        memoryCache = this.GetMemoryInLogContent(logContent);
-                                    }
-
-                                    result.MemoryConsumed = memoryCache;
                                 }
 
                                 this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.RelativePath} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");

@@ -151,7 +151,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
-                        sourceRange[rowID, 9].Value = result.FirstResultOrDefault()?.LineNumber;
+                        sourceRange[rowID, 9].Value = result.LineNumber;
 
                         rowID++;
                     }
@@ -174,21 +174,23 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 内存 表数据 ...");
-                Rectangle memoryRectangle = new Rectangle(1, 2, 6, argument.MonitorResults.Count);
+                Rectangle memoryRectangle = new Rectangle(1, 2, 5, argument.MonitorResults.Count);
                 using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                 {
                     int rowID = memoryRectangle.Top;
-                    foreach (var result in argument.MonitorResults
-                        .Where(result => result.MemoryConsumed != null)
-                        .OrderBy(result => result.LogTime)
-                        .Distinct(new LogResultEqualityComparer<MonitorResult>()))
+                    foreach (var result in argument.AnalysisResults
+                        .Where(result => result.MonitorItem.Memory)
+                        .OrderBy(result => (result.LogFile, result.LineNumber))
+                        .Distinct(new LogResultEqualityComparer<GroupAnalysisResult>()))
                     {
                         memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
                         memoryRange[rowID, 2].Value = result.Version;
                         memoryRange[rowID, 3].Value = result.Client;
                         memoryRange[rowID, 4].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        memoryRange[rowID, 5].Value = result.MemoryConsumed;
-                        memoryRange[rowID, 6].Value = result.GroupType.ToString();
+                        if (result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory))
+                        {
+                            memoryRange[rowID, 5].Value = memory.ToString();
+                        }
 
                         rowID++;
                     }
@@ -280,7 +282,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         tradeSettleRange[rowID, 9].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         tradeSettleRange[rowID, 10].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         tradeSettleRange[rowID, 11].Value = result.LogFile?.RelativePath;
-                        tradeSettleRange[rowID, 12].Value = result.FirstResultOrDefault()?.LineNumber;
+                        tradeSettleRange[rowID, 12].Value = result.LineNumber;
 
                         rowID++;
                     }

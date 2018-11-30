@@ -7,7 +7,7 @@ namespace xQuantLogFactory.Model.Result
     /// <summary>
     /// 分析结果
     /// </summary>
-    public class GroupAnalysisResult
+    public class GroupAnalysisResult : LogResultBase
     {
         public GroupAnalysisResult()
         {
@@ -24,18 +24,9 @@ namespace xQuantLogFactory.Model.Result
                 this.Client = monitorResult.Client;
                 this.Version = monitorResult.Version;
                 this.LineNumber = monitorResult.LineNumber;
+                this.LogTime = monitorResult.LogTime;
             }
         }
-
-        /// <summary>
-        /// Gets or sets 任务参数
-        /// </summary>
-        public TaskArgument TaskArgument { get; set; }
-
-        /// <summary>
-        /// Gets or sets 行号
-        /// </summary>
-        public int LineNumber { get; set; }
 
         /// <summary>
         /// Gets or sets 客户端
@@ -46,11 +37,6 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 客户端版本
         /// </summary>
         public string Version { get; set; }
-
-        /// <summary>
-        /// Gets or sets 日志文件
-        /// </summary>
-        public LogFile LogFile { get; set; }
 
         /// <summary>
         /// Gets or sets 监控项目

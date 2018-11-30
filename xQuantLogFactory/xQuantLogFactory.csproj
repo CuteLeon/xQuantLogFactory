@@ -62,13 +62,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BIZ\Analysiser\CommonLoadAnalysiser.cs" />
-    <Compile Include="BIZ\Analysiser\DirectedLogAnalysiserBase.cs" />
-    <Compile Include="BIZ\Analysiser\CommonPrefixAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonLoadAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonMemoryAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\DirectedLogAnalysiserBase.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonPrefixAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserHost.cs" />
-    <Compile Include="BIZ\Analysiser\TradeSettleAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\TradeSettleAnalysiser.cs" />
     <Compile Include="BIZ\Exporter\ExcelLogReportExporter.cs" />
     <Compile Include="BIZ\Exporter\ILogReportExporter.cs" />
     <Compile Include="BIZ\Exporter\HTMLLogReportExporter.cs" />

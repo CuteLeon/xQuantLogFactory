@@ -29,6 +29,11 @@
         /// </summary>
         public const string ZQ = "债券";
 
+        /// <summary>
+        /// 内存消耗
+        /// </summary>
+        public const string MEMORY_CONSUMED = "内存消耗";
+
         #endregion
     }
 }

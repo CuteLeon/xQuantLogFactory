@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser
+namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
 {
     /// <summary>
     /// 针对性的日志分析器

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
@@ -73,19 +74,24 @@ namespace xQuantLogFactory.BIZ.Analysiser
             var monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
             if (monitorItems.Count > 0)
             {
-                if (monitorItems.Count(monitor => monitor.Analysiser == AnalysiserTypes.Prefix) > 0)
+                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Prefix))
                 {
                     this.AddAnalysiser(new CommonPrefixAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Count(monitor => monitor.Analysiser == AnalysiserTypes.Load) > 0)
+                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Load))
                 {
                     this.AddAnalysiser(new CommonLoadAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Count(monitor => monitor.Analysiser == AnalysiserTypes.Settle) > 0)
+                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Settle))
                 {
                     this.AddAnalysiser(new TradeSettleAnalysiser(this.Tracer));
+                }
+
+                if (monitorItems.Any(monitor => monitor.Memory))
+                {
+                    this.AddAnalysiser(new CommonMemoryAnalysiser(this.Tracer));
                 }
             }
         }

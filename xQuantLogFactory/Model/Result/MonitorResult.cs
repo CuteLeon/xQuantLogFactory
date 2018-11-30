@@ -54,9 +54,5 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         public string LogContent { get; set; }
 
-        /// <summary>
-        /// Gets or sets 内存消耗
-        /// </summary>
-        public double? MemoryConsumed { get; set; }
     }
 }

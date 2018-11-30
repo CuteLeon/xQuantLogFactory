@@ -14,7 +14,6 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             string ServerLog = "2018-10-30 09:25:30,111 DEBUG 东方证券 1.3.0.064补丁1 开始排券";
             string ClientLog = "2018-10-29 16:51:04,457 TRACE 安信证券 1.3.0.065 192.168.7.101 初始化准备";
             string MiddlewareLog = "2018-11-01 10:41:39.968	172.28.40.110	leon	2018-11-01 10:41:39.968	10	/LogonManager.soap	GetMessageList	100	开始";
-            string MemoryLog = "//启动服务数据保存内核服务 内存消耗：PagedMem=79.0859375、VirtualMem=5021.26171875、RamMem=107.7265625、VirtualMemAdd=0";
 
             CSLogParserBase serverParser = new ServerLogParser();
             CSLogParserBase clientParser = new ClientLogParser();
@@ -26,10 +25,6 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             Assert.AreEqual("651", generalMatch.Groups["Millisecond"].Value);
             Assert.AreEqual("TRACE", generalMatch.Groups["LogLevel"].Value);
             Assert.AreEqual("客户端初始化应用程序相关属性", generalMatch.Groups["LogContent"].Value);
-
-            generalMatch = clientParser.MemoryRegex.Match(MemoryLog);
-            Assert.IsTrue(generalMatch.Success);
-            Assert.AreEqual("5021.26171875", generalMatch.Groups["Memory"].Value);
 
             generalMatch = serverParser.GeneralLogRegex.Match(ServerLog);
             Assert.IsTrue(generalMatch.Success);
