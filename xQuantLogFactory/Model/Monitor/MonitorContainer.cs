@@ -19,13 +19,25 @@ namespace xQuantLogFactory.Model.Monitor
         public void InitMonitorTree()
         {
             // 初始化当前节点的第一层子节点
-            this.MonitorTreeRoots.ForEach(childMonitor =>
+            MonitorItem childMonitor = null;
+            for (int index = 0; index < this.MonitorTreeRoots.Count; index++)
             {
+                childMonitor = this.MonitorTreeRoots[index];
+
+                // 初始化默认表名
                 if (string.IsNullOrEmpty(childMonitor.SheetName))
                 {
                     childMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
                 }
-            });
+
+                // 当监视规则开始条件为空时，使用前一兄弟规则?.结束条件；
+                if (string.IsNullOrEmpty(childMonitor.StartPattern)
+                    && index > 0
+                    && !string.IsNullOrEmpty(this.MonitorTreeRoots[index - 1].FinishPatterny))
+                {
+                    childMonitor.StartPattern = this.MonitorTreeRoots[index - 1].FinishPatterny;
+                }
+            }
 
             this.ScanMonitor(
                 (rootStack, currentMonitor) =>
@@ -41,6 +53,19 @@ namespace xQuantLogFactory.Model.Monitor
                         if (monitor.HasChildren)
                         {
                             rootStack.Push(monitor);
+
+                            // 当监视规则开始条件为空时，使用前一兄弟规则?.结束条件；
+                            for (int index = 0; index < this.MonitorTreeRoots.Count; index++)
+                            {
+                                childMonitor = this.MonitorTreeRoots[index];
+
+                                if (string.IsNullOrEmpty(childMonitor.StartPattern)
+                                && index > 0
+                                && !string.IsNullOrEmpty(this.MonitorTreeRoots[index - 1].FinishPatterny))
+                                {
+                                    childMonitor.StartPattern = this.MonitorTreeRoots[index - 1].FinishPatterny;
+                                }
+                            }
                         }
                     });
                 },

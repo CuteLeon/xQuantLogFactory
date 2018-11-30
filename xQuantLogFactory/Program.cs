@@ -17,6 +17,8 @@ using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
+// TDODO: 测试 => 当监视规则开始条件为空时，使用前一兄弟规则?.结束条件；
+
 // TODO: [全局任务] 移除和排除 using
 // TODO: [全局任务] 编写单元测试
 namespace xQuantLogFactory
@@ -161,6 +163,7 @@ namespace xQuantLogFactory
             else
             {
                 UnityTrace.WriteLine($"获取监视规则容器对象为空！");
+                Exit(4);
             }
         }
 
