@@ -180,7 +180,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     int rowID = memoryRectangle.Top;
                     foreach (var result in argument.AnalysisResults
                         .Where(result => result.MonitorItem.Memory)
-                        .OrderBy(result => (result.LogFile, result.LineNumber))
+                        .OrderBy(result => result.LogTime)
                         .Distinct(new LogResultEqualityComparer<GroupAnalysisResult>()))
                     {
                         memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
