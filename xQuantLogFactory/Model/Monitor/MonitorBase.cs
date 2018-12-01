@@ -26,6 +26,20 @@ namespace xQuantLogFactory.Model.Monitor
         public bool HasChildren => this.MonitorTreeRoots != null && this.MonitorTreeRoots.Count > 0;
 
         /// <summary>
+        /// 获取所有监视规则节点（包括当前节点自身）
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<MonitorBase> GetMonitorBases()
+        {
+            yield return this;
+
+            foreach (var childMonitor in this.GetMonitorItems())
+            {
+                yield return childMonitor;
+            }
+        }
+
+        /// <summary>
         /// 获取所有节点及其子节点
         /// </summary>
         /// <returns></returns>
@@ -39,7 +53,8 @@ namespace xQuantLogFactory.Model.Monitor
             {
                 if (currentMonitor.HasChildren)
                 {
-                    foreach (var monitor in currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse())
+                    foreach (var monitor in currentMonitor.MonitorTreeRoots
+                        .AsEnumerable().Reverse())
                     {
                         monitorRoots.Push(monitor);
                     }
@@ -63,7 +78,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// <param name="scanAction">扫描Action</param>
         /// <param name="stackInitPredicate">首批根节点入栈条件</param>
         /// <remarks>Action 参数分别为父级节点堆栈和当前节点，每次执行时顶级节点会出栈，下次需要扫描的子节点入栈即可，注意倒序入栈：currentMonitor.MonitorTreeRoots.AsEnumerable().Reverse().ToList()ForEach(root => stack.Push(root)</remarks>
-        /// <example>使用方法见上方初始化子节点表名的方法</example>
+        [Obsolete]
         public void ScanMonitor(Action<Stack<MonitorItem>, MonitorItem> scanAction, Predicate<MonitorItem> stackInitPredicate = null)
         {
             if (scanAction == null)

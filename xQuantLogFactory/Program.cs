@@ -406,7 +406,7 @@ namespace xQuantLogFactory
             {
                 // 记录日志报告导出路径
                 UnityTaskArgument.LastReportPath = reportPath;
-                UnityTrace.WriteLine($"日志报告到处成功=> {UnityTaskArgument.LastReportPath}");
+                UnityTrace.WriteLine($"日志报告导出成功=> {UnityTaskArgument.LastReportPath}");
 
                 // 自动打开报告
                 if (File.Exists(reportPath))

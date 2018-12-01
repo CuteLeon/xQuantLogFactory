@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
-using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -85,7 +84,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// Gets or sets 输出表名
         /// </summary>
         [XmlAttribute("Sheet")]
-        public string SheetName { get; set; } = ConfigHelper.ExcelSourceSheetName;
+        public string SheetName { get; set; }
         #endregion
 
         #region 方法
@@ -100,15 +99,26 @@ namespace xQuantLogFactory.Model.Monitor
             // TODO: [提醒] 需要复制父节点配置信息
             this.ParentMonitorItem = parentMonitor ?? throw new ArgumentNullException(nameof(parentMonitor));
 
+            // 如果子节点未设置分析器，使用父级节点相同配置
             if (this.ParentMonitorItem.Analysiser != AnalysiserTypes.None &&
                 this.Analysiser == AnalysiserTypes.None)
             {
                 this.Analysiser = this.ParentMonitorItem.Analysiser;
             }
 
-            this.SheetName = this.ParentMonitorItem.SheetName;
-            this.Memory = this.ParentMonitorItem.Memory;
+            // 如果子节点未设置表名，使用父级节点相同配置
+            if (string.IsNullOrEmpty(this.SheetName))
+            {
+                this.SheetName = this.ParentMonitorItem.SheetName;
+            }
 
+            // 如果子节点未设置内存监视，使用父级节点相同配置
+            if (!this.Memory)
+            {
+                this.Memory = this.ParentMonitorItem.Memory;
+            }
+
+            // 新建子节点，如果子节点无监视条件，使用父节点相同配置
             if (createNew)
             {
                 if (string.IsNullOrEmpty(this.StartPattern))

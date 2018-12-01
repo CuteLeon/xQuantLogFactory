@@ -33,7 +33,7 @@ namespace xQuantLogFactory.Utils
         /// <summary>
         /// 默认导出报告模式
         /// </summary>
-        public const ReportModes DefaultReportMode = ReportModes.HTML;
+        public const ReportModes DefaultReportMode = ReportModes.Excel;
 
         /// <summary>
         /// Excel原始数据表名称
