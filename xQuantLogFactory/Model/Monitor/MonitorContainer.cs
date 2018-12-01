@@ -55,15 +55,15 @@ namespace xQuantLogFactory.Model.Monitor
                             rootStack.Push(monitor);
 
                             // 当监视规则开始条件为空时，使用前一兄弟规则?.结束条件；
-                            for (int index = 0; index < this.MonitorTreeRoots.Count; index++)
+                            for (int index = 0; index < monitor.MonitorTreeRoots.Count; index++)
                             {
-                                childMonitor = this.MonitorTreeRoots[index];
+                                childMonitor = monitor.MonitorTreeRoots[index];
 
                                 if (string.IsNullOrEmpty(childMonitor.StartPattern)
                                 && index > 0
-                                && !string.IsNullOrEmpty(this.MonitorTreeRoots[index - 1].FinishPatterny))
+                                && !string.IsNullOrEmpty(monitor.MonitorTreeRoots[index - 1].FinishPatterny))
                                 {
-                                    childMonitor.StartPattern = this.MonitorTreeRoots[index - 1].FinishPatterny;
+                                    childMonitor.StartPattern = monitor.MonitorTreeRoots[index - 1].FinishPatterny;
                                 }
                             }
                         }

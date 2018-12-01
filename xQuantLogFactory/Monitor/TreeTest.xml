@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Item Name="A" Begin="AS" End="AE">
+    <Item Name="F" Begin="" End="FE">
+      <Item Name="H" Begin="" End="HE"></Item>
+      <Item Name="I" Begin="" End="IE"></Item>
+      <Item Name="J" Begin="" End="JE"></Item>
+    </Item>
+    <Item Name="G" Begin="GS" End="GE"></Item>
+  </Item>
+  <Item Name="B" Begin="" End="BE"></Item>
+  <Item Name="C" Begin="" End="CE"></Item>
+  <Item Name="D" Begin="" End="DE"></Item>
+  <Item Name="E" Begin="" End="EE"></Item>
+</MonitorRoot>
