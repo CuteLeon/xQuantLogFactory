@@ -87,6 +87,7 @@
     <Compile Include="BIZ\Parser\ServerLogParser.cs" />
     <Compile Include="Model\EqualityComparer\LogResultEqualityComparer.cs" />
     <Compile Include="Model\Extensions\GroupAnalysisResultExtension.cs" />
+    <Compile Include="Model\Extensions\IAnalysisResultExtension.cs" />
     <Compile Include="Model\Extensions\TaskArgumentExtension.cs" />
     <Compile Include="Model\Factory\ArgsTaskArgumentFactory.cs" />
     <Compile Include="Model\Factory\CreateTaskArgumentForm.cs">
@@ -100,7 +101,9 @@
     <Compile Include="Model\Fixed\FixedDatas.cs" />
     <Compile Include="Model\Fixed\Enums.cs" />
     <Compile Include="Model\Monitor\MonitorBase.cs" />
+    <Compile Include="Model\Result\GroupAnalysisResultContainer.cs" />
     <Compile Include="Model\Result\GroupAnalysisResult.cs" />
+    <Compile Include="Model\Result\IAnalysisResult.cs" />
     <Compile Include="Model\Result\LogResultBase.cs" />
     <Compile Include="Model\Monitor\IMonitor.cs" />
     <Compile Include="Model\LogFile.cs" />

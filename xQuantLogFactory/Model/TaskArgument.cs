@@ -101,6 +101,12 @@ namespace xQuantLogFactory.Model
         public virtual MonitorContainer MonitorContainerRoot { get; set; }
 
         /// <summary>
+        /// Gets or sets 分析结果容器
+        /// </summary>
+        [XmlIgnore]
+        public virtual GroupAnalysisResultContainer AnalysisResultContainerRoot { get; set; } = new GroupAnalysisResultContainer();
+
+        /// <summary>
         /// Gets or sets 日志文件列表
         /// </summary>
         [XmlIgnore]
@@ -121,6 +127,7 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// Gets or sets 日志分析结果表
         /// </summary>
+        /// TODO: 由 GroupAnalysisResultContainer 取代
         [XmlIgnore]
         public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
 

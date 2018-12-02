@@ -7,7 +7,7 @@ namespace xQuantLogFactory.Model.Result
     /// <summary>
     /// 分析结果
     /// </summary>
-    public class GroupAnalysisResult : LogResultBase
+    public class GroupAnalysisResult : LogResultBase, IAnalysisResult
     {
         public GroupAnalysisResult()
         {
@@ -52,6 +52,11 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 匹配结束结果
         /// </summary>
         public MonitorResult FinishMonitorResult { get; set; }
+
+        /// <summary>
+        /// Gets or sets 子分析结果
+        /// </summary>
+        public List<GroupAnalysisResult> AnalysisResultRoots { get; set; } = new List<GroupAnalysisResult>();
 
         /// <summary>
         /// Gets or sets 结果耗时（单位：毫秒）
