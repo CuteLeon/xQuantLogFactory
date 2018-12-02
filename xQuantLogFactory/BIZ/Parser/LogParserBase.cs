@@ -72,7 +72,7 @@ namespace xQuantLogFactory.BIZ.Parser
             MonitorResult monitorResult = new MonitorResult(argument, logFile, monitor);
 
             // 反向关联日志监视结果
-            lock (argument)
+            lock (this.lockSeed)
             {
                 argument.MonitorResults.Add(monitorResult);
                 logFile.MonitorResults.Add(monitorResult);

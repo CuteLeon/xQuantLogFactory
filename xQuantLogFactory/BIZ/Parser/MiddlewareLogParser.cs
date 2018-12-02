@@ -84,14 +84,11 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
 
-                            MiddlewareResult result = new MiddlewareResult(logTime, lineNumber);
+                            MiddlewareResult result = new MiddlewareResult(argument, logFile, logTime, lineNumber);
 
                             // 反向关联日志解析结果
-                            lock (argument)
+                            lock (this.lockSeed)
                             {
-                                result.TaskArgument = argument;
-                                result.LogFile = logFile;
-
                                 argument.MiddlewareResults.Add(result);
                                 logFile.MiddlewareResults.Add(result);
                             }

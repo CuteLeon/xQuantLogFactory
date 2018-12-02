@@ -11,8 +11,10 @@ namespace xQuantLogFactory.Model.Result
         {
         }
 
-        public MiddlewareResult(DateTime logTime, int lineNumber)
+        public MiddlewareResult(TaskArgument argument, LogFile logFile, DateTime logTime, int lineNumber)
         {
+            this.TaskArgument = argument;
+            this.LogFile = logFile;
             this.LogTime = logTime;
             this.LineNumber = lineNumber;
         }
