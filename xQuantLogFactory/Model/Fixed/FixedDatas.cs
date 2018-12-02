@@ -33,7 +33,30 @@
         /// 内存消耗
         /// </summary>
         public const string MEMORY_CONSUMED = "内存消耗";
-
         #endregion
+
+        #region 保留表名常量
+
+        /// <summary>
+        /// 内存表名
+        /// </summary>
+        public const string MEMORY_SHEET_NAME = "内存";
+
+        /// <summary>
+        /// 中间件日志表名
+        /// </summary>
+        public const string MIDDLEWARE_SHEET_NAME = "中间件日志";
+
+        /// <summary>
+        /// 分析表名
+        /// </summary>
+        public const string ANALYSIS_SHEET_NAME = "分析";
+
+        /// <summary>
+        /// 交易清算表名
+        /// </summary>
+        public const string TRADE_SETTLE_SHEET_NAME = "交易清算";
+        #endregion
+
     }
 }

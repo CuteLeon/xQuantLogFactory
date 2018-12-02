@@ -25,7 +25,13 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <summary>
         /// 特殊表名列表
         /// </summary>
-        private static readonly string[] SpecialSheetNames = new string[] { "内存", "中间件日志", "分析", "交易清算" };
+        private static readonly string[] SpecialSheetNames = new string[]
+        {
+            FixedDatas.MEMORY_SHEET_NAME,
+            FixedDatas.MIDDLEWARE_SHEET_NAME,
+            FixedDatas.TRADE_SETTLE_SHEET_NAME,
+            FixedDatas.ANALYSIS_SHEET_NAME
+        };
 
         public ExcelLogReportExporter(ITracer tracer)
             : base(tracer)
@@ -166,14 +172,14 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         public void ExportMemorySheet(ExcelPackage excel, TaskArgument argument)
         {
-            ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets["内存"];
+            ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets[FixedDatas.MEMORY_SHEET_NAME];
             if (memoryDataSheet == null)
             {
-                this.Tracer?.WriteLine($"未发现 内存 数据表，写入失败！");
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.MEMORY_SHEET_NAME} 数据表，写入失败！");
             }
             else
             {
-                this.Tracer?.WriteLine($"正在写入 内存 表数据 ...");
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.MEMORY_SHEET_NAME} 表数据 ...");
                 Rectangle memoryRectangle = new Rectangle(1, 2, 5, argument.MonitorResults.Count);
                 using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                 {
@@ -205,14 +211,14 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         public void ExportMiddlewareSheet(ExcelPackage excel, TaskArgument argument)
         {
-            ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets["中间件日志"];
+            ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets[FixedDatas.MIDDLEWARE_SHEET_NAME];
             if (middlewareDataSheet == null)
             {
-                this.Tracer?.WriteLine("未发现 中间件日志 数据表，写入失败！");
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.MIDDLEWARE_SHEET_NAME} 数据表，写入失败！");
             }
             else
             {
-                this.Tracer?.WriteLine("正在写入 中间件日志 表数据 ...");
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.MIDDLEWARE_SHEET_NAME} 表数据 ...");
                 Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
                 using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
                 {
@@ -243,20 +249,20 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         public void ExportTradeSettleSheet(ExcelPackage excel, TaskArgument argument)
         {
-            ExcelWorksheet tradeSettleDataSheet = excel.Workbook.Worksheets["交易清算"];
+            ExcelWorksheet tradeSettleDataSheet = excel.Workbook.Worksheets[FixedDatas.TRADE_SETTLE_SHEET_NAME];
             if (tradeSettleDataSheet == null)
             {
-                this.Tracer?.WriteLine("未发现 交易清算 数据表，写入失败！");
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.TRADE_SETTLE_SHEET_NAME} 数据表，写入失败！");
             }
             else
             {
-                this.Tracer?.WriteLine("正在写入 交易清算 表数据 ...");
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.TRADE_SETTLE_SHEET_NAME} 表数据 ...");
                 Rectangle tradeSettleRectangle = new Rectangle(1, 2, 9, argument.MonitorResults.Count);
                 using (ExcelRange tradeSettleRange = tradeSettleDataSheet.Cells[tradeSettleRectangle.Top, tradeSettleRectangle.Left, tradeSettleRectangle.Bottom - 1, tradeSettleRectangle.Right - 1])
                 {
                     int rowID = tradeSettleRectangle.Top, executeID = 0;
                     foreach (var result in argument.AnalysisResults
-                        .Where(result => result.MonitorItem.Analysiser == Model.Fixed.AnalysiserTypes.Settle)
+                        .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Settle)
                         .OrderBy(result => (result.LogFile, result.LineNumber)))
                     {
                         tradeSettleRange[rowID, 1].Value = result.MonitorItem?.Name;
