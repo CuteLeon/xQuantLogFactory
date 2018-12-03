@@ -10,6 +10,7 @@ using xQuantLogFactory.BIZ.Exporter;
 using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
@@ -591,6 +592,11 @@ namespace xQuantLogFactory
                 UnityTaskArgument.LogFiles.Count(file => file.AnalysisResults.Count > 0),
                 UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count(monitor => monitor.AnalysisResults.Count > 0),
                 UnityTaskArgument.AnalysisResults.Count);
+
+            UnityTrace.WriteLine("分析结果树：");
+            UnityTaskArgument.AnalysisResultContainerRoot
+                .GetAnalysisResults().ToList()
+                .ForEach(result => Console.WriteLine(result));
         }
 
         /// <summary>

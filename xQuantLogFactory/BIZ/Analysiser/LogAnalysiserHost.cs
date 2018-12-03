@@ -127,26 +127,24 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public void InitAnalysisResultTree(TaskArgument argument)
         {
-            int count = 0;
             foreach (GroupAnalysisResult analysisResult in argument.AnalysisResults)
             {
-                Console.WriteLine(++count);
-                // 判断分析结果是否为完整组 (内存分析结果为自封闭，开始和结束解析结果相同)
-                if (analysisResult.IsIntactGroup() &&
-                    analysisResult.StartMonitorResult != analysisResult.FinishMonitorResult)
+                // 判断分析结果是否为完整组
+                if (analysisResult.IsIntactGroup())
                 {
                     if (analysisResult.MonitorItem.HasChildren)
                     {
-                        // 关联子监视规则的分析结果
-                        foreach (MonitorItem childMonitor in analysisResult.MonitorItem.MonitorTreeRoots)
+                        // 关联子监视规则的分析结果（以当前节点为树根遍历监视规则树，防止分析结果之间断级，而造成分析结果树断开）
+                        foreach (MonitorItem childMonitor in analysisResult.MonitorItem.GetMonitorItems())
                         {
-                            var list = childMonitor.AnalysisResults
-                                .Where(result => analysisResult.StartMonitorResult.LogTime <= result.LogTime && result.LogTime <= analysisResult.FinishMonitorResult.LogTime)
-                                .ToList();
-                            list.ForEach(childResult =>
+                            childMonitor.AnalysisResults
+                                .Where(result =>
+                                    analysisResult.StartMonitorResult.LogTime <= result.LogTime &&
+                                    result.LogTime <= analysisResult.FinishMonitorResult.LogTime)
+                                .ToList().ForEach(childResult =>
                                 {
+                                    // 节约性能，仅关联父节点，防止重复高频的List操作
                                     childResult.ParentAnalysisResult = analysisResult;
-                                    analysisResult.AnalysisResultRoots.Add(childResult);
                                 });
                         }
                     }
@@ -157,9 +155,14 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         argument.AnalysisResultContainerRoot.AnalysisResultRoots.Add(analysisResult);
                     }
                 }
-                else
+            }
+
+            // 根据分析结果父级节点反向关联子分析结果，单独处理，防止重复高频操作
+            foreach (var analysisResult in argument.AnalysisResults)
+            {
+                if (analysisResult.ParentAnalysisResult != null)
                 {
-                    Console.WriteLine($"未入树的分析结果 in {analysisResult.MonitorItem.Name}");
+                    analysisResult.ParentAnalysisResult.AnalysisResultRoots.Add(analysisResult);
                 }
             }
         }

@@ -72,5 +72,10 @@ namespace xQuantLogFactory.Model.Result
         /// Gets 分析数据
         /// </summary>
         public Dictionary<string, object> AnalysisDatas { get; } = new Dictionary<string, object>();
+
+        public override string ToString()
+        {
+            return $"【监视规则】={this.MonitorItem.Name.PadLeft(this.MonitorItem.Name.Length + this.MonitorItem.GetLayerDepth(), '-')}\t【父级结果】={this.ParentAnalysisResult?.MonitorItem?.Name ?? "无"}\t【子结果数】={this.AnalysisResultRoots.Count}";
+        }
     }
 }
