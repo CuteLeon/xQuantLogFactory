@@ -31,23 +31,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// 创建分析结果
         /// </summary>
         /// <param name="argument">任务参数</param>
-        /// <param name="logFile">日志文件</param>
         /// <param name="monitor">监视规则</param>
         /// <param name="monitorResult">监视结果</param>
         /// <returns></returns>
         protected GroupAnalysisResult CreateAnalysisResult(
             TaskArgument argument,
-            LogFile logFile,
             MonitorItem monitor,
             MonitorResult monitorResult)
         {
-            GroupAnalysisResult analysisResult = new GroupAnalysisResult(argument, logFile, monitor, monitorResult);
+            GroupAnalysisResult analysisResult = new GroupAnalysisResult(argument, monitor, monitorResult);
 
             // 反向关联日志监视结果
             lock (this.lockSeed)
             {
                 argument.AnalysisResults.Add(analysisResult);
-                logFile.AnalysisResults.Add(analysisResult);
+                monitorResult.LogFile.AnalysisResults.Add(analysisResult);
                 monitor.AnalysisResults.Add(analysisResult);
             }
 

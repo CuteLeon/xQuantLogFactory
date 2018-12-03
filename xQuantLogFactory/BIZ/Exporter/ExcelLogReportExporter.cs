@@ -166,6 +166,74 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
+        /// TODO: 重写Excel导出器通用导出方法
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportCommonSheet1(ExcelPackage excel, TaskArgument argument)
+        {
+            System.Windows.Forms.MessageBox.Show(argument.AnalysisResultContainerRoot.GetAnalysisResults().Count().ToString(), "分析结果树元素数：");
+
+            this.Tracer?.WriteLine("开始导出通用表数据 ...");
+            foreach (var result in argument.AnalysisResultContainerRoot.GetAnalysisResults())
+            {
+                // 保留表名的结果不处理
+                if (SpecialSheetNames.Contains(result.MonitorItem.SheetName))
+                {
+                    continue;
+                }
+
+
+            }
+
+            foreach (var monitorGroup in argument.MonitorContainerRoot.GetMonitorItems()
+                .GroupBy(monitor => monitor.SheetName))
+            {
+                ExcelWorksheet worksheet = excel.Workbook.Worksheets[monitorGroup.Key];
+                if (worksheet == null)
+                {
+                    this.Tracer?.WriteLine($"未发现名称为 {monitorGroup.Key} 的数据表，跳过导出 ...");
+                    continue;
+                }
+
+                this.Tracer?.WriteLine($"正在写入 {monitorGroup.Key} 表数据 ...");
+
+                // 通用表列头格式需保持与原始数据表一致
+                Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
+                using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
+                {
+                    // TODO: 分表导出如何分析执行序号：为监视规则设置属性，遇到即更新序号？
+                    int rowID = sheetRectangle.Top, executeID = 0;
+
+                    // 合并所有分析结果数据
+                    var analysiserResults = new List<GroupAnalysisResult>();
+                    monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
+                        .ForEach(resultList => analysiserResults.AddRange(resultList));
+
+                    foreach (var result in analysiserResults
+                        .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
+                    {
+                        if (result.MonitorItem != null)
+                        {
+                            sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
+                            sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+                        }
+
+                        sourceRange[rowID, 3].Value = result.Version;
+                        sourceRange[rowID, 4].Value = executeID;
+                        sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
+                        sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
+                        sourceRange[rowID, 9].Value = result.LineNumber;
+
+                        rowID++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// 导出内存数据表
         /// </summary>
         /// <param name="excel"></param>

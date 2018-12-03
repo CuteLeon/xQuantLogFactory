@@ -13,9 +13,9 @@ namespace xQuantLogFactory.Model.Result
         {
         }
 
-        public GroupAnalysisResult(TaskArgument argument, LogFile logFile, MonitorItem monitor, MonitorResult monitorResult)
+        public GroupAnalysisResult(TaskArgument argument, MonitorItem monitor, MonitorResult monitorResult)
         {
-            this.LogFile = logFile;
+            this.LogFile = monitorResult.LogFile;
             this.MonitorItem = monitor;
             this.TaskArgument = argument;
 
@@ -52,6 +52,11 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 匹配结束结果
         /// </summary>
         public MonitorResult FinishMonitorResult { get; set; }
+
+        /// <summary>
+        /// Gets or sets 父分析结果
+        /// </summary>
+        public GroupAnalysisResult ParentAnalysisResult { get; set; }
 
         /// <summary>
         /// Gets or sets 子分析结果

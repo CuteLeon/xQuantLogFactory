@@ -36,16 +36,16 @@ namespace xQuantLogFactory.Model.Extensions
                     {
                         resultRoots.Push(result);
                     }
+                }
 
-                    if (resultRoots.Count > 0)
-                    {
-                        currentResult = resultRoots.Pop();
-                        yield return currentResult as GroupAnalysisResult;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                if (resultRoots.Count > 0)
+                {
+                    currentResult = resultRoots.Pop();
+                    yield return currentResult as GroupAnalysisResult;
+                }
+                else
+                {
+                    break;
                 }
             }
         }

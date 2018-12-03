@@ -97,7 +97,7 @@ namespace xQuantLogFactory
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
             TryToExportLogReport();
             SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
-            
+
             Exit(0);
         }
 
