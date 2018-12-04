@@ -11,6 +11,7 @@ using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.EqualityComparer;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.Report;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Trace;
@@ -75,7 +76,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
 
                     // 导出通用表数据
-                    this.ExportCommonSheet(excel, argument);
+                    this.ExportCommonSheetEx(excel, argument);
 
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
                     this.ExportMemorySheet(excel, argument);
@@ -171,82 +172,122 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// TODO: 重写Excel导出器通用导出方法
+        /// 导出通用表数据
         /// </summary>
         /// <param name="excel"></param>
         /// <param name="argument"></param>
-        public void ExportCommonSheet1(ExcelPackage excel, TaskArgument argument)
+        public void ExportCommonSheetEx(ExcelPackage excel, TaskArgument argument)
         {
             /* 按分析结果树分表导出问题：
              * 1. 需要在一个方法内同时维护所有通用数据表对象，若数据总量较大，会产生比原算法更严重的内存压力
              * 2. 分析结果表名若存在跨级，如 分析结果1导出到A表，1的子结果2需要导出到B表，但2的子结果3又需要导出到A表，3也属于1的子结果；
              * 思路：同初始化分析结果树算法，遍历分析结果容器的根节点（仅在容器根节点遍历时更新执行序号），对每个跟节点当做树根遍历，将所有子节点分表导出
              */
-            System.Windows.Forms.MessageBox.Show(argument.AnalysisResultContainerRoot.GetAnalysisResults().Count().ToString(), "分析结果树元素数：");
-
             this.Tracer?.WriteLine("开始导出通用表数据 ...");
-            foreach (var result in argument.AnalysisResultContainerRoot.GetAnalysisResults())
+
+            this.Tracer?.WriteLine("开始准备通用数据表字典");
+            Dictionary<string, ExcelWorksheetPackage> commonWorksheets = new Dictionary<string, ExcelWorksheetPackage>();
+
+            foreach (var sheetName in argument.MonitorContainerRoot.GetMonitorItems()
+                .Where(monitor => monitor.AnalysisResults.Count > 0)
+                .Select(monitor => monitor.SheetName).Distinct())
             {
-                // 保留表名的结果不处理
-                if (SpecialSheetNames.Contains(result.MonitorItem.SheetName))
+                if (SpecialSheetNames.Contains(sheetName))
                 {
+                    // 保留表名不在此处处理
                     continue;
                 }
 
-                // ...
-            }
-
-            // ——————————————————
-            foreach (var monitorGroup in argument.MonitorContainerRoot.GetMonitorItems()
-                .GroupBy(monitor => monitor.SheetName))
-            {
-                ExcelWorksheet worksheet = excel.Workbook.Worksheets[monitorGroup.Key];
+                ExcelWorksheet worksheet = excel.Workbook.Worksheets[sheetName];
                 if (worksheet == null)
                 {
-                    this.Tracer?.WriteLine($"未发现名称为 {monitorGroup.Key} 的数据表，跳过导出 ...");
+                    this.Tracer?.WriteLine($"未发现名称为 {sheetName} 的数据表，将跳过导出此表数据");
                     continue;
                 }
-
-                this.Tracer?.WriteLine($"正在写入 {monitorGroup.Key} 表数据 ...");
-
-                // 通用表列头格式需保持与原始数据表一致
-                Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
-                using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
+                else
                 {
-                    int rowID = sheetRectangle.Top, executeID = 0;
+                    ExcelWorksheetPackage newPackage = this.CreateCommonWorksheetPackage(
+                        worksheet,
+                        argument.MonitorContainerRoot.GetMonitorItems()
+                            .Where(monitor => monitor.SheetName == sheetName)
+                            .Sum(monitor => monitor.AnalysisResults.Count));
 
-                    // 合并所有分析结果数据
-                    var analysiserResults = new List<GroupAnalysisResult>();
-                    monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
-                        .ForEach(resultList => analysiserResults.AddRange(resultList));
-
-                    foreach (var result in analysiserResults
-                        .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
-                    {
-                        // 遇到分析结果根节点，执行序号自增
-                        if (result.ParentAnalysisResult == null)
-                        {
-                            executeID++;
-                        }
-
-                        if (result.MonitorItem != null)
-                        {
-                            sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
-                            sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
-                        }
-
-                        sourceRange[rowID, 3].Value = result.Version;
-                        sourceRange[rowID, 4].Value = executeID;
-                        sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
-                        sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
-                        sourceRange[rowID, 9].Value = result.LineNumber;
-
-                        rowID++;
-                    }
+                    commonWorksheets.Add(sheetName, newPackage);
                 }
             }
+
+            // 输出监视规则树
+            int executeID = 0;
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
+            {
+                // 每个分析结果根节点使执行序号自增
+                executeID++;
+
+                this.WriteCommonAnlysisResult(commonWorksheets, resultRoot, executeID);
+
+                // 遍历根节点所有子节点输出分析结果数据
+                foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResults())
+                {
+                    this.WriteCommonAnlysisResult(commonWorksheets, analysisResult, executeID);
+                }
+            }
+
+            // 清理垃圾
+            commonWorksheets.Values.ToList().ForEach(package => package.Dispose());
+            commonWorksheets.Clear();
+        }
+
+        /// <summary>
+        /// 写入通用分析结果
+        /// </summary>
+        /// <param name="commonWorksheets"></param>
+        /// <param name="analysisResult"></param>
+        /// <param name="executeID"></param>
+        private void WriteCommonAnlysisResult(Dictionary<string, ExcelWorksheetPackage> commonWorksheets, GroupAnalysisResult analysisResult, int executeID)
+        {
+            // 保留表名的结果不处理
+            if (!SpecialSheetNames.Contains(analysisResult.MonitorItem.SheetName))
+            {
+                if (commonWorksheets.TryGetValue(analysisResult.MonitorItem.SheetName, out ExcelWorksheetPackage package))
+                {
+                    package.ExcelRange[package.RowNumber, 1].Value = analysisResult.MonitorItem.Name.PadLeft(analysisResult.MonitorItem.GetLayerDepth() + analysisResult.MonitorItem.Name.Length, '-');
+                    package.ExcelRange[package.RowNumber, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
+                    package.ExcelRange[package.RowNumber, 3].Value = analysisResult.Version;
+                    package.ExcelRange[package.RowNumber, 4].Value = executeID;
+                    package.ExcelRange[package.RowNumber, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond.ToString() : "匹配失败";
+                    package.ExcelRange[package.RowNumber, 6].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                    package.ExcelRange[package.RowNumber, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                    package.ExcelRange[package.RowNumber, 8].Value = analysisResult.LogFile.RelativePath;
+                    package.ExcelRange[package.RowNumber, 9].Value = analysisResult.LineNumber;
+
+                    // 行号自增
+                    package.RowNumberIncrease();
+                }
+                else
+                {
+                    // 未找到此表
+                }
+            }
+        }
+
+        /// <summary>
+        /// 创建通用表数据包
+        /// </summary>
+        /// <param name="worksheet">数据表</param>
+        /// <param name="maxRow">最大行数</param>
+        /// <returns></returns>
+        private ExcelWorksheetPackage CreateCommonWorksheetPackage(ExcelWorksheet worksheet, int maxRow)
+        {
+            if (worksheet == null)
+            {
+                throw new ArgumentNullException(nameof(worksheet));
+            }
+
+            Rectangle sheetRectangle = new Rectangle(1, 2, 9, maxRow);
+            ExcelRange sheetRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1];
+            ExcelWorksheetPackage package = new ExcelWorksheetPackage(worksheet, sheetRectangle.Top, sheetRange);
+
+            return package;
         }
 
         /// <summary>

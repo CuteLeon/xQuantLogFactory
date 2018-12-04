@@ -101,6 +101,7 @@
     <Compile Include="Model\Fixed\FixedDatas.cs" />
     <Compile Include="Model\Fixed\Enums.cs" />
     <Compile Include="Model\Monitor\MonitorBase.cs" />
+    <Compile Include="Model\Report\ExcelWorksheetPackage.cs" />
     <Compile Include="Model\Result\GroupAnalysisResultContainer.cs" />
     <Compile Include="Model\Result\GroupAnalysisResult.cs" />
     <Compile Include="Model\Result\IAnalysisResult.cs" />

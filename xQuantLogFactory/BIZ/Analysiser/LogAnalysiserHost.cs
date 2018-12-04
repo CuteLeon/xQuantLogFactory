@@ -127,6 +127,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public void InitAnalysisResultTree(TaskArgument argument)
         {
+            // TODO: 无法稳定复现的问题：初始化树并通过栈扫描时，扫描结果列表会比真实分析结果列表多 n(n>=0) 个
             foreach (GroupAnalysisResult analysisResult in argument.AnalysisResults)
             {
                 // 判断分析结果是否为完整组
