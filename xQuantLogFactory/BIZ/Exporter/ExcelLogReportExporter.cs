@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 using OfficeOpenXml;
 
@@ -66,14 +67,14 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     this.Tracer?.WriteLine("正在设置 Excel 报告属性信息 ...");
                     OfficeProperties properties = excel.Workbook.Properties;
-                    properties.Author = "xQuant日志分析工具";
+                    properties.Author = $"xQuant日志分析工具 - {Application.ProductVersion}";
                     properties.Category = "xQuant日志分析报告";
-                    properties.Comments = $"xQuant日志分析报告-{argument.TaskID}";
+                    properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
+                    properties.Comments = properties.Title;
                     properties.Company = "xQuant";
                     properties.Created = DateTime.Now;
-                    properties.Manager = "xQuant日志分析工具";
-                    properties.Subject = $"xQuant日志分析报告-{argument.TaskID}";
-                    properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
+                    properties.Manager = properties.Author;
+                    properties.Subject = properties.Title;
 
                     // 导出通用表数据
                     this.ExportCommonSheetEx(excel, argument);
@@ -151,11 +152,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                             executeID++;
                         }
 
-                        if (result.MonitorItem != null)
-                        {
-                            sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
-                            sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
-                        }
+                        sourceRange[rowID, 1].Value = result.MonitorItem.PrefixName;
+                        sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
 
                         sourceRange[rowID, 3].Value = result.Version;
                         sourceRange[rowID, 4].Value = executeID;
@@ -218,17 +216,34 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             // 输出监视规则树
             int executeID = 0;
+            ExcelWorksheetPackage excelPackage = null;
             foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
             {
                 // 每个分析结果根节点使执行序号自增
                 executeID++;
 
-                this.WriteCommonAnlysisResult(commonWorksheets, resultRoot, executeID);
-
                 // 遍历根节点所有子节点输出分析结果数据
-                foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResults())
+                foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot())
                 {
-                    this.WriteCommonAnlysisResult(commonWorksheets, analysisResult, executeID);
+                    // 保留表名的结果不处理
+                    if (!SpecialSheetNames.Contains(analysisResult.MonitorItem.SheetName))
+                    {
+                        if (commonWorksheets.TryGetValue(analysisResult.MonitorItem.SheetName, out excelPackage))
+                        {
+                            this.WriteCommonAnlysisResult(
+                                excelPackage.ExcelRange,
+                                excelPackage.RowNumber,
+                                analysisResult,
+                                executeID);
+
+                            // 行号自增
+                            excelPackage.RowNumberIncrease();
+                        }
+                        else
+                        {
+                            // 未找到此表
+                        }
+                    }
                 }
             }
 
@@ -240,34 +255,21 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <summary>
         /// 写入通用分析结果
         /// </summary>
-        /// <param name="commonWorksheets"></param>
-        /// <param name="analysisResult"></param>
-        /// <param name="executeID"></param>
-        private void WriteCommonAnlysisResult(Dictionary<string, ExcelWorksheetPackage> commonWorksheets, GroupAnalysisResult analysisResult, int executeID)
+        /// <param name="range">Excel表区域</param>
+        /// <param name="rowNumber">行号</param>
+        /// <param name="analysisResult">分析结果</param>
+        /// <param name="executeID">执行序号</param>
+        private void WriteCommonAnlysisResult(ExcelRange range, int rowNumber, GroupAnalysisResult analysisResult, int executeID)
         {
-            // 保留表名的结果不处理
-            if (!SpecialSheetNames.Contains(analysisResult.MonitorItem.SheetName))
-            {
-                if (commonWorksheets.TryGetValue(analysisResult.MonitorItem.SheetName, out ExcelWorksheetPackage package))
-                {
-                    package.ExcelRange[package.RowNumber, 1].Value = analysisResult.MonitorItem.Name.PadLeft(analysisResult.MonitorItem.GetLayerDepth() + analysisResult.MonitorItem.Name.Length, '-');
-                    package.ExcelRange[package.RowNumber, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
-                    package.ExcelRange[package.RowNumber, 3].Value = analysisResult.Version;
-                    package.ExcelRange[package.RowNumber, 4].Value = executeID;
-                    package.ExcelRange[package.RowNumber, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond.ToString() : "匹配失败";
-                    package.ExcelRange[package.RowNumber, 6].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                    package.ExcelRange[package.RowNumber, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                    package.ExcelRange[package.RowNumber, 8].Value = analysisResult.LogFile.RelativePath;
-                    package.ExcelRange[package.RowNumber, 9].Value = analysisResult.LineNumber;
-
-                    // 行号自增
-                    package.RowNumberIncrease();
-                }
-                else
-                {
-                    // 未找到此表
-                }
-            }
+            range[rowNumber, 1].Value = analysisResult.MonitorItem.PrefixName;
+            range[rowNumber, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
+            range[rowNumber, 3].Value = analysisResult.Version;
+            range[rowNumber, 4].Value = executeID;
+            range[rowNumber, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond.ToString() : "匹配失败";
+            range[rowNumber, 6].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowNumber, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowNumber, 8].Value = analysisResult.LogFile.RelativePath;
+            range[rowNumber, 9].Value = analysisResult.LineNumber;
         }
 
         /// <summary>
@@ -386,36 +388,46 @@ namespace xQuantLogFactory.BIZ.Exporter
                 using (ExcelRange tradeSettleRange = tradeSettleDataSheet.Cells[tradeSettleRectangle.Top, tradeSettleRectangle.Left, tradeSettleRectangle.Bottom - 1, tradeSettleRectangle.Right - 1])
                 {
                     int rowID = tradeSettleRectangle.Top, executeID = 0;
-                    foreach (var result in argument.AnalysisResults
-                        .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Settle)
-                        .OrderBy(result => (result.LogFile, result.LineNumber)))
+
+                    // 输出监视规则树
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
                     {
-                        tradeSettleRange[rowID, 1].Value = result.MonitorItem?.Name;
-                        tradeSettleRange[rowID, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
-                        tradeSettleRange[rowID, 3].Value = result.Version;
-                        tradeSettleRange[rowID, 4].Value = executeID;
-                        tradeSettleRange[rowID, 5].Value = result.ElapsedMillisecond;
-                        if (result.AnalysisDatas.TryGetValue(FixedDatas.QSRQ, out object qsrq))
+                        // 每个分析结果根节点使执行序号自增
+                        executeID++;
+
+                        // 遍历根节点及所有子节点输出分析结果数据
+                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                            .Where(result =>
+                                result.MonitorItem.Analysiser == AnalysiserTypes.Settle ||
+                                result.MonitorItem.Name == FixedDatas.TRADE_SETTLE_SHEET_NAME))
                         {
-                            tradeSettleRange[rowID, 6].Value = qsrq;
+                            tradeSettleRange[rowID, 1].Value = analysisResult.MonitorItem?.PrefixName;
+                            tradeSettleRange[rowID, 2].Value = analysisResult.MonitorItem?.ParentMonitorItem?.Name;
+                            tradeSettleRange[rowID, 3].Value = analysisResult.Version;
+                            tradeSettleRange[rowID, 4].Value = executeID;
+                            tradeSettleRange[rowID, 5].Value = analysisResult.ElapsedMillisecond;
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.QSRQ, out object qsrq))
+                            {
+                                tradeSettleRange[rowID, 6].Value = qsrq;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.DQZH, out object dqzh))
+                            {
+                                tradeSettleRange[rowID, 7].Value = dqzh;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.WBZH, out object wbzh))
+                            {
+                                tradeSettleRange[rowID, 8].Value = wbzh;
+                            }
+
+                            tradeSettleRange[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            tradeSettleRange[rowID, 10].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            tradeSettleRange[rowID, 11].Value = analysisResult.LogFile?.RelativePath;
+                            tradeSettleRange[rowID, 12].Value = analysisResult.LineNumber;
+
+                            rowID++;
                         }
-
-                        if (result.AnalysisDatas.TryGetValue(FixedDatas.DQZH, out object dqzh))
-                        {
-                            tradeSettleRange[rowID, 7].Value = dqzh;
-                        }
-
-                        if (result.AnalysisDatas.TryGetValue(FixedDatas.WBZH, out object wbzh))
-                        {
-                            tradeSettleRange[rowID, 8].Value = wbzh;
-                        }
-
-                        tradeSettleRange[rowID, 9].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        tradeSettleRange[rowID, 10].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        tradeSettleRange[rowID, 11].Value = result.LogFile?.RelativePath;
-                        tradeSettleRange[rowID, 12].Value = result.LineNumber;
-
-                        rowID++;
                     }
                 }
             }

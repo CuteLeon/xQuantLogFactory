@@ -92,7 +92,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             foreach (var monitor in argument.MonitorContainerRoot.GetMonitorItems())
             {
                 this.htmlBuilder.Value.AppendLine($@"<tr>
-    <td>{monitor.Name.PadLeft(monitor.Name.Length + monitor.GetLayerDepth(), '+')}</td>
+    <td>{monitor.PrefixName}</td>
     <td>{monitor.StartPattern}</td>
     <td>{monitor.FinishPatterny}</td>
     <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor)).ToString("N0")}</td>

@@ -23,6 +23,12 @@ namespace xQuantLogFactory.Model.Monitor
         #region 数据库字段
 
         /// <summary>
+        /// Gets 带有层级前缀的名称
+        /// </summary>
+        [XmlIgnore]
+        public virtual string PrefixName => this.Name.PadLeft(this.GetLayerDepth() + this.Name.Length, '-');
+
+        /// <summary>
         /// Gets or sets 起始匹配模式
         /// </summary>
         [XmlAttribute("Begin")]
@@ -69,7 +75,6 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlIgnore]
         public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
-
         #endregion
 
         #region 监视配置
