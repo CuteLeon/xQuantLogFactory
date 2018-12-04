@@ -55,7 +55,7 @@
         /// <summary>
         /// 交易清算表名
         /// </summary>
-        public const string TRADE_SETTLE_SHEET_NAME = "交易清算";
+        public const string TRADE_SETTLE_SHEET_NAME = "清算";
         #endregion
 
     }
