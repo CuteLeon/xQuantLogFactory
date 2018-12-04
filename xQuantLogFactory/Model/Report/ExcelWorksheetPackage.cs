@@ -45,7 +45,8 @@ namespace xQuantLogFactory.Model.Report
             {
                 if (disposing)
                 {
-                    this.Worksheet?.Dispose();
+                    // 不要释放 Worksheet 对象，否则无法保存
+                    // this.Worksheet?.Dispose();
                     this.ExcelRange?.Dispose();
                 }
 

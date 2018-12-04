@@ -84,6 +84,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportMiddlewareSheet(excel, argument);
                     this.ExportTradeSettleSheet(excel, argument);
 
+                    /* 更新数据透视表
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
                     if (analysisSheet != null)
                     {
@@ -92,6 +93,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         analysisSheet.Calculate();
                         excel.Workbook.Calculate();
                     }
+                     */
                 }
                 catch
                 {

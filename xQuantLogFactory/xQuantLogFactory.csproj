@@ -132,9 +132,6 @@
     <Compile Include="Utils\Trace\ConsoleTracer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Monitor\TreeTest.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Monitor\Client.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
