@@ -134,7 +134,6 @@ namespace xQuantLogFactory.BIZ.Exporter
                 Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
                 using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
                 {
-                    // TODO: 分表导出如何分析执行序号：为监视规则设置属性，遇到即更新序号？
                     int rowID = sheetRectangle.Top, executeID = 0;
 
                     // 合并所有分析结果数据
@@ -145,6 +144,12 @@ namespace xQuantLogFactory.BIZ.Exporter
                     foreach (var result in analysiserResults
                         .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
                     {
+                        // 遇到分析结果根节点，执行序号自增
+                        if (result.ParentAnalysisResult == null)
+                        {
+                            executeID++;
+                        }
+
                         if (result.MonitorItem != null)
                         {
                             sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');
@@ -172,6 +177,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         public void ExportCommonSheet1(ExcelPackage excel, TaskArgument argument)
         {
+            /* 按分析结果树分表导出问题：
+             * 1. 需要在一个方法内同时维护所有通用数据表对象，若数据总量较大，会产生比原算法更严重的内存压力
+             * 2. 分析结果表名若存在跨级，如 分析结果1导出到A表，1的子结果2需要导出到B表，但2的子结果3又需要导出到A表，3也属于1的子结果；
+             * 思路：同初始化分析结果树算法，遍历分析结果容器的根节点（仅在容器根节点遍历时更新执行序号），对每个跟节点当做树根遍历，将所有子节点分表导出
+             */
             System.Windows.Forms.MessageBox.Show(argument.AnalysisResultContainerRoot.GetAnalysisResults().Count().ToString(), "分析结果树元素数：");
 
             this.Tracer?.WriteLine("开始导出通用表数据 ...");
@@ -183,9 +193,10 @@ namespace xQuantLogFactory.BIZ.Exporter
                     continue;
                 }
 
-
+                // ...
             }
 
+            // ——————————————————
             foreach (var monitorGroup in argument.MonitorContainerRoot.GetMonitorItems()
                 .GroupBy(monitor => monitor.SheetName))
             {
@@ -202,7 +213,6 @@ namespace xQuantLogFactory.BIZ.Exporter
                 Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
                 using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
                 {
-                    // TODO: 分表导出如何分析执行序号：为监视规则设置属性，遇到即更新序号？
                     int rowID = sheetRectangle.Top, executeID = 0;
 
                     // 合并所有分析结果数据
@@ -213,6 +223,12 @@ namespace xQuantLogFactory.BIZ.Exporter
                     foreach (var result in analysiserResults
                         .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
                     {
+                        // 遇到分析结果根节点，执行序号自增
+                        if (result.ParentAnalysisResult == null)
+                        {
+                            executeID++;
+                        }
+
                         if (result.MonitorItem != null)
                         {
                             sourceRange[rowID, 1].Value = result.MonitorItem.Name.PadLeft(result.MonitorItem.GetLayerDepth() + result.MonitorItem.Name.Length, '-');

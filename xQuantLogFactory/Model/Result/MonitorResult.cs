@@ -54,5 +54,9 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         public string LogContent { get; set; }
 
+        public override string ToString()
+        {
+            return $"【日志时间】={this.LogTime}，【监视规则】={this.MonitorItem?.Name}";
+        }
     }
 }

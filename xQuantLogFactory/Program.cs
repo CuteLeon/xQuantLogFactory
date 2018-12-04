@@ -20,12 +20,6 @@ using xQuantLogFactory.Utils.Trace;
 
 // 在 VS 内通过 [按键:Alt+F2] 或 [菜单:(调试|分析)>性能探查器] 打开 [性能探查器] 分析方法或对象CPU或内存的性能影响
 
-/* TODO: 以监视规则树处理日志
- * 在解析时通过监视规则树状解析不太理想，对于内存消耗这种任意穿插，不出现在树的固定位置，不容易处理；
- * 解决方案：分析器Host对解析结果配对后，进行分析结果树组装：对解析结果按日志时间排序(按行号排序会受跨文件影响)，按 监视规则树状关系+分析结果前后解析结果时间范围 关联分析结果父子关系，分表导出时使用堆栈扫描分析结果树，输出符合要求的分析结果
- * 使用容器管理分析结果，每一组分析结果从监视规则根开始，记录为容器的根节点
- */
-
 // TODO: [全局任务] 移除和排除 using
 // TODO: [全局任务] 编写单元测试
 namespace xQuantLogFactory
@@ -592,11 +586,12 @@ namespace xQuantLogFactory
                 UnityTaskArgument.LogFiles.Count(file => file.AnalysisResults.Count > 0),
                 UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count(monitor => monitor.AnalysisResults.Count > 0),
                 UnityTaskArgument.AnalysisResults.Count);
-
+            /*
             UnityTrace.WriteLine("分析结果树：");
             UnityTaskArgument.AnalysisResultContainerRoot
                 .GetAnalysisResults().ToList()
                 .ForEach(result => Console.WriteLine(result));
+             */
         }
 
         /// <summary>

@@ -127,7 +127,6 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// Gets or sets 日志分析结果表
         /// </summary>
-        /// TODO: 由 GroupAnalysisResultContainer 取代
         [XmlIgnore]
         public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
 
