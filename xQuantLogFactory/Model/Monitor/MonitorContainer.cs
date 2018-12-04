@@ -36,12 +36,29 @@ namespace xQuantLogFactory.Model.Monitor
                             currentMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
                         }
 
-                        // 当监视规则开始条件为空时，使用前一兄弟规则?.结束条件；
-                        if (string.IsNullOrEmpty(currentMonitor.StartPattern)
-                            && index > 0
-                            && !string.IsNullOrEmpty(parentMonitor.MonitorTreeRoots[index - 1].FinishPatterny))
+                        // 当监视规则开始条件为空时，使用前驱或外层节点条件填充
+                        if (string.IsNullOrEmpty(currentMonitor.StartPattern))
                         {
-                            currentMonitor.StartPattern = parentMonitor.MonitorTreeRoots[index - 1].FinishPatterny;
+                            if (index == 0)
+                            {
+                                // 容器的第一层根节点无法取容器的开始条件，因为容器没有监视条件
+                                if (parentMonitor is MonitorItem parent)
+                                {
+                                    // 第一个节点使用父节点的开始条件
+                                    if (!string.IsNullOrEmpty(parent.StartPattern))
+                                    {
+                                        currentMonitor.StartPattern = parent.StartPattern;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // 剩余节点使用前驱节点的结束条件
+                                if (!string.IsNullOrEmpty(parentMonitor.MonitorTreeRoots[index - 1].FinishPatterny))
+                                {
+                                    currentMonitor.StartPattern = parentMonitor.MonitorTreeRoots[index - 1].FinishPatterny;
+                                }
+                            }
                         }
 
                         if (currentMonitor.HasChildren)
