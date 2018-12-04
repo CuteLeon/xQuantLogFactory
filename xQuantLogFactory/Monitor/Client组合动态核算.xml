@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Item Name="内存消耗" Begin="内存消耗" End="" Memory="true" Sheet="内存"/>
+  <Item Name="组合动态核算" Begin="计算指标--获取计算交易数据开始" End="动态核算券敞口耗时">
+    <Item Name="组合动态核算--获取交易" Begin="计算指标--获取计算交易数据开始" End="计算指标--获取计算交易数据结束"/>
+    <Item Name="组合动态核算--执行计算" Begin="计算指标--开始" End="动态核算券敞口耗时"/>
+  </Item>
+</MonitorRoot>

@@ -19,9 +19,6 @@ namespace xQuantLogFactory.BIZ.Analysiser.Tests
                 "1加载TTRD_OTC_STORE：4",
                 "加载：4",
                 "加载TTRD_OTC_STORE4",
-                "加载TTRD_OTC_1STORE：43",
-                "加载TTRD_OTC_啊STORE：42",
-                "加载嘻嘻嘻：4",
                 "加载TTRD_OTC_STORE：哈哈哈",
             };
             string[] validLog = new string[]
