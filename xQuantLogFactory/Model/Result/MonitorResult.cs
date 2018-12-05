@@ -54,6 +54,31 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         public string LogContent { get; set; }
 
+        /// <summary>
+        /// 检查解析是否与结果匹配
+        /// </summary>
+        /// <param name="targetResult"></param>
+        /// <returns></returns>
+        public bool CheckMatch(MonitorResult targetResult)
+        {
+            if (targetResult == null)
+            {
+                return false;
+            }
+
+            if (this.GroupType == targetResult.GroupType)
+            {
+                return false;
+            }
+
+            bool matched =
+                (string.IsNullOrEmpty(this.Version) || string.IsNullOrEmpty(targetResult.Version) || this.Version == targetResult.Version) &&
+                (string.IsNullOrEmpty(this.Client) || string.IsNullOrEmpty(targetResult.Client) || this.Client == targetResult.Client) &&
+                ((this.GroupType == GroupTypes.Start && this.LogTime <= targetResult.LogTime) || (this.GroupType == GroupTypes.Finish && this.LogTime >= targetResult.LogTime));
+
+            return matched;
+        }
+
         public override string ToString()
         {
             return $"【日志时间】={this.LogTime}，【监视规则】={this.MonitorItem?.Name}";

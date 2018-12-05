@@ -40,6 +40,31 @@ namespace xQuantLogFactory.Model.Monitor
         }
 
         /// <summary>
+        /// 查找指定名称的第一个子监视规则
+        /// </summary>
+        /// <param name="monitorName"></param>
+        /// <returns></returns>
+        /// <remarks>不要使用Linq和foreach，否则在定向分析器中对监视规则子列表做了修改后遍历会产生错误，使用索引器查找</remarks>
+        public MonitorItem FindChildMonitorItem(string monitorName)
+        {
+            int index = 0;
+            MonitorItem currentMonitor = null;
+
+            while (index < this.MonitorTreeRoots.Count)
+            {
+                currentMonitor = this.MonitorTreeRoots[index];
+                if (string.Equals(currentMonitor.Name, monitorName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return currentMonitor;
+                }
+
+                index++;
+            }
+
+            return default;
+        }
+
+        /// <summary>
         /// 获取所有节点及其子节点
         /// </summary>
         /// <returns></returns>

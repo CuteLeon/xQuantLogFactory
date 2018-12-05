@@ -40,7 +40,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
 
             lock (parentMonitor)
             {
-                MonitorItem childMonitor = this.GetFirstOrDefaultMonitorItem(parentMonitor, childMonitorName);
+                MonitorItem childMonitor = parentMonitor.FindChildMonitorItem(childMonitorName);
                 if (childMonitor == null)
                 {
                     childMonitor = new MonitorItem(childMonitorName);
@@ -51,30 +51,6 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
 
                 return childMonitor;
             }
-        }
-
-        /// <summary>
-        /// 查找目标名称的自监视规则
-        /// </summary>
-        /// <param name="parentMonitor"></param>
-        /// <param name="targetName"></param>
-        /// <returns></returns>
-        private MonitorItem GetFirstOrDefaultMonitorItem(MonitorItem parentMonitor, string targetName)
-        {
-            int index = 0;
-            MonitorItem currentMonitor = null;
-            while (index < parentMonitor.MonitorTreeRoots.Count)
-            {
-                currentMonitor = parentMonitor.MonitorTreeRoots[index];
-                if (string.Equals(currentMonitor.Name, targetName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return currentMonitor;
-                }
-
-                index++;
-            }
-
-            return default;
         }
     }
 }

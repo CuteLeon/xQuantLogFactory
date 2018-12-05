@@ -57,7 +57,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                         case GroupTypes.Finish:
                             {
                                 if (analysisResult == null ||
-                                    !this.CheckMatch(analysisResult.StartMonitorResult, monitorResult))
+                                    !analysisResult.StartMonitorResult.CheckMatch(monitorResult))
                                 {
                                     // 组匹配类型为Finish时，若不存在未关闭的分析结果或结果不匹配，则新建分析结果并记录监视结果；
                                     analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);

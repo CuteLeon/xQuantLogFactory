@@ -1,9 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using xQuantLogFactory.BIZ.Analysiser;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.BIZ.Analysiser.Tests
@@ -18,30 +16,32 @@ namespace xQuantLogFactory.BIZ.Analysiser.Tests
 
             MonitorResult result0 = new MonitorResult()
             {
+                GroupType = GroupTypes.Start,
                 LogTime = DateTime.Parse("1997-1-1"),
             };
             MonitorResult result1 = new MonitorResult()
             {
+                GroupType = GroupTypes.Finish,
                 LogTime = DateTime.Parse("1997-1-1"),
             };
 
             result0.Version = "versionA";
-            Assert.IsTrue(analysiser.CheckMatch(result0, result1));
+            Assert.IsTrue(result0.CheckMatch(result1));
             result1.Version = "versionB";
-            Assert.IsFalse(analysiser.CheckMatch(result0, result1));
+            Assert.IsFalse(result0.CheckMatch(result1));
             result1.Version = "versionA";
-            Assert.IsTrue(analysiser.CheckMatch(result0, result1));
+            Assert.IsTrue(result0.CheckMatch(result1));
             result0.Version = "";
-            Assert.IsTrue(analysiser.CheckMatch(result0, result1));
+            Assert.IsTrue(result0.CheckMatch(result1));
 
             result0.Client = "clientA";
-            Assert.IsTrue(analysiser.CheckMatch(result0, result1));
+            Assert.IsTrue(result0.CheckMatch(result1));
             result1.Client = "clientB";
-            Assert.IsFalse(analysiser.CheckMatch(result0, result1));
+            Assert.IsFalse(result0.CheckMatch(result1));
             result1.Client = "clientA";
-            Assert.IsTrue(analysiser.CheckMatch(result0, result1));
+            Assert.IsTrue(result0.CheckMatch(result1));
             result0.Client = "";
-            Assert.IsTrue(analysiser.CheckMatch(result0, result1));
+            Assert.IsTrue(result0.CheckMatch(result1));
 
             result0.LogTime = result0.LogTime.AddDays(1);
             Assert.IsFalse(analysiser.CheckMatch(result0, result1));
