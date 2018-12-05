@@ -14,13 +14,13 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// <summary>
     /// 交易清算分析器
     /// </summary>
-    public class TradeSettleAnalysiser : DirectedLogAnalysiserBase
+    public class TradeClearingAnalysiser : DirectedLogAnalysiserBase
     {
-        public TradeSettleAnalysiser()
+        public TradeClearingAnalysiser()
         {
         }
 
-        public TradeSettleAnalysiser(ITracer tracer)
+        public TradeClearingAnalysiser(ITracer tracer)
             : base(tracer)
         {
         }

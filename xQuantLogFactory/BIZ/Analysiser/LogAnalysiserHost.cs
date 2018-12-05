@@ -91,7 +91,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
                 if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Settle))
                 {
-                    this.AddAnalysiser(new TradeSettleAnalysiser(this.Tracer));
+                    this.AddAnalysiser(new TradeClearingAnalysiser(this.Tracer));
                 }
 
                 if (monitorItems.Any(monitor => monitor.Memory))
