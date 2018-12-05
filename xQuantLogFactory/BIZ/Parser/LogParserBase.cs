@@ -36,31 +36,6 @@ namespace xQuantLogFactory.BIZ.Parser
         public abstract void Parse(TaskArgument argument);
 
         /// <summary>
-        /// 匹配监视规则
-        /// </summary>
-        /// <param name="monitor">监视规则</param>
-        /// <param name="logContent">日志内容</param>
-        /// <returns>匹配监视规则类型</returns>
-        protected GroupTypes MatchMonitor(MonitorItem monitor, string logContent)
-        {
-            // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
-            if (monitor.StartPattern?.Length > 0 &&
-                logContent.IndexOf(monitor.StartPattern, StringComparison.Ordinal) > -1)
-            {
-                return GroupTypes.Start;
-            }
-            else if (monitor.FinishPatterny?.Length > 0 &&
-                logContent.IndexOf(monitor.FinishPatterny, StringComparison.Ordinal) > -1)
-            {
-                return GroupTypes.Finish;
-            }
-            else
-            {
-                return GroupTypes.Unmatch;
-            }
-        }
-
-        /// <summary>
         /// 创建解析结果对象
         /// </summary>
         /// <param name="argument"></param>

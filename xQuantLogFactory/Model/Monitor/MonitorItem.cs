@@ -95,6 +95,30 @@ namespace xQuantLogFactory.Model.Monitor
         #region 方法
 
         /// <summary>
+        /// 匹配日志内容
+        /// </summary>
+        /// <param name="logContent">日志内容</param>
+        /// <returns>匹配监视规则类型</returns>
+        public GroupTypes MatchLogContent(string logContent)
+        {
+            // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
+            if (this.StartPattern?.Length > 0 &&
+                logContent.IndexOf(this.StartPattern, StringComparison.Ordinal) > -1)
+            {
+                return GroupTypes.Start;
+            }
+            else if (this.FinishPatterny?.Length > 0 &&
+                logContent.IndexOf(this.FinishPatterny, StringComparison.Ordinal) > -1)
+            {
+                return GroupTypes.Finish;
+            }
+            else
+            {
+                return GroupTypes.Unmatch;
+            }
+        }
+
+        /// <summary>
         /// 绑定父级节点
         /// </summary>
         /// <param name="parentMonitor">父级节点</param>

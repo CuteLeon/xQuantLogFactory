@@ -54,8 +54,10 @@
     <Compile Include="BIZ\Analysiser\CommonLoadAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\CommonPrefixAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\GroupLogAnalysiserTests.cs" />
+    <Compile Include="BIZ\Parser\LogParserBaseTests.cs" />
     <Compile Include="BIZ\Parser\LogParserTests.cs" />
     <Compile Include="BIZ\Parser\MiddlewareLogParserTests.cs" />
+    <Compile Include="Model\EqualityComparer\LogResultEqualityComparerTests.cs" />
     <Compile Include="Model\Factory\TaskArgumentFactoryTests.cs" />
     <Compile Include="Model\Monitor\MonitorBaseTests.cs" />
     <Compile Include="Model\Monitor\MonitorContainerTests.cs" />
