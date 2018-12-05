@@ -9,7 +9,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
     /// <summary>
     /// 任务相关文件查找器基类
     /// </summary>
-    public abstract class TaskFileFinderBase
+    public abstract class TaskFileFinderBase : IFileFinder
     {
         /// <summary>
         /// 在指定目录查找符合要求的文件

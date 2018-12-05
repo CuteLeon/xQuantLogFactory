@@ -87,26 +87,5 @@ namespace xQuantLogFactory.BIZ.Analysiser
             // 分析结果匹配完成后按日志时间排序
             argument.AnalysisResults = argument.AnalysisResults.OrderBy(result => result.LogTime).ToList();
         }
-
-        /// <summary>
-        /// 检查解析结果是否匹配
-        /// </summary>
-        /// <param name="startResult"></param>
-        /// <param name="finishResult"></param>
-        /// <returns></returns>
-        public bool CheckMatch(MonitorResult startResult, MonitorResult finishResult)
-        {
-            if (startResult == null || finishResult == null)
-            {
-                return false;
-            }
-
-            bool matched =
-                (string.IsNullOrEmpty(startResult.Version) || string.IsNullOrEmpty(finishResult.Version) || startResult.Version == finishResult.Version) &&
-                (string.IsNullOrEmpty(startResult.Client) || string.IsNullOrEmpty(finishResult.Client) || startResult.Client == finishResult.Client) &&
-                (startResult.LogTime <= finishResult.LogTime);
-
-            return matched;
-        }
     }
 }

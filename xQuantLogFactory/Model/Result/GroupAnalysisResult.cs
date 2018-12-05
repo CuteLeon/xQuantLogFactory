@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
@@ -72,6 +73,20 @@ namespace xQuantLogFactory.Model.Result
         /// Gets 分析数据
         /// </summary>
         public Dictionary<string, object> AnalysisDatas { get; } = new Dictionary<string, object>();
+
+        /// <summary>
+        /// 获取自身及所有子分析结果及其子分析结果
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GroupAnalysisResult> GetAnalysisResultWithRoot()
+        {
+            yield return this;
+
+            foreach (var analysisResult in this.GetAnalysisResults())
+            {
+                yield return analysisResult;
+            }
+        }
 
         public override string ToString()
         {

@@ -13,24 +13,6 @@ namespace xQuantLogFactory.Model.Extensions
     public static class IAnalysisResultExtension
     {
         /// <summary>
-        /// 获取自身及所有子分析结果及其子分析结果
-        /// </summary>
-        /// <param name="targetResult"></param>
-        /// <returns></returns>
-        public static IEnumerable<GroupAnalysisResult> GetAnalysisResultWithRoot(this IAnalysisResult targetResult)
-        {
-            if (targetResult is GroupAnalysisResult selfResult)
-            {
-                yield return selfResult;
-            }
-
-            foreach (var analysisResult in targetResult.GetAnalysisResults())
-            {
-                yield return analysisResult;
-            }
-        }
-
-        /// <summary>
         /// 获取所有子分析结果及其子分析结果
         /// </summary>
         /// <param name="targetResult"></param>

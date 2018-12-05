@@ -44,7 +44,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.Tests
             Assert.IsTrue(result0.CheckMatch(result1));
 
             result0.LogTime = result0.LogTime.AddDays(1);
-            Assert.IsFalse(analysiser.CheckMatch(result0, result1));
+            Assert.IsFalse(result0.CheckMatch(result1));
         }
     }
 }
