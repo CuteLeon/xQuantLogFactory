@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+
+using xQuantLogFactory.Model.Extensions;
+using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
 {
@@ -11,5 +15,52 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 子分析结果
         /// </summary>
         public List<GroupAnalysisResult> AnalysisResultRoots { get; set; } = new List<GroupAnalysisResult>();
+
+        /// <summary>
+        /// 初始化分析结果树
+        /// </summary>
+        /// <param name="analysisResults"></param>
+        public void InitAnalysisResultTree(IEnumerable<GroupAnalysisResult> analysisResults)
+        {
+            // TODO: 无法稳定复现的问题：初始化树并通过栈扫描时，扫描结果列表会比真实分析结果列表多 n(n>=0) 个
+            foreach (GroupAnalysisResult analysisResult in analysisResults)
+            {
+                // 判断分析结果是否为完整组
+                if (analysisResult.IsIntactGroup())
+                {
+                    if (analysisResult.MonitorItem.HasChildren)
+                    {
+                        // 关联子监视规则的分析结果（以当前节点为树根遍历监视规则树，防止分析结果之间断级，而造成分析结果树断开）
+                        foreach (MonitorItem childMonitor in analysisResult.MonitorItem.GetMonitorItems())
+                        {
+                            childMonitor.AnalysisResults
+                                .Where(result =>
+                                    analysisResult.StartMonitorResult.LogTime <= result.LogTime &&
+                                    result.LogTime <= analysisResult.FinishMonitorResult.LogTime)
+                                .ToList().ForEach(childResult =>
+                                {
+                                    // 节约性能，仅关联父节点，防止重复高频的List操作
+                                    childResult.ParentAnalysisResult = analysisResult;
+                                });
+                        }
+                    }
+
+                    // 不存在父级的完整分析组节点记录为分析结果容器的根节点
+                    if (analysisResult.ParentAnalysisResult == null)
+                    {
+                        this.AnalysisResultRoots.Add(analysisResult);
+                    }
+                }
+            }
+
+            // 根据分析结果父级节点反向关联子分析结果，单独处理，防止重复高频操作
+            foreach (var analysisResult in analysisResults)
+            {
+                if (analysisResult.ParentAnalysisResult != null)
+                {
+                    analysisResult.ParentAnalysisResult.AnalysisResultRoots.Add(analysisResult);
+                }
+            }
+        }
     }
 }

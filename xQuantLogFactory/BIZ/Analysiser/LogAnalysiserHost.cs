@@ -6,8 +6,6 @@ using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
-using xQuantLogFactory.Model.Monitor;
-using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser
@@ -58,7 +56,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
             }
 
             // 初始化分析结果树
-            this.InitAnalysisResultTree(argument);
+            argument.InitAnalysisResultTree();
 
             // 计算日志耗时
             this.CalcElapsed(argument);
@@ -119,53 +117,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
             });
 
             argument.LogFiles.ForEach(logFile => logFile.ElapsedMillisecond = logFile.AnalysisResults.Sum(result => result.ElapsedMillisecond));
-        }
-
-        /// <summary>
-        /// 初始化分析结果树
-        /// </summary>
-        /// <param name="argument"></param>
-        public void InitAnalysisResultTree(TaskArgument argument)
-        {
-            // TODO: 无法稳定复现的问题：初始化树并通过栈扫描时，扫描结果列表会比真实分析结果列表多 n(n>=0) 个
-            foreach (GroupAnalysisResult analysisResult in argument.AnalysisResults)
-            {
-                // 判断分析结果是否为完整组
-                if (analysisResult.IsIntactGroup())
-                {
-                    if (analysisResult.MonitorItem.HasChildren)
-                    {
-                        // 关联子监视规则的分析结果（以当前节点为树根遍历监视规则树，防止分析结果之间断级，而造成分析结果树断开）
-                        foreach (MonitorItem childMonitor in analysisResult.MonitorItem.GetMonitorItems())
-                        {
-                            childMonitor.AnalysisResults
-                                .Where(result =>
-                                    analysisResult.StartMonitorResult.LogTime <= result.LogTime &&
-                                    result.LogTime <= analysisResult.FinishMonitorResult.LogTime)
-                                .ToList().ForEach(childResult =>
-                                {
-                                    // 节约性能，仅关联父节点，防止重复高频的List操作
-                                    childResult.ParentAnalysisResult = analysisResult;
-                                });
-                        }
-                    }
-
-                    // 不存在父级的完整分析组节点记录为分析结果容器的根节点
-                    if (analysisResult.ParentAnalysisResult == null)
-                    {
-                        argument.AnalysisResultContainerRoot.AnalysisResultRoots.Add(analysisResult);
-                    }
-                }
-            }
-
-            // 根据分析结果父级节点反向关联子分析结果，单独处理，防止重复高频操作
-            foreach (var analysisResult in argument.AnalysisResults)
-            {
-                if (analysisResult.ParentAnalysisResult != null)
-                {
-                    analysisResult.ParentAnalysisResult.AnalysisResultRoots.Add(analysisResult);
-                }
-            }
         }
     }
 }
