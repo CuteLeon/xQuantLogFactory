@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="Utils\Collections\VersionedList.cs" />
     <Compile Include="Utils\ConfigHelper.cs" />
+    <Compile Include="Utils\DebugHelper.cs" />
     <Compile Include="Utils\Extensions\DeepCloneExtension.cs" />
     <Compile Include="Utils\Extensions\SaveToFileExtension.cs" />
     <Compile Include="Utils\Extensions\EnumExtension.cs" />

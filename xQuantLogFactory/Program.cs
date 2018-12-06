@@ -10,7 +10,6 @@ using xQuantLogFactory.BIZ.Exporter;
 using xQuantLogFactory.BIZ.FileFinder;
 using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
@@ -34,7 +33,7 @@ namespace xQuantLogFactory
         /// <summary>
         /// 全局追踪器
         /// </summary>
-        public static volatile ITracer UnityTrace = new ConsoleTracer();
+        public static volatile ITracer UnityTracer = new ConsoleTracer();
 
         /// <summary>
         /// 入口
@@ -45,35 +44,35 @@ namespace xQuantLogFactory
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             Console.Title = $"xQuant 日志分析工具 - {Application.ProductVersion}";
-            UnityTrace.WriteLine($"{Console.Title} 已启动...");
-            UnityTrace.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
+            UnityTracer.WriteLine($"{Console.Title} 已启动...");
+            UnityTracer.WriteLine($"启动参数：\n————————\n\t{string.Join("\n\t", args)}\n————————");
 
-            UnityTrace.WriteLine("开始创建任务参数对象...");
+            UnityTracer.WriteLine("开始创建任务参数对象...");
             CreateTaskArgument(args);
 
             if (UnityTaskArgument?.IncludeSystemInfo ?? false)
             {
-                UnityTrace.WriteLine("开始获取系统信息...");
+                UnityTracer.WriteLine("开始获取系统信息...");
                 GetSystemInfo();
             }
 
-            UnityTrace.WriteLine("准备监视规则XML文件存储目录：{0}", ConfigHelper.MonitorDirectory);
+            UnityTracer.WriteLine("准备监视规则XML文件存储目录：{0}", ConfigHelper.MonitorDirectory);
             CheckDirectory(ConfigHelper.MonitorDirectory);
 
-            UnityTrace.WriteLine("准备日志报告导出目录：{0}", ConfigHelper.ReportExportDirectory);
+            UnityTracer.WriteLine("准备日志报告导出目录：{0}", ConfigHelper.ReportExportDirectory);
             CheckDirectory(ConfigHelper.ReportExportDirectory);
 
-            UnityTrace.WriteLine("准备报告导出模板目录：{0}", ConfigHelper.ReportTempletDirectory);
+            UnityTracer.WriteLine("准备报告导出模板目录：{0}", ConfigHelper.ReportTempletDirectory);
             CheckDirectory(ConfigHelper.ReportTempletDirectory);
 
-            UnityTrace.WriteLine("开始反序列化匹配的监视规则对象...");
+            UnityTracer.WriteLine("开始反序列化匹配的监视规则对象...");
             GetMonitorItems(ConfigHelper.MonitorDirectory);
-            UnityTrace.WriteLine($"发现 {UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count()} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Select(item => item.Name))}");
+            UnityTracer.WriteLine($"发现 {UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count()} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Select(item => item.Name))}");
 
-            UnityTrace.WriteLine("开始获取任务相关日志文件...");
+            UnityTracer.WriteLine("开始获取任务相关日志文件...");
             GetTaskLogFiles(UnityTaskArgument.LogDirectory);
 
-            UnityTrace.WriteLine("开始解析日志文件...");
+            UnityTracer.WriteLine("开始解析日志文件...");
 
             // 未发现监视规则对象，不解析客户端和服务端日志文件
             if (UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count() > 0)
@@ -85,13 +84,18 @@ namespace xQuantLogFactory
             ParseMiddlewareLog();
             ShowParseResult();
 
-            UnityTrace.WriteLine("开始分析日志解析结果...");
+            UnityTracer.WriteLine("开始分析日志解析结果...");
             AnalysisLog();
             ShowAnalysisResult();
 
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
             TryToExportLogReport();
             SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
+
+#if DEBUG
+            // 调试助手
+            new DebugHelper(UnityTracer).ActiveDebugFunction(UnityTaskArgument);
+#endif
 
             Exit(0);
         }
@@ -118,7 +122,7 @@ namespace xQuantLogFactory
             }
             catch (Exception ex)
             {
-                UnityTrace.WriteLine($"获取任务相关日志文件失败：{ex.Message}");
+                UnityTracer.WriteLine($"获取任务相关日志文件失败：{ex.Message}");
                 Exit(4);
             }
 
@@ -129,12 +133,12 @@ namespace xQuantLogFactory
 
             if (UnityTaskArgument.LogFiles.Count == 0)
             {
-                UnityTrace.WriteLine("未发现任务相关日志文件，程序将退出");
+                UnityTracer.WriteLine("未发现任务相关日志文件，程序将退出");
                 Exit(3);
             }
             else
             {
-                UnityTrace.WriteLine($"发现 {UnityTaskArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityTaskArgument.LogFiles.Select(file => file.RelativePath))}\n————————");
+                UnityTracer.WriteLine($"发现 {UnityTaskArgument.LogFiles.Count} 个日志文件：\n————————\n\t{string.Join("\n\t", UnityTaskArgument.LogFiles.Select(file => file.RelativePath))}\n————————");
             }
         }
 
@@ -153,7 +157,7 @@ namespace xQuantLogFactory
             }
             catch (Exception ex)
             {
-                UnityTrace.WriteLine($"获取任务相关监视规则失败：{ex.Message}");
+                UnityTracer.WriteLine($"获取任务相关监视规则失败：{ex.Message}");
                 Exit(4);
             }
 
@@ -163,7 +167,7 @@ namespace xQuantLogFactory
             }
             else
             {
-                UnityTrace.WriteLine($"获取监视规则容器对象为空！");
+                UnityTracer.WriteLine($"获取监视规则容器对象为空！");
                 Exit(4);
             }
         }
@@ -180,11 +184,11 @@ namespace xQuantLogFactory
             }
             catch (Exception ex)
             {
-                UnityTrace.WriteLine($"准备工作目录失败：{ex.Message}");
+                UnityTracer.WriteLine($"准备工作目录失败：{ex.Message}");
                 Exit(2);
             }
 
-            UnityTrace.WriteLine("准备工作目录成功");
+            UnityTracer.WriteLine("准备工作目录成功");
         }
 
         /// <summary>
@@ -207,7 +211,7 @@ namespace xQuantLogFactory
                 throw new ArgumentException("创建任务失败！");
             }
 
-            UnityTrace.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
+            UnityTracer.WriteLine("创建任务参数对象成功：\n————————\n{0}\n————————", UnityTaskArgument);
         }
 
         /// <summary>
@@ -222,10 +226,10 @@ namespace xQuantLogFactory
             }
             catch (Exception ex)
             {
-                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
-                UnityTrace.WriteLine(ArgsTaskArgumentFactory.Intance.Usage);
+                UnityTracer.WriteLine($"创建任务参数对象失败：{ex.Message}");
+                UnityTracer.WriteLine(ArgsTaskArgumentFactory.Intance.Usage);
 
-                UnityTrace.WriteLine($"正在使用 GUI 创建任务：");
+                UnityTracer.WriteLine($"正在使用 GUI 创建任务：");
                 GUICreateTask();
             }
         }
@@ -241,7 +245,7 @@ namespace xQuantLogFactory
             }
             catch (Exception ex)
             {
-                UnityTrace.WriteLine($"创建任务参数对象失败：{ex.Message}");
+                UnityTracer.WriteLine($"创建任务参数对象失败：{ex.Message}");
                 Exit(1);
             }
         }
@@ -267,12 +271,12 @@ namespace xQuantLogFactory
         {
             if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
             {
-                UnityTrace.WriteLine("开始解析 [客户端] 日志文件...\n————————");
+                UnityTracer.WriteLine("开始解析 [客户端] 日志文件...\n————————");
 
-                ILogParser clientLogParser = new ClientLogParser(UnityTrace);
+                ILogParser clientLogParser = new ClientLogParser(UnityTracer);
                 clientLogParser.Parse(UnityTaskArgument);
 
-                UnityTrace.WriteLine(
+                UnityTracer.WriteLine(
                     "[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
                     UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
@@ -287,12 +291,12 @@ namespace xQuantLogFactory
         {
             if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Server) > 0)
             {
-                UnityTrace.WriteLine("开始解析 [服务端] 日志文件...\n————————");
+                UnityTracer.WriteLine("开始解析 [服务端] 日志文件...\n————————");
 
-                ILogParser serverLogParser = new ServerLogParser(UnityTrace);
+                ILogParser serverLogParser = new ServerLogParser(UnityTracer);
                 serverLogParser.Parse(UnityTaskArgument);
 
-                UnityTrace.WriteLine(
+                UnityTracer.WriteLine(
                     "[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
                     UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
@@ -307,12 +311,12 @@ namespace xQuantLogFactory
         {
             if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Middleware) > 0)
             {
-                UnityTrace.WriteLine("开始解析 [中间件] 日志文件...\n————————");
+                UnityTracer.WriteLine("开始解析 [中间件] 日志文件...\n————————");
 
-                ILogParser middlewareLogParser = new MiddlewareLogParser(UnityTrace);
+                ILogParser middlewareLogParser = new MiddlewareLogParser(UnityTracer);
                 middlewareLogParser.Parse(UnityTaskArgument);
 
-                UnityTrace.WriteLine(
+                UnityTracer.WriteLine(
                     "[中间件] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个结果\n————————",
                     UnityTaskArgument.LogFiles.Count(file => file.LogFileType == LogFileTypes.Middleware && file.MiddlewareResults.Count > 0),
                     UnityTaskArgument.MiddlewareResults.Count);
@@ -333,7 +337,7 @@ namespace xQuantLogFactory
             UnityTaskArgument.LogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
             UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().ToList().ForEach(monitor => monitor.AnalysisResults.Clear());
 
-            LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTrace);
+            LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTracer);
             logAnalysiserHost.Analysis(UnityTaskArgument);
         }
 
@@ -357,13 +361,13 @@ namespace xQuantLogFactory
                 string taskXMLPath = GetXMLFilePath(argument);
                 string xmlContent = argument.SerializeToXML();
                 File.WriteAllText(taskXMLPath, xmlContent);
-                UnityTrace.WriteLine($"任务对象存储到XML成功：{taskXMLPath}");
+                UnityTracer.WriteLine($"任务对象存储到XML成功：{taskXMLPath}");
 
                 // Process.Start("notepad.exe", taskXMLPath);
             }
             catch (Exception ex)
             {
-                UnityTrace.WriteLine($"任务对象存储到XML失败：{ex.Message}");
+                UnityTracer.WriteLine($"任务对象存储到XML失败：{ex.Message}");
             }
         }
 
@@ -388,7 +392,7 @@ namespace xQuantLogFactory
             // 当导出失败且用户同意重试时重复导出，并在失败时再次询问用户
             do
             {
-                UnityTrace.WriteLine("开始导出日志报告...");
+                UnityTracer.WriteLine("开始导出日志报告...");
                 try
                 {
                     ExportLogReport(reportPath);
@@ -397,8 +401,8 @@ namespace xQuantLogFactory
                 catch (Exception ex)
                 {
                     exportSuccess = false;
-                    UnityTrace.WriteLine($"导出日志报告失败：{ex.Message}");
-                    UnityTrace.WriteLine("是否重试？(请输入： Y / N )");
+                    UnityTracer.WriteLine($"导出日志报告失败：{ex.Message}");
+                    UnityTracer.WriteLine("是否重试？(请输入： Y / N )");
                 }
             }
             while (!exportSuccess && Console.ReadLine().Trim().ToUpper() == "Y");
@@ -407,7 +411,7 @@ namespace xQuantLogFactory
             {
                 // 记录日志报告导出路径
                 UnityTaskArgument.LastReportPath = reportPath;
-                UnityTrace.WriteLine($"日志报告导出成功=> {UnityTaskArgument.LastReportPath}");
+                UnityTracer.WriteLine($"日志报告导出成功=> {UnityTaskArgument.LastReportPath}");
 
                 // 自动打开报告
                 if (File.Exists(reportPath))
@@ -417,7 +421,7 @@ namespace xQuantLogFactory
             }
             else
             {
-                UnityTrace.WriteLine($"放弃导出日志报告，任务结束~");
+                UnityTracer.WriteLine($"放弃导出日志报告，任务结束~");
             }
         }
 
@@ -432,7 +436,7 @@ namespace xQuantLogFactory
             {
                 case ReportModes.Excel:
                     {
-                        reportExporter = new ExcelLogReportExporter(UnityTrace);
+                        reportExporter = new ExcelLogReportExporter(UnityTracer);
                         break;
                     }
 
@@ -542,7 +546,7 @@ namespace xQuantLogFactory
                 e.IsTerminating);
 
             Console.WriteLine("——————————————————");
-            UnityTrace.WriteLine(exceptionDescription);
+            UnityTracer.WriteLine(exceptionDescription);
             Console.WriteLine("——————————————————");
             Exit(int.MaxValue);
         }
@@ -568,7 +572,7 @@ namespace xQuantLogFactory
         /// </summary>
         private static void ShowParseResult()
         {
-            UnityTrace.WriteLine(
+            UnityTracer.WriteLine(
                 "所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个监视结果和 {3} 个中间件结果\n————————",
                 UnityTaskArgument.LogFiles.Count(file => file.MonitorResults.Count > 0 || file.MiddlewareResults.Count > 0),
                 UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count(monitor => monitor.MonitorResults.Count > 0),
@@ -581,7 +585,7 @@ namespace xQuantLogFactory
         /// </summary>
         private static void ShowAnalysisResult()
         {
-            UnityTrace.WriteLine(
+            UnityTracer.WriteLine(
                 "日志解析结果分析完成：\n\t在 {0} 个文件中匹配到 {1} 个监视规则的 {2} 组分析结果\n————————",
                 UnityTaskArgument.LogFiles.Count(file => file.AnalysisResults.Count > 0),
                 UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count(monitor => monitor.AnalysisResults.Count > 0),
@@ -599,7 +603,7 @@ namespace xQuantLogFactory
         /// </summary>
         private static void ShowSystemInfo()
         {
-            UnityTrace.WriteLine($"获取系统信息完成：\n————————\n{UnityTaskArgument.SystemInfo?.ToString()}\n————————");
+            UnityTracer.WriteLine($"获取系统信息完成：\n————————\n{UnityTaskArgument.SystemInfo?.ToString()}\n————————");
         }
 
         #endregion
