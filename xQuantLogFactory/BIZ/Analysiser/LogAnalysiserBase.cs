@@ -39,7 +39,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
             MonitorItem monitor,
             MonitorResult monitorResult)
         {
-            GroupAnalysisResult analysisResult = new GroupAnalysisResult(argument, monitor, monitorResult);
+            GroupAnalysisResult analysisResult = new GroupAnalysisResult(argument, monitor, monitorResult.LogFile);
 
             // 反向关联日志监视结果
             lock (this.lockSeed)

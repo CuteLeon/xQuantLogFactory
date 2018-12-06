@@ -29,7 +29,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// 获取所有监视规则节点（包括当前节点自身）
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<MonitorBase> GetMonitorBases()
+        public IEnumerable<MonitorBase> GetMonitorBasesWithSelf()
         {
             yield return this;
 

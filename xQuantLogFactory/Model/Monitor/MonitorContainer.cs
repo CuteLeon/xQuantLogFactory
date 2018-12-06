@@ -20,7 +20,7 @@ namespace xQuantLogFactory.Model.Monitor
             MonitorItem currentMonitor = null;
 
             // 处理所有父节点
-            foreach (MonitorBase parentMonitor in this.GetMonitorBases())
+            foreach (MonitorBase parentMonitor in this.GetMonitorBasesWithSelf())
             {
                 if (parentMonitor.HasChildren)
                 {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Monitor;
@@ -10,23 +11,18 @@ namespace xQuantLogFactory.Model.Result
     /// </summary>
     public class GroupAnalysisResult : LogResultBase, IAnalysisResult
     {
+        private MonitorResult startMonitorResult;
+        private MonitorResult finishMonitorResult;
+
         public GroupAnalysisResult()
         {
         }
 
-        public GroupAnalysisResult(TaskArgument argument, MonitorItem monitor, MonitorResult monitorResult)
+        public GroupAnalysisResult(TaskArgument argument, MonitorItem monitor, LogFile logFile)
         {
-            this.LogFile = monitorResult.LogFile;
+            this.LogFile = logFile;
             this.MonitorItem = monitor;
             this.TaskArgument = argument;
-
-            if (monitorResult != null)
-            {
-                this.Client = monitorResult.Client;
-                this.Version = monitorResult.Version;
-                this.LineNumber = monitorResult.LineNumber;
-                this.LogTime = monitorResult.LogTime;
-            }
         }
 
         /// <summary>
@@ -47,12 +43,48 @@ namespace xQuantLogFactory.Model.Result
         /// <summary>
         /// Gets or sets 匹配开始结果
         /// </summary>
-        public MonitorResult StartMonitorResult { get; set; }
+        public MonitorResult StartMonitorResult
+        {
+            get => this.startMonitorResult;
+            set
+            {
+                this.startMonitorResult = value;
+
+                // 优先绑定开始监视结果
+                if (value != null)
+                {
+                    this.BindMonitorResult(value);
+                }
+                else
+                {
+                    // 替补使用结果监视结果 或 空
+                    this.BindMonitorResult(this.FinishMonitorResult);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets 匹配结束结果
         /// </summary>
-        public MonitorResult FinishMonitorResult { get; set; }
+        public MonitorResult FinishMonitorResult
+        {
+            get => this.finishMonitorResult;
+            set
+            {
+                this.finishMonitorResult = value;
+
+                // 优先绑定开始监视结果
+                if (this.StartMonitorResult != null)
+                {
+                    this.BindMonitorResult(this.StartMonitorResult);
+                }
+                else
+                {
+                    // 替补使用结果监视结果 或 空
+                    this.BindMonitorResult(value);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets 父分析结果
@@ -85,6 +117,28 @@ namespace xQuantLogFactory.Model.Result
             foreach (var analysisResult in this.GetAnalysisResults())
             {
                 yield return analysisResult;
+            }
+        }
+
+        /// <summary>
+        /// 绑定解析结果属性为分析结果属性
+        /// </summary>
+        /// <param name="monitorResult"></param>
+        public void BindMonitorResult(MonitorResult monitorResult)
+        {
+            if (monitorResult == null)
+            {
+                this.Client = string.Empty;
+                this.Version = string.Empty;
+                this.LineNumber = 0;
+                this.LogTime = DateTime.MinValue;
+            }
+            else
+            {
+                this.Client = monitorResult.Client;
+                this.Version = monitorResult.Version;
+                this.LineNumber = monitorResult.LineNumber;
+                this.LogTime = monitorResult.LogTime;
             }
         }
 

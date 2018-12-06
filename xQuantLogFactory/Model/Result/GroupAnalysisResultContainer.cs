@@ -23,6 +23,14 @@ namespace xQuantLogFactory.Model.Result
         public void InitAnalysisResultTree(IEnumerable<GroupAnalysisResult> analysisResults)
         {
             // TODO: 无法稳定复现的问题：初始化树并通过栈扫描时，扫描结果列表会比真实分析结果列表多 n(n>=0) 个
+            // 清理现有关系树
+            this.AnalysisResultRoots.Clear();
+            foreach (var analysisResult in analysisResults)
+            {
+                analysisResult.ParentAnalysisResult = null;
+                analysisResult.AnalysisResultRoots.Clear();
+            }
+
             foreach (GroupAnalysisResult analysisResult in analysisResults)
             {
                 // 判断分析结果是否为完整组
