@@ -530,13 +530,13 @@ namespace xQuantLogFactory
 
             string exceptionDescription = string.Format(
                 "应用域内发现未被捕获的异常：(;′⌒`)\r\n" +
-                "\t异常类型 : {0}\r\n" +
-                "\t异常地址 : {1}\r\n" +
-                "\t出错方法 : {2}\r\n" +
-                "\t所在文件 : {3}\r\n" +
-                "\t异常信息 : {4}\r\n" +
-                "\t调用堆栈 : \r\n{5}\r\n" +
-                "\t即将终止 : {6}",
+                "\t【异常类型】: {0}\r\n" +
+                "\t【异常地址】: {1}\r\n" +
+                "\t【出错方法】: {2}\r\n" +
+                "\t【所在文件】: {3}\r\n" +
+                "\t【异常信息】: {4}\r\n" +
+                "\t【调用堆栈】: \r\n{5}\r\n" +
+                "\t【即将终止】: {6}",
                 UnhandledException.GetType().ToString(),
                 UnhandledException.Source,
                 UnhandledException.TargetSite.Name,
