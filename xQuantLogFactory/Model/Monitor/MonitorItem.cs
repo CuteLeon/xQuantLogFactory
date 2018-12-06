@@ -193,7 +193,11 @@ namespace xQuantLogFactory.Model.Monitor
             return depth;
         }
 
-        #endregion
+        public override string ToString()
+        {
+            return $"【名称】={this.Name}\t 【开始条件】={this.StartPattern}\t 【结束条件】={this.FinishPatterny}\t 【子规则】={this.MonitorTreeRoots.Count}";
+        }
 
+        #endregion
     }
 }

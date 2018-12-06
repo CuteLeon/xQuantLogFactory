@@ -386,13 +386,14 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.TRADE_SETTLE_SHEET_NAME} 表数据 ...");
-                Rectangle tradeSettleRectangle = new Rectangle(1, 2, 9, argument.MonitorResults.Count);
+                Rectangle tradeSettleRectangle = new Rectangle(1, 2, 13, argument.MonitorResults.Count);
                 using (ExcelRange tradeSettleRange = tradeSettleDataSheet.Cells[tradeSettleRectangle.Top, tradeSettleRectangle.Left, tradeSettleRectangle.Bottom - 1, tradeSettleRectangle.Right - 1])
                 {
                     int rowID = tradeSettleRectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots
+                        .Where(root => root.IsIntactGroup()))
                     {
                         // 每个分析结果根节点使执行序号自增
                         executeID++;
@@ -426,7 +427,10 @@ namespace xQuantLogFactory.BIZ.Exporter
                             tradeSettleRange[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             tradeSettleRange[rowID, 10].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             tradeSettleRange[rowID, 11].Value = analysisResult.LogFile?.RelativePath;
-                            tradeSettleRange[rowID, 12].Value = analysisResult.LineNumber;
+
+                            // tradeSettleRange[rowID, 12].Value = analysisResult.LineNumber;
+                            tradeSettleRange[rowID, 12].Value = analysisResult.StartMonitorResult?.LineNumber;
+                            tradeSettleRange[rowID, 13].Value = analysisResult.FinishMonitorResult?.LineNumber;
 
                             rowID++;
                         }
