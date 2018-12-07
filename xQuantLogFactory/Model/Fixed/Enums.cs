@@ -23,9 +23,9 @@ namespace xQuantLogFactory.Model.Fixed
         Load = 2,
 
         /// <summary>
-        /// 交易清算分析器
+        /// 键值对分析器
         /// </summary>
-        Settle = 3,
+        KeyValuePair = 3,
     }
 
     /// <summary>

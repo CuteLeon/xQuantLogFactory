@@ -87,9 +87,9 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     this.AddAnalysiser(new CommonLoadAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Settle))
+                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.KeyValuePair))
                 {
-                    this.AddAnalysiser(new TradeClearingAnalysiser(this.Tracer));
+                    this.AddAnalysiser(new CommonKeyValuePairAnalysiser(this.Tracer));
                 }
 
                 if (monitorItems.Any(monitor => monitor.Memory))

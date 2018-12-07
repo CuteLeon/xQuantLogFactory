@@ -64,8 +64,8 @@ namespace xQuantLogFactory.Model.Monitor.Tests
         {
             string xmlContent = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <MonitorRoot xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" Name=""交易日终清算监视容器"">
-  <Item Name=""内存消耗"" Begin=""内存消耗"" End="""" Memory=""true"" NotSource=""true"" Sheet=""内存""/>
-  <Item Name=""日终清算"" Begin=""清算进度=0/1] 开始"" End=""清算进度=1/1] 完成------"" Analysiser=""Settle"" Sheet=""交易清算"">
+  <Item Name=""内存消耗"" Begin=""内存消耗"" End="""" Memory=""true"" Sheet=""内存""/>
+  <Item Name=""日终清算"" Begin=""清算进度=0/1] 开始"" End=""清算进度=1/1] 完成------"" Analysiser=""KeyValuePair"" Sheet=""交易清算"">
     <Item Name=""准备金融工具现金流"" End=""准备金融工具现金流""></Item>
     <Item Name=""清算前准备初始化"" Begin="""" End="" 清算前准备初始化完成""/>
     <Item Name=""清算前准备起始余额"" Begin="""" End="" 清算前准备起始余额完成""/>

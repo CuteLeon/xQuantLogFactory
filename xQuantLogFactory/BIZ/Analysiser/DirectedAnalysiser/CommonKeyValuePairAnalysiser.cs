@@ -14,19 +14,24 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// <summary>
     /// 交易清算分析器
     /// </summary>
-    public class TradeClearingAnalysiser : DirectedLogAnalysiserBase
+    public class CommonKeyValuePairAnalysiser : DirectedLogAnalysiserBase
     {
-        public TradeClearingAnalysiser()
+        public CommonKeyValuePairAnalysiser()
         {
         }
 
-        public TradeClearingAnalysiser(ITracer tracer)
+        public CommonKeyValuePairAnalysiser(ITracer tracer)
             : base(tracer)
         {
         }
 
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
-            $@"\[({FixedDatas.QSRQ}=(?<QSRQ>[\d-]{{10}}))?(,\s?)?({FixedDatas.QSJD}=(?<QSJD>[\d\/]*))?(,\s?)?({FixedDatas.DQZH}=(?<DQZH>[0-9a-zA-Z_]*))?(,\s?)?({FixedDatas.WBZH}=(?<WBZH>[0-9a-zA-Z_]*))?(,\s?)?({FixedDatas.ZQ}=(?<ZQ>.*?))?(,\s?)?(,\s?)?\]",
+            $@"\[.*?\]",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        // TODO: 正则需要调试 [^|(,\s?)][,|=]*=.*[(,\s?)|$]
+        public virtual Regex KeyValuePairRegex { get; protected set; } = new Regex(
+            $@"((?<Key>.+?)=(?<Value>.*?))?(,\s?)?",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -41,7 +46,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
             }
 
             argument.AnalysisResults
-                .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Settle)
+                .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.KeyValuePair)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {

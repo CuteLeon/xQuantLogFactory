@@ -69,7 +69,7 @@
     <Compile Include="BIZ\Analysiser\GroupLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserHost.cs" />
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\TradeClearingAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonKeyValuePairAnalysiser.cs" />
     <Compile Include="BIZ\Exporter\ExcelLogReportExporter.cs" />
     <Compile Include="BIZ\Exporter\ILogReportExporter.cs" />
     <Compile Include="BIZ\Exporter\HTMLLogReportExporter.cs" />
