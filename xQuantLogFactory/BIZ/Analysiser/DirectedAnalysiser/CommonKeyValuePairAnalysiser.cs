@@ -25,13 +25,20 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         {
         }
 
+        /// <summary>
+        /// Gets or sets 分析正则表达式
+        /// </summary>
+        /// <remarks>中括号可以多次出现，但是不允许嵌套或残缺</remarks>
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
-            $@"\[.*?\]",
+            $@"\[(?<Pairs>.*?)\]",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        // TODO: 正则需要调试 [^|(,\s?)][,|=]*=.*[(,\s?)|$]
+        /// <summary>
+        /// Gets or sets 键值对分析器
+        /// </summary>
+        /// <remarks>键和值不允许出现英文逗号和空格</remarks>
         public virtual Regex KeyValuePairRegex { get; protected set; } = new Regex(
-            $@"((?<Key>.+?)=(?<Value>.*?))?(,\s?)?",
+            $@"(?<Key>[^,\s]+)=(?<Value>[^,\s]*)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -64,27 +71,16 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                         }
 
                         analysisMatch = this.AnalysisRegex.Match(firstResult.LogContent);
-                        if (analysisMatch.Success)
+                        if (analysisMatch.Success && analysisMatch.Groups["Pairs"].Success)
                         {
-                            if (analysisMatch.Groups["QSRQ"].Success)
+                            // 匹配日志内容中所有的中括号包含的内容
+                            foreach (Match keyValueMatch in this.KeyValuePairRegex.Matches(analysisMatch.Groups["Pairs"].Value))
                             {
-                                analysisResult.AnalysisDatas[FixedDatas.QSRQ] = analysisMatch.Groups["QSRQ"].Value;
-                            }
-                            if (analysisMatch.Groups["QSJD"].Success)
-                            {
-                                analysisResult.AnalysisDatas[FixedDatas.QSJD] = analysisMatch.Groups["QSJD"].Value;
-                            }
-                            if (analysisMatch.Groups["DQZH"].Success)
-                            {
-                                analysisResult.AnalysisDatas[FixedDatas.DQZH] = analysisMatch.Groups["DQZH"].Value;
-                            }
-                            if (analysisMatch.Groups["WBZH"].Success)
-                            {
-                                analysisResult.AnalysisDatas[FixedDatas.WBZH] = analysisMatch.Groups["WBZH"].Value;
-                            }
-                            if (analysisMatch.Groups["ZQ"].Success)
-                            {
-                                analysisResult.AnalysisDatas[FixedDatas.ZQ] = analysisMatch.Groups["ZQ"].Value;
+                                // 在中括号内容中获取所有键值对数据并录入字典
+                                if (keyValueMatch.Groups["Key"].Success && keyValueMatch.Groups["Value"].Success)
+                                {
+                                    analysisResult.AnalysisDatas[keyValueMatch.Groups["Key"].Value] = keyValueMatch.Groups["Value"].Value;
+                                }
                             }
                         }
                     }
