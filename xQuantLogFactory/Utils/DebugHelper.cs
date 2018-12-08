@@ -13,6 +13,8 @@ namespace xQuantLogFactory.Utils
     /// </summary>
     public class DebugHelper
     {
+        public bool Actived { get; set; } = false;
+
         public DebugHelper(ITracer tracer)
             => this.Tracer = tracer;
 
@@ -24,6 +26,11 @@ namespace xQuantLogFactory.Utils
         /// <param name="argument"></param>
         public void ActiveDebugFunction(TaskArgument argument)
         {
+            if (!this.Actived)
+            {
+                return;
+            }
+
             try
             {
                 this.CustomDebugFunction(argument);
