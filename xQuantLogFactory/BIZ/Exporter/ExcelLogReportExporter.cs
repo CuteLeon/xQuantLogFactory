@@ -83,7 +83,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
                     this.ExportMemorySheet(excel, argument);
                     this.ExportMiddlewareSheet(excel, argument);
-                    this.ExportTradeSettleSheet(excel, argument);
+                    this.ExportTradeClearingSheet(excel, argument);
 
                     /* 更新数据透视表
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
@@ -377,7 +377,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// </summary>
         /// <param name="excel"></param>
         /// <param name="argument"></param>
-        public void ExportTradeSettleSheet(ExcelPackage excel, TaskArgument argument)
+        public void ExportTradeClearingSheet(ExcelPackage excel, TaskArgument argument)
         {
             ExcelWorksheet tradeSettleDataSheet = excel.Workbook.Worksheets[FixedDatas.TRADE_SETTLE_SHEET_NAME];
             if (tradeSettleDataSheet == null)
