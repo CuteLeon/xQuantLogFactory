@@ -33,7 +33,8 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.MEMORY_SHEET_NAME,
             FixedDatas.MIDDLEWARE_SHEET_NAME,
             FixedDatas.TRADE_SETTLE_SHEET_NAME,
-            FixedDatas.ANALYSIS_SHEET_NAME
+            FixedDatas.ANALYSIS_SHEET_NAME,
+            FixedDatas.CORE_SERVICE_SHEET_NAME,
         };
 
         public ExcelLogReportExporter(ITracer tracer)
@@ -84,6 +85,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportMemorySheet(excel, argument);
                     this.ExportMiddlewareSheet(excel, argument);
                     this.ExportTradeClearingSheet(excel, argument);
+                    this.ExportCoreServiceSheet(excel, argument);
 
                     /* 更新数据透视表
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
@@ -104,6 +106,65 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     excel.Save();
                     this.Tracer?.WriteLine("Excel 报告文档关闭");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出Core服务日志
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        private void ExportCoreServiceSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet tradeSettleDataSheet = excel.Workbook.Worksheets[FixedDatas.CORE_SERVICE_SHEET_NAME];
+            if (tradeSettleDataSheet == null)
+            {
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.CORE_SERVICE_SHEET_NAME} 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.CORE_SERVICE_SHEET_NAME} 表数据 ...");
+                Rectangle tradeSettleRectangle = new Rectangle(1, 2, 13, argument.MonitorResults.Count);
+                using (ExcelRange tradeSettleRange = tradeSettleDataSheet.Cells[tradeSettleRectangle.Top, tradeSettleRectangle.Left, tradeSettleRectangle.Bottom - 1, tradeSettleRectangle.Right - 1])
+                {
+                    int rowID = tradeSettleRectangle.Top, executeID = 0;
+
+                    // 输出监视规则树
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots
+                        .Where(root => root.IsIntactGroup()))
+                    {
+                        // 每个分析结果根节点使执行序号自增
+                        executeID++;
+
+                        // 遍历根节点及所有子节点输出分析结果数据
+                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                            .Where(result => result.MonitorItem.SheetName == FixedDatas.CORE_SERVICE_SHEET_NAME))
+                        {
+                            tradeSettleRange[rowID, 1].Value = analysisResult.MonitorItem?.PrefixName;
+                            tradeSettleRange[rowID, 2].Value = analysisResult.MonitorItem?.ParentMonitorItem?.Name;
+                            tradeSettleRange[rowID, 3].Value = analysisResult.Version;
+                            tradeSettleRange[rowID, 4].Value = executeID;
+                            tradeSettleRange[rowID, 5].Value = analysisResult.ElapsedMillisecond;
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.CORE_SERVICE_NAME, out object service))
+                            {
+                                tradeSettleRange[rowID, 6].Value = service;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.EXECUTE_INDEX, out object index))
+                            {
+                                tradeSettleRange[rowID, 7].Value = index;
+                            }
+
+                            tradeSettleRange[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            tradeSettleRange[rowID, 9].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            tradeSettleRange[rowID, 10].Value = analysisResult.LogFile?.RelativePath;
+                            tradeSettleRange[rowID, 11].Value = analysisResult.StartMonitorResult?.LineNumber;
+                            tradeSettleRange[rowID, 12].Value = analysisResult.FinishMonitorResult?.LineNumber;
+
+                            rowID++;
+                        }
+                    }
                 }
             }
         }

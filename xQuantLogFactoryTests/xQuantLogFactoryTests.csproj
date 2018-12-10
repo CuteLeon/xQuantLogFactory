@@ -51,10 +51,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BIZ\Analysiser\CommonLoadAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\CommonPrefixAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonLoadAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonPrefixAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonKeyValuePairAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\GroupLogAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\CoreAsyncGroupAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\GroupLogAnalysiserTests.cs" />
     <Compile Include="BIZ\Parser\LogParserBaseTests.cs" />
     <Compile Include="BIZ\Parser\LogParserTests.cs" />
     <Compile Include="BIZ\Parser\MiddlewareLogParserTests.cs" />

@@ -33,6 +33,16 @@
         /// 内存消耗
         /// </summary>
         public const string MEMORY_CONSUMED = "内存消耗";
+
+        /// <summary>
+        /// Core服务名称
+        /// </summary>
+        public const string CORE_SERVICE_NAME = "Core服务名称";
+
+        /// <summary>
+        /// 执行序号
+        /// </summary>
+        public const string EXECUTE_INDEX = "执行序号";
         #endregion
 
         #region 保留表名常量
@@ -56,6 +66,11 @@
         /// 交易清算表名
         /// </summary>
         public const string TRADE_SETTLE_SHEET_NAME = "清算";
+
+        /// <summary>
+        /// Core服务表名
+        /// </summary>
+        public const string CORE_SERVICE_SHEET_NAME = "Core服务";
         #endregion
 
     }

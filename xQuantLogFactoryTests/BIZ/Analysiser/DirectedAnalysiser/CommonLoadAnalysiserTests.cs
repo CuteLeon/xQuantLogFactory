@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
 
-namespace xQuantLogFactory.BIZ.Analysiser.Tests
+namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Tests
 {
     [TestClass()]
     public class CommonLoadAnalysiserTests
