@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Item Name="内存消耗" Begin="内存消耗" End="" Memory="true" Sheet="内存"/>
-  <Item Name="打开窗体" Begin="开始打开窗体" Analysiser="Prefix" End="完成打开窗体" Sheet="窗体"/>
-  <Item Name="查询报表" Begin="开始查询报表" Analysiser="Prefix" End="完成报表报表" Sheet="报表"/>
+  <Item Name="打开窗体" Begin="开始打开窗体" DirectedAnalysiser="Prefix" End="完成打开窗体" Sheet="窗体"/>
+  <Item Name="查询报表" Begin="开始查询报表" DirectedAnalysiser="Prefix" End="完成报表报表" Sheet="报表"/>
   <Item Name="客户端启动" Begin="登录成功" End="主窗口初始化结束">
     <Item Name="版本升级" Begin="检查最新版本开始" End="检查最新版本结束"/>
     <Item Name="注册远程服务" Begin="检查最新版本结束" End="客户端启动初始化本地缓存前"/>
@@ -19,7 +19,7 @@
           <Item Name="COM初始化利率曲线" Begin="COM初始化交易日历" End="COM初始化利率曲线"/>
           <Item Name="COM初始化利率列表" Begin="COM初始化利率曲线" End="COM初始化利率列表"/>
         </Item>
-        <Item Name="通用加载资源" Begin="加载" End="" Analysiser="Load"/>
+        <Item Name="通用加载资源" Begin="加载" End="" DirectedAnalysiser="Load"/>
       </Item>
     </Item>
     <Item Name="初始化第二阶段" Begin="初始化完成---------" End="主窗口初始化结束----">

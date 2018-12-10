@@ -43,7 +43,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
             }
 
             argument.AnalysisResults
-                .Where(result => result.MonitorItem.Analysiser == AnalysiserTypes.Load)
+                .Where(result => result.MonitorItem.DirectedAnalysiser == DirectedAnalysiserTypes.Load)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {

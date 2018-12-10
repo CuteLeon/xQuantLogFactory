@@ -3,12 +3,12 @@
 namespace xQuantLogFactory.Model.Fixed
 {
     /// <summary>
-    /// 子分析器枚举
+    /// 定向分析器枚举
     /// </summary>
-    public enum AnalysiserTypes
+    public enum DirectedAnalysiserTypes
     {
         /// <summary>
-        /// 未指定子分析器
+        /// 未指定定向分析器
         /// </summary>
         None = 0,
 
@@ -26,6 +26,22 @@ namespace xQuantLogFactory.Model.Fixed
         /// 键值对分析器
         /// </summary>
         KeyValuePair = 3,
+    }
+
+    /// <summary>
+    /// 组分析器枚举
+    /// </summary>
+    public enum GroupAnalysiserTypes
+    {
+        /// <summary>
+        /// 通用同步分析器
+        /// </summary>
+        Common = 0,
+
+        /// <summary>
+        /// Core 服务异步分析器
+        /// </summary>
+        CoreServiceAsync = 1,
     }
 
     /// <summary>

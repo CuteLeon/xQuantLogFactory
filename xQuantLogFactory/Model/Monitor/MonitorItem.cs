@@ -53,10 +53,16 @@ namespace xQuantLogFactory.Model.Monitor
         public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
-        /// Gets or sets 指定子分析器
+        /// Gets or sets 指定定向分析器
         /// </summary>
-        [XmlAttribute("Analysiser")]
-        public AnalysiserTypes Analysiser { get; set; }
+        [XmlAttribute("DirectedAnalysiser")]
+        public DirectedAnalysiserTypes DirectedAnalysiser { get; set; }
+
+        /// <summary>
+        /// Gets or sets 指定组分析器
+        /// </summary>
+        [XmlAttribute("GroupAnalysiser")]
+        public GroupAnalysiserTypes GroupAnalysiser { get; set; }
 
         /// <summary>
         /// Gets or sets 父级监视规则
@@ -84,12 +90,6 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlAttribute("Memory")]
         public bool Memory { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether 异步输出日志
-        /// </summary>
-        [XmlAttribute("Async")]
-        public bool Async { get; set; } = false;
 
         /// <summary>
         /// Gets or sets 输出表名
@@ -135,10 +135,10 @@ namespace xQuantLogFactory.Model.Monitor
             this.ParentMonitorItem = parentMonitor ?? throw new ArgumentNullException(nameof(parentMonitor));
 
             // 如果子节点未设置分析器，使用父级节点相同配置
-            if (this.ParentMonitorItem.Analysiser != AnalysiserTypes.None &&
-                this.Analysiser == AnalysiserTypes.None)
+            if (this.ParentMonitorItem.DirectedAnalysiser != DirectedAnalysiserTypes.None &&
+                this.DirectedAnalysiser == DirectedAnalysiserTypes.None)
             {
-                this.Analysiser = this.ParentMonitorItem.Analysiser;
+                this.DirectedAnalysiser = this.ParentMonitorItem.DirectedAnalysiser;
             }
 
             // 如果子节点未设置表名，使用父级节点相同配置
@@ -154,9 +154,10 @@ namespace xQuantLogFactory.Model.Monitor
             }
 
             // 如果子节点未设置异步，使用父级节点相同配置
-            if (!this.Async)
+            if (this.ParentMonitorItem.GroupAnalysiser != GroupAnalysiserTypes.Common &&
+                this.GroupAnalysiser == GroupAnalysiserTypes.Common)
             {
-                this.Async = this.Async;
+                this.GroupAnalysiser = this.ParentMonitorItem.GroupAnalysiser;
             }
 
             // 新建子节点，如果子节点无监视条件，使用父节点相同配置

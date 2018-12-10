@@ -44,7 +44,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
             }
 
             argument.MonitorResults
-                .Where(result => result.MonitorItem.Async == true)
+                .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(monitorResultGroup =>
                 {

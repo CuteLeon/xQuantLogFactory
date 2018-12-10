@@ -17,7 +17,7 @@
           <Item Name="COM初始化利率曲线" Begin="COM初始化交易日历" End="COM初始化利率曲线"/>
           <Item Name="COM初始化利率列表" Begin="COM初始化利率曲线" End="COM初始化利率列表"/>
         </Item>
-        <Item Name="通用加载资源" Begin="加载" End="" Analysiser="Load"/>
+        <Item Name="通用加载资源" Begin="加载" End="" DirectedAnalysiser="Load"/>
       </Item>
     </Item>
     <Item Name="初始化第二阶段" Begin="初始化完成---------" End="主窗口初始化结束----">

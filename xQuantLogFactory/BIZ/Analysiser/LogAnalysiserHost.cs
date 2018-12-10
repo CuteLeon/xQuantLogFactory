@@ -80,7 +80,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         {
             this.GroupAnalysiserProvider.Add(new CommonGroupLogAnalysiser(this.Tracer));
 
-            if (argument.MonitorResults.Any(result => result.MonitorItem.Async))
+            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync))
             {
                 this.GroupAnalysiserProvider.Add(new CoreAsyncGroupAnalysiser(this.Tracer));
             }
@@ -95,17 +95,17 @@ namespace xQuantLogFactory.BIZ.Analysiser
             var monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
             if (monitorItems.Count > 0)
             {
-                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Prefix))
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.Prefix))
                 {
                     this.AddDirectedAnalysiser(new CommonPrefixAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Load))
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.Load))
                 {
                     this.AddDirectedAnalysiser(new CommonLoadAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.KeyValuePair))
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.KeyValuePair))
                 {
                     this.AddDirectedAnalysiser(new CommonKeyValuePairAnalysiser(this.Tracer));
                 }
