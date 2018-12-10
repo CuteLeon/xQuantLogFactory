@@ -337,7 +337,7 @@ namespace xQuantLogFactory
             UnityTaskArgument.LogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
             UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().ToList().ForEach(monitor => monitor.AnalysisResults.Clear());
 
-            LogAnalysiserHost logAnalysiserHost = new GroupLogAnalysiser(UnityTracer);
+            LogAnalysiserHost logAnalysiserHost = new LogAnalysiserHost(UnityTracer);
             logAnalysiserHost.Analysis(UnityTaskArgument);
         }
 

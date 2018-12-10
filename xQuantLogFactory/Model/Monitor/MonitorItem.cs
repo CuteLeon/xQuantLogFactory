@@ -86,6 +86,12 @@ namespace xQuantLogFactory.Model.Monitor
         public bool Memory { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether 异步输出日志
+        /// </summary>
+        [XmlAttribute("Async")]
+        public bool Async { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets 输出表名
         /// </summary>
         [XmlAttribute("Sheet")]
@@ -145,6 +151,12 @@ namespace xQuantLogFactory.Model.Monitor
             if (!this.Memory)
             {
                 this.Memory = this.ParentMonitorItem.Memory;
+            }
+
+            // 如果子节点未设置异步，使用父级节点相同配置
+            if (!this.Async)
+            {
+                this.Async = this.Async;
             }
 
             // 新建子节点，如果子节点无监视条件，使用父节点相同配置

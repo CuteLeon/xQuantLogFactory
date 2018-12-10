@@ -62,11 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\AsyncGroupLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonLoadAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonMemoryAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\DirectedLogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonPrefixAnalysiser.cs" />
-    <Compile Include="BIZ\Analysiser\GroupLogAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\CommonGroupLogAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\CoreAsyncGroupAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\GroupLogAnalysiserBase.cs" />
+    <Compile Include="BIZ\Analysiser\ICustomLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserHost.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonKeyValuePairAnalysiser.cs" />
@@ -146,6 +150,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Monitor\Client组合动态核算.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\ServerCore.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Monitor\Server启动.xml">

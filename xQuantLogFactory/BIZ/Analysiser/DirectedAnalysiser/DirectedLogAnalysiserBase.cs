@@ -9,7 +9,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// <summary>
     /// 针对性的日志分析器
     /// </summary>
-    public abstract class DirectedLogAnalysiserBase : LogAnalysiserBase
+    public abstract class DirectedLogAnalysiserBase : LogAnalysiserBase, ICustomLogAnalysiser
     {
         public DirectedLogAnalysiserBase()
         {
@@ -20,9 +20,6 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         {
         }
 
-        /// <summary>
-        /// Gets or sets 分析器正则表达式
-        /// </summary>
         public virtual Regex AnalysisRegex { get; protected set; }
 
         /// <summary>

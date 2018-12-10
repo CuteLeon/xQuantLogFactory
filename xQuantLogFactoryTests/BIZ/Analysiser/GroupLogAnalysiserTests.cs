@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
 
-namespace xQuantLogFactory.BIZ.Analysiser.Tests
+namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Tests
 {
     [TestClass()]
     public class GroupLogAnalysiserTests
@@ -12,8 +12,6 @@ namespace xQuantLogFactory.BIZ.Analysiser.Tests
         [TestMethod()]
         public void CheckMatchTest()
         {
-            GroupLogAnalysiser analysiser = new GroupLogAnalysiser();
-
             MonitorResult result0 = new MonitorResult()
             {
                 GroupType = GroupTypes.Start,

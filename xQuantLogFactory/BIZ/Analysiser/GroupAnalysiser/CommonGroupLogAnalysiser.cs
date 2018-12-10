@@ -7,18 +7,18 @@ using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser
+namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 {
     /// <summary>
-    /// 日志分析器
+    /// 通用日志组分析器
     /// </summary>
-    public class GroupLogAnalysiser : LogAnalysiserHost
+    public class CommonGroupLogAnalysiser : GroupLogAnalysiserBase
     {
-        public GroupLogAnalysiser()
+        public CommonGroupLogAnalysiser()
         {
         }
 
-        public GroupLogAnalysiser(ITracer tracer)
+        public CommonGroupLogAnalysiser(ITracer tracer)
             : base(tracer)
         {
         }
@@ -27,18 +27,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// 分析日志
         /// </summary>
         /// <param name="argument">任务参数</param>
-        public override void AnalysisTask(TaskArgument argument)
+        public override void Analysis(TaskArgument argument)
         {
             if (argument == null)
             {
                 throw new ArgumentNullException(nameof(argument));
             }
 
-            argument.MonitorResults.GroupBy(result => result.MonitorItem).AsParallel().ForAll(monitorResultGroup =>
+            argument.MonitorResults
+                .Where(result => result.MonitorItem.Async == false)
+                .GroupBy(result => result.MonitorItem)
+                .AsParallel().ForAll(monitorResultGroup =>
             {
                 if (!(monitorResultGroup.Key is MonitorItem monitor))
                 {
-                    this.Tracer?.WriteLine("无法分析空的日志文件");
+                    this.Tracer?.WriteLine("无法分析空的监视规则");
                     return;
                 }
                 this.Tracer?.WriteLine($"开始分析监视规则：{monitor.Name}");
@@ -83,9 +86,6 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     }
                 }
             });
-
-            // 分析结果匹配完成后按日志时间排序
-            argument.AnalysisResults = argument.AnalysisResults.OrderBy(result => result.LogTime).ToList();
         }
     }
 }

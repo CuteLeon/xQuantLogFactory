@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
+using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
@@ -13,12 +14,17 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// <summary>
     /// 日志分析器宿主
     /// </summary>
-    public abstract class LogAnalysiserHost : LogAnalysiserBase
+    public class LogAnalysiserHost : LogAnalysiserBase
     {
         /// <summary>
-        /// 后续自定义分析器容器
+        /// 组分析器容器
         /// </summary>
-        public readonly List<ILogAnalysiser> AnalysiserProvider = new List<ILogAnalysiser>();
+        public readonly List<GroupLogAnalysiserBase> GroupAnalysiserProvider = new List<GroupLogAnalysiserBase>();
+
+        /// <summary>
+        /// 定向分析器容器
+        /// </summary>
+        public readonly List<DirectedLogAnalysiserBase> DirectedAnalysiserProvider = new List<DirectedLogAnalysiserBase>();
 
         public LogAnalysiserHost()
         {
@@ -30,12 +36,12 @@ namespace xQuantLogFactory.BIZ.Analysiser
         }
 
         /// <summary>
-        /// 增加自定义日志分析器
+        /// 增加定向日志分析器
         /// </summary>
         /// <param name="logAnalysiser">日志分析器</param>
-        public void AddAnalysiser(ILogAnalysiser logAnalysiser)
+        public void AddDirectedAnalysiser(DirectedLogAnalysiserBase logAnalysiser)
         {
-            this.AnalysiserProvider?.Add(logAnalysiser);
+            this.DirectedAnalysiserProvider?.Add(logAnalysiser);
         }
 
         public override void Analysis(TaskArgument argument)
@@ -45,15 +51,19 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 throw new ArgumentNullException(nameof(argument));
             }
 
-            // 优先调用宿主分析方法
-            this.AnalysisTask(argument);
+            // 优先调用组分析器分析方法
+            this.PrepareGroupLogAnalysiser(argument);
+            this.GroupAnalysiserProvider.ForEach(analysiser => analysiser.Analysis(argument));
 
-            // 调用后续自定义分析器分析方法
+            // 调用定向分析器分析方法
             this.PrepareDirectedLogAnalysiser(argument);
-            if (this.AnalysiserProvider.Count > 0)
+            if (this.DirectedAnalysiserProvider.Count > 0)
             {
-                this.AnalysiserProvider?.ForEach(analysiser => analysiser.Analysis(argument));
+                this.DirectedAnalysiserProvider?.ForEach(analysiser => analysiser.Analysis(argument));
             }
+
+            // 分析结果匹配完成后按日志时间排序
+            argument.AnalysisResults = argument.AnalysisResults.OrderBy(result => result.LogTime).ToList();
 
             // 初始化分析结果树
             argument.InitAnalysisResultTree();
@@ -63,10 +73,18 @@ namespace xQuantLogFactory.BIZ.Analysiser
         }
 
         /// <summary>
-        /// 宿主分析器分析任务
+        /// 准备组分析器
         /// </summary>
         /// <param name="argument"></param>
-        public abstract void AnalysisTask(TaskArgument argument);
+        public void PrepareGroupLogAnalysiser(TaskArgument argument)
+        {
+            this.GroupAnalysiserProvider.Add(new CommonGroupLogAnalysiser(this.Tracer));
+
+            if (argument.MonitorResults.Any(result => result.MonitorItem.Async))
+            {
+                this.GroupAnalysiserProvider.Add(new CoreAsyncGroupAnalysiser(this.Tracer));
+            }
+        }
 
         /// <summary>
         /// 准备定向分析器
@@ -79,22 +97,22 @@ namespace xQuantLogFactory.BIZ.Analysiser
             {
                 if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Prefix))
                 {
-                    this.AddAnalysiser(new CommonPrefixAnalysiser(this.Tracer));
+                    this.AddDirectedAnalysiser(new CommonPrefixAnalysiser(this.Tracer));
                 }
 
                 if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.Load))
                 {
-                    this.AddAnalysiser(new CommonLoadAnalysiser(this.Tracer));
+                    this.AddDirectedAnalysiser(new CommonLoadAnalysiser(this.Tracer));
                 }
 
                 if (monitorItems.Any(monitor => monitor.Analysiser == AnalysiserTypes.KeyValuePair))
                 {
-                    this.AddAnalysiser(new CommonKeyValuePairAnalysiser(this.Tracer));
+                    this.AddDirectedAnalysiser(new CommonKeyValuePairAnalysiser(this.Tracer));
                 }
 
                 if (monitorItems.Any(monitor => monitor.Memory))
                 {
-                    this.AddAnalysiser(new CommonMemoryAnalysiser(this.Tracer));
+                    this.AddDirectedAnalysiser(new CommonMemoryAnalysiser(this.Tracer));
                 }
             }
         }
