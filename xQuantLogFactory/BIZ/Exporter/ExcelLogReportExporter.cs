@@ -401,9 +401,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                         // 遍历根节点及所有子节点输出分析结果数据
                         foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
-                            .Where(result =>
-                                result.MonitorItem.Analysiser == AnalysiserTypes.KeyValuePair ||
-                                result.MonitorItem.Name == FixedDatas.TRADE_SETTLE_SHEET_NAME))
+                            .Where(result => result.MonitorItem.SheetName == FixedDatas.TRADE_SETTLE_SHEET_NAME))
                         {
                             tradeSettleRange[rowID, 1].Value = analysisResult.MonitorItem?.PrefixName;
                             tradeSettleRange[rowID, 2].Value = analysisResult.MonitorItem?.ParentMonitorItem?.Name;
