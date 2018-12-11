@@ -174,6 +174,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// </summary>
         /// <param name="excel">excel文档</param>
         /// <param name="argument">任务</param>
+        [Obsolete]
         public void ExportCommonSheet(ExcelPackage excel, TaskArgument argument)
         {
             this.Tracer?.WriteLine("开始导出通用表数据 ...");
