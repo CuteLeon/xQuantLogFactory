@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
