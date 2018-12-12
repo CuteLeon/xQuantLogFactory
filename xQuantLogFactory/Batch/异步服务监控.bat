@@ -1,0 +1,1 @@
+xQuantLogFactory.exe logdir="D:\项目点日志\华宝证券\中间件_LOG" monitor=异步服务监控.xml export=Excel

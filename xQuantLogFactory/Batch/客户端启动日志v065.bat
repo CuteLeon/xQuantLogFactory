@@ -1,0 +1,1 @@
+xQuantLogFactory.exe logdir="D:\v065测试客户端\Log" monitor=客户端启动v065.xml export=Excel

@@ -1,0 +1,1 @@
+xQuantLogFactory.exe logdir="D:\项目点日志\申万宏源\中间件20181127log" monitor=交易清算.xml report=excel level=DEBUG
