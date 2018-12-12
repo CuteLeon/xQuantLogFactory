@@ -47,9 +47,9 @@ namespace xQuantLogFactory.Model.Factory
                 this.ReportComboBox.Items.Add(mode);
             }
 
-            if (this.ReportComboBox.Items.Count > 0)
+            if (this.ReportComboBox.Items.Contains(ReportModes.Excel))
             {
-                this.ReportComboBox.SelectedIndex = 0;
+                this.ReportComboBox.SelectedItem = ReportModes.Excel;
             }
         }
 

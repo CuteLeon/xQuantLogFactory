@@ -63,7 +63,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
             }
 
             // 分析结果匹配完成后按日志时间排序
-            argument.AnalysisResults = argument.AnalysisResults.OrderBy(result => result.LogTime).ToList();
+            argument.AnalysisResults = argument.AnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
 
             // 初始化分析结果树
             argument.InitAnalysisResultTree();

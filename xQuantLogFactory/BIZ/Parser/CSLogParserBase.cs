@@ -181,7 +181,7 @@ namespace xQuantLogFactory.BIZ.Parser
             });
 
             // 监视结果解析完毕后按日志时间排序
-            argument.MonitorResults = argument.MonitorResults.OrderBy(result => result.LogTime).ToList();
+            argument.MonitorResults = argument.MonitorResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
         }
 
         /// <summary>

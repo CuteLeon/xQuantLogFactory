@@ -27,8 +27,9 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         /// <summary>
         /// Gets or sets 加载日志内容正则
         /// </summary>
+        /// <remarks>冒号后面不存在数字的结果认为不合法而丢弃</remarks>
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
-            @"^加载(?<ResourceName>.+?)：(?<Elapsed>\d*)$",
+            @"^加载(?<ResourceName>.+?)：(?<Elapsed>\d+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>

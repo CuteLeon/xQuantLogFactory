@@ -79,5 +79,21 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             Assert.AreEqual("A-D-J-K-E-L-F-M-B-G-N-H-C-I-O-P", result);
         }
 
+        [TestMethod()]
+        public void GetNextChildCANOTest()
+        {
+            MonitorContainer container = new MonitorContainer();
+            container.MonitorTreeRoots.Add(new MonitorItem());
+
+            Assert.AreEqual("0001", container.GetNextChildCANO());
+
+            container.MonitorTreeRoots.Add(new MonitorItem() { CANO = container.GetNextChildCANO() });
+            container.MonitorTreeRoots.Add(new MonitorItem() { CANO = container.GetNextChildCANO() });
+            container.MonitorTreeRoots.Add(new MonitorItem() { CANO = container.GetNextChildCANO() });
+
+            Assert.AreEqual("0001", container.MonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0002", container.MonitorTreeRoots[2].CANO);
+            Assert.AreEqual("0003", container.MonitorTreeRoots[3].CANO);
+        }
     }
 }

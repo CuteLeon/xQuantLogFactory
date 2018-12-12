@@ -53,6 +53,13 @@ namespace xQuantLogFactory.Model.Monitor
         public double AverageElapsedMillisecond { get; set; }
 
         /// <summary>
+        /// Gets or sets 目录编号
+        /// </summary>
+        /// <remarks>格式如 "000.000.000"，每级编号以点分隔，数字右对齐，左边以0填充（防止C#认为"1.10小于"1.2"）</remarks>
+        [XmlIgnore]
+        public string CANO { get; set; }
+
+        /// <summary>
         /// Gets or sets 指定定向分析器
         /// </summary>
         [XmlAttribute("DirectedAnalysiser")]
@@ -101,6 +108,16 @@ namespace xQuantLogFactory.Model.Monitor
         #region 方法
 
         /// <summary>
+        /// 获取当前节点的下一个子节点目录编号
+        /// </summary>
+        /// <param name="parentCANO"></param>
+        /// <returns></returns>
+        public override string GetNextChildCANO(string parentCANO = null)
+        {
+            return base.GetNextChildCANO(this.CANO);
+        }
+
+        /// <summary>
         /// 匹配日志内容
         /// </summary>
         /// <param name="logContent">日志内容</param>
@@ -133,6 +150,9 @@ namespace xQuantLogFactory.Model.Monitor
         {
             // TODO: [提醒] 需要复制父节点配置信息
             this.ParentMonitorItem = parentMonitor ?? throw new ArgumentNullException(nameof(parentMonitor));
+
+            // 使用父节点计算的目录编号
+            this.CANO = parentMonitor.GetNextChildCANO();
 
             // 如果子节点未设置分析器，使用父级节点相同配置
             if (this.ParentMonitorItem.DirectedAnalysiser != DirectedAnalysiserTypes.None &&
@@ -183,27 +203,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// <returns></returns>
         public int GetLayerDepth()
         {
-            int depth = 0;
-
-            // 记录父级节点，防止陷入环路死循环
-            List<MonitorBase> monitors = new List<MonitorBase>();
-            MonitorItem parent = this;
-
-            while (parent.ParentMonitorItem != null)
-            {
-                // 防止陷入环路死循环
-                if (monitors.Contains(parent))
-                {
-                    return depth;
-                }
-
-                monitors.Add(parent);
-
-                parent = parent.ParentMonitorItem;
-                depth++;
-            }
-
-            return depth;
+            return this.CANO?.Split('.')?.Length ?? 0;
         }
 
         public override string ToString()

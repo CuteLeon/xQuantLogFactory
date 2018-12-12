@@ -11,9 +11,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Tests
         [TestMethod()]
         public void TryGetOrAddChildMonitorTest()
         {
-            MonitorItem rootItem = new MonitorItem();
-            rootItem.MonitorTreeRoots.Add(new MonitorItem("已存在的规则"));
-            rootItem.MonitorTreeRoots[0].BindParentMonitor(rootItem);
+            MonitorItem rootItem = new MonitorItem() { CANO = "0005" };
+            Assert.AreEqual("0005", rootItem.CANO);
+
+            new MonitorItem("已存在的规则").BindParentMonitor(rootItem, true);
+            Assert.AreEqual("0005.0001", rootItem.MonitorTreeRoots[0].CANO);
 
             CommonPrefixAnalysiser analysiser = new CommonPrefixAnalysiser();
 
@@ -24,6 +26,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Tests
 
             MonitorItem item_1 = analysiser.TryGetOrAddChildMonitor(rootItem, "不存在的规则");
             Assert.AreEqual("不存在的规则", item_1.Name);
+            Assert.AreEqual("0005.0002", item_1.CANO);
             Assert.AreEqual(rootItem, item_1.ParentMonitorItem);
             Assert.AreEqual(2, rootItem.MonitorTreeRoots.Count);
         }

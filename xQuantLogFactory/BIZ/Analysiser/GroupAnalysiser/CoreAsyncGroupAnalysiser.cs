@@ -62,7 +62,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                     string coreServiceName = string.Empty, elapsed = string.Empty, trigger = string.Empty;
                     int index = -1;
 
-                    foreach (var monitorResult in monitorResultGroup.OrderBy(result => result.LogTime))
+                    foreach (var monitorResult in monitorResultGroup)
                     {
                         lock (this.lockSeed)
                         {

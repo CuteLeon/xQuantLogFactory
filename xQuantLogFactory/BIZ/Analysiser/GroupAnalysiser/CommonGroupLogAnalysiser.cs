@@ -47,7 +47,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                 this.Tracer?.WriteLine($"开始分析监视规则：{monitor.Name}");
 
                 GroupAnalysisResult analysisResult = null;
-                foreach (var monitorResult in monitorResultGroup.OrderBy(result => result.LogTime))
+                foreach (var monitorResult in monitorResultGroup)
                 {
                     switch (monitorResult.GroupType)
                     {

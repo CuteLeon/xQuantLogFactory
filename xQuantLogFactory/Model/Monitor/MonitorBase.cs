@@ -26,6 +26,23 @@ namespace xQuantLogFactory.Model.Monitor
         public bool HasChildren => this.MonitorTreeRoots != null && this.MonitorTreeRoots.Count > 0;
 
         /// <summary>
+        /// 获取下一个子节点的目录编号
+        /// </summary>
+        /// <param name="parentCANO"></param>
+        /// <returns></returns>
+        public virtual string GetNextChildCANO(string parentCANO = null)
+        {
+            /* 目录编号生成算法：
+             * 才能够当前子节点目录编号取最大值，以点分隔为数组，取数组最后一个元素转换为数字，数字即为子节点中的最大编号，在此编号上增加一，即为下一个节点编号
+             * 在编号数字左边补0填充，
+             * 如果存在父级节点编号：继续在左边连接父级节点目录编号，并以点分隔，
+             * 即为下一节点目录编号
+             */
+            int nextCANO = (int.TryParse(this.MonitorTreeRoots.Select(monitor => monitor.CANO ?? "0").Max()?.Split('.')?.LastOrDefault(), out int cano) ? cano : 0) + 1;
+            return $"{(parentCANO == null ? string.Empty : $"{parentCANO}.")}{nextCANO.ToString("0000")}";
+        }
+
+        /// <summary>
         /// 获取所有监视规则节点（包括当前节点自身）
         /// </summary>
         /// <returns></returns>

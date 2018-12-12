@@ -380,7 +380,6 @@ namespace xQuantLogFactory.BIZ.Exporter
                     int rowID = memoryRectangle.Top;
                     foreach (var result in argument.AnalysisResults
                         .Where(result => result.MonitorItem.Memory)
-                        .OrderBy(result => result.LogTime)
                         .Distinct(new LogResultEqualityComparer<GroupAnalysisResult>()))
                     {
                         memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
@@ -389,7 +388,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         memoryRange[rowID, 4].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         if (result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory))
                         {
-                            memoryRange[rowID, 5].Value = memory.ToString();
+                            memoryRange[rowID, 5].Value = memory;
                         }
 
                         rowID++;
