@@ -180,6 +180,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Batch\中间件启动日志.bat" />
+    <None Include="Batch\中间件启动日志v064.bat" />
+    <None Include="Batch\中间件启动日志v065.bat" />
     <None Include="Batch\交易清算日志.bat" />
     <None Include="Batch\客户端启动日志v064.bat" />
     <None Include="Batch\客户端启动日志v065.bat" />

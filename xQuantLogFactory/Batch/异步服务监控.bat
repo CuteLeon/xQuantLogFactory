@@ -1,1 +1,1 @@
-xQuantLogFactory.exe logdir="D:\项目点日志\华宝证券\中间件_LOG" monitor=异步服务监控.xml export=Excel
+xQuantLogFactory.exe logdir="E:\xIR\4.Tags\衡泰资讯综合版(开发部测试版本)\xQuant.Export\Debug\xQuant.Run.Server\Log" monitor=异步服务监控.xml export=Excel

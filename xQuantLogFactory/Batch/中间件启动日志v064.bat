@@ -1,0 +1,1 @@
+xQuantLogFactory.exe logdir="D:\项目点日志\平安证券\20181130\20181130log" monitor=中间件启动v064.xml report=excel Level=DEBUG
