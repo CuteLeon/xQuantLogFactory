@@ -26,8 +26,9 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <summary>
         /// Gets 日志详细内容正则表达式
         /// </summary>
+        /// <remarks>日志内容存在", "(英文逗号加空格)时会被正则错误分析，需确保正常的客户端名称和版本号不以英文逗号结尾</remarks>
         public override Regex ParticularRegex { get; } = new Regex(
-            @"^(?<Client>.*?)\s(?<Version>.*?)\s(?<LogContent>.+)$",
+            @"^(?<Client>.*?[^,])\s(?<Version>.*?[^,])\s(?<LogContent>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>

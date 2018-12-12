@@ -125,7 +125,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.CORE_SERVICE_SHEET_NAME} 表数据 ...");
-                Rectangle tradeSettleRectangle = new Rectangle(1, 2, 13, argument.MonitorResults.Count);
+                Rectangle tradeSettleRectangle = new Rectangle(1, 2, 11, argument.MonitorResults.Count);
                 using (ExcelRange tradeSettleRange = tradeSettleDataSheet.Cells[tradeSettleRectangle.Top, tradeSettleRectangle.Left, tradeSettleRectangle.Bottom - 1, tradeSettleRectangle.Right - 1])
                 {
                     int rowID = tradeSettleRectangle.Top, executeID = 0;
@@ -141,26 +141,29 @@ namespace xQuantLogFactory.BIZ.Exporter
                         foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
                             .Where(result => result.MonitorItem.SheetName == FixedDatas.CORE_SERVICE_SHEET_NAME))
                         {
-                            tradeSettleRange[rowID, 1].Value = analysisResult.MonitorItem?.PrefixName;
-                            tradeSettleRange[rowID, 2].Value = analysisResult.MonitorItem?.ParentMonitorItem?.Name;
-                            tradeSettleRange[rowID, 3].Value = analysisResult.Version;
-                            tradeSettleRange[rowID, 4].Value = executeID;
-                            tradeSettleRange[rowID, 5].Value = analysisResult.ElapsedMillisecond;
+                            tradeSettleRange[rowID, 1].Value = analysisResult.Version;
                             if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.CORE_SERVICE_NAME, out object service))
                             {
-                                tradeSettleRange[rowID, 6].Value = service;
+                                tradeSettleRange[rowID, 2].Value = service;
                             }
 
                             if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.EXECUTE_INDEX, out object index))
                             {
-                                tradeSettleRange[rowID, 7].Value = index;
+                                tradeSettleRange[rowID, 3].Value = index;
                             }
 
-                            tradeSettleRange[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            tradeSettleRange[rowID, 9].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            tradeSettleRange[rowID, 10].Value = analysisResult.LogFile?.RelativePath;
-                            tradeSettleRange[rowID, 11].Value = analysisResult.StartMonitorResult?.LineNumber;
-                            tradeSettleRange[rowID, 12].Value = analysisResult.FinishMonitorResult?.LineNumber;
+                            // TDODO: bug 写入正常，但输出时出错
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.TRIGGER, out object trigger))
+                            {
+                                tradeSettleRange[rowID, 4].Value = trigger;
+                            }
+
+                            tradeSettleRange[rowID, 5].Value = analysisResult.ElapsedMillisecond;
+                            tradeSettleRange[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            tradeSettleRange[rowID, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            tradeSettleRange[rowID, 8].Value = analysisResult.LogFile?.RelativePath;
+                            tradeSettleRange[rowID, 9].Value = analysisResult.StartMonitorResult?.LineNumber;
+                            tradeSettleRange[rowID, 10].Value = analysisResult.FinishMonitorResult?.LineNumber;
 
                             rowID++;
                         }

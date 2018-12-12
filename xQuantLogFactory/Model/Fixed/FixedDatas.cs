@@ -43,6 +43,21 @@
         /// 执行序号
         /// </summary>
         public const string EXECUTE_INDEX = "执行序号";
+
+        /// <summary>
+        /// 触发标记
+        /// </summary>
+        public const string TRIGGER = "触发";
+
+        /// <summary>
+        /// 触发
+        /// </summary>
+        public const string TRIGGER_ON = "触发";
+
+        /// <summary>
+        /// 非触发
+        /// </summary>
+        public const string TRIGGER_OFF = "非触发";
         #endregion
 
         #region 保留表名常量

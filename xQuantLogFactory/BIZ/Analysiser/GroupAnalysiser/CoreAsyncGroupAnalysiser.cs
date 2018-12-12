@@ -33,7 +33,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
         /// 2. Regex 必须附带 RegexOptions.RightToLeft 枚举值以同时应对服务名称中间包含的数字的日志内容
         /// </remarks>
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
-            @"\<-(?<CoreServiceName>.*)(?<Index>\d*)\|(执行|结束:(?<Elapsed>\d*))-\>",
+            @"\<-(?<CoreServiceName>.*)(?<Index>\d*)\|(执行(?<Trigger>.*)|结束:(?<Elapsed>\d*))-\>",
             RegexOptions.RightToLeft | RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public override void Analysis(TaskArgument argument)
@@ -59,7 +59,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                     Dictionary<(string, string), GroupAnalysisResult> unintactResults = new Dictionary<(string, string), GroupAnalysisResult>();
                     GroupAnalysisResult analysisResult = null;
                     Match analysisMatch = null;
-                    string coreServiceName = string.Empty, index = string.Empty, elapsed = string.Empty;
+                    string coreServiceName = string.Empty, index = string.Empty, elapsed = string.Empty, trigger = string.Empty;
 
                     foreach (var monitorResult in monitorResultGroup.OrderBy(result => result.LogTime))
                     {
@@ -69,6 +69,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                         }
                         coreServiceName = analysisMatch.Groups["CoreServiceName"].Value;
                         index = analysisMatch.Groups["Index"].Value;
+                        trigger = analysisMatch.Groups["Trigger"].Value;
                         elapsed = analysisMatch.Groups["Elapsed"].Value;
 
                         // 获取寄存器内未关闭的分析结果
@@ -108,6 +109,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                         analysisResult.ElapsedMillisecond = double.TryParse(elapsed, out double elapsedValue) ? elapsedValue : double.NaN;
                         analysisResult.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME] = coreServiceName;
                         analysisResult.AnalysisDatas[FixedDatas.EXECUTE_INDEX] = index;
+                        analysisResult.AnalysisDatas[FixedDatas.TRIGGER] = trigger.Equals("触", StringComparison.OrdinalIgnoreCase) ? FixedDatas.TRIGGER_ON : FixedDatas.TRIGGER_OFF;
                     }
                 });
         }
