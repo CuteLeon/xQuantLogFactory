@@ -142,6 +142,20 @@ namespace xQuantLogFactory.Model.Result
             }
         }
 
+        /// <summary>
+        /// 计算耗时
+        /// </summary>
+        public void CalcElapsedMillisecond()
+        {
+            if (this.StartMonitorResult != null &&
+                this.StartMonitorResult.LogTime != null &&
+                this.FinishMonitorResult != null &&
+                this.FinishMonitorResult.LogTime != null)
+            {
+                this.ElapsedMillisecond = (this.FinishMonitorResult.LogTime - this.StartMonitorResult.LogTime).TotalMilliseconds;
+            }
+        }
+
         public override string ToString()
         {
             return $"【监视规则】={this.MonitorItem.PrefixName}\t【父级结果】={this.ParentAnalysisResult?.MonitorItem?.Name ?? "无"}\t【子结果数】={this.AnalysisResultRoots.Count}";

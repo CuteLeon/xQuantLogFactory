@@ -6,13 +6,13 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
     /// <summary>
     /// 异步日志组分析器
     /// </summary>
-    public abstract class AsyncGroupLogAnalysiser : GroupLogAnalysiserBase, ICustomLogAnalysiser
+    public abstract class AsyncGroupLogAnalysiserBase : GroupLogAnalysiserBase, ICustomLogAnalysiser
     {
-        public AsyncGroupLogAnalysiser()
+        public AsyncGroupLogAnalysiserBase()
         {
         }
 
-        public AsyncGroupLogAnalysiser(ITracer tracer)
+        public AsyncGroupLogAnalysiserBase(ITracer tracer)
             : base(tracer)
         {
         }

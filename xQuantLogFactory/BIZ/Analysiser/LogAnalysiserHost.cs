@@ -84,6 +84,16 @@ namespace xQuantLogFactory.BIZ.Analysiser
             {
                 this.GroupAnalysiserProvider.Add(new CoreAsyncGroupAnalysiser(this.Tracer));
             }
+
+            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.FormAsync))
+            {
+                this.GroupAnalysiserProvider.Add(new FormAsyncGroupAnalysiser(this.Tracer));
+            }
+
+            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync))
+            {
+                this.GroupAnalysiserProvider.Add(new ReportAsyncGroupAnalysiser(this.Tracer));
+            }
         }
 
         /// <summary>

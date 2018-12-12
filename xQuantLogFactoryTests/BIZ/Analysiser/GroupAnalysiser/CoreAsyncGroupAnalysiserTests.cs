@@ -22,7 +22,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Tests
                 "<-EXH_Collect23371|结束:0->",
                 "<-外汇上行2.0对话报价服务5855|结束:8->",
             };
-            AsyncGroupLogAnalysiser analysiser = new CoreAsyncGroupAnalysiser();
+            AsyncGroupLogAnalysiserBase analysiser = new CoreAsyncGroupAnalysiser();
             Match match = null;
 
             Assert.IsTrue(testString.All(log => analysiser.AnalysisRegex.Match(log).Success));

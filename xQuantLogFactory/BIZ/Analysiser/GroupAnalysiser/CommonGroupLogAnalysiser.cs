@@ -70,13 +70,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                     // 组匹配类型为Finish时，若存在未关闭的分析结果，则记录监视结果并计算结果耗时；
                                     analysisResult.FinishMonitorResult = monitorResult;
 
-                                    if (analysisResult.StartMonitorResult != null &&
-                                        analysisResult.StartMonitorResult.LogTime != null &&
-                                        analysisResult.FinishMonitorResult != null &&
-                                        analysisResult.FinishMonitorResult.LogTime != null)
-                                    {
-                                        analysisResult.ElapsedMillisecond = (analysisResult.FinishMonitorResult.LogTime - analysisResult.StartMonitorResult.LogTime).TotalMilliseconds;
-                                    }
+                                    analysisResult.CalcElapsedMillisecond();
                                 }
 
                                 // 关闭分析结果，否则会影响下次状态判断

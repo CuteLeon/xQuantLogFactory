@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
@@ -12,28 +11,22 @@ using xQuantLogFactory.Utils.Trace;
 namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 {
     /// <summary>
-    /// Core服务异步组分析器
+    /// 通用前缀异步组分析器
     /// </summary>
-    public class CoreAsyncGroupAnalysiser : AsyncGroupLogAnalysiserBase
+    /// <remarks>此组分析器会自动完成键值对分析，不需要再指定 DirectedAnalysiser="KeyValuePair"</remarks>
+    public class ReportAsyncGroupAnalysiser : AsyncGroupLogAnalysiserBase
     {
-        public CoreAsyncGroupAnalysiser()
+        public ReportAsyncGroupAnalysiser()
         {
         }
 
-        public CoreAsyncGroupAnalysiser(ITracer tracer)
+        public ReportAsyncGroupAnalysiser(ITracer tracer)
             : base(tracer)
         {
         }
 
-        /// <summary>
-        /// Gets or sets 分析器正则表达式
-        /// </summary>
-        /// <remarks>
-        /// 1. 服务名称禁止以数字结尾，否则会与 Index 混淆
-        /// 2. Regex 必须附带 RegexOptions.RightToLeft 枚举值以同时应对服务名称中间包含的数字的日志内容
-        /// </remarks>
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
-            @"\<-(?<CoreServiceName>.*)(?<Index>\d*)\|(执行(?<Trigger>.*)|结束:(?<Elapsed>\d*))-\>",
+            @"(开始|完成)查询报表\[报表代码=(?<Code>.*?),报表名称=(?<Name>.*?),查询参数=(?<Param>.*?)\]",
             RegexOptions.RightToLeft | RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public override void Analysis(TaskArgument argument)
@@ -44,7 +37,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
             }
 
             argument.MonitorResults
-                .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync)
+                .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(monitorResultGroup =>
                 {
@@ -56,11 +49,10 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                     this.Tracer?.WriteLine($"开始分析监视规则：{monitor.Name}");
 
                     // 待匹配监视结果寄存字典
-                    Dictionary<(string, int), GroupAnalysisResult> unintactResults = new Dictionary<(string, int), GroupAnalysisResult>();
+                    Dictionary<(string, string), GroupAnalysisResult> unintactResults = new Dictionary<(string, string), GroupAnalysisResult>();
                     GroupAnalysisResult analysisResult = null;
                     Match analysisMatch = null;
-                    string coreServiceName = string.Empty, elapsed = string.Empty, trigger = string.Empty;
-                    int index = -1;
+                    string reportName = string.Empty, reportCode = string.Empty, queryParam = string.Empty;
 
                     foreach (var monitorResult in monitorResultGroup)
                     {
@@ -68,13 +60,12 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                         {
                             analysisMatch = this.AnalysisRegex.Match(monitorResult.LogContent);
                         }
-                        coreServiceName = analysisMatch.Groups["CoreServiceName"].Value;
-                        index = int.TryParse(analysisMatch.Groups["Index"].Value, out int value) ? value : -1;
-                        trigger = analysisMatch.Groups["Trigger"].Value;
-                        elapsed = analysisMatch.Groups["Elapsed"].Value;
+                        reportName = analysisMatch.Groups["Name"].Value;
+                        reportCode = analysisMatch.Groups["Code"].Value;
+                        queryParam = analysisMatch.Groups["Param"].Value;
 
                         // 获取寄存器内未关闭的分析结果
-                        unintactResults.TryGetValue((coreServiceName, index), out analysisResult);
+                        unintactResults.TryGetValue((reportName, reportCode), out analysisResult);
 
                         switch (monitorResult.GroupType)
                         {
@@ -83,11 +74,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                     // 组匹配类型为Start时，总是新建分析结果并记录监视结果；
                                     analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
 
-                                    analysisResult.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME] = coreServiceName;
-                                    analysisResult.AnalysisDatas[FixedDatas.EXECUTE_INDEX] = index;
-                                    analysisResult.AnalysisDatas[FixedDatas.TRIGGER] = trigger.Equals("触", StringComparison.OrdinalIgnoreCase) ? FixedDatas.TRIGGER_ON : FixedDatas.TRIGGER_OFF;
+                                    analysisResult.AnalysisDatas[FixedDatas.REPORT_NAME] = reportName;
+                                    analysisResult.AnalysisDatas[FixedDatas.REPORT_CODE] = reportCode;
+                                    analysisResult.AnalysisDatas[FixedDatas.QUERY_PARAM] = queryParam;
 
-                                    unintactResults[(coreServiceName, index)] = analysisResult;
+                                    unintactResults[(reportName, reportCode)] = analysisResult;
 
                                     break;
                                 }
@@ -99,19 +90,19 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                         // 组匹配类型为Finish时，若存在未关闭的分析结果且结果匹配，则组装分析结果并出队；
                                         analysisResult.FinishMonitorResult = monitorResult;
 
-                                        unintactResults.Remove((coreServiceName, index));
+                                        unintactResults.Remove((reportName, reportCode));
                                     }
                                     else
                                     {
                                         // 不存在同服务名称且同执行序号的分析结果或分析结果不匹配时，新建分析结果
                                         analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
 
-                                        analysisResult.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME] = coreServiceName;
-                                        analysisResult.AnalysisDatas[FixedDatas.EXECUTE_INDEX] = index;
-                                        analysisResult.AnalysisDatas[FixedDatas.TRIGGER] = trigger.Equals("触", StringComparison.OrdinalIgnoreCase) ? FixedDatas.TRIGGER_ON : FixedDatas.TRIGGER_OFF;
+                                        analysisResult.AnalysisDatas[FixedDatas.REPORT_NAME] = reportName;
+                                        analysisResult.AnalysisDatas[FixedDatas.REPORT_CODE] = reportCode;
+                                        analysisResult.AnalysisDatas[FixedDatas.QUERY_PARAM] = queryParam;
                                     }
 
-                                    analysisResult.ElapsedMillisecond = double.TryParse(elapsed, out double elapsedValue) ? elapsedValue : double.NaN;
+                                    analysisResult.CalcElapsedMillisecond();
                                     break;
                                 }
                         }

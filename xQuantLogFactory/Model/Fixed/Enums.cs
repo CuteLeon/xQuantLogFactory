@@ -42,6 +42,16 @@ namespace xQuantLogFactory.Model.Fixed
         /// Core 服务异步分析器
         /// </summary>
         CoreServiceAsync = 1,
+
+        /// <summary>
+        /// 窗体异步组分析器
+        /// </summary>
+        FormAsync = 2,
+
+        /// <summary>
+        /// 报表异步组分析器
+        /// </summary>
+        ReportAsync = 3,
     }
 
     /// <summary>
