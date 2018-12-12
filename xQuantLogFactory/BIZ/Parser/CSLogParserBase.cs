@@ -155,7 +155,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                     this.ApplyParticularMatch(result, particularMatch);
                                 }
 
-                                this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.RelativePath} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
+                                // this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.RelativePath} 行号= {result.LineNumber} 等级= {result.LogLevel} 日志内容= {result.LogContent}");
                             }
                         }
                         else
