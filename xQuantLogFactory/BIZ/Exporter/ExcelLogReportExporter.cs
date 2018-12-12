@@ -152,7 +152,6 @@ namespace xQuantLogFactory.BIZ.Exporter
                                 tradeSettleRange[rowID, 3].Value = index;
                             }
 
-                            // TDODO: bug 写入正常，但输出时出错
                             if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.TRIGGER, out object trigger))
                             {
                                 tradeSettleRange[rowID, 4].Value = trigger;

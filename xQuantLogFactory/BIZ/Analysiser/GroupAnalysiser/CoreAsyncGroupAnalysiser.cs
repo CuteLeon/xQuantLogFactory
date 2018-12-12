@@ -81,6 +81,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                 {
                                     // 组匹配类型为Start时，总是新建分析结果并记录监视结果；
                                     analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
+
+                                    analysisResult.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME] = coreServiceName;
+                                    analysisResult.AnalysisDatas[FixedDatas.EXECUTE_INDEX] = index;
+                                    analysisResult.AnalysisDatas[FixedDatas.TRIGGER] = trigger.Equals("触", StringComparison.OrdinalIgnoreCase) ? FixedDatas.TRIGGER_ON : FixedDatas.TRIGGER_OFF;
+
                                     unintactResults[(coreServiceName, index)] = analysisResult;
 
                                     break;
@@ -99,17 +104,18 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                     {
                                         // 不存在同服务名称且同执行序号的分析结果或分析结果不匹配时，新建分析结果
                                         analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
+
+                                        analysisResult.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME] = coreServiceName;
+                                        analysisResult.AnalysisDatas[FixedDatas.EXECUTE_INDEX] = index;
+                                        analysisResult.AnalysisDatas[FixedDatas.TRIGGER] = trigger.Equals("触", StringComparison.OrdinalIgnoreCase) ? FixedDatas.TRIGGER_ON : FixedDatas.TRIGGER_OFF;
                                     }
 
+                                    analysisResult.ElapsedMillisecond = double.TryParse(elapsed, out double elapsedValue) ? elapsedValue : double.NaN;
                                     break;
                                 }
                         }
 
                         // Console.WriteLine($"设置分析数据：{coreServiceName}, {index}, {elapsed}; 寄存器数据：{unintactResults.Count} 个");
-                        analysisResult.ElapsedMillisecond = double.TryParse(elapsed, out double elapsedValue) ? elapsedValue : double.NaN;
-                        analysisResult.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME] = coreServiceName;
-                        analysisResult.AnalysisDatas[FixedDatas.EXECUTE_INDEX] = index;
-                        analysisResult.AnalysisDatas[FixedDatas.TRIGGER] = trigger.Equals("触", StringComparison.OrdinalIgnoreCase) ? FixedDatas.TRIGGER_ON : FixedDatas.TRIGGER_OFF;
                     }
                 });
         }
