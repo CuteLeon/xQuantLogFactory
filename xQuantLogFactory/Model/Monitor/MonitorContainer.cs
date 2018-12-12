@@ -36,6 +36,11 @@ namespace xQuantLogFactory.Model.Monitor
                             currentMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
                         }
 
+                        if (string.IsNullOrEmpty(currentMonitor.CANO))
+                        {
+                            currentMonitor.CANO = parentMonitor.GetNextChildCANO();
+                        }
+
                         // 当监视规则开始条件为空时，使用前驱或外层节点条件填充
                         if (string.IsNullOrEmpty(currentMonitor.StartPattern))
                         {

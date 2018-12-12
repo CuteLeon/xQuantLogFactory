@@ -53,7 +53,7 @@ namespace xQuantLogFactory.Model.Result
                         }
                     }
 
-                    // 不存在父级的完整分析组节点记录为分析结果容器的根节点
+                    // 【不存在父级】的【完整】分析组节点记录为分析结果容器的根节点，避免大量错误的不完整组结果污染报告
                     if (analysisResult.ParentAnalysisResult == null)
                     {
                         this.AnalysisResultRoots.Add(analysisResult);

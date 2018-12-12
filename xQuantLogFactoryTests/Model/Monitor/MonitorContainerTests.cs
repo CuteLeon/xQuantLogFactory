@@ -36,6 +36,17 @@ namespace xQuantLogFactory.Model.Monitor.Tests
 
             container.InitMonitorTree();
 
+            Assert.AreEqual("0001", container.MonitorTreeRoots[0].CANO);
+            Assert.AreEqual("0001.0001", container.MonitorTreeRoots[0].MonitorTreeRoots[0].CANO);
+            Assert.AreEqual("0001.0001.0001", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].CANO);
+            Assert.AreEqual("0001.0001.0002", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0001.0001.0003", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[2].CANO);
+            Assert.AreEqual("0001.0002", container.MonitorTreeRoots[0].MonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0002", container.MonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0003", container.MonitorTreeRoots[2].CANO);
+            Assert.AreEqual("0004", container.MonitorTreeRoots[3].CANO);
+            Assert.AreEqual("0005", container.MonitorTreeRoots[4].CANO);
+
             Assert.AreEqual("A", container.MonitorTreeRoots[0].Name);
             Assert.AreEqual("A-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].Name);
             Assert.AreEqual("A-1-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].Name);
