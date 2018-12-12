@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Item Name="内存消耗" Begin="内存消耗" End="" Memory="true" Sheet="内存"/>
+  <Item Name="打开窗体" Begin="开始打开窗体" DirectedAnalysiser="Prefix" End="完成打开窗体" Sheet="窗体"/>
+  <Item Name="查询报表" Begin="开始查询报表" DirectedAnalysiser="Prefix" End="完成报表报表" Sheet="报表"/>
+  <Item Name="客户端启动" Begin="登录成功" End="主窗口初始化结束">
+    <Item Name="版本升级" Begin="检查最新版本开始" End="检查最新版本结束"/>
+    <Item Name="注册远程服务" Begin="检查最新版本结束" End="客户端启动初始化本地缓存前"/>
+    <Item Name="初始化本地缓存数据Schema" Begin="客户端启动初始化本地缓存前" End="客户端启动初始化本地缓存后"/>
+    <Item Name="接口类实例化、加载开关" Begin="客户端启动初始化本地缓存后" End="接口类实例化、加载开关"/>
+    <Item Name="数据加载" Begin="接口类实例化、加载开关" End="初始化消息订阅连接">
+      <Item Name="加载中债参数设置表" Begin="接口类实例化、加载开关" End="加载中债参数设置表"/>
+      <Item Name="加载外汇交易中心上行参数设置表" Begin="加载中债参数设置表" End="加载外汇交易中心上行参数设置表"/>
+      <Item Name="客户端数据加载" Begin="开始客户端启动加载数据" End="完成客户端启动加载数据" Desc="v065后的数据加载规则"/>
+      <Item Name="v065之前数据加载" Begin="加载外汇交易中心上行参数设置表" End="初始化消息订阅连接">
+        <Item Name="COM初始化" Begin="加载TMARKET 内存消耗" End="加载COM初始化 内存消耗">
+          <Item Name="COM初始化交易市场" Begin="加载TMARKET 内存消耗" End="COM初始化交易市场"/>
+          <Item Name="COM初始化交易日历" Begin="COM初始化交易市场" End="COM初始化交易日历"/>
+          <Item Name="COM初始化利率曲线" Begin="COM初始化交易日历" End="COM初始化利率曲线"/>
+          <Item Name="COM初始化利率列表" Begin="COM初始化利率曲线" End="COM初始化利率列表"/>
+        </Item>
+        <Item Name="通用加载资源" Begin="加载" End="" DirectedAnalysiser="Load"/>
+      </Item>
+    </Item>
+    <Item Name="初始化第二阶段" Begin="初始化完成---------" End="主窗口初始化结束----">
+      <Item Name="加载二阶段数据缓存" Begin="窗口初始化开始----" End="初始化表格助手类"/>
+      <Item Name="初始化皮肤" Begin="初始化皮肤" End="初始化固定菜单"/>
+      <Item Name="初始化菜单" Begin="初始化固定菜单" End="载入用户信息"/>
+    </Item>
+  </Item>
+  <Item Name="交易查询" Begin="开始交易查询" End="完成交易查询" Sheet="通用"/>
+  <Item Name="交易提示" Begin="交易提示开始" End="交易提示结束" Sheet="通用"/>
+  <Item Name="刷新金融工具现金流" Begin="开始刷新金融工具现金流" End="完成刷新金融工具现金流" Sheet="通用"/>
+  <Item Name="生成金融工具现金流" Begin="开始生成金融工具现金流" End="完成生成金融工具现金流" Sheet="通用"/>
+  <Item Name="xQuant.Model.XPO.XPBond" Begin="xQuant.Model.XPO.XPBond" End="" Sheet="缓存"/>
+  <Item Name="xxQuant.Model.XPO.XPInstrument" Begin="xQuant.Model.XPO.XPInstrument" End="" Sheet="缓存"/>
+  <Item Name ="组合动态核算" Begin ="计算指标--获取计算交易数据开始" End= "动态核算券敞口耗时">
+    <Item Name ="组合动态核算--获取交易" Begin="计算指标--获取计算交易数据开始" End ="计算指标--获取计算交易数据结束" />
+    <Item Name ="组合动态核算--执行计算" Begin ="计算指标--开始" End ="动态核算券敞口耗时"/>
+  </Item>
+</MonitorRoot>
