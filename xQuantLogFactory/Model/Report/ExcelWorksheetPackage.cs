@@ -9,10 +9,10 @@ namespace xQuantLogFactory.Model.Report
     /// </summary>
     public class ExcelWorksheetPackage : IDisposable
     {
-        public ExcelWorksheetPackage(ExcelWorksheet worksheet, int rowNumber, ExcelRange excelRange)
+        public ExcelWorksheetPackage(ExcelWorksheet worksheet, int rowID, ExcelRange excelRange)
         {
             this.Worksheet = worksheet;
-            this.RowNumber = rowNumber;
+            this.RowID = rowID;
             this.ExcelRange = excelRange;
         }
 
@@ -24,7 +24,7 @@ namespace xQuantLogFactory.Model.Report
         /// <summary>
         /// Gets or sets 行号
         /// </summary>
-        public int RowNumber { get; set; }
+        public int RowID { get; set; }
 
         /// <summary>
         /// Gets or sets 数据区域
@@ -34,7 +34,7 @@ namespace xQuantLogFactory.Model.Report
         /// <summary>
         /// 行号自增
         /// </summary>
-        public void RowNumberIncrease() => this.RowNumber++;
+        public void RowIDIncrease() => this.RowID++;
 
         #region IDisposable Support
         private bool disposedValue = false; // 要检测冗余调用

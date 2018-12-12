@@ -36,8 +36,9 @@ namespace xQuantLogFactory.BIZ.FileFinder
             // 创建所有容器对象
             foreach (string xmlFile in this.GetChildFiles(
                 directory,
-                file => file.EndsWith(argument.MonitorFileName, StringComparison.OrdinalIgnoreCase)))
+                file => file.EndsWith($"\\{argument.MonitorFileName}", StringComparison.OrdinalIgnoreCase)))
             {
+                Console.WriteLine($"\t正在转义监视规则文件：{xmlFile}");
                 MonitorContainer container = File.ReadAllText(xmlFile, Encoding.UTF8).DeserializeToObject<MonitorContainer>();
 
                 // 初始化监视规则树

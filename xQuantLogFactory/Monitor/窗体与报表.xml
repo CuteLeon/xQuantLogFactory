@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Item Name="打开窗体" Begin="开始打开窗体" DirectedAnalysiser="KeyValuePair" End="完成打开窗体" Sheet="窗体"/>
-  <Item Name="查询报表" Begin="开始查询报表" DirectedAnalysiser="KeyValuePair" End="完成报表报表" Sheet="报表"/>
+  <Item Name="查询报表" Begin="开始查询报表" DirectedAnalysiser="KeyValuePair" End="完成查询报表" Sheet="报表"/>
 </MonitorRoot>

@@ -58,6 +58,31 @@
         /// 非触发
         /// </summary>
         public const string TRIGGER_OFF = "非触发";
+
+        /// <summary>
+        /// 模块代码
+        /// </summary>
+        public const string MODULE_CODE = "模块代码";
+
+        /// <summary>
+        /// 窗口名称
+        /// </summary>
+        public const string FORM_NAME = "窗体名称";
+
+        /// <summary>
+        /// 报表代码
+        /// </summary>
+        public const string REPORT_CODE = "报表代码";
+
+        /// <summary>
+        /// 报表名称
+        /// </summary>
+        public const string REPORT_NAME = "报表名称";
+
+        /// <summary>
+        /// 查询参数
+        /// </summary>
+        public const string QUERY_PARAM = "查询参数";
         #endregion
 
         #region 保留表名常量
@@ -86,6 +111,16 @@
         /// Core服务表名
         /// </summary>
         public const string CORE_SERVICE_SHEET_NAME = "Core服务";
+
+        /// <summary>
+        /// 窗体表名
+        /// </summary>
+        public const string FORM_SHEET_NAME = "窗体";
+
+        /// <summary>
+        /// 报表表名
+        /// </summary>
+        public const string REPORT_SHEET_NAME = "报表";
         #endregion
 
     }
