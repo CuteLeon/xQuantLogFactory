@@ -11,6 +11,7 @@
       <Item Name="内部资金指标值" Begin="" End="加载内部资金指标值"/>
       <!--<Item Name="初始化数据访问接口" Begin="开始初始化数据访问接口" End="完成初始化数据访问接口"/>-->
       <Item Name="中间件启动加载数据" Begin="开始中间件启动加载数据" End="完成中间件启动加载数据" DirectedAnalysiser="Prefix"/>
+      <!--<Item Name="加载第一阶段数据" Begin="加载" End="" DirectedAnalysiser="Load"/>-->
       <!--<Item Name="业务字典名称转换表" Begin="" End="加载业务字典名称转换表"/>-->
       <Item Name="交易所标准券折价率表" Begin="加载业务字典名称转换表" End="加载交易所标准券折价率表"/>
       <Item Name="OTC利率表" Begin="" End="加载OTC利率表"/>
@@ -23,7 +24,7 @@
       <Item Name="清算所债券估值" Begin="" End="加载清算所债券估值"/>
       <Item Name="中证债券估值" Begin="" End="加载中证债券估值"/>
       <Item Name="股票估值" Begin="" End="加载股票估值"/>
-      <Item Name="债券行情估值Series" Begin="" End="加载债券行情估值Series"/>
+      <Item Name="债券行情估值Series" Begin="" End="加载债券行情估值SERIES"/>
       <Item Name="指令详情描述" Begin="" End="加载指令详情描述"/>
       <Item Name="XSWAP报价合约品种单位基准" Begin="" End="加载XSWAP报价合约品种单位基准"/>
       <!--<Item Name="加载金融工具曲线" Begin="" End="加载金融工具曲线"/>-->
@@ -34,10 +35,10 @@
       <Item Name="地域树构建和缓存" Begin="" End="加载地域树构建和缓存"/>
       <Item Name="初始化席位号通道号字典" Begin="" End="加载初始化席位号通道号字典"/>
       <Item Name="金融工具债券估值" Begin="" End="加载金融工具债券估值"/>
-      <Item Name="中债登债券估值" Begin="" End="加载中债登债券估值完成"/>
+      <Item Name="中债登债券估值" Begin="" End="加载中债登债券估值"/>
       <Item Name="交易所还本减数量债券" Begin="" End="加载交易所还本减数量债券"/>
       <Item Name="资金指令收付摘要规则配置" Begin="" End="加载资金指令收付摘要规则配置"/>
-      <Item Name="导入任务类型字典表" Begin="" End="加载导入任务类型字典表"/>
+      <Item Name="导入任务类型字典表" Begin="" End="加载导入任务类型字典"/>
       <Item Name="导入发行机构字典表" Begin="" End="加载导入发行机构字典表"/>
       <Item Name="交易最小单位配置" Begin="" End="加载交易最小单位配置"/>
       <Item Name="复核表相关缓存TTRD_APPROVE_RULE_REVIEW" Begin="" End="加载复核表相关缓存TTRD_APPROVE_RULE_REVIEW"/>
