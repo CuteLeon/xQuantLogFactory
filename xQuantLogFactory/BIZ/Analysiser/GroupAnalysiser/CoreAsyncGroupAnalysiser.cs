@@ -56,10 +56,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                     this.Tracer?.WriteLine($"开始分析监视规则：{monitor.Name}");
 
                     // 待匹配监视结果寄存字典
-                    Dictionary<(string, string), GroupAnalysisResult> unintactResults = new Dictionary<(string, string), GroupAnalysisResult>();
+                    Dictionary<(string, int), GroupAnalysisResult> unintactResults = new Dictionary<(string, int), GroupAnalysisResult>();
                     GroupAnalysisResult analysisResult = null;
                     Match analysisMatch = null;
-                    string coreServiceName = string.Empty, index = string.Empty, elapsed = string.Empty, trigger = string.Empty;
+                    string coreServiceName = string.Empty, elapsed = string.Empty, trigger = string.Empty;
+                    int index = -1;
 
                     foreach (var monitorResult in monitorResultGroup.OrderBy(result => result.LogTime))
                     {
@@ -68,7 +69,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                             analysisMatch = this.AnalysisRegex.Match(monitorResult.LogContent);
                         }
                         coreServiceName = analysisMatch.Groups["CoreServiceName"].Value;
-                        index = analysisMatch.Groups["Index"].Value;
+                        index = int.TryParse(analysisMatch.Groups["Index"].Value, out int value) ? value : -1;
                         trigger = analysisMatch.Groups["Trigger"].Value;
                         elapsed = analysisMatch.Groups["Elapsed"].Value;
 

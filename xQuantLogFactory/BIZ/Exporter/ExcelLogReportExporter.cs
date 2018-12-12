@@ -224,7 +224,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                         sourceRange[rowID, 3].Value = result.Version;
                         sourceRange[rowID, 4].Value = executeID;
-                        sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond.ToString() : "匹配失败";
+                        sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond : 0.0;
                         sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
@@ -332,7 +332,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             range[rowNumber, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
             range[rowNumber, 3].Value = analysisResult.Version;
             range[rowNumber, 4].Value = executeID;
-            range[rowNumber, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond.ToString() : "匹配失败";
+            range[rowNumber, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
             range[rowNumber, 6].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             range[rowNumber, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             range[rowNumber, 8].Value = analysisResult.LogFile.RelativePath;
