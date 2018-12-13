@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
@@ -50,9 +51,15 @@ namespace xQuantLogFactory.Model
         public DateTime LastWriteTime { get; set; }
 
         /// <summary>
-        /// Gets or sets 客户端和服务端匹配结果总耗时（单位：毫秒）
+        /// Gets 客户端和服务端匹配结果总耗时（单位：毫秒）
         /// </summary>
-        public double ElapsedMillisecond { get; set; }
+        public double ElapsedMillisecond
+        {
+            get
+            {
+                return this.AnalysisResults.Sum(result => result.ElapsedMillisecond);
+            }
+        }
 
         /// <summary>
         /// Gets or sets 监视日志解析结果列表

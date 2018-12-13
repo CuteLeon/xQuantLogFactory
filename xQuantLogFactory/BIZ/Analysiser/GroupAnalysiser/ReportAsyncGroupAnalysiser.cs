@@ -37,17 +37,13 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                 throw new ArgumentNullException(nameof(argument));
             }
 
+            this.Tracer?.WriteLine($"执行 报表异步组分析器 ....");
             argument.MonitorResults
                 .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync)
                 .GroupBy(result => result.MonitorItem)
-                .AsParallel().ForAll(monitorResultGroup =>
+                .AsParallel().ForAll(resultGroup =>
                 {
-                    if (!(monitorResultGroup.Key is MonitorItem monitor))
-                    {
-                        this.Tracer?.WriteLine("无法分析空的监视规则");
-                        return;
-                    }
-                    this.Tracer?.WriteLine($"开始分析监视规则：{monitor.Name}");
+                    MonitorItem targetMonitor = resultGroup.Key;
 
                     // 待匹配监视结果寄存字典
                     Dictionary<(string, string), GroupAnalysisResult> unintactResults = new Dictionary<(string, string), GroupAnalysisResult>();
@@ -55,7 +51,8 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                     Match analysisMatch = null;
                     string reportName = string.Empty, reportCode = string.Empty, queryParam = string.Empty;
 
-                    foreach (var monitorResult in monitorResultGroup)
+                    this.Tracer?.WriteLine($">>>开始分析，监视结果数量：{resultGroup.Count()}\t监视规则：{targetMonitor.Name}");
+                    foreach (var monitorResult in resultGroup)
                     {
                         lock (this.lockSeed)
                         {
@@ -73,7 +70,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                             case GroupTypes.Start:
                                 {
                                     // 组匹配类型为Start时，总是新建分析结果并记录监视结果；
-                                    analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
+                                    analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
 
                                     analysisResult.AnalysisDatas[FixedDatas.REPORT_NAME] = reportName;
                                     analysisResult.AnalysisDatas[FixedDatas.REPORT_CODE] = reportCode;
@@ -96,7 +93,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                     else
                                     {
                                         // 不存在同服务名称且同执行序号的分析结果或分析结果不匹配时，新建分析结果
-                                        analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
+                                        analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
 
                                         analysisResult.AnalysisDatas[FixedDatas.REPORT_NAME] = reportName;
                                         analysisResult.AnalysisDatas[FixedDatas.REPORT_CODE] = reportCode;
@@ -110,6 +107,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 
                         // Console.WriteLine($"设置分析数据：{coreServiceName}, {index}, {elapsed}; 寄存器数据：{unintactResults.Count} 个");
                     }
+                    this.Tracer?.WriteLine($"<<<分析完成，分析结果数量：{targetMonitor.AnalysisResults.Count}\t监视规则：{targetMonitor.Name}");
                 });
         }
     }

@@ -5,7 +5,6 @@ using System.Linq;
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
 using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser;
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils.Trace;
 
@@ -52,24 +51,34 @@ namespace xQuantLogFactory.BIZ.Analysiser
             }
 
             // 优先调用组分析器分析方法
+            this.Tracer?.WriteLine(">>>————— 准备组分析器 —————");
             this.PrepareGroupLogAnalysiser(argument);
+            this.Tracer?.WriteLine(">>>执行组分析器 ...");
             this.GroupAnalysiserProvider.ForEach(analysiser => analysiser.Analysis(argument));
 
             // 调用定向分析器分析方法
+            this.Tracer?.WriteLine(">>>————— 准备定向分析器 —————");
             this.PrepareDirectedLogAnalysiser(argument);
             if (this.DirectedAnalysiserProvider.Count > 0)
             {
+                this.Tracer?.WriteLine(">>>执行定向分析器 ...");
                 this.DirectedAnalysiserProvider?.ForEach(analysiser => analysiser.Analysis(argument));
             }
 
             // 分析结果匹配完成后按日志时间排序
+            this.Tracer?.WriteLine(">>>————— 分析结果池排序 —————");
             argument.AnalysisResults = argument.AnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
+            this.Tracer?.WriteLine("<<< 排序完成");
 
             // 初始化分析结果树
+            this.Tracer?.WriteLine(">>>————— 构建分析结果树 —————");
             argument.InitAnalysisResultTree();
+            this.Tracer?.WriteLine("<<< 构建完成");
 
-            // 计算日志耗时
-            this.CalcElapsed(argument);
+            // 统计分析结果
+            this.Tracer?.WriteLine(">>>————— 统计分析结果 —————");
+            this.FigureOutAnalysisResults(argument);
+            this.Tracer?.WriteLine("<<< 统计完成");
         }
 
         /// <summary>
@@ -128,23 +137,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
         }
 
         /// <summary>
-        /// 计算耗时
+        /// 统计分析结果
         /// </summary>
         /// <param name="argument"></param>
-        public virtual void CalcElapsed(TaskArgument argument)
+        public virtual void FigureOutAnalysisResults(TaskArgument argument)
         {
-            argument.MonitorContainerRoot.GetMonitorItems().ToList().ForEach(monitor =>
+            this.Tracer?.WriteLine("未完全匹配的监视规则：");
+            foreach (var monitor in argument.MonitorContainerRoot.GetMonitorItems()
+                .Where(monitor => monitor.MonitorResults.Count > 0))
             {
-                monitor.ElapsedMillisecond = monitor.AnalysisResults.Sum(result => result.ElapsedMillisecond);
-
-                int fullCoupleCount = monitor.AnalysisResults.Count(result => result.IsIntactGroup());
-                if (fullCoupleCount > 0)
+                double matchingRate = monitor.MatchingRate;
+                if (matchingRate < 1.0)
                 {
-                    monitor.AverageElapsedMillisecond = monitor.ElapsedMillisecond / fullCoupleCount;
+                    this.Tracer?.WriteLine($"匹配率：{matchingRate.ToString("P2")}\t监视规则：{monitor.Name}");
                 }
-            });
-
-            argument.LogFiles.ForEach(logFile => logFile.ElapsedMillisecond = logFile.AnalysisResults.Sum(result => result.ElapsedMillisecond));
+            }
         }
     }
 }

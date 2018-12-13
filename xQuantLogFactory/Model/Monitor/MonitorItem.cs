@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
 
@@ -41,16 +43,43 @@ namespace xQuantLogFactory.Model.Monitor
         public string FinishPatterny { get; set; }
 
         /// <summary>
-        /// Gets or sets 结果总耗时（单位：毫秒）
+        /// Gets 结果总耗时（单位：毫秒）
         /// </summary>
         [XmlIgnore]
-        public double ElapsedMillisecond { get; set; }
+        public double ElapsedMillisecond
+        {
+            get
+            {
+                return this.AnalysisResults.Sum(result => result.ElapsedMillisecond);
+            }
+        }
 
         /// <summary>
-        /// Gets or sets 完整匹配组结果平均耗时
+        /// Gets 匹配率
         /// </summary>
         [XmlIgnore]
-        public double AverageElapsedMillisecond { get; set; }
+        public double MatchingRate
+        {
+            get
+            {
+                // 匹配率算法：非完整组分析结果数量 / 监视结果总数
+                return this.MonitorResults.Count == 0 ? 1 :
+                    1 - (this.AnalysisResults.Count(result => !result.IsIntactGroup()) / this.MonitorResults.Count);
+            }
+        }
+
+        /// <summary>
+        /// Gets 完整匹配组结果平均耗时
+        /// </summary>
+        [XmlIgnore]
+        public double AverageElapsedMillisecond
+        {
+            get
+            {
+                return this.AnalysisResults.Count == 0 ? 0 :
+                    this.ElapsedMillisecond / this.AnalysisResults.Count(result => result.IsIntactGroup());
+            }
+        }
 
         /// <summary>
         /// Gets or sets 目录编号

@@ -43,6 +43,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                 throw new ArgumentNullException(nameof(argument));
             }
 
+            this.Tracer?.WriteLine($"执行 通用加载定向分析器 ....");
             argument.AnalysisResults
                 .Where(result => result.MonitorItem.DirectedAnalysiser == DirectedAnalysiserTypes.Load)
                 .GroupBy(result => result.MonitorItem)
@@ -55,6 +56,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                     string resourceName = string.Empty;
                     string childMonitorName = string.Empty;
 
+                    this.Tracer?.WriteLine($">>>正在分析监视规则：{targetMonitor.Name}，结果数量：{resultGroup.Count()}");
                     foreach (var analysisResult in resultGroup)
                     {
                         if (analysisResult.StartMonitorResult == null ||

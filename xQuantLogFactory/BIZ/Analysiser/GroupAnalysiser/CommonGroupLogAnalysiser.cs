@@ -34,27 +34,24 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                 throw new ArgumentNullException(nameof(argument));
             }
 
+            this.Tracer?.WriteLine($"执行 通用组分析器 ....");
             argument.MonitorResults
                 .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.Common)
                 .GroupBy(result => result.MonitorItem)
-                .AsParallel().ForAll(monitorResultGroup =>
+                .AsParallel().ForAll(resultGroup =>
             {
-                if (!(monitorResultGroup.Key is MonitorItem monitor))
-                {
-                    this.Tracer?.WriteLine("无法分析空的监视规则");
-                    return;
-                }
-                this.Tracer?.WriteLine($"开始分析监视规则：{monitor.Name}");
-
+                MonitorItem targetMonitor = resultGroup.Key;
                 GroupAnalysisResult analysisResult = null;
-                foreach (var monitorResult in monitorResultGroup)
+
+                this.Tracer?.WriteLine($">>>开始分析，监视结果数量：{resultGroup.Count()}\t监视规则：{targetMonitor.Name}");
+                foreach (var monitorResult in resultGroup)
                 {
                     switch (monitorResult.GroupType)
                     {
                         case GroupTypes.Start:
                             {
                                 // 组匹配类型为Start时，总是新建分析结果并记录监视结果；
-                                analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
+                                analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
                                 break;
                             }
                         case GroupTypes.Finish:
@@ -63,7 +60,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                     !analysisResult.StartMonitorResult.CheckMatch(monitorResult))
                                 {
                                     // 组匹配类型为Finish时，若不存在未关闭的分析结果或结果不匹配，则新建分析结果并记录监视结果；
-                                    analysisResult = this.CreateAnalysisResult(argument, monitor, monitorResult);
+                                    analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
                                 }
                                 else
                                 {
@@ -79,6 +76,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                             }
                     }
                 }
+                this.Tracer?.WriteLine($"<<<分析完成，分析结果数量：{targetMonitor.AnalysisResults.Count}\t监视规则：{targetMonitor.Name}");
             });
         }
     }

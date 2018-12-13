@@ -67,7 +67,7 @@ namespace xQuantLogFactory
 
             UnityTracer.WriteLine("开始反序列化匹配的监视规则对象...");
             GetMonitorItems(ConfigHelper.MonitorDirectory);
-            UnityTracer.WriteLine($"发现 {UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count()} 个任务相关监视规则对象：{string.Join("、", UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Select(item => item.Name))}");
+            UnityTracer.WriteLine($"发现 {UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Count()} 个任务相关监视规则对象：\n————————\n{string.Join("、", UnityTaskArgument.MonitorContainerRoot.GetMonitorItems().Select(item => item.Name))}\n————————");
 
             UnityTracer.WriteLine("开始获取任务相关日志文件...");
             GetTaskLogFiles(UnityTaskArgument.LogDirectory);
@@ -83,14 +83,17 @@ namespace xQuantLogFactory
 
             ParseMiddlewareLog();
             ShowParseResult();
+            GC.Collect();
 
             UnityTracer.WriteLine("开始分析日志解析结果...");
             AnalysisLog();
             ShowAnalysisResult();
+            GC.Collect();
 
             UnityTaskArgument.TaskFinishTime = DateTime.Now;
             TryToExportLogReport();
             SaveTaskArgumentToXML(UnityTaskArgument.DeepClone());
+            GC.Collect();
 
 #if DEBUG
             // 调试助手
@@ -271,7 +274,7 @@ namespace xQuantLogFactory
         {
             if (UnityTaskArgument.LogFiles.Count(logFile => logFile.LogFileType == LogFileTypes.Client) > 0)
             {
-                UnityTracer.WriteLine("开始解析 [客户端] 日志文件...\n————————");
+                UnityTracer.WriteLine("开始解析 [客户端] 日志文件...");
 
                 ILogParser clientLogParser = new ClientLogParser(UnityTracer);
                 clientLogParser.Parse(UnityTaskArgument);

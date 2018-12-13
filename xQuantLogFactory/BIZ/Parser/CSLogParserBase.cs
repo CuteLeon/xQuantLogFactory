@@ -54,7 +54,7 @@ namespace xQuantLogFactory.BIZ.Parser
             // 遍历文件
             this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
-                this.Tracer?.WriteLine($"开始解析日志文件：(ID: {logFile.RelativePath}, Type: {logFile.LogFileType}) {logFile.RelativePath}");
+                this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}");
 
                 FileStream fileStream = null;
                 StreamReader streamRreader = null;
@@ -164,11 +164,11 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    this.Tracer?.WriteLine($"当前日志文件(ID: {logFile.RelativePath})解析完成\n————————");
+                    this.Tracer?.WriteLine($">>>日志文件解析完成：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}");
                 }
                 catch (Exception ex)
                 {
-                    this.Tracer?.WriteLine($"解析日志文件(ID: {logFile.RelativePath}) {logFile.RelativePath} 失败：{ex.Message}\n————————");
+                    this.Tracer?.WriteLine($"——日志文件解析失败：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}\n\tException: {ex.Message}");
                 }
                 finally
                 {
@@ -181,7 +181,9 @@ namespace xQuantLogFactory.BIZ.Parser
             });
 
             // 监视结果解析完毕后按日志时间排序
+            this.Tracer?.WriteLine(">>>————— 监视结果池排序 —————");
             argument.MonitorResults = argument.MonitorResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
+            this.Tracer?.WriteLine("<<< 排序完成");
         }
 
         /// <summary>
