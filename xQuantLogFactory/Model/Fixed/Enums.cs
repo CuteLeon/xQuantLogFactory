@@ -39,19 +39,24 @@ namespace xQuantLogFactory.Model.Fixed
         Common = 0,
 
         /// <summary>
-        /// Core 服务异步分析器
+        /// 自封闭组分析器
         /// </summary>
-        CoreServiceAsync = 1,
+        SelfSealing = 1,
+
+        /// <summary>
+        /// Core 服务异步组分析器
+        /// </summary>
+        CoreServiceAsync = 2,
 
         /// <summary>
         /// 窗体异步组分析器
         /// </summary>
-        FormAsync = 2,
+        FormAsync = 3,
 
         /// <summary>
         /// 报表异步组分析器
         /// </summary>
-        ReportAsync = 3,
+        ReportAsync = 4,
     }
 
     /// <summary>

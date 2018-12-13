@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Name="内存消耗" Begin="内存消耗" End="" Memory="true" Sheet="内存"/>
+  <Item Name="内存消耗" Begin="内存消耗" GroupAnalysiser="SelfSealing" Memory="true" Sheet="内存"/>
   <Item Name ="限额刷新" Begin ="限额服务刷新开始" End ="限额服务初始化结束" >
     <Item Name ="装载限额定义和应用" Begin="限额服务重新从数据库加载限额定义和应用开始" End="限额服务重新从数据库加载限额定义和应用结束" />
     <Item Name ="重新载入交易与持仓" Begin="限额服务重新载入交易与持仓开始" End ="限额服务重新载入易与持仓结束"/>

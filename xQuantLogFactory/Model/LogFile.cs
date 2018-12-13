@@ -67,6 +67,11 @@ namespace xQuantLogFactory.Model
         public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
 
         /// <summary>
+        /// Gets or sets 未解析日志
+        /// </summary>
+        public virtual List<string> UnparsedLogs { get; set; } = new List<string>();
+
+        /// <summary>
         /// Gets or sets 中间件日志解析结果表
         /// </summary>
         public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();

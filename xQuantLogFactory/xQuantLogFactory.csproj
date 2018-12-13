@@ -68,6 +68,7 @@
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\DirectedLogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonPrefixAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\CommonGroupLogAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\CommonSelfSealingGroupAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\ReportAsyncGroupAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\FormAsyncGroupAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\CoreAsyncGroupAnalysiser.cs" />

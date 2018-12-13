@@ -103,6 +103,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
             {
                 this.GroupAnalysiserProvider.Add(new ReportAsyncGroupAnalysiser(this.Tracer));
             }
+
+            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.SelfSealing))
+            {
+                this.GroupAnalysiserProvider.Add(new CommonSelfSealingGroupAnalysiser(this.Tracer));
+            }
         }
 
         /// <summary>

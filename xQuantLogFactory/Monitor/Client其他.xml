@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Name="内存消耗" Begin="内存消耗" End="" Memory="true" Sheet="内存"/>
+  <Item Name="内存消耗" Begin="内存消耗" GroupAnalysiser="SelfSealing" Memory="true" Sheet="内存"/>
   <Item Name="交易查询" Begin="开始交易查询" End="完成交易查询" Sheet="通用"/>
   <Item Name="交易提示" Begin="交易提示开始" End="交易提示结束" Sheet="通用"/>
   <Item Name="刷新金融工具现金流" Begin="开始刷新金融工具现金流" End="完成刷新金融工具现金流" Sheet="通用"/>
