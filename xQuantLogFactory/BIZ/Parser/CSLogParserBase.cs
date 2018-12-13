@@ -163,7 +163,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             // 记录不为空的未识别的日志行
                             if (logLine.Length > 0)
                             {
-                                logFile.UnparsedLogs.Add(logLine);
+                                logFile.UnparsedResults.Add(new UnparsedResult(argument, logFile, lineNumber, logLine));
                             }
                         }
                     }

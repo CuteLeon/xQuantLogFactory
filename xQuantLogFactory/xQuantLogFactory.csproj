@@ -119,6 +119,7 @@
     <Compile Include="Model\Monitor\MonitorContainer.cs" />
     <Compile Include="Model\Monitor\MonitorItem.cs" />
     <Compile Include="Model\Result\MonitorResult.cs" />
+    <Compile Include="Model\Result\UnparsedResult.cs" />
     <Compile Include="Model\SystemInfo.cs" />
     <Compile Include="Model\TaskArgument.cs" />
     <Compile Include="Program.cs" />
