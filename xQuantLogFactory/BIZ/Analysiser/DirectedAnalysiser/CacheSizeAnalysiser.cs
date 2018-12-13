@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -16,6 +15,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// <summary>
     /// 统计缓存定向分析器
     /// </summary>
+    /// <remarks>暂时无法处理跨文件、穿插、嵌套情况</remarks>
     public class CacheSizeAnalysiser : DirectedLogAnalysiserBase
     {
         public CacheSizeAnalysiser()
