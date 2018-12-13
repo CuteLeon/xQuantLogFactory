@@ -8,6 +8,11 @@ namespace xQuantLogFactory.Model.Result
     /// </summary>
     public class MonitorResult : LogResultBase
     {
+        /// <summary>
+        /// 空的占位监视结果
+        /// </summary>
+        public static readonly MonitorResult Empty = new MonitorResult();
+
         public MonitorResult()
         {
         }

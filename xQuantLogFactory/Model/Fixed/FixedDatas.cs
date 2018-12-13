@@ -83,6 +83,16 @@
         /// 查询参数
         /// </summary>
         public const string QUERY_PARAM = "查询参数";
+
+        /// <summary>
+        /// 资源名称
+        /// </summary>
+        public const string RESOURCE_NAME = "资源名称";
+
+        /// <summary>
+        /// 计数
+        /// </summary>
+        public const string COUNT = "计数";
         #endregion
 
         #region 保留表名常量

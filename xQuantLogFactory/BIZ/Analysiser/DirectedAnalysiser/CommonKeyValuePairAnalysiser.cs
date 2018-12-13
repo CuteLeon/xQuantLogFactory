@@ -61,7 +61,6 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                     MonitorItem targetMonitor = resultGroup.Key;
                     MonitorResult firstResult = null;
                     Match analysisMatch = null;
-                    string customeData = string.Empty;
 
                     this.Tracer?.WriteLine($">>>正在分析监视规则：{targetMonitor.Name}，结果数量：{resultGroup.Count()}");
                     foreach (var analysisResult in resultGroup)
@@ -72,7 +71,10 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                             continue;
                         }
 
-                        analysisMatch = this.AnalysisRegex.Match(firstResult.LogContent);
+                        lock (this.AnalysisRegex)
+                        {
+                            analysisMatch = this.AnalysisRegex.Match(firstResult.LogContent);
+                        }
                         if (analysisMatch.Success && analysisMatch.Groups["Pairs"].Success)
                         {
                             // 匹配日志内容中所有的中括号包含的内容

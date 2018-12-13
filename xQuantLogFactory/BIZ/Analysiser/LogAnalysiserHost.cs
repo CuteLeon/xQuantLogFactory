@@ -138,6 +138,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 {
                     this.AddDirectedAnalysiser(new CommonMemoryAnalysiser(this.Tracer));
                 }
+
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.CacheSize))
+                {
+                    this.AddDirectedAnalysiser(new CacheSizeAnalysiser(this.Tracer));
+                }
             }
         }
 

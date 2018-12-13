@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace xQuantLogFactory.Model.Result
+﻿namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
     /// 未解析结果

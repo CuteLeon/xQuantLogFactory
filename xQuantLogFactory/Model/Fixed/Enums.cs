@@ -13,19 +13,24 @@ namespace xQuantLogFactory.Model.Fixed
         None = 0,
 
         /// <summary>
-        /// 通用前缀分析器
+        /// 通用前缀定向分析器
         /// </summary>
         Prefix = 1,
 
         /// <summary>
-        /// 通用加载分析器
+        /// 通用加载定向分析器
         /// </summary>
         Load = 2,
 
         /// <summary>
-        /// 键值对分析器
+        /// 键值对定向分析器
         /// </summary>
         KeyValuePair = 3,
+
+        /// <summary>
+        /// 统计缓存定向分析器
+        /// </summary>
+        CacheSize = 4,
     }
 
     /// <summary>
