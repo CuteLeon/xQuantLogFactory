@@ -36,7 +36,8 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.ANALYSIS_SHEET_NAME,
             FixedDatas.CORE_SERVICE_SHEET_NAME,
             FixedDatas.FORM_SHEET_NAME,
-            FixedDatas.REPORT_SHEET_NAME
+            FixedDatas.REPORT_SHEET_NAME,
+            FixedDatas.CACHE_SHEET_NAME,
         };
 
         public ExcelLogReportExporter(ITracer tracer)
@@ -90,6 +91,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportCoreServiceSheet(excel, argument);
                     this.ExportFormSheet(excel, argument);
                     this.ExportReportSheet(excel, argument);
+                    this.ExportCacheSheet(excel, argument);
 
                     /* 更新数据透视表
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
@@ -110,6 +112,63 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     excel.Save();
                     this.Tracer?.WriteLine("Excel 报告文档关闭");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出缓存统计数据
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportCacheSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.CACHE_SHEET_NAME];
+            if (sheet == null)
+            {
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.CACHE_SHEET_NAME} 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.CACHE_SHEET_NAME} 表数据 ...");
+                Rectangle rectangle = new Rectangle(1, 2, 12, argument.MonitorResults.Count);
+                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
+                {
+                    int rowID = rectangle.Top, executeID = 0;
+
+                    // 输出监视规则树
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
+                    {
+                        // 每个分析结果根节点使执行序号自增
+                        executeID++;
+
+                        // 遍历根节点及所有子节点输出分析结果数据
+                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                            .Where(result => result.MonitorItem.SheetName == FixedDatas.CACHE_SHEET_NAME))
+                        {
+                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
+                            range[rowID, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
+                            range[rowID, 3].Value = analysisResult.Version;
+                            range[rowID, 4].Value = executeID;
+                            range[rowID, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.RESOURCE_NAME, out object name))
+                            {
+                                range[rowID, 6].Value = name;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.COUNT, out object count))
+                            {
+                                range[rowID, 7].Value = count;
+                            }
+
+                            range[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 9].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 10].Value = analysisResult.LogFile.RelativePath;
+                            range[rowID, 11].Value = analysisResult.LineNumber;
+
+                            rowID++;
+                        }
+                    }
                 }
             }
         }

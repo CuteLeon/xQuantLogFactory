@@ -131,6 +131,11 @@
         /// 报表表名
         /// </summary>
         public const string REPORT_SHEET_NAME = "报表";
+
+        /// <summary>
+        /// 缓存表名
+        /// </summary>
+        public const string CACHE_SHEET_NAME = "缓存";
         #endregion
 
     }
