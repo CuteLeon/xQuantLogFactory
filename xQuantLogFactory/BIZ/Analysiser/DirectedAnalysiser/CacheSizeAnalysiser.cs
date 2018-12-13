@@ -34,6 +34,10 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
             $@"统计耗时：(?<Elapsed>.*?)秒",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        public Regex ObjectRegex { get; protected set; } = new Regex(
+            $@"\s(?<Type>.*?)\(数量:(?<Count>\d*)\)",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.RightToLeft);
+
         public Regex PinYinRegex { get; protected set; } = new Regex(
             $@"拼音缓存个数：(?<Count>\d*);",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
@@ -77,31 +81,27 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                         }
 
                         // 分析缓存数据
-                        foreach (var result in this.GetUnparsedResults(firstResult, analysisResult))
-                        {
-                            // TODO: 分析对象缓存数量
-                            Console.WriteLine(result.LogContent);
-                        }
+                        this.AnalysisUnparsedResults(firstResult, analysisResult);
                     }
                 });
         }
 
         /// <summary>
-        /// 获取监视结果相关的未解析结果
+        /// 处理监视结果相关的未解析结果
         /// </summary>
         /// <param name="monitorResult"></param>
         /// <param name="analysisResult"></param>
-        /// <returns></returns>
-        private IEnumerable<UnparsedResult> GetUnparsedResults(MonitorResult monitorResult, GroupAnalysisResult analysisResult)
+        private void AnalysisUnparsedResults(MonitorResult monitorResult, GroupAnalysisResult analysisResult)
         {
             int startIndex = monitorResult.LogFile.UnparsedResults.FindIndex(result => result.LineNumber >= monitorResult.LineNumber);
             int cacheIndex = monitorResult.LogFile.UnparsedResults.FindIndex(startIndex, result => result.LogContent.IndexOf("缓存对象：", StringComparison.Ordinal) > -1);
             if (cacheIndex == -1)
             {
                 // 未找到缓存开始，终止
-                yield break;
+                return;
             }
 
+            bool hasPinYin = false;
             int pinYinIndex = monitorResult.LogFile.UnparsedResults.FindIndex(cacheIndex + 1, result => result.LogContent.IndexOf("拼音缓存个数：", StringComparison.Ordinal) > -1);
             if (pinYinIndex == -1)
             {
@@ -110,16 +110,60 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
             }
             else
             {
+                hasPinYin = true;
+            }
+
+            for (int index = cacheIndex + 1; index < pinYinIndex; index++)
+            {
+                var result = monitorResult.LogFile.UnparsedResults[index];
+
+                // 分析对象缓存
+                this.AnalysisObjectCount(
+                    result,
+                    monitorResult.MonitorItem,
+                    analysisResult);
+            }
+
+            if (hasPinYin)
+            {
                 // 分析拼音缓存
                 this.AnalysisPinYinCount(
                     monitorResult.LogFile.UnparsedResults[pinYinIndex],
                     monitorResult.MonitorItem,
                     analysisResult);
             }
+        }
 
-            for (int index = cacheIndex + 1; index < pinYinIndex; index++)
+        /// <summary>
+        /// 分析对象数量
+        /// </summary>
+        /// <param name="unparsedResult"></param>
+        /// <param name="monitorItem"></param>
+        /// <param name="analysisResult"></param>
+        private void AnalysisObjectCount(UnparsedResult unparsedResult, MonitorItem monitorItem, GroupAnalysisResult analysisResult)
+        {
+            Match match = this.ObjectRegex.Match(unparsedResult.LogContent);
+            if (match.Success &&
+                match.Groups["Type"].Success &&
+                match.Groups["Count"].Success &&
+                int.TryParse(match.Groups["Count"].Value, out int count))
             {
-                yield return monitorResult.LogFile.UnparsedResults[index];
+                string resourceName = match.Groups["Type"].Value;
+                MonitorItem childMonitor = this.TryGetOrAddChildMonitor(monitorItem, resourceName);
+
+                // 深度克隆原分析结果的开始监视结果并修改行号和日志内容，作为子分析结果的开始监视结果
+                MonitorResult childResult = analysisResult.StartMonitorResult.DeepClone();
+                childResult.LineNumber = unparsedResult.LineNumber;
+                childResult.LogContent = unparsedResult.LogContent;
+
+                // 创建子分析结果
+                GroupAnalysisResult childAnalysisResult = this.CreateAnalysisResult(
+                    analysisResult.TaskArgument,
+                    childMonitor,
+                    childResult);
+
+                childAnalysisResult.AnalysisDatas.Add(FixedDatas.RESOURCE_NAME, resourceName);
+                childAnalysisResult.AnalysisDatas.Add(FixedDatas.COUNT, count);
             }
         }
 
@@ -131,10 +175,10 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         /// <param name="analysisResult"></param>
         private void AnalysisPinYinCount(UnparsedResult unparsedResult, MonitorItem monitorItem, GroupAnalysisResult analysisResult)
         {
-            Match pinYinMatch = this.PinYinRegex.Match(unparsedResult.LogContent);
-            if (pinYinMatch.Success &&
-                pinYinMatch.Groups["Count"].Success &&
-                int.TryParse(pinYinMatch.Groups["Count"].Value, out int count))
+            Match match = this.PinYinRegex.Match(unparsedResult.LogContent);
+            if (match.Success &&
+                match.Groups["Count"].Success &&
+                int.TryParse(match.Groups["Count"].Value, out int count))
             {
                 MonitorItem childMonitor = this.TryGetOrAddChildMonitor(monitorItem, "拼音缓存");
 

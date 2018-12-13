@@ -1,3 +1,0 @@
-﻿<MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Name="统计缓存" Begin="统计耗时：" DirectedAnalysiser="CacheSize" GroupAnalysiser="SelfSealing" Sheet="缓存"/>
-</MonitorRoot>
