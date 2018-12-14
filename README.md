@@ -65,7 +65,7 @@ generalRegex(yes)->checkTime
 generalRegex(no)->generalError(right)->readToEnd
 checkTime(yes)->particularRegex->checkMonitor
 checkTime(no)->giveUp
-checkMonitor(yes)->monitSuccess->readToEnd
+checkMonitor(yes)->monitSuccess(left)->readToEnd
 checkMonitor(no)->giveUp
 readToEnd(no)->end
 readToEnd(yes)->generalRegex
@@ -264,7 +264,7 @@ readToEnd(yes)->generalRegex
 ​	分析器的宿主容器，提供对组分析器、定向分析器的托管和执行功能；
 
 ​	通过向分析器Host注入各个组分析器和定向分析器才可以在管理状态下有序调用，发挥各个组分析器和定向分析器的能力；
-- 通用同步组分析器分析流程：
+- 分析器Host分析流程：
 
 ```flow
 analysis=>start: 分析开始
@@ -313,7 +313,7 @@ end=>end
 analysis->readToEnd
 groupType(no)->createUnclose->readToEnd
 groupType(yes)->checkUnclose
-checkUnclose(yes)->buildAndClose->readToEnd
+checkUnclose(yes)->buildAndClose(left)->readToEnd
 checkUnclose(no)->createClosed->readToEnd
 readToEnd(no)->end
 readToEnd(yes)->groupType
@@ -321,11 +321,11 @@ readToEnd(yes)->groupType
 
 - 结果匹配条件：
 
-  - 相同监视规则
-  - 不同匹配类型 (开始或结束)
-  - 相同客户端版本号
-  - 相同客户名称
-  - 开始结果日志时间不晚于结束结果日志时间
+  - 相同监视规则；
+  - 不同匹配类型 (开始或结束)；
+  - 相同客户端版本号；
+  - 相同客户名称；
+  - 开始结果日志时间不晚于结束结果日志时间；
 
 - ##### 5.3.2.1.1.通用自封闭组分析器
 
@@ -348,8 +348,8 @@ readToEnd(yes)->groupType
   - 相同Core服务名称；
   - 相同Core服务执行序号；
 - 附带能力：
-  - 分析Core服务名称
-  - 分析Core服务执行序号
+  - 分析Core服务名称；
+  - 分析Core服务执行序号；
   - 分析Core服务每次执行耗时；
   - 分析Core服务是否为触发执行；
 - 日志示例：
@@ -401,7 +401,7 @@ readToEnd(yes)->groupType
 - 附带能力：
   - 分析报表名称；
   - 分析报表代码；
-  - 分析查询参数
+  - 分析查询参数；
 
 - 日志示例：
 
@@ -420,7 +420,7 @@ readToEnd(yes)->groupType
 
 ​	通用前缀定向分析器用于处理相同监视规则的监视结果中日志内容以监视规则的开始条件或固定的字符串为开始的日志结果；
 
-​	通用前缀定向分析器将为处理的监视规则创建子监视规则，并将监视结果和分析结果重新分配为子监视规则；
+​	通用前缀定向分析器将为处理的监视规则创建子监视规则，并将监视结果和分析结果重新分配给子监视规则；
 
 - 适用场景：
 
