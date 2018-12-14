@@ -213,7 +213,7 @@ readToEnd(yes)->generalRegex
   **示例：**
 
   ```css
-  logdir=D:\Desktop\LogDir "finish = 2018-11-11 18:30:00" monitor=client.xml report=excel level=debug
+  logdir=D:\Desktop\LogDir "finish=2018-11-11 18:30:00" monitor=client.xml report=excel level=debug
   ```
 
 ​	当未传入参数或参数传入出现错误时，会在控制台输出具体的参数错误原因，并弹出GUI任务创建窗口，供使用者使用窗口配置任务参数，详细使用方法见任务工厂章节； 
@@ -459,6 +459,7 @@ readToEnd(yes)->groupType
 ​	缓存数量定向分析器用于处理无法被监视规则准确命中的缓存数量统计日志（这部分日志被记录在日志文件的未解析结果池中），通过重新分拣未解析日志数据，分析缓存数量为对应的监视规则新建子监视规则，同时讲缓存数量分析结果分配给子监视规则；
 
 - 适用场景
+
   - 功能针对性较强，难以通用
 
 - ### 5.4.导出器

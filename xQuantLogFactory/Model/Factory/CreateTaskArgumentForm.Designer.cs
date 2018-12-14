@@ -194,7 +194,7 @@
             this.ClientInfoCheckBox.Name = "ClientInfoCheckBox";
             this.ClientInfoCheckBox.Size = new System.Drawing.Size(167, 24);
             this.ClientInfoCheckBox.TabIndex = 15;
-            this.ClientInfoCheckBox.Text = "记录系统信息";
+            this.ClientInfoCheckBox.Text = "记录客户端信息";
             this.ClientInfoCheckBox.UseVisualStyleBackColor = true;
             // 
             // ReportComboBox

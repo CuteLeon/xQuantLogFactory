@@ -102,7 +102,7 @@ namespace xQuantLogFactory.Model.Factory
                     UsageBuilder.Value.AppendLine();
 
                     UsageBuilder.Value.AppendLine("参数示例：");
-                    UsageBuilder.Value.AppendLine("\tlogdir=D:\\Desktop\\LogDir \"finish = 2018-11-11 18:30:00\" monitor=client.xml report=excel level=debug");
+                    UsageBuilder.Value.AppendLine("\tlogdir=D:\\Desktop\\LogDir \"finish=2018-11-11 18:30:00\" monitor=client.xml report=excel level=debug");
                 }
 
                 return UsageBuilder.Value.ToString();
