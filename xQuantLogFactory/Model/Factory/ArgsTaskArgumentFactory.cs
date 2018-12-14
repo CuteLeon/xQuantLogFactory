@@ -53,17 +53,6 @@ namespace xQuantLogFactory.Model.Factory
         /// </summary>
         public const string LOG_LEVEL = "level";
 
-        /*
-         * logdir={string_日志文件目录}：目录含有空格时需要在值外嵌套英文双引号；如：C:\TEST_DIR 或 "C:\TEST DIR"
-         * monitor={string_监视规则文件名称}：监视规则文件名称；如：监控项目.xml"
-         * start={datetime_日志开始时间}：可省略，以格式化日期时间传入；采用24小时制；格式如：yyyy-MM-dd HH:mm:ss
-         * finish={datetime_日志截止时间}：可省略，格式同日志开始时间；采用24小时制；
-         * sysinfo={boolean_包含系统信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
-         * cltinfo={boolean_包含客户端信息 =false}：可省略，默认值为 false；可取值为：{false/true}，可忽略大小写
-         * report={reportmodes_报告导出模式 =RepostModes.Html}：可省略，默认值为 Html；可取值为：{html/word/excel}，可忽略大小写
-         * level={string_日志等级 =DEBUG}：可省略，默认为 Debug；可取值：{DEBUG/TRACE/INFO 等}，可忽略大小写；
-         */
-
         /// <summary>
         /// 参数匹配正则表达式
         /// </summary>
@@ -135,8 +124,8 @@ namespace xQuantLogFactory.Model.Factory
                     argumentDescription.Value.Add(FINISH_TIME, (" 可选", "日志结束时间，如：\"2018-11-11 08:40:00\""));
                     argumentDescription.Value.Add(SYS_INFO, (" 可选", "是否记录系统信息，如：true 或 false"));
                     argumentDescription.Value.Add(CLIENT_INFO, (" 可选", "是否记录客户端信息，如：true 或 false"));
-                    argumentDescription.Value.Add(REPORT_MODE, ("*必选", "导出报告模式，如：excel 或 html 或 word"));
-                    argumentDescription.Value.Add(LOG_LEVEL, (" 可选", "日志等级，如：debug 或 trace 或 info 等"));
+                    argumentDescription.Value.Add(REPORT_MODE, ("可选", "导出报告格式，如：excel 或 html 或 word"));
+                    argumentDescription.Value.Add(LOG_LEVEL, (" 可选", "日志等级，如：debug 或 trace 或 info 或 pref 等"));
                 }
 
                 return argumentDescription.Value;
