@@ -45,6 +45,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                     MonitorItem childMonitor = null;
                     MonitorResult firstResult = null;
                     string customeData = string.Empty;
+                    string pattern = string.Empty;
 
                     this.Tracer?.WriteLine($">>>正在分析监视规则：{targetMonitor.Name}，结果数量：{resultGroup.Count()}");
                     foreach (var analysisResult in resultGroup)
@@ -55,7 +56,16 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                             continue;
                         }
 
-                        customeData = firstResult.LogContent.Substring((firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern).Length).Trim();
+                        // 判断日志内容是否以监视规则的条件为开头，true：在监视规则中移除开始的条件字符串；false：直接使用日志内容作为子监视规则名称
+                        pattern = firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern;
+                        if (firstResult.LogContent.IndexOf(pattern, StringComparison.OrdinalIgnoreCase) > -1)
+                        {
+                            customeData = firstResult.LogContent.Substring(pattern.Length).Trim();
+                        }
+                        else
+                        {
+                            customeData = firstResult.LogContent;
+                        }
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, customeData);
 
                         targetMonitor.AnalysisResults.Remove(analysisResult);
