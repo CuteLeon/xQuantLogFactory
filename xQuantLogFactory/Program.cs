@@ -381,7 +381,7 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetXMLFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\任务数据转储-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml";
+            return $@"{ConfigHelper.ReportExportDirectory}\任务数据转储_{argument.MonitorContainerRoot.Name}_{argument.LogStartTime?.ToString("yyyyMMddHHmmss")}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml";
         }
 
         /// <summary>
@@ -477,7 +477,7 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetReportFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告-{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
+            return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告_{argument.MonitorContainerRoot.Name}_{argument.LogStartTime?.ToString("yyyyMMddHHmmss")}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
         #endregion

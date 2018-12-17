@@ -44,6 +44,12 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 // 初始化监视规则树
                 container?.InitMonitorTree();
 
+                // 使用配置文件名称自动补全容器名称
+                if (string.IsNullOrWhiteSpace(container.Name))
+                {
+                    container.Name = Path.GetFileNameWithoutExtension(xmlFile);
+                }
+
                 return container as T;
             }
 
