@@ -51,24 +51,16 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     continue;
                 }
 
-                if (!argument.CheckLogStartTime(CreationTime) &&
-                    !argument.CheckLogStartTime(LastWriteTime))
+                if ((argument.CheckLogStartTime(CreationTime) && argument.CheckLogFinishTime(CreationTime)) ||
+                    (argument.CheckLogStartTime(LastWriteTime) && argument.CheckLogFinishTime(LastWriteTime)))
                 {
-                    continue;
+                    logFiles.Add(new LogFile(
+                        this.GetLogFileType(fileName),
+                        FullName,
+                        CreationTime,
+                        LastWriteTime,
+                        FullName.Remove(0, argument.LogDirectory.Length)));
                 }
-
-                if (!argument.CheckLogFinishTime(CreationTime) &&
-                    !argument.CheckLogFinishTime(LastWriteTime))
-                {
-                    continue;
-                }
-
-                logFiles.Add(new LogFile(
-                    this.GetLogFileType(fileName),
-                    FullName,
-                    CreationTime,
-                    LastWriteTime,
-                    FullName.Remove(0, argument.LogDirectory.Length)));
             }
 
             return logFiles as T;

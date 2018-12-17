@@ -63,6 +63,7 @@
     <Compile Include="BIZ\Parser\LogParserTests.cs" />
     <Compile Include="BIZ\Parser\MiddlewareLogParserTests.cs" />
     <Compile Include="Model\EqualityComparer\LogResultEqualityComparerTests.cs" />
+    <Compile Include="Model\Extensions\TaskArgumentExtensionTests.cs" />
     <Compile Include="Model\Factory\TaskArgumentFactoryTests.cs" />
     <Compile Include="Model\Monitor\MonitorBaseTests.cs" />
     <Compile Include="Model\Monitor\MonitorContainerTests.cs" />
