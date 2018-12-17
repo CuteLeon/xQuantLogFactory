@@ -23,8 +23,6 @@ using xQuantLogFactory.Utils.Trace;
 // TODO: [全局任务] 编写单元测试
 namespace xQuantLogFactory
 {
-    // TODO: 实体类内的列表类型改为线程安全类型是否可以代替Monitor.CANO的作用？
-
     internal class Program
     {
         /// <summary>
