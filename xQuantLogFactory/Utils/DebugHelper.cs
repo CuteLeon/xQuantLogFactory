@@ -13,10 +13,13 @@ namespace xQuantLogFactory.Utils
     /// </summary>
     public class DebugHelper
     {
-        public bool Actived { get; set; } = false;
+        public DebugHelper(ITracer tracer, bool actived = true)
+        {
+            this.Tracer = tracer;
+            this.Actived = actived;
+        }
 
-        public DebugHelper(ITracer tracer)
-            => this.Tracer = tracer;
+        public bool Actived { get; set; } = false;
 
         public ITracer Tracer { get; protected set; }
 

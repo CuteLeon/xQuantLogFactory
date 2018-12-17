@@ -99,7 +99,7 @@ namespace xQuantLogFactory
 
 #if DEBUG
             // 调试助手
-            new DebugHelper(UnityTracer).ActiveDebugFunction(UnityTaskArgument);
+            new DebugHelper(UnityTracer, false).ActiveDebugFunction(UnityTaskArgument);
 #endif
 
             Exit(0);

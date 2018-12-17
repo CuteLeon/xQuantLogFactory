@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,10 @@ namespace xQuantLogFactory.BIZ.Parser
             this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
                 this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}");
+
+                // 检测日志文件解析耗时
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
 
                 FileStream fileStream = null;
                 StreamReader streamRreader = null;
@@ -168,11 +173,15 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    this.Tracer?.WriteLine($">>>日志文件解析完成：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}");
+                    // 停止日志文件解析计时器
+                    stopWatch.Stop();
+                    this.Tracer?.WriteLine($">>>日志文件解析完成：{logFile.RelativePath}\t结果数量：{logFile.MonitorResults.Count}\t耗时：{stopWatch.ElapsedMilliseconds.ToString("N0")} ms");
                 }
                 catch (Exception ex)
                 {
-                    this.Tracer?.WriteLine($"——日志文件解析失败：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}\n\tException: {ex.Message}");
+                    // 停止日志文件解析计时器
+                    stopWatch.Stop();
+                    this.Tracer?.WriteLine($"——日志文件解析失败：{logFile.RelativePath}\t结果数量：{logFile.MonitorResults.Count}\t耗时：{stopWatch.ElapsedMilliseconds.ToString("N0")} ms\n\tException: {ex.Message}");
                 }
                 finally
                 {
