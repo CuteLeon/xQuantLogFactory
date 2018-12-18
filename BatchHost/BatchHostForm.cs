@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace BatchHost
 {
-    public partial class BatchHostForm : CCWin.Skin_Mac
+    public partial class BatchHostForm : Form
     {
         public BatchHostForm()
         {
