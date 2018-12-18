@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using BatchHost.Utils;
+using xQuantLogFactory.Model.Fixed;
 
 namespace BatchHost
 {
@@ -30,6 +31,7 @@ namespace BatchHost
         }
         #endregion
 
+        #region 窗体
         public BatchHostForm()
         {
             this.InitializeComponent();
@@ -86,20 +88,54 @@ namespace BatchHost
                     }
             }
         }
+
         private void BatchHostForm_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.DrawRectangle(this.BorderPen, 1, 1, this.Width - this.BorderPen.Width, this.Height - this.BorderPen.Width);
         }
 
+        private void BatchHostForm_Load(object sender, EventArgs e)
+        {
+            this.InitControl();
+        }
+        #endregion
+
+        #region 容器
         private void BuildControlGroupBox_Resize(object sender, EventArgs e)
         {
             this.BuildDirTextBox.Width = this.BuildButton.Left - this.BuildDirTextBox.Left - 20;
             this.BuildDirTextBox.TextBoxWidth = this.BuildDirTextBox.Width - 60;
         }
+        #endregion
 
+        #region 控件
         private void LogDirTextBox_Resize(object sender, EventArgs e)
         {
-            this.LogDirTextBox.TextBoxWidth = this.LogDirTextBox.Width - 60;
+            this.LogDirTextBox.TextBoxWidth = this.LogDirTextBox.Width - 66;
         }
+        #endregion
+
+        #region 方法
+        private void InitControl()
+        {
+            foreach (var mode in Enum.GetValues(typeof(TimeUnits)))
+            {
+                this.TimeUnitComboBox.Items.Add(mode);
+            }
+            this.TimeUnitComboBox.SelectedIndex = 0;
+
+            foreach (var mode in Enum.GetValues(typeof(ReportModes)))
+            {
+                this.ReportModeComboBox.Items.Add(mode);
+            }
+            this.ReportModeComboBox.SelectedItem = ReportModes.Excel;
+
+            foreach (var mode in Enum.GetValues(typeof(LogLevels)))
+            {
+                this.LogLevelComboBox.Items.Add(mode);
+            }
+            this.LogLevelComboBox.SelectedItem = LogLevels.Debug;
+        }
+        #endregion
     }
 }
