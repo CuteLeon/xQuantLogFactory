@@ -30,12 +30,16 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // BatchHostForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Name = "Form1";
+            this.ForeColor = System.Drawing.Color.Black;
+            this.Mobile = CCWin.MobileStyle.TitleMobile;
+            this.Name = "BatchHostForm";
+            this.ShowBorder = false;
             this.Text = "xQuant日志分析工具-批量宿主";
             this.ResumeLayout(false);
 
