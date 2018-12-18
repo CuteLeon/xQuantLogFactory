@@ -90,5 +90,16 @@ namespace BatchHost
         {
             e.Graphics.DrawRectangle(this.BorderPen, 1, 1, this.Width - this.BorderPen.Width, this.Height - this.BorderPen.Width);
         }
+
+        private void BuildControlGroupBox_Resize(object sender, EventArgs e)
+        {
+            this.BuildDirTextBox.Width = this.BuildButton.Left - this.BuildDirTextBox.Left - 20;
+            this.BuildDirTextBox.TextBoxWidth = this.BuildDirTextBox.Width - 60;
+        }
+
+        private void LogDirTextBox_Resize(object sender, EventArgs e)
+        {
+            this.LogDirTextBox.TextBoxWidth = this.LogDirTextBox.Width - 60;
+        }
     }
 }
