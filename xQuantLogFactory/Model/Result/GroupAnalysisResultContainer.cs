@@ -22,7 +22,6 @@ namespace xQuantLogFactory.Model.Result
         /// <param name="analysisResults"></param>
         public void InitAnalysisResultTree(IEnumerable<GroupAnalysisResult> analysisResults)
         {
-            // TODO: 无法稳定复现的问题：初始化树并通过栈扫描时，扫描结果列表会比真实分析结果列表多 n(n>=0) 个
             // 清理现有关系树
             this.AnalysisResultRoots.Clear();
             foreach (var analysisResult in analysisResults)

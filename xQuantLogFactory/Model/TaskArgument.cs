@@ -77,6 +77,18 @@ namespace xQuantLogFactory.Model
         public bool IncludeClientInfo { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether 分析结束自动退出程序
+        /// </summary>
+        [XmlElement("AutoExit")]
+        public bool AutoExit { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether 自动打开报告
+        /// </summary>
+        [XmlElement("AutoOpenReport")]
+        public bool AutoOpenReport { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets 日志分析报告输出模式
         /// </summary>
         [XmlElement("ReportMode")]

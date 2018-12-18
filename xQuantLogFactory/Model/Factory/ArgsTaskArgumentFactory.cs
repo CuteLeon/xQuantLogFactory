@@ -54,17 +54,22 @@ namespace xQuantLogFactory.Model.Factory
         public const string LOG_LEVEL = "level";
 
         /// <summary>
+        /// 自动退出
+        /// </summary>
+        public const string AUTO_EXIT = "exit";
+
+        /// <summary>
+        /// 自动打开报告
+        /// </summary>
+        public const string AUTO_OPEN_REPORT = "open";
+
+        /// <summary>
         /// 参数匹配正则表达式
         /// </summary>
         private static readonly Regex ArgRegex = new Regex(@"^(?<ArgName>.*)=(?<ArgValue>.*?)$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
         private static readonly Lazy<StringBuilder> UsageBuilder = new Lazy<StringBuilder>();
         private static Lazy<ArgsTaskArgumentFactory> factory = new Lazy<ArgsTaskArgumentFactory>();
         private static Lazy<Dictionary<string, (string, string)>> argumentDescription = new Lazy<Dictionary<string, (string, string)>>();
-
-        /// <summary>
-        /// 参数字典
-        /// </summary>
-        private readonly Dictionary<string, string> argumentDictionary = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets 任务参数工厂实例
@@ -124,8 +129,10 @@ namespace xQuantLogFactory.Model.Factory
                     argumentDescription.Value.Add(FINISH_TIME, (" 可选", "日志结束时间，如：\"2018-11-11 08:40:00\""));
                     argumentDescription.Value.Add(SYS_INFO, (" 可选", "是否记录系统信息，如：true 或 false"));
                     argumentDescription.Value.Add(CLIENT_INFO, (" 可选", "是否记录客户端信息，如：true 或 false"));
-                    argumentDescription.Value.Add(REPORT_MODE, ("可选", "导出报告格式，如：excel 或 html 或 word"));
+                    argumentDescription.Value.Add(REPORT_MODE, (" 可选", "导出报告格式，如：excel 或 html 或 word"));
                     argumentDescription.Value.Add(LOG_LEVEL, (" 可选", "日志等级，如：debug 或 trace 或 info 或 pref 等"));
+                    argumentDescription.Value.Add(AUTO_EXIT, (" 可选", "自动退出工具，如：true 或 false"));
+                    argumentDescription.Value.Add(AUTO_OPEN_REPORT, (" 可选", "自动打开报告，如：true 或 false"));
                 }
 
                 return argumentDescription.Value;
@@ -146,6 +153,8 @@ namespace xQuantLogFactory.Model.Factory
                 throw new ArgumentNullException(nameof(args));
             }
 
+            Dictionary<string, string> argumentDict = new Dictionary<string, string>();
+
             // 解析参数并录入字典
             Match argMatch = null;
             foreach (var arg in args)
@@ -155,78 +164,109 @@ namespace xQuantLogFactory.Model.Factory
                     argMatch.Groups["ArgName"].Success &&
                     argMatch.Groups["ArgValue"].Success)
                 {
-                    this.argumentDictionary[argMatch.Groups["ArgName"].Value] = argMatch.Groups["ArgValue"].Value;
+                    argumentDict[argMatch.Groups["ArgName"].Value] = argMatch.Groups["ArgValue"].Value;
                 }
             }
 
-            // 检查必选字段
-            if (!this.argumentDictionary.ContainsKey(LOG_DIR))
+            // 创建任务
+            TaskArgument taskArgument = this.ConvertToTaskArgument(argumentDict);
+            try
+            {
+                // 检查任务并返回任务
+                this.CheckArgumentDictionary(argumentDict);
+                return taskArgument;
+            }
+            catch (Exception ex)
+            {
+                // 参数错误时附带已创建的任务参数对象并抛出
+                ex.Data["TaskArgument"] = taskArgument;
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 检查参数字典
+        /// </summary>
+        /// <param name="argumentDict"></param>
+        /// <returns></returns>
+        private bool CheckArgumentDictionary(Dictionary<string, string> argumentDict)
+        {
+            if (!argumentDict.ContainsKey(LOG_DIR))
             {
                 throw new ArgumentNullException($"不存在日志文件存放目录参数。参数名称：{LOG_DIR}");
             }
 
-            if (!this.argumentDictionary.ContainsKey(MONITOR_NAME))
+            if (!argumentDict.ContainsKey(MONITOR_NAME))
             {
                 throw new ArgumentNullException($"不存在监视规则文件名称参数。参数名称：{MONITOR_NAME}");
             }
 
-            // 根据字典创建任务参数对象
-            return this.ConvertToTaskArgument(this.argumentDictionary);
+            return false;
         }
 
         /// <summary>
         /// 转换字典为任务参数对象
         /// </summary>
-        /// <param name="argumentDic"></param>
+        /// <param name="argumentDict"></param>
         /// <returns></returns>
-        private TaskArgument ConvertToTaskArgument(Dictionary<string, string> argumentDic)
+        private TaskArgument ConvertToTaskArgument(Dictionary<string, string> argumentDict)
         {
-            if (argumentDic == null)
+            if (argumentDict == null)
             {
-                throw new ArgumentNullException(nameof(argumentDic));
+                throw new ArgumentNullException(nameof(argumentDict));
             }
 
             string argumentValue = string.Empty;
             var taskArgument = new TaskArgument();
 
-            if (this.argumentDictionary.TryGetValue(LOG_DIR, out argumentValue))
+            if (argumentDict.TryGetValue(LOG_DIR, out argumentValue))
             {
                 taskArgument.LogDirectory = argumentValue;
             }
 
-            if (this.argumentDictionary.TryGetValue(MONITOR_NAME, out argumentValue))
+            if (argumentDict.TryGetValue(MONITOR_NAME, out argumentValue))
             {
                 taskArgument.MonitorFileName = argumentValue;
             }
 
-            if (this.argumentDictionary.TryGetValue(START_TIME, out argumentValue))
+            if (argumentDict.TryGetValue(START_TIME, out argumentValue))
             {
                 taskArgument.LogStartTime = DateTime.TryParse(argumentValue, out DateTime startTime) ? startTime : DateTime.Today;
             }
 
-            if (this.argumentDictionary.TryGetValue(FINISH_TIME, out argumentValue))
+            if (argumentDict.TryGetValue(FINISH_TIME, out argumentValue))
             {
                 taskArgument.LogFinishTime = DateTime.TryParse(argumentValue, out DateTime finishTime) ? finishTime : DateTime.Now;
             }
 
-            if (this.argumentDictionary.TryGetValue(SYS_INFO, out argumentValue))
+            if (argumentDict.TryGetValue(SYS_INFO, out argumentValue))
             {
                 taskArgument.IncludeSystemInfo = bool.TryParse(argumentValue, out bool systemInfo) ? systemInfo : false;
             }
 
-            if (this.argumentDictionary.TryGetValue(CLIENT_INFO, out argumentValue))
+            if (argumentDict.TryGetValue(CLIENT_INFO, out argumentValue))
             {
                 taskArgument.IncludeClientInfo = bool.TryParse(argumentValue, out bool clientInfo) ? clientInfo : false;
             }
 
-            if (this.argumentDictionary.TryGetValue(REPORT_MODE, out argumentValue))
+            if (argumentDict.TryGetValue(REPORT_MODE, out argumentValue))
             {
                 taskArgument.ReportMode = Enum.TryParse(argumentValue, true, out ReportModes reportModel) ? reportModel : ConfigHelper.DefaultReportMode;
             }
 
-            if (this.argumentDictionary.TryGetValue(LOG_LEVEL, out argumentValue))
+            if (argumentDict.TryGetValue(LOG_LEVEL, out argumentValue))
             {
                 ConfigHelper.LogFileLevel = argumentValue;
+            }
+
+            if (argumentDict.TryGetValue(AUTO_EXIT, out argumentValue))
+            {
+                taskArgument.AutoExit = bool.TryParse(argumentValue, out bool autoValue) ? autoValue : false;
+            }
+
+            if (argumentDict.TryGetValue(AUTO_OPEN_REPORT, out argumentValue))
+            {
+                taskArgument.AutoOpenReport = bool.TryParse(argumentValue, out bool autoValue) ? autoValue : true;
             }
 
             return taskArgument;

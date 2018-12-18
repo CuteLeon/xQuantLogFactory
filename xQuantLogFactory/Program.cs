@@ -202,7 +202,7 @@ namespace xQuantLogFactory
         {
             if (ConfigHelper.UseGUITaskFactory)
             {
-                GUICreateTask();
+                GUICreateTask(null);
             }
             else
             {
@@ -233,18 +233,19 @@ namespace xQuantLogFactory
                 UnityTracer.WriteLine(ArgsTaskArgumentFactory.Intance.Usage);
 
                 UnityTracer.WriteLine($"正在使用 GUI 创建任务：");
-                GUICreateTask();
+                GUICreateTask(ex.Data["TaskArgument"] as TaskArgument);
             }
         }
 
         /// <summary>
         /// 通过GUI创建任务
         /// </summary>
-        private static void GUICreateTask()
+        /// <param name="argument"></param>
+        private static void GUICreateTask(TaskArgument argument)
         {
             try
             {
-                UnityTaskArgument = GUITaskArgumentFactory.Intance.CreateTaskArgument<object>();
+                UnityTaskArgument = GUITaskArgumentFactory.Intance.CreateTaskArgument(argument);
             }
             catch (Exception ex)
             {
@@ -389,12 +390,14 @@ namespace xQuantLogFactory
         /// </summary>
         private static void TryToExportLogReport()
         {
-            string reportPath = GetReportFilePath(UnityTaskArgument);
+            string reportPath = string.Empty;
             bool exportSuccess = false;
 
             // 当导出失败且用户同意重试时重复导出，并在失败时再次询问用户
             do
             {
+                reportPath = GetReportFilePath(UnityTaskArgument);
+
                 UnityTracer.WriteLine("开始导出日志报告...");
                 try
                 {
@@ -408,7 +411,7 @@ namespace xQuantLogFactory
                     UnityTracer.WriteLine("是否重试？(请输入： Y / N )");
                 }
             }
-            while (!exportSuccess && Console.ReadLine().Trim().ToUpper() == "Y");
+            while (!exportSuccess && !UnityTaskArgument.AutoExit && Console.ReadLine().Trim().ToUpper() == "Y");
 
             if (exportSuccess)
             {
@@ -417,7 +420,7 @@ namespace xQuantLogFactory
                 UnityTracer.WriteLine($"日志报告导出成功=> {UnityTaskArgument.LastReportPath}");
 
                 // 自动打开报告
-                if (File.Exists(reportPath))
+                if (UnityTaskArgument.AutoOpenReport && File.Exists(reportPath))
                 {
                     Process.Start(reportPath);
                 }
@@ -503,8 +506,13 @@ namespace xQuantLogFactory
             Console.WriteLine("\n————————");
             ShowTaskDuration();
             Console.WriteLine("————————");
-            Console.WriteLine("按任意键退出此程序... (￣▽￣)／");
-            Console.Read();
+
+            if (UnityTaskArgument == null || !UnityTaskArgument.AutoExit)
+            {
+                Console.WriteLine("按任意键退出此程序... (￣▽￣)／");
+                Console.Read();
+            }
+
             Environment.Exit(code);
         }
 

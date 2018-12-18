@@ -41,9 +41,9 @@ namespace xQuantLogFactory.Model.Factory
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Thread guiThread = new Thread(new ThreadStart(this.ShowGUIFactory));
+            Thread guiThread = new Thread(new ParameterizedThreadStart(this.ShowGUIFactory));
             guiThread.SetApartmentState(ApartmentState.STA);
-            guiThread.Start();
+            guiThread.Start(source);
             guiThread.Join();
 
             if (this.factoryException != null)
@@ -54,7 +54,7 @@ namespace xQuantLogFactory.Model.Factory
             return this.targetTaskArgument;
         }
 
-        private void ShowGUIFactory()
+        private void ShowGUIFactory(object taskArgument = null)
         {
             // 初始化
             this.factoryException = null;
@@ -63,6 +63,12 @@ namespace xQuantLogFactory.Model.Factory
             {
                 using (CreateTaskArgumentForm factoryForm = new CreateTaskArgumentForm())
                 {
+                    // 将已有任务参数对象赋值为窗体
+                    if (taskArgument is TaskArgument argument)
+                    {
+                        factoryForm.TargetTaskArgument = argument;
+                    }
+
                     if (factoryForm.ShowDialog() != DialogResult.OK)
                     {
                         throw new OperationCanceledException();

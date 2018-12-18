@@ -17,7 +17,6 @@ using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Trace;
 
-// TODO: [IDEA] 从分析结果数据字典导出数据时，可以通过Excel表自定义列的列名作为Key，从分析数据字典输出数据；
 namespace xQuantLogFactory.BIZ.Exporter
 {
     /// <summary>

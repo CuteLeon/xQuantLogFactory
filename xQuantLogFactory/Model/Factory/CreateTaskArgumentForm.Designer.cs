@@ -45,12 +45,16 @@
             this.label5 = new System.Windows.Forms.Label();
             this.LogLevelTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.OpenReportCheckBox = new System.Windows.Forms.CheckBox();
+            this.AutoExitCheckBox = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Btn_Cancel
             // 
             this.Btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Btn_Cancel.Location = new System.Drawing.Point(96, 268);
+            this.Btn_Cancel.Location = new System.Drawing.Point(91, 298);
             this.Btn_Cancel.Name = "Btn_Cancel";
             this.Btn_Cancel.Size = new System.Drawing.Size(127, 35);
             this.Btn_Cancel.TabIndex = 4;
@@ -59,7 +63,7 @@
             // 
             // Btn_OK
             // 
-            this.Btn_OK.Location = new System.Drawing.Point(252, 268);
+            this.Btn_OK.Location = new System.Drawing.Point(247, 298);
             this.Btn_OK.Name = "Btn_OK";
             this.Btn_OK.Size = new System.Drawing.Size(129, 35);
             this.Btn_OK.TabIndex = 3;
@@ -141,6 +145,7 @@
             // 
             this.StartTimePicker.CalendarForeColor = System.Drawing.Color.LightGray;
             this.StartTimePicker.CalendarMonthBackground = System.Drawing.Color.LightGray;
+            this.StartTimePicker.Checked = false;
             this.StartTimePicker.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.StartTimePicker.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
@@ -155,6 +160,7 @@
             // 
             this.FinishTimePicker.CalendarForeColor = System.Drawing.Color.LightGray;
             this.FinishTimePicker.CalendarMonthBackground = System.Drawing.Color.LightGray;
+            this.FinishTimePicker.Checked = false;
             this.FinishTimePicker.CustomFormat = "yyyy-MM-dd HH:mm:ss";
             this.FinishTimePicker.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FinishTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
@@ -179,9 +185,9 @@
             // 
             this.SystemInfoCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.SystemInfoCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.SystemInfoCheckBox.Location = new System.Drawing.Point(51, 158);
+            this.SystemInfoCheckBox.Location = new System.Drawing.Point(129, 158);
             this.SystemInfoCheckBox.Name = "SystemInfoCheckBox";
-            this.SystemInfoCheckBox.Size = new System.Drawing.Size(167, 24);
+            this.SystemInfoCheckBox.Size = new System.Drawing.Size(132, 24);
             this.SystemInfoCheckBox.TabIndex = 14;
             this.SystemInfoCheckBox.Text = "记录系统信息";
             this.SystemInfoCheckBox.UseVisualStyleBackColor = true;
@@ -190,9 +196,9 @@
             // 
             this.ClientInfoCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.ClientInfoCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ClientInfoCheckBox.Location = new System.Drawing.Point(252, 158);
+            this.ClientInfoCheckBox.Location = new System.Drawing.Point(287, 158);
             this.ClientInfoCheckBox.Name = "ClientInfoCheckBox";
-            this.ClientInfoCheckBox.Size = new System.Drawing.Size(167, 24);
+            this.ClientInfoCheckBox.Size = new System.Drawing.Size(132, 24);
             this.ClientInfoCheckBox.TabIndex = 15;
             this.ClientInfoCheckBox.Text = "记录客户端信息";
             this.ClientInfoCheckBox.UseVisualStyleBackColor = true;
@@ -240,13 +246,61 @@
             this.label6.Text = "日志文件等级:";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // OpenReportCheckBox
+            // 
+            this.OpenReportCheckBox.Checked = true;
+            this.OpenReportCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.OpenReportCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.OpenReportCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.OpenReportCheckBox.Location = new System.Drawing.Point(287, 257);
+            this.OpenReportCheckBox.Name = "OpenReportCheckBox";
+            this.OpenReportCheckBox.Size = new System.Drawing.Size(132, 24);
+            this.OpenReportCheckBox.TabIndex = 21;
+            this.OpenReportCheckBox.Text = "自动打开报告";
+            this.OpenReportCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // AutoExitCheckBox
+            // 
+            this.AutoExitCheckBox.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.AutoExitCheckBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.AutoExitCheckBox.Location = new System.Drawing.Point(129, 257);
+            this.AutoExitCheckBox.Name = "AutoExitCheckBox";
+            this.AutoExitCheckBox.Size = new System.Drawing.Size(132, 24);
+            this.AutoExitCheckBox.TabIndex = 20;
+            this.AutoExitCheckBox.Text = "自动退出工具";
+            this.AutoExitCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.Location = new System.Drawing.Point(24, 256);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(100, 19);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "任务完成后:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.Location = new System.Drawing.Point(24, 159);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(100, 19);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "记录信息:";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // CreateTaskArgumentForm
             // 
             this.AcceptButton = this.Btn_OK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Btn_Cancel;
-            this.ClientSize = new System.Drawing.Size(452, 316);
+            this.ClientSize = new System.Drawing.Size(452, 345);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.OpenReportCheckBox);
+            this.Controls.Add(this.AutoExitCheckBox);
             this.Controls.Add(this.LogLevelTextBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.ReportComboBox);
@@ -268,6 +322,7 @@
             this.Name = "CreateTaskArgumentForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "创建任务：";
+            this.Load += new System.EventHandler(this.CreateTaskArgumentForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,5 +346,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox LogLevelTextBox;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox OpenReportCheckBox;
+        private System.Windows.Forms.CheckBox AutoExitCheckBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }

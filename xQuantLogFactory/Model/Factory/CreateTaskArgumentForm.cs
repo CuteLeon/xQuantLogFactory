@@ -15,41 +15,97 @@ namespace xQuantLogFactory.Model.Factory
         {
             this.InitializeComponent();
             this.Icon = UnityResource.xQuantLogFactoryIcon;
-
-            this.InitControl();
         }
+
+        private TaskArgument targetTaskArgument;
 
         /// <summary>
         /// Gets or sets 创建任务参数对象
         /// </summary>
-        public TaskArgument TargetTaskArgument { get; protected set; }
-
-        private void InitControl()
+        public TaskArgument TargetTaskArgument
         {
-            this.DirectoryTextBox.Text = string.Empty;
-
-            this.MonitorComboBox.Items.AddRange(this.GetMonitorFiles(ConfigHelper.MonitorDirectory));
-            if (this.MonitorComboBox.Items.Count > 0)
+            get => this.targetTaskArgument;
+            set
             {
-                this.MonitorComboBox.SelectedIndex = 0;
+                this.targetTaskArgument = value;
+
+                // 根据传入已创建的任务参数初始化窗体控件参数；
+                this.ApplyTaskArgument(value);
             }
+        }
 
-            this.StartTimePicker.Value = DateTime.Now.AddDays(-1);
-            this.FinishTimePicker.Value = DateTime.Now;
-            this.StartTimePicker.Checked = false;
-            this.FinishTimePicker.Checked = false;
-
-            this.SystemInfoCheckBox.Checked = false;
-            this.ClientInfoCheckBox.Checked = false;
+        private void CreateTaskArgumentForm_Load(object sender, EventArgs e)
+        {
+            this.MonitorComboBox.Items.AddRange(this.GetMonitorFiles(ConfigHelper.MonitorDirectory));
 
             foreach (var mode in Enum.GetValues(typeof(ReportModes)))
             {
                 this.ReportComboBox.Items.Add(mode);
             }
 
-            if (this.ReportComboBox.Items.Contains(ReportModes.Excel))
+            this.ApplyTaskArgument(this.TargetTaskArgument);
+        }
+
+        private void ApplyTaskArgument(TaskArgument argument)
+        {
+            if (argument == null)
             {
-                this.ReportComboBox.SelectedItem = ReportModes.Excel;
+                this.DirectoryTextBox.Text = string.Empty;
+
+                if (this.MonitorComboBox.Items.Count > 0)
+                {
+                    this.MonitorComboBox.SelectedIndex = 0;
+                }
+
+                this.StartTimePicker.Value = DateTime.Now.AddDays(-1);
+                this.FinishTimePicker.Value = DateTime.Now;
+                this.StartTimePicker.Checked = false;
+                this.FinishTimePicker.Checked = false;
+                this.AutoExitCheckBox.Checked = false;
+                this.OpenReportCheckBox.Checked = true;
+                this.SystemInfoCheckBox.Checked = false;
+                this.ClientInfoCheckBox.Checked = false;
+
+                if (this.ReportComboBox.Items.Contains(ReportModes.Excel))
+                {
+                    this.ReportComboBox.SelectedItem = ReportModes.Excel;
+                }
+            }
+            else
+            {
+                this.DirectoryTextBox.Text = argument.LogDirectory;
+
+                this.MonitorComboBox.Text = argument.MonitorFileName;
+
+                if (argument.LogStartTime.HasValue)
+                {
+                    this.StartTimePicker.Checked = true;
+                    this.StartTimePicker.Value = argument.LogStartTime.Value;
+                }
+                else
+                {
+                    this.StartTimePicker.Checked = false;
+                }
+
+                if (argument.LogFinishTime.HasValue)
+                {
+                    this.FinishTimePicker.Checked = true;
+                    this.FinishTimePicker.Value = argument.LogFinishTime.Value;
+                }
+                else
+                {
+                    this.FinishTimePicker.Checked = false;
+                }
+
+                this.AutoExitCheckBox.Checked = argument.AutoExit;
+                this.OpenReportCheckBox.Checked = argument.AutoOpenReport;
+                this.SystemInfoCheckBox.Checked = argument.IncludeSystemInfo;
+                this.ClientInfoCheckBox.Checked = argument.IncludeClientInfo;
+
+                if (this.ReportComboBox.Items.Contains(argument.ReportMode))
+                {
+                    this.ReportComboBox.SelectedItem = argument.ReportMode;
+                }
             }
         }
 
@@ -96,7 +152,7 @@ namespace xQuantLogFactory.Model.Factory
 
             try
             {
-                this.TargetTaskArgument = this.ConvertToTaskArgument();
+                this.targetTaskArgument = this.ConvertToTaskArgument();
 
                 ConfigHelper.LogFileLevel = this.LogLevelTextBox.Text;
             }
@@ -120,6 +176,8 @@ namespace xQuantLogFactory.Model.Factory
                 MonitorFileName = this.MonitorComboBox.SelectedItem as string,
                 IncludeClientInfo = this.ClientInfoCheckBox.Checked,
                 IncludeSystemInfo = this.SystemInfoCheckBox.Checked,
+                AutoExit = this.AutoExitCheckBox.Checked,
+                AutoOpenReport = this.OpenReportCheckBox.Checked,
                 ReportMode = (ReportModes)this.ReportComboBox.SelectedItem,
             };
 
