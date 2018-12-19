@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows.Forms;
 
 using BatchHost.Model;
+using BatchHost.Utils;
 
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Fixed;
@@ -92,6 +93,9 @@ namespace BatchHost
             this.LogFinishTimePicker.Checked = false;
 
             this.UnityTaskArgument.BatchesCountChanged += this.ApplyBatchesCount;
+
+            // 默认生成到程序目录
+            this.BuildDirTextBox.Text = AppDomain.CurrentDomain.BaseDirectory;
         }
 
         /// <summary>
@@ -134,10 +138,10 @@ namespace BatchHost
         }
 
         /// <summary>
-        /// 检查数据并创建任务
+        /// 检查数据
         /// </summary>
         /// <returns></returns>
-        private void CheckDataAndCreateTask()
+        private void CheckData()
         {
             if (string.IsNullOrWhiteSpace(this.LogDirTextBox.Text) && !Directory.Exists(this.LogDirTextBox.Text))
             {
@@ -182,8 +186,6 @@ namespace BatchHost
                 {
                 }
             }
-
-            this.SaveTaskArgument();
         }
 
         /// <summary>
@@ -241,10 +243,10 @@ namespace BatchHost
 
                             for (; startTime < argument.LogFinishTime;)
                             {
-                                batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_{startTime.ToString("yyyyMMddHHmmss")}";
+                                batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_{startTime.ToString("yyyyMMddHHmmss")}.bat";
 
                                 // 生成批处理文件
-                                this.SaveBatchFile(batchName, argument, startTime, finishTime);
+                                this.SaveBatchFile(batchName, argument, monitorName, startTime, finishTime);
 
                                 // 报告进度
                                 this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
@@ -262,10 +264,10 @@ namespace BatchHost
                         }
                         else
                         {
-                            batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_不限时段";
+                            batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_不限时段.bat";
 
                             // 生成批处理文件
-                            this.SaveBatchFile(batchName, argument, argument.LogStartTime, argument.LogFinishTime);
+                            this.SaveBatchFile(batchName, argument, monitorName, argument.LogStartTime, argument.LogFinishTime);
 
                             // 报告进度
                             this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
@@ -303,16 +305,53 @@ namespace BatchHost
         /// </summary>
         /// <param name="batchName"></param>
         /// <param name="argument"></param>
+        /// <param name="monitorName"></param>
         /// <param name="startTime"></param>
         /// <param name="finishTime"></param>
-        private void SaveBatchFile(string batchName, TaskArgumentDM argument, DateTime? startTime, DateTime? finishTime)
+        private void SaveBatchFile(string batchName, TaskArgumentDM argument, string monitorName, DateTime? startTime, DateTime? finishTime)
         {
             string batchPath = Path.Combine(argument.BatchDirectory, batchName);
             StringBuilder batchBuilder = new StringBuilder();
 
-            Thread.Sleep(500);
-            // TODO: 生成文件
+            batchBuilder.Append($"{UnityUtils.xQuantName}");
 
+            batchBuilder.AppendFormat($" \"{ArgsTaskArgumentFactory.LOG_DIR}={argument.LogDirectory}\"");
+            batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.MONITOR_NAME}={monitorName}");
+
+            if (startTime.HasValue)
+            {
+                batchBuilder.AppendFormat($" \"{ArgsTaskArgumentFactory.START_TIME}={startTime.Value.ToString("yyyy-MM-dd HH:mm:ss")}\"");
+            }
+
+            if (finishTime.HasValue)
+            {
+                batchBuilder.AppendFormat($" \"{ArgsTaskArgumentFactory.FINISH_TIME}={finishTime.Value.ToString("yyyy-MM-dd HH:mm:ss")}\"");
+            }
+
+            if (argument.IncludeSystemInfo)
+            {
+                batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.SYS_INFO}={argument.IncludeSystemInfo.ToString()}");
+            }
+
+            if (argument.IncludeClientInfo)
+            {
+                batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.CLIENT_INFO}={argument.IncludeClientInfo.ToString()}");
+            }
+
+            if (argument.ReportMode != ConfigHelper.DefaultReportMode)
+            {
+                batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.REPORT_MODE}={argument.ReportMode.ToString()}");
+            }
+
+            if (!string.Equals(argument.LogLevel.ToString(), ConfigHelper.LogFileLevel, StringComparison.OrdinalIgnoreCase))
+            {
+                batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.LOG_LEVEL}={argument.LogLevel.ToString()}");
+            }
+
+            batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.AUTO_EXIT}={argument.AutoExit}");
+            batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.AUTO_OPEN_REPORT}={argument.AutoOpenReport}");
+
+            // 各位少侠，请注意ヽ(｀⌒´)ﾉ 务必使用 Default 编码，中文环境下将自动使用 GBK；若改为 UTF-8编码将导致批处理文件无法运行；
             File.WriteAllText(batchPath, batchBuilder.ToString(), Encoding.Default);
             batchBuilder.Clear();
         }
