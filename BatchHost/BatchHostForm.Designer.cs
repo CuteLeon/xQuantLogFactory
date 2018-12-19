@@ -590,6 +590,7 @@
             this.LogFinishTimePicker.Size = new System.Drawing.Size(148, 26);
             this.LogFinishTimePicker.TabIndex = 13;
             this.LogFinishTimePicker.Value = new System.DateTime(2018, 11, 16, 0, 0, 0, 0);
+            this.LogFinishTimePicker.ValueChanged += new System.EventHandler(this.LogFinishTimePicker_ValueChanged);
             // 
             // label1
             // 
@@ -705,6 +706,7 @@
             this.LogStartTimePicker.Size = new System.Drawing.Size(147, 26);
             this.LogStartTimePicker.TabIndex = 12;
             this.LogStartTimePicker.Value = new System.DateTime(2018, 11, 16, 0, 0, 0, 0);
+            this.LogStartTimePicker.ValueChanged += new System.EventHandler(this.LogStartTimePicker_ValueChanged);
             // 
             // TimeIntervalNumeric
             // 
@@ -742,6 +744,7 @@
             this.TimeIntervalNumeric.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.TimeIntervalNumeric.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.TimeIntervalNumeric.Value = ((long)(0));
+            this.TimeIntervalNumeric.ValueChanged += new VisualPlus.Delegates.ValueChangedEventHandler(this.TimeIntervalNumeric_ValueChanged);
             // 
             // TimeUnitComboBox
             // 
@@ -797,6 +800,7 @@
             this.TimeUnitComboBox.Watermark.Inactive = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
             this.TimeUnitComboBox.Watermark.Text = "请选择时间单位 ...";
             this.TimeUnitComboBox.Watermark.Visible = true;
+            this.TimeUnitComboBox.SelectedValueChanged += new System.EventHandler(this.TimeUnitComboBox_SelectedValueChanged);
             // 
             // SystemInfoToggle
             // 
@@ -1027,6 +1031,7 @@
             this.MonitorListBox.Name = "MonitorListBox";
             this.MonitorListBox.Size = new System.Drawing.Size(210, 315);
             this.MonitorListBox.TabIndex = 1;
+            this.MonitorListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.MonitorListBox_ItemCheck);
             // 
             // BuildControlGroupBox
             // 

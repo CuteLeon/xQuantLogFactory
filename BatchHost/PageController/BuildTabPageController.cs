@@ -1,11 +1,16 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
-using xQuantLogFactory.Model;
+using BatchHost.Model;
+
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils;
+
+using static BatchHost.Model.FixedValue;
 
 namespace BatchHost
 {
@@ -14,57 +19,7 @@ namespace BatchHost
         /// <summary>
         /// 任务参数
         /// </summary>
-        public TaskArgument UnityTaskArgument = null;
-
-        /// <summary>
-        /// 时间单位
-        /// </summary>
-        public enum TimeUnits
-        {
-            /// <summary>
-            /// 天
-            /// </summary>
-            Day = 0,
-            /// <summary>
-            /// 小时
-            /// </summary>
-            Hour = 1,
-            /// <summary>
-            /// 分钟
-            /// </summary>
-            Minute = 2,
-        }
-
-        /// <summary>
-        /// 日志等级
-        /// </summary>
-        public enum LogLevels
-        {
-            /// <summary>
-            /// Debug
-            /// </summary>
-            Debug = 0,
-
-            /// <summary>
-            /// Trace
-            /// </summary>
-            Trace = 1,
-
-            /// <summary>
-            /// Warn
-            /// </summary>
-            Warn = 2,
-
-            /// <summary>
-            /// Error
-            /// </summary>
-            Error = 3,
-
-            /// <summary>
-            /// Pref
-            /// </summary>
-            Pref = 4,
-        }
+        public TaskArgumentDM UnityTaskArgument = new TaskArgumentDM();
 
         /// <summary>
         /// 初始化生成选项卡
@@ -96,11 +51,7 @@ namespace BatchHost
             this.LogFinishTimePicker.Value = DateTime.Now;
             this.LogFinishTimePicker.Checked = false;
 
-            this.TimeIntervalNumeric.ValueChanged += (e) => { this.ApplyBatchesCount(); };
-            this.TimeUnitComboBox.SelectedValueChanged += (s, e) => { this.ApplyBatchesCount(); };
-            this.MonitorListBox.ItemCheck += (s, e) => { this.ApplyBatchesCount(e); };
-            this.LogStartTimePicker.ValueChanged += (s, e) => { this.CheckTimeSpanState(); this.ApplyBatchesCount(); };
-            this.LogFinishTimePicker.ValueChanged += (s, e) => { this.CheckTimeSpanState(); this.ApplyBatchesCount(); };
+            this.UnityTaskArgument.BatchesCountChanged += this.ApplyBatchesCount;
         }
 
         /// <summary>
@@ -146,9 +97,8 @@ namespace BatchHost
         /// 检查数据并创建任务
         /// </summary>
         /// <returns></returns>
-        private TaskArgument CheckDataAndCreateTask()
+        private void CheckDataAndCreateTask()
         {
-            // TODO: 检查数据并创建任务
             if (string.IsNullOrWhiteSpace(this.LogDirTextBox.Text) && !Directory.Exists(this.LogDirTextBox.Text))
             {
                 throw new ArgumentException("请选择有效的日志文件存放目录！");
@@ -193,27 +143,71 @@ namespace BatchHost
                 }
             }
 
-            return null;
+            this.SaveTaskArgument();
+        }
+
+        /// <summary>
+        /// 保存数据到任务参数对象
+        /// </summary>
+        /// <returns></returns>
+        private void SaveTaskArgument()
+        {
+            this.UnityTaskArgument.AutoExit = this.AutoExitToggle.Toggled;
+            this.UnityTaskArgument.AutoOpenReport = this.AutoOpenReportToggle.Toggled;
+            this.UnityTaskArgument.IncludeSystemInfo = this.SystemInfoToggle.Toggled;
+            this.UnityTaskArgument.IncludeClientInfo = this.ClientInfoToggle.Toggled;
+            this.UnityTaskArgument.LogDirectory = this.LogDirTextBox.Text;
+            this.UnityTaskArgument.LogLevel = (LogLevels)this.LogLevelComboBox.SelectedItem;
+            this.UnityTaskArgument.ReportMode = (ReportModes)this.ReportModeComboBox.SelectedItem;
+            this.UnityTaskArgument.TimeInterval = Convert.ToInt32(this.TimeIntervalNumeric.Value);
+            this.UnityTaskArgument.TimeIntervalUnit = (TimeUnits)this.TimeUnitComboBox.SelectedItem;
+            this.UnityTaskArgument.LogStartTime = this.LogStartTimePicker.Checked ? new DateTime?(this.LogStartTimePicker.Value) : null;
+            this.UnityTaskArgument.LogFinishTime = this.LogFinishTimePicker.Checked ? new DateTime?(this.LogFinishTimePicker.Value) : null;
+            this.UnityTaskArgument.MonitorFileName.Clear();
+            this.UnityTaskArgument.MonitorFileName.AddRange(this.MonitorListBox.CheckedItems.Cast<string>());
         }
 
         /// <summary>
         /// 生成批处理脚本
         /// </summary>
         /// <param name="argument"></param>
-        private void BuildBatches(TaskArgument argument)
+        private void BuildBatches(TaskArgumentDM argument)
         {
-            // TODO: 生成批处理脚本
+            ThreadPool.QueueUserWorkItem(new WaitCallback((x) =>
+            {
+                this.Invoke(new Action(() => { this.SwitchToBuild(); }));
+                try
+                {
+                    // TODO: 生成批处理脚本
+                    Thread.Sleep(5000);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    this.Invoke(new Action(() => { this.SwitchToConfig(); }));
+                }
+            }));
+        }
+
+        /// <summary>
+        /// 报告生成进度
+        /// </summary>
+        /// <param name="progress"></param>
+        private void ReportBuildProgress(int progress)
+        {
+            // TODO: 报告生成进度
         }
 
         /// <summary>
         /// 显示批处理文件数量
         /// </summary>
-        /// <param name="checkEventArgs"></param>
+        /// <param name="count"></param>
         /// <returns></returns>
-        private void ApplyBatchesCount(ItemCheckEventArgs checkEventArgs = null)
+        private void ApplyBatchesCount(int count)
         {
-            int count = this.GetBatchesCount(checkEventArgs);
-
             if (count < 128)
             {
                 this.BatchesCountLabel.ForeColor = System.Drawing.Color.LimeGreen;
@@ -231,72 +225,19 @@ namespace BatchHost
         }
 
         /// <summary>
-        /// 使用当前配置计算预计生成的批处理文件数量
+        /// 切换到任务配置界面
         /// </summary>
-        /// <param name="checkEventArgs"></param>
-        /// <returns></returns>
-        private int GetBatchesCount(ItemCheckEventArgs checkEventArgs)
+        private void SwitchToConfig()
         {
-            // 勾选列表控件.勾选项目集合 数据变化在ItemCheck事件之后，需要手动处理
-            int monitorCount = this.MonitorListBox.CheckedIndices.Count;
-            if (checkEventArgs != null && checkEventArgs.CurrentValue != checkEventArgs.NewValue)
-            {
-                if (checkEventArgs.NewValue == CheckState.Unchecked && this.MonitorListBox.CheckedIndices.Count > 0)
-                {
-                    monitorCount--;
-                }
-                else if (checkEventArgs.NewValue == CheckState.Checked)
-                {
-                    monitorCount++;
-                }
-            }
-            if (monitorCount == 0)
-            {
-                return 0;
-            }
+            this.BuildTabPage.Enabled = true;
+        }
 
-            // 计算时段数量
-            int timeSpans = 1;
-            if (this.LogStartTimePicker.Checked && this.LogFinishTimePicker.Checked)
-            {
-                if (this.LogStartTimePicker.Value < this.LogFinishTimePicker.Value)
-                {
-                    // 时间间隔大于 0 才处理
-                    if (this.TimeIntervalNumeric.Value > 0)
-                    {
-                        TimeSpan span = this.LogFinishTimePicker.Value - this.LogStartTimePicker.Value;
-                        switch (this.TimeUnitComboBox.SelectedItem)
-                        {
-                            case TimeUnits.Day:
-                                {
-                                    timeSpans = Convert.ToInt32(Math.Ceiling(span.TotalDays / this.TimeIntervalNumeric.Value));
-                                    break;
-                                }
-                            case TimeUnits.Hour:
-                                {
-                                    timeSpans = Convert.ToInt32(Math.Ceiling(span.TotalHours / this.TimeIntervalNumeric.Value));
-                                    break;
-                                }
-                            case TimeUnits.Minute:
-                                {
-                                    timeSpans = Convert.ToInt32(Math.Ceiling(span.TotalMinutes / this.TimeIntervalNumeric.Value));
-                                    break;
-                                }
-                            default:
-                                {
-                                    return 0;
-                                }
-                        }
-                    }
-                }
-                else
-                {
-                    // 日志开始时间晚于日志结束时间，返回0
-                    return 0;
-                }
-            }
-
-            return timeSpans * monitorCount;
+        /// <summary>
+        /// 切换到生成界面
+        /// </summary>
+        private void SwitchToBuild()
+        {
+            this.BuildTabPage.Enabled = false;
         }
     }
 }
