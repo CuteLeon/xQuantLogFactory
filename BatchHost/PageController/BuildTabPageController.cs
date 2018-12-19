@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -196,14 +197,15 @@ namespace BatchHost
             this.UnityTaskArgument.IncludeSystemInfo = this.SystemInfoToggle.Toggled;
             this.UnityTaskArgument.IncludeClientInfo = this.ClientInfoToggle.Toggled;
             this.UnityTaskArgument.LogDirectory = this.LogDirTextBox.Text;
+            this.UnityTaskArgument.BatchDirectory = this.BuildDirTextBox.Text;
             this.UnityTaskArgument.LogLevel = (LogLevels)this.LogLevelComboBox.SelectedItem;
             this.UnityTaskArgument.ReportMode = (ReportModes)this.ReportModeComboBox.SelectedItem;
             this.UnityTaskArgument.TimeInterval = Convert.ToInt32(this.TimeIntervalNumeric.Value);
             this.UnityTaskArgument.TimeIntervalUnit = (TimeUnits)this.TimeUnitComboBox.SelectedItem;
             this.UnityTaskArgument.LogStartTime = this.LogStartTimePicker.Checked ? new DateTime?(this.LogStartTimePicker.Value) : null;
             this.UnityTaskArgument.LogFinishTime = this.LogFinishTimePicker.Checked ? new DateTime?(this.LogFinishTimePicker.Value) : null;
-            this.UnityTaskArgument.MonitorFileName.Clear();
-            this.UnityTaskArgument.MonitorFileName.AddRange(this.MonitorListBox.CheckedItems.Cast<string>());
+            this.UnityTaskArgument.MonitorNames.Clear();
+            this.UnityTaskArgument.MonitorNames.AddRange(this.MonitorListBox.CheckedItems.Cast<string>());
         }
 
         /// <summary>
@@ -224,37 +226,95 @@ namespace BatchHost
                 {
                     double batchesCount = argument.BatchesCount;
 
-                    // TODO: 生成批处理脚本
-                    for (int index = 0; index < batchesCount; index++)
+                    string batchName = string.Empty;
+                    int index = 0;
+                    int timeIntervalMinutes = argument.TimeInterval * argument.TimeIntervalUnit.GetMinutes();
+
+                    // 遍历监视规则
+                    foreach (string monitorName in argument.MonitorNames)
                     {
-                        Thread.Sleep(500);
-
-                        int progress = Convert.ToInt32(Math.Round(index / batchesCount * 100.0));
-                        // 报告进度
-                        this.ReportBuildProgress(progress);
-
-                        // 检查取消状态
-                        if (this.BuildState == BuildStates.Cancel)
+                        if (argument.SplitTaskTime)
                         {
-                            return;
+                            // 遍历划分时段
+                            DateTime startTime = argument.LogStartTime.Value;
+                            DateTime finishTime = startTime.AddMinutes(timeIntervalMinutes);
+
+                            for (; startTime < argument.LogFinishTime;)
+                            {
+                                batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_{startTime.ToString("yyyyMMddHHmmss")}";
+
+                                // 生成批处理文件
+                                this.SaveBatchFile(batchName, argument, startTime, finishTime);
+
+                                // 报告进度
+                                this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
+
+                                // 检查取消状态
+                                if (this.BuildState == BuildStates.Cancel)
+                                {
+                                    return;
+                                }
+
+                                // 递进时间
+                                startTime = finishTime;
+                                finishTime = startTime.AddMinutes(timeIntervalMinutes);
+                            }
+                        }
+                        else
+                        {
+                            batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_不限时段";
+
+                            // 生成批处理文件
+                            this.SaveBatchFile(batchName, argument, argument.LogStartTime, argument.LogFinishTime);
+
+                            // 报告进度
+                            this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
+
+                            // 检查取消状态
+                            if (this.BuildState == BuildStates.Cancel)
+                            {
+                                return;
+                            }
                         }
                     }
 
                     this.Invoke(new Action(() =>
                     {
                         this.ReportBuildProgress(100);
-                        MessageBox.Show($"批处理文件生成完毕！\n共 {batchesCount} 个文件。", "批处理文件生成完毕", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(this, $"批处理文件生成完毕！\n共 {batchesCount} 个文件。", "批处理文件生成完毕", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }));
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(this, ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }));
                 }
                 finally
                 {
                     this.Invoke(new Action(() => { this.BuildState = BuildStates.Config; }));
                 }
             }));
+        }
+
+        /// <summary>
+        /// 保存批处理文件
+        /// </summary>
+        /// <param name="batchName"></param>
+        /// <param name="argument"></param>
+        /// <param name="startTime"></param>
+        /// <param name="finishTime"></param>
+        private void SaveBatchFile(string batchName, TaskArgumentDM argument, DateTime? startTime, DateTime? finishTime)
+        {
+            string batchPath = Path.Combine(argument.BatchDirectory, batchName);
+            StringBuilder batchBuilder = new StringBuilder();
+
+            Thread.Sleep(500);
+            // TODO: 生成文件
+
+            File.WriteAllText(batchPath, batchBuilder.ToString(), Encoding.Default);
+            batchBuilder.Clear();
         }
 
         /// <summary>
