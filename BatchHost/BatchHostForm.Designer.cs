@@ -59,6 +59,8 @@
             this.AutoExitToggle = new VisualPlus.Toolkit.Controls.Interactivity.VisualToggle();
             this.label11 = new System.Windows.Forms.Label();
             this.AutoOpenReportToggle = new VisualPlus.Toolkit.Controls.Interactivity.VisualToggle();
+            this.BatchesCountLabel = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.MonitorGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.MonitorListBox = new System.Windows.Forms.CheckedListBox();
             this.BuildControlGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
@@ -66,8 +68,6 @@
             this.BuildButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.MonitTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
-            this.label12 = new System.Windows.Forms.Label();
-            this.BatchesCountLabel = new System.Windows.Forms.Label();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -949,6 +949,33 @@
             this.AutoOpenReportToggle.TrueTextToggle = "将不会自动打开报告";
             this.AutoOpenReportToggle.Type = VisualPlus.Toolkit.Controls.Interactivity.VisualToggle.ToggleTypes.Custom;
             // 
+            // BatchesCountLabel
+            // 
+            this.BatchesCountLabel.AutoEllipsis = true;
+            this.BatchesCountLabel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BatchesCountLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchesCountLabel.Font = new System.Drawing.Font("微软雅黑", 21.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BatchesCountLabel.ForeColor = System.Drawing.Color.LimeGreen;
+            this.BatchesCountLabel.Location = new System.Drawing.Point(356, 287);
+            this.BatchesCountLabel.Name = "BatchesCountLabel";
+            this.BatchesCountLabel.Size = new System.Drawing.Size(148, 40);
+            this.BatchesCountLabel.TabIndex = 31;
+            this.BatchesCountLabel.Text = "0";
+            this.BatchesCountLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // label12
+            // 
+            this.ArgumentLayoutPanel.SetColumnSpan(this.label12, 3);
+            this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label12.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label12.ForeColor = System.Drawing.Color.DarkGray;
+            this.label12.Location = new System.Drawing.Point(3, 287);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(347, 40);
+            this.label12.TabIndex = 30;
+            this.label12.Text = "预计生成批处理文件数量:";
+            this.label12.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
             // MonitorGroupBox
             // 
             this.MonitorGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -1182,33 +1209,6 @@
             this.MonitTabPage.TextImageRelation = VisualPlus.Toolkit.Child.VisualTabPage.TextImageRelations.Text;
             this.MonitTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.MonitTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
-            // 
-            // label12
-            // 
-            this.ArgumentLayoutPanel.SetColumnSpan(this.label12, 3);
-            this.label12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label12.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label12.ForeColor = System.Drawing.Color.DarkGray;
-            this.label12.Location = new System.Drawing.Point(3, 287);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(347, 40);
-            this.label12.TabIndex = 30;
-            this.label12.Text = "预计生成批处理文件数量:";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-            // 
-            // BatchesCountLabel
-            // 
-            this.BatchesCountLabel.AutoEllipsis = true;
-            this.BatchesCountLabel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.BatchesCountLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BatchesCountLabel.Font = new System.Drawing.Font("微软雅黑", 21.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BatchesCountLabel.ForeColor = System.Drawing.Color.LimeGreen;
-            this.BatchesCountLabel.Location = new System.Drawing.Point(356, 287);
-            this.BatchesCountLabel.Name = "BatchesCountLabel";
-            this.BatchesCountLabel.Size = new System.Drawing.Size(148, 40);
-            this.BatchesCountLabel.TabIndex = 31;
-            this.BatchesCountLabel.Text = "0";
-            this.BatchesCountLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // BatchHostForm
             // 

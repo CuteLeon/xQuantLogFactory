@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 using xQuantLogFactory.Model;
@@ -91,7 +92,9 @@ namespace BatchHost
             this.MonitorListBox.Items.AddRange(CreateTaskArgumentForm.GetMonitorFiles(ConfigHelper.MonitorDirectory));
 
             this.LogStartTimePicker.Value = DateTime.Today;
+            this.LogStartTimePicker.Checked = false;
             this.LogFinishTimePicker.Value = DateTime.Now;
+            this.LogFinishTimePicker.Checked = false;
 
             this.TimeIntervalNumeric.ValueChanged += (e) => { this.ApplyBatchesCount(); };
             this.TimeUnitComboBox.SelectedValueChanged += (s, e) => { this.ApplyBatchesCount(); };
@@ -146,11 +149,47 @@ namespace BatchHost
         private TaskArgument CheckDataAndCreateTask()
         {
             // TODO: 检查数据并创建任务
+            if (string.IsNullOrWhiteSpace(this.LogDirTextBox.Text) && !Directory.Exists(this.LogDirTextBox.Text))
+            {
+                throw new ArgumentException("请选择有效的日志文件存放目录！");
+            }
+
+            if (this.MonitorListBox.CheckedItems.Count == 0)
+            {
+                throw new ArgumentException("请勾选至少一个监视规则配置文件！");
+            }
+
+            if (this.ReportModeComboBox.SelectedIndex == -1)
+            {
+                throw new ArgumentException("请选择导出报告格式！");
+            }
+
+            if (this.LogLevelComboBox.SelectedIndex == -1)
+            {
+                throw new ArgumentException("请选择日志文件等级！");
+            }
+
             if (this.LogStartTimePicker.Checked && this.LogFinishTimePicker.Checked)
             {
                 if (this.LogStartTimePicker.Value >= this.LogFinishTimePicker.Value)
                 {
                     throw new ArgumentException("日志开始时间应早于日志结束时间！");
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(this.BuildDirTextBox.Text))
+            {
+                throw new ArgumentException("请选择有效的日志文件存放目录！");
+            }
+
+            if (!Directory.Exists(this.BuildDirTextBox.Text))
+            {
+                try
+                {
+                    Directory.CreateDirectory(this.BuildDirTextBox.Text);
+                }
+                finally
+                {
                 }
             }
 
@@ -198,30 +237,25 @@ namespace BatchHost
         /// <returns></returns>
         private int GetBatchesCount(ItemCheckEventArgs checkEventArgs)
         {
-            if (!this.LogStartTimePicker.Checked || !this.LogFinishTimePicker.Checked)
-            {
-                return 0;
-            }
-
             // 勾选列表控件.勾选项目集合 数据变化在ItemCheck事件之后，需要手动处理
-            int checkedItemsCount = this.MonitorListBox.CheckedIndices.Count;
+            int monitorCount = this.MonitorListBox.CheckedIndices.Count;
             if (checkEventArgs != null && checkEventArgs.CurrentValue != checkEventArgs.NewValue)
             {
-
                 if (checkEventArgs.NewValue == CheckState.Unchecked && this.MonitorListBox.CheckedIndices.Count > 0)
                 {
-                    checkedItemsCount--;
+                    monitorCount--;
                 }
                 else if (checkEventArgs.NewValue == CheckState.Checked)
                 {
-                    checkedItemsCount++;
+                    monitorCount++;
                 }
             }
-            if (checkedItemsCount == 0)
+            if (monitorCount == 0)
             {
                 return 0;
             }
 
+            // 计算时段数量
             int timeSpans = 1;
             if (this.LogStartTimePicker.Checked && this.LogFinishTimePicker.Checked)
             {
@@ -262,7 +296,7 @@ namespace BatchHost
                 }
             }
 
-            return Convert.ToInt32(timeSpans);
+            return timeSpans * monitorCount;
         }
     }
 }
