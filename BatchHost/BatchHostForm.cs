@@ -4,8 +4,6 @@ using System.Windows.Forms;
 
 using BatchHost.Utils;
 
-using VisualPlus.Toolkit.Dialogs;
-
 using static BatchHost.Model.FixedValue;
 
 namespace BatchHost
@@ -175,7 +173,6 @@ namespace BatchHost
                     this.UnityTaskArgument.OnBatchesCountChanged();
                 }
             }
-            this.Text = this.UnityTaskArgument.MonitorFileName.Count.ToString();
         }
 
         private void LogStartTimePicker_ValueChanged(object sender, EventArgs e)
@@ -188,6 +185,13 @@ namespace BatchHost
         {
             this.CheckTimeSpanState();
             this.UnityTaskArgument.LogFinishTime = this.LogFinishTimePicker.Checked ? new DateTime?(this.LogFinishTimePicker.Value) : null;
+        }
+
+        private void CancelBuildButton_Click(object sender, EventArgs e)
+        {
+            this.CancelBuildButton.Enabled = false;
+
+            this.BuildState = BuildStates.Cancel;
         }
         #endregion
 

@@ -21,6 +21,45 @@ namespace BatchHost
         /// </summary>
         public TaskArgumentDM UnityTaskArgument = new TaskArgumentDM();
 
+        private BuildStates buildState;
+        /// <summary>
+        /// 生成界面状态
+        /// </summary>
+        public BuildStates BuildState
+        {
+            get => this.buildState;
+            set
+            {
+                if (this.buildState == value)
+                {
+                    return;
+                }
+
+                this.buildState = value;
+
+                switch (value)
+                {
+                    case BuildStates.Config:
+                        {
+                            this.SwitchToConfigTask();
+                            break;
+                        }
+                    case BuildStates.Build:
+                        {
+                            this.SwitchToBuild();
+                            break;
+                        }
+                    case BuildStates.Cancel:
+                        {
+                            this.SwitchToCancelBuild();
+                            break;
+                        }
+                    default:
+                        break;
+                }
+            }
+        }
+
         /// <summary>
         /// 初始化生成选项卡
         /// </summary>
@@ -173,13 +212,39 @@ namespace BatchHost
         /// <param name="argument"></param>
         private void BuildBatches(TaskArgumentDM argument)
         {
+            // 界面切换前禁用按钮，防止重复触发
+            this.BuildButton.Enabled = false;
+
             ThreadPool.QueueUserWorkItem(new WaitCallback((x) =>
             {
-                this.Invoke(new Action(() => { this.SwitchToBuild(); }));
+                // 等待线程池请求返回后再切换界面
+                this.Invoke(new Action(() => { this.BuildState = BuildStates.Build; }));
+
                 try
                 {
+                    double batchesCount = argument.BatchesCount;
+
                     // TODO: 生成批处理脚本
-                    Thread.Sleep(5000);
+                    for (int index = 0; index < batchesCount; index++)
+                    {
+                        Thread.Sleep(500);
+
+                        int progress = Convert.ToInt32(Math.Round(index / batchesCount * 100.0));
+                        // 报告进度
+                        this.ReportBuildProgress(progress);
+
+                        // 检查取消状态
+                        if (this.BuildState == BuildStates.Cancel)
+                        {
+                            return;
+                        }
+                    }
+
+                    this.Invoke(new Action(() =>
+                    {
+                        this.ReportBuildProgress(100);
+                        MessageBox.Show($"批处理文件生成完毕！\n共 {batchesCount} 个文件。", "批处理文件生成完毕", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }));
                 }
                 catch (Exception ex)
                 {
@@ -187,7 +252,7 @@ namespace BatchHost
                 }
                 finally
                 {
-                    this.Invoke(new Action(() => { this.SwitchToConfig(); }));
+                    this.Invoke(new Action(() => { this.BuildState = BuildStates.Config; }));
                 }
             }));
         }
@@ -198,7 +263,10 @@ namespace BatchHost
         /// <param name="progress"></param>
         private void ReportBuildProgress(int progress)
         {
-            // TODO: 报告生成进度
+            this.Invoke(new Action(() =>
+            {
+                this.BuildGauge.Value = progress;
+            }));
         }
 
         /// <summary>
@@ -227,9 +295,14 @@ namespace BatchHost
         /// <summary>
         /// 切换到任务配置界面
         /// </summary>
-        private void SwitchToConfig()
+        private void SwitchToConfigTask()
         {
-            this.BuildTabPage.Enabled = true;
+            this.BuildProgressPanel.Hide();
+            this.BuildProgressPanel.Dock = DockStyle.None;
+            this.ArgumentGroupBox.Show();
+            this.MonitorGroupBox.Show();
+            this.BuildControlGroupBox.Show();
+            this.BuildButton.Enabled = true;
         }
 
         /// <summary>
@@ -237,7 +310,24 @@ namespace BatchHost
         /// </summary>
         private void SwitchToBuild()
         {
-            this.BuildTabPage.Enabled = false;
+            // 初始化工作
+            this.BuildGauge.Value = 0;
+            this.CancelBuildButton.Text = "取消";
+            this.CancelBuildButton.Enabled = true;
+
+            this.BuildProgressPanel.Show();
+            this.BuildProgressPanel.Dock = DockStyle.Fill;
+            this.ArgumentGroupBox.Hide();
+            this.MonitorGroupBox.Hide();
+            this.BuildControlGroupBox.Hide();
+        }
+
+        /// <summary>
+        /// 取消任务
+        /// </summary>
+        private void SwitchToCancelBuild()
+        {
+            this.CancelBuildButton.Text = "正在取消 ...";
         }
     }
 }
