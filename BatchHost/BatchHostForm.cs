@@ -6,6 +6,8 @@ using BatchHost.Utils;
 
 using VisualPlus.Toolkit.Dialogs;
 
+using static BatchHost.Model.FixedValue;
+
 namespace BatchHost
 {
     public partial class BatchHostForm : Form
@@ -123,10 +125,9 @@ namespace BatchHost
 
         private void BuildButton_Click(object sender, EventArgs e)
         {
-            this.UnityTaskArgument = null;
             try
             {
-                this.UnityTaskArgument = this.CheckDataAndCreateTask();
+                this.CheckDataAndCreateTask();
             }
             catch (Exception ex)
             {
@@ -134,19 +135,8 @@ namespace BatchHost
                 return;
             }
 
-            // TODO: 切换任务开始界面
-            try
-            {
-                this.BuildBatches(this.UnityTaskArgument);
-            }
-            catch (Exception ex)
-            {
-                VisualMessageBox.Show(ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                // TODO: 切换任务结束界面
-            }
+            // 生成批处理文件
+            this.BuildBatches(this.UnityTaskArgument);
         }
 
         private void LogDirTextBox_ButtonClicked()
@@ -157,6 +147,47 @@ namespace BatchHost
         private void BuildDirTextBox_ButtonClicked()
         {
             this.SelectBuildDir();
+        }
+
+        private void TimeIntervalNumeric_ValueChanged(VisualPlus.Events.ValueChangedEventArgs e)
+        {
+            this.UnityTaskArgument.TimeInterval = Convert.ToInt32(this.TimeIntervalNumeric.Value);
+        }
+
+        private void TimeUnitComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            this.UnityTaskArgument.TimeIntervalUnit = (TimeUnits)this.TimeUnitComboBox.SelectedItem;
+        }
+
+        private void MonitorListBox_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            // 勾选列表控件.勾选项目集合 数据变化在ItemCheck事件之后，需要手动处理
+            if (e != null && e.CurrentValue != e.NewValue)
+            {
+                if (e.NewValue == CheckState.Unchecked)
+                {
+                    this.UnityTaskArgument.MonitorFileName.Remove(this.MonitorListBox.Items[e.Index] as string);
+                    this.UnityTaskArgument.OnBatchesCountChanged();
+                }
+                else if (e.NewValue == CheckState.Checked)
+                {
+                    this.UnityTaskArgument.MonitorFileName.Add(this.MonitorListBox.Items[e.Index] as string);
+                    this.UnityTaskArgument.OnBatchesCountChanged();
+                }
+            }
+            this.Text = this.UnityTaskArgument.MonitorFileName.Count.ToString();
+        }
+
+        private void LogStartTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            this.CheckTimeSpanState();
+            this.UnityTaskArgument.LogStartTime = this.LogStartTimePicker.Checked ? new DateTime?(this.LogStartTimePicker.Value) : null;
+        }
+
+        private void LogFinishTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            this.CheckTimeSpanState();
+            this.UnityTaskArgument.LogFinishTime = this.LogFinishTimePicker.Checked ? new DateTime?(this.LogFinishTimePicker.Value) : null;
         }
         #endregion
 

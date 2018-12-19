@@ -56,6 +56,8 @@
     <Compile Include="BatchHostForm.Designer.cs">
       <DependentUpon>BatchHostForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\FixedValue.cs" />
+    <Compile Include="Model\TaskArgumentDM.cs" />
     <Compile Include="PageController\BuildTabPageController.cs">
       <SubType>Form</SubType>
     </Compile>
