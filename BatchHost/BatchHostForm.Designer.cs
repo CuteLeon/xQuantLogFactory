@@ -1192,9 +1192,9 @@
             this.BuildDirTextBox.PasswordChar = '\0';
             this.BuildDirTextBox.ReadOnly = false;
             this.BuildDirTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.BuildDirTextBox.Size = new System.Drawing.Size(350, 26);
+            this.BuildDirTextBox.Size = new System.Drawing.Size(513, 26);
             this.BuildDirTextBox.TabIndex = 4;
-            this.BuildDirTextBox.TextBoxWidth = 290;
+            this.BuildDirTextBox.TextBoxWidth = 452;
             this.BuildDirTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.BuildDirTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BuildDirTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));

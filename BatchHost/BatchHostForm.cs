@@ -125,7 +125,7 @@ namespace BatchHost
         {
             try
             {
-                this.CheckDataAndCreateTask();
+                this.CheckData();
             }
             catch (Exception ex)
             {
@@ -133,7 +133,10 @@ namespace BatchHost
                 return;
             }
 
-            // 生成批处理文件
+            // 创建任务
+            this.SaveTaskArgument();
+
+            // 执行任务
             this.BuildBatches(this.UnityTaskArgument);
         }
 

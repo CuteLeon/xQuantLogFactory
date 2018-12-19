@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -6,6 +7,16 @@ namespace BatchHost.Utils
 {
     public static class UnityUtils
     {
+        /// <summary>
+        /// xQuant日志分析工具文件路径
+        /// </summary>
+        public static string xQuantPath = typeof(xQuantLogFactory.BIZ.Processer.LogProcesserBase).Assembly.Location;
+
+        /// <summary>
+        /// xQuant日志分析工具文件名称
+        /// </summary>
+        public static string xQuantName = Path.GetFileName(xQuantPath);
+
         [DllImport("user32.dll")]
         public static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprc, IntPtr hrgn, uint flags);
         [DllImportAttribute("user32.dll")]
