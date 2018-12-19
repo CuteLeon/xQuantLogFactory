@@ -379,9 +379,9 @@ namespace BatchHost
             {
                 this.BatchesCountLabel.ForeColor = System.Drawing.Color.LimeGreen;
             }
-            else if (count < 256)
+            else if (count < 512)
             {
-                this.BatchesCountLabel.ForeColor = System.Drawing.Color.Coral;
+                this.BatchesCountLabel.ForeColor = System.Drawing.Color.Orange;
             }
             else
             {
