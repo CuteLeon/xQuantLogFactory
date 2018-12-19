@@ -129,7 +129,7 @@ namespace BatchHost
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "数据检查发现异常：", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(this, ex.Message, "数据检查发现异常：", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -164,12 +164,12 @@ namespace BatchHost
             {
                 if (e.NewValue == CheckState.Unchecked)
                 {
-                    this.UnityTaskArgument.MonitorFileName.Remove(this.MonitorListBox.Items[e.Index] as string);
+                    this.UnityTaskArgument.MonitorNames.Remove(this.MonitorListBox.Items[e.Index] as string);
                     this.UnityTaskArgument.OnBatchesCountChanged();
                 }
                 else if (e.NewValue == CheckState.Checked)
                 {
-                    this.UnityTaskArgument.MonitorFileName.Add(this.MonitorListBox.Items[e.Index] as string);
+                    this.UnityTaskArgument.MonitorNames.Add(this.MonitorListBox.Items[e.Index] as string);
                     this.UnityTaskArgument.OnBatchesCountChanged();
                 }
             }

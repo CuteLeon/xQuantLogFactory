@@ -28,6 +28,11 @@ namespace BatchHost.Model
         public string LogDirectory { get; set; }
 
         /// <summary>
+        /// Gets or sets 批处理文件目录
+        /// </summary>
+        public string BatchDirectory { get; set; }
+
+        /// <summary>
         /// Gets or sets 日志开始时间
         /// </summary>
         public DateTime? LogStartTime
@@ -110,9 +115,9 @@ namespace BatchHost.Model
         public LogLevels LogLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets 监视规则文件名称
+        /// Gets or sets 监视规则名称列表
         /// </summary>
-        public List<string> MonitorFileName { get; protected set; } = new List<string>();
+        public List<string> MonitorNames { get; protected set; } = new List<string>();
 
         /// <summary>
         /// 是否分隔任务时段
@@ -179,7 +184,7 @@ namespace BatchHost.Model
                     }
                 }
 
-                int monitorCount = this.MonitorFileName.Count;
+                int monitorCount = this.MonitorNames.Count;
 
                 return timeSpans * monitorCount;
             }
