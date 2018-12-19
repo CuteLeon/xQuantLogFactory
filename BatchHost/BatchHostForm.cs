@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+
 using BatchHost.Utils;
-using xQuantLogFactory.Model.Fixed;
+
+using VisualPlus.Toolkit.Dialogs;
 
 namespace BatchHost
 {
@@ -27,6 +24,16 @@ namespace BatchHost
             {
                 base.Icon = value;
                 this.TitleLabel.Image = value == null ? null : new Bitmap(value.ToBitmap(), 24, 24);
+            }
+        }
+
+        public new string Text
+        {
+            get => base.Text;
+            set
+            {
+                base.Text = value;
+                this.TitleLabel.Text = value;
             }
         }
         #endregion
@@ -113,28 +120,50 @@ namespace BatchHost
         {
             this.LogDirTextBox.TextBoxWidth = this.LogDirTextBox.Width - 66;
         }
+
+        private void BuildButton_Click(object sender, EventArgs e)
+        {
+            this.UnityTaskArgument = null;
+            try
+            {
+                this.UnityTaskArgument = this.CheckDataAndCreateTask();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "数据检查发现异常：", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // TODO: 切换任务开始界面
+            try
+            {
+                this.BuildBatches(this.UnityTaskArgument);
+            }
+            catch (Exception ex)
+            {
+                VisualMessageBox.Show(ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // TODO: 切换任务结束界面
+            }
+        }
+
+        private void LogDirTextBox_ButtonClicked()
+        {
+            this.SelectLogDir();
+        }
+
+        private void BuildDirTextBox_ButtonClicked()
+        {
+            this.SelectBuildDir();
+        }
         #endregion
 
         #region 方法
         private void InitControl()
         {
-            foreach (var mode in Enum.GetValues(typeof(TimeUnits)))
-            {
-                this.TimeUnitComboBox.Items.Add(mode);
-            }
-            this.TimeUnitComboBox.SelectedIndex = 0;
-
-            foreach (var mode in Enum.GetValues(typeof(ReportModes)))
-            {
-                this.ReportModeComboBox.Items.Add(mode);
-            }
-            this.ReportModeComboBox.SelectedItem = ReportModes.Excel;
-
-            foreach (var mode in Enum.GetValues(typeof(LogLevels)))
-            {
-                this.LogLevelComboBox.Items.Add(mode);
-            }
-            this.LogLevelComboBox.SelectedItem = LogLevels.Debug;
+            this.InitBuildTabPage();
         }
         #endregion
     }
