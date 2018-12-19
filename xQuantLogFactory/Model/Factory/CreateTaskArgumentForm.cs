@@ -34,9 +34,24 @@ namespace xQuantLogFactory.Model.Factory
             }
         }
 
+        /// <summary>
+        /// 获取监视规则文件
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <returns></returns>
+        public static string[] GetMonitorFiles(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                return default;
+            }
+
+            return Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(path => Path.GetFileName(path)).ToArray();
+        }
+
         private void CreateTaskArgumentForm_Load(object sender, EventArgs e)
         {
-            this.MonitorComboBox.Items.AddRange(this.GetMonitorFiles(ConfigHelper.MonitorDirectory));
+            this.MonitorComboBox.Items.AddRange(CreateTaskArgumentForm.GetMonitorFiles(ConfigHelper.MonitorDirectory));
 
             foreach (var mode in Enum.GetValues(typeof(ReportModes)))
             {
@@ -207,21 +222,6 @@ namespace xQuantLogFactory.Model.Factory
                     this.DirectoryTextBox.Text = folderDialog.SelectedPath;
                 }
             }
-        }
-
-        /// <summary>
-        /// 获取监视规则文件
-        /// </summary>
-        /// <param name="directory"></param>
-        /// <returns></returns>
-        private string[] GetMonitorFiles(string directory)
-        {
-            if (!Directory.Exists(directory))
-            {
-                return default;
-            }
-
-            return Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(path => Path.GetFileName(path)).ToArray();
         }
     }
 }
