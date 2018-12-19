@@ -214,7 +214,7 @@
             this.MainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.MainTabControl.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.MainTabControl.ItemSize = new System.Drawing.Size(100, 25);
+            this.MainTabControl.ItemSize = new System.Drawing.Size(120, 25);
             this.MainTabControl.Location = new System.Drawing.Point(3, 28);
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
@@ -244,8 +244,8 @@
             this.BuildTabPage.Border.Thickness = 1;
             this.BuildTabPage.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rectangle;
             this.BuildTabPage.Border.Visible = false;
-            this.BuildTabPage.Controls.Add(this.BuildProgressPanel);
             this.BuildTabPage.Controls.Add(this.ArgumentGroupBox);
+            this.BuildTabPage.Controls.Add(this.BuildProgressPanel);
             this.BuildTabPage.Controls.Add(this.MonitorGroupBox);
             this.BuildTabPage.Controls.Add(this.BuildControlGroupBox);
             this.BuildTabPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(181)))), ((int)(((byte)(187)))));
@@ -365,7 +365,7 @@
             this.ArgumentGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
             this.ArgumentGroupBox.Size = new System.Drawing.Size(518, 364);
             this.ArgumentGroupBox.TabIndex = 4;
-            this.ArgumentGroupBox.Text = "配置批量任务信息";
+            this.ArgumentGroupBox.Text = "1.配置批量任务信息";
             this.ArgumentGroupBox.TextAlignment = System.Drawing.StringAlignment.Center;
             this.ArgumentGroupBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.ArgumentGroupBox.TextLineAlignment = System.Drawing.StringAlignment.Center;
@@ -389,13 +389,13 @@
             this.ArgumentLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.ArgumentLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.ArgumentLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.ArgumentLayoutPanel.Controls.Add(this.LogLevelComboBox, 3, 4);
-            this.ArgumentLayoutPanel.Controls.Add(this.label9, 2, 4);
-            this.ArgumentLayoutPanel.Controls.Add(this.ReportModeComboBox, 1, 4);
-            this.ArgumentLayoutPanel.Controls.Add(this.label8, 0, 4);
-            this.ArgumentLayoutPanel.Controls.Add(this.label7, 2, 3);
-            this.ArgumentLayoutPanel.Controls.Add(this.ClientInfoToggle, 3, 3);
-            this.ArgumentLayoutPanel.Controls.Add(this.label6, 0, 3);
+            this.ArgumentLayoutPanel.Controls.Add(this.LogLevelComboBox, 3, 3);
+            this.ArgumentLayoutPanel.Controls.Add(this.label9, 2, 3);
+            this.ArgumentLayoutPanel.Controls.Add(this.ReportModeComboBox, 1, 3);
+            this.ArgumentLayoutPanel.Controls.Add(this.label8, 0, 3);
+            this.ArgumentLayoutPanel.Controls.Add(this.label7, 2, 4);
+            this.ArgumentLayoutPanel.Controls.Add(this.ClientInfoToggle, 3, 4);
+            this.ArgumentLayoutPanel.Controls.Add(this.label6, 0, 4);
             this.ArgumentLayoutPanel.Controls.Add(this.label5, 2, 2);
             this.ArgumentLayoutPanel.Controls.Add(this.label4, 0, 2);
             this.ArgumentLayoutPanel.Controls.Add(this.LogFinishTimePicker, 3, 1);
@@ -406,7 +406,7 @@
             this.ArgumentLayoutPanel.Controls.Add(this.LogStartTimePicker, 1, 1);
             this.ArgumentLayoutPanel.Controls.Add(this.TimeIntervalNumeric, 1, 2);
             this.ArgumentLayoutPanel.Controls.Add(this.TimeUnitComboBox, 3, 2);
-            this.ArgumentLayoutPanel.Controls.Add(this.SystemInfoToggle, 1, 3);
+            this.ArgumentLayoutPanel.Controls.Add(this.SystemInfoToggle, 1, 4);
             this.ArgumentLayoutPanel.Controls.Add(this.label10, 0, 5);
             this.ArgumentLayoutPanel.Controls.Add(this.AutoExitToggle, 1, 5);
             this.ArgumentLayoutPanel.Controls.Add(this.label11, 2, 5);
@@ -453,7 +453,7 @@
             this.LogLevelComboBox.IntegralHeight = false;
             this.LogLevelComboBox.ItemHeight = 24;
             this.LogLevelComboBox.ItemImageVisible = true;
-            this.LogLevelComboBox.Location = new System.Drawing.Point(356, 131);
+            this.LogLevelComboBox.Location = new System.Drawing.Point(356, 99);
             this.LogLevelComboBox.MenuItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
             this.LogLevelComboBox.MenuItemNormal = System.Drawing.Color.White;
             this.LogLevelComboBox.MenuTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -486,8 +486,8 @@
             this.label9.BackColor = System.Drawing.Color.Transparent;
             this.label9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label9.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label9.Location = new System.Drawing.Point(256, 128);
+            this.label9.ForeColor = System.Drawing.Color.DimGray;
+            this.label9.Location = new System.Drawing.Point(256, 96);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(94, 32);
             this.label9.TabIndex = 24;
@@ -520,7 +520,7 @@
             this.ReportModeComboBox.IntegralHeight = false;
             this.ReportModeComboBox.ItemHeight = 24;
             this.ReportModeComboBox.ItemImageVisible = true;
-            this.ReportModeComboBox.Location = new System.Drawing.Point(103, 131);
+            this.ReportModeComboBox.Location = new System.Drawing.Point(103, 99);
             this.ReportModeComboBox.MenuItemHover = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
             this.ReportModeComboBox.MenuItemNormal = System.Drawing.Color.White;
             this.ReportModeComboBox.MenuTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -553,8 +553,8 @@
             this.label8.BackColor = System.Drawing.Color.Transparent;
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label8.Location = new System.Drawing.Point(3, 128);
+            this.label8.ForeColor = System.Drawing.Color.DimGray;
+            this.label8.Location = new System.Drawing.Point(3, 96);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(94, 32);
             this.label8.TabIndex = 22;
@@ -566,8 +566,8 @@
             this.label7.BackColor = System.Drawing.Color.Transparent;
             this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label7.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label7.Location = new System.Drawing.Point(256, 96);
+            this.label7.ForeColor = System.Drawing.Color.DimGray;
+            this.label7.Location = new System.Drawing.Point(256, 128);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(94, 32);
             this.label7.TabIndex = 20;
@@ -600,7 +600,7 @@
             this.ClientInfoToggle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ClientInfoToggle.FalseTextToggle = "将会记录客户端信息";
             this.ClientInfoToggle.ForeColor = System.Drawing.Color.DimGray;
-            this.ClientInfoToggle.Location = new System.Drawing.Point(356, 99);
+            this.ClientInfoToggle.Location = new System.Drawing.Point(356, 131);
             this.ClientInfoToggle.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.ClientInfoToggle.Name = "ClientInfoToggle";
             this.ClientInfoToggle.ProgressImage = null;
@@ -621,8 +621,8 @@
             this.label6.BackColor = System.Drawing.Color.Transparent;
             this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label6.Location = new System.Drawing.Point(3, 96);
+            this.label6.ForeColor = System.Drawing.Color.DimGray;
+            this.label6.Location = new System.Drawing.Point(3, 128);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(94, 32);
             this.label6.TabIndex = 18;
@@ -634,7 +634,7 @@
             this.label5.BackColor = System.Drawing.Color.Transparent;
             this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label5.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label5.ForeColor = System.Drawing.Color.DimGray;
             this.label5.Location = new System.Drawing.Point(256, 64);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(94, 32);
@@ -647,7 +647,7 @@
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label4.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label4.ForeColor = System.Drawing.Color.DimGray;
             this.label4.Location = new System.Drawing.Point(3, 64);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 32);
@@ -677,7 +677,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label1.ForeColor = System.Drawing.Color.DimGray;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(94, 32);
@@ -750,7 +750,7 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label2.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label2.ForeColor = System.Drawing.Color.DimGray;
             this.label2.Location = new System.Drawing.Point(3, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(94, 32);
@@ -763,7 +763,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label3.ForeColor = System.Drawing.Color.DimGray;
             this.label3.Location = new System.Drawing.Point(256, 32);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(94, 32);
@@ -908,7 +908,7 @@
             this.SystemInfoToggle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SystemInfoToggle.FalseTextToggle = "将会记录系统信息";
             this.SystemInfoToggle.ForeColor = System.Drawing.Color.DimGray;
-            this.SystemInfoToggle.Location = new System.Drawing.Point(103, 99);
+            this.SystemInfoToggle.Location = new System.Drawing.Point(103, 131);
             this.SystemInfoToggle.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.SystemInfoToggle.Name = "SystemInfoToggle";
             this.SystemInfoToggle.ProgressImage = null;
@@ -928,7 +928,7 @@
             // 
             this.label10.BackColor = System.Drawing.Color.Transparent;
             this.label10.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label10.ForeColor = System.Drawing.Color.DimGray;
             this.label10.Location = new System.Drawing.Point(3, 160);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(94, 32);
@@ -983,7 +983,7 @@
             // 
             this.label11.BackColor = System.Drawing.Color.Transparent;
             this.label11.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label11.ForeColor = System.Drawing.Color.DimGray;
             this.label11.Location = new System.Drawing.Point(256, 160);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(94, 32);
@@ -1085,7 +1085,7 @@
             this.MonitorGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
             this.MonitorGroupBox.Size = new System.Drawing.Size(220, 364);
             this.MonitorGroupBox.TabIndex = 3;
-            this.MonitorGroupBox.Text = "勾选监视规则文件";
+            this.MonitorGroupBox.Text = "2.勾选监视规则文件";
             this.MonitorGroupBox.TextAlignment = System.Drawing.StringAlignment.Center;
             this.MonitorGroupBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.MonitorGroupBox.TextLineAlignment = System.Drawing.StringAlignment.Center;
@@ -1107,9 +1107,10 @@
             this.MonitorListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.MonitorListBox.CheckOnClick = true;
             this.MonitorListBox.FormattingEnabled = true;
+            this.MonitorListBox.IntegralHeight = false;
             this.MonitorListBox.Location = new System.Drawing.Point(5, 31);
             this.MonitorListBox.Name = "MonitorListBox";
-            this.MonitorListBox.Size = new System.Drawing.Size(210, 315);
+            this.MonitorListBox.Size = new System.Drawing.Size(210, 327);
             this.MonitorListBox.TabIndex = 1;
             this.MonitorListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.MonitorListBox_ItemCheck);
             // 
