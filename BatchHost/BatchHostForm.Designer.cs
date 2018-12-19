@@ -35,6 +35,9 @@
             this.FormControlBox = new VisualPlus.Toolkit.Controls.Interactivity.VisualControlBox();
             this.MainTabControl = new VisualPlus.Toolkit.Controls.Navigation.VisualTabControl();
             this.BuildTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
+            this.BuildProgressPanel = new System.Windows.Forms.Panel();
+            this.CancelBuildButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.BuildGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
             this.ArgumentGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.ArgumentLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.LogLevelComboBox = new VisualPlus.Toolkit.Controls.Interactivity.VisualComboBox();
@@ -71,6 +74,7 @@
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
+            this.BuildProgressPanel.SuspendLayout();
             this.ArgumentGroupBox.SuspendLayout();
             this.ArgumentLayoutPanel.SuspendLayout();
             this.MonitorGroupBox.SuspendLayout();
@@ -240,6 +244,7 @@
             this.BuildTabPage.Border.Thickness = 1;
             this.BuildTabPage.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rectangle;
             this.BuildTabPage.Border.Visible = false;
+            this.BuildTabPage.Controls.Add(this.BuildProgressPanel);
             this.BuildTabPage.Controls.Add(this.ArgumentGroupBox);
             this.BuildTabPage.Controls.Add(this.MonitorGroupBox);
             this.BuildTabPage.Controls.Add(this.BuildControlGroupBox);
@@ -259,6 +264,81 @@
             this.BuildTabPage.TextImageRelation = VisualPlus.Toolkit.Child.VisualTabPage.TextImageRelations.Text;
             this.BuildTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.BuildTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
+            // 
+            // BuildProgressPanel
+            // 
+            this.BuildProgressPanel.Controls.Add(this.CancelBuildButton);
+            this.BuildProgressPanel.Controls.Add(this.BuildGauge);
+            this.BuildProgressPanel.Location = new System.Drawing.Point(0, 0);
+            this.BuildProgressPanel.Name = "BuildProgressPanel";
+            this.BuildProgressPanel.Size = new System.Drawing.Size(400, 320);
+            this.BuildProgressPanel.TabIndex = 5;
+            this.BuildProgressPanel.Visible = false;
+            // 
+            // CancelBuildButton
+            // 
+            this.CancelBuildButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.CancelBuildButton.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.CancelBuildButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.CancelBuildButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.CancelBuildButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.CancelBuildButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.CancelBuildButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.CancelBuildButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.CancelBuildButton.Border.HoverVisible = true;
+            this.CancelBuildButton.Border.Rounding = 6;
+            this.CancelBuildButton.Border.Thickness = 1;
+            this.CancelBuildButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.CancelBuildButton.Border.Visible = true;
+            this.CancelBuildButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.CancelBuildButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.CancelBuildButton.Image = null;
+            this.CancelBuildButton.Location = new System.Drawing.Point(140, 232);
+            this.CancelBuildButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.CancelBuildButton.Name = "CancelBuildButton";
+            this.CancelBuildButton.Size = new System.Drawing.Size(120, 30);
+            this.CancelBuildButton.TabIndex = 4;
+            this.CancelBuildButton.Text = "取消";
+            this.CancelBuildButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.CancelBuildButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.CancelBuildButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.CancelBuildButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.CancelBuildButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.CancelBuildButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.CancelBuildButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.CancelBuildButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.CancelBuildButton.Click += new System.EventHandler(this.CancelBuildButton_Click);
+            // 
+            // BuildGauge
+            // 
+            this.BuildGauge.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.BuildGauge.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.BuildGauge.BackColorState.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(249)))));
+            this.BuildGauge.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BuildGauge.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildGauge.LargeChange = 5;
+            this.BuildGauge.Location = new System.Drawing.Point(50, 50);
+            this.BuildGauge.Margin = new System.Windows.Forms.Padding(6);
+            this.BuildGauge.Maximum = 100;
+            this.BuildGauge.MaximumVisible = true;
+            this.BuildGauge.Minimum = 0;
+            this.BuildGauge.MinimumVisible = true;
+            this.BuildGauge.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BuildGauge.Name = "BuildGauge";
+            this.BuildGauge.Progress = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.BuildGauge.ProgressVisible = true;
+            this.BuildGauge.Size = new System.Drawing.Size(300, 150);
+            this.BuildGauge.SmallChange = 1;
+            this.BuildGauge.TabIndex = 0;
+            this.BuildGauge.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BuildGauge.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildGauge.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildGauge.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildGauge.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BuildGauge.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BuildGauge.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BuildGauge.Thickness = 50;
+            this.BuildGauge.Value = 50;
             // 
             // ArgumentGroupBox
             // 
@@ -1236,6 +1316,7 @@
             this.TitlePanel.ResumeLayout(false);
             this.MainTabControl.ResumeLayout(false);
             this.BuildTabPage.ResumeLayout(false);
+            this.BuildProgressPanel.ResumeLayout(false);
             this.ArgumentGroupBox.ResumeLayout(false);
             this.ArgumentLayoutPanel.ResumeLayout(false);
             this.ArgumentLayoutPanel.PerformLayout();
@@ -1285,6 +1366,9 @@
         private VisualPlus.Toolkit.Controls.Interactivity.VisualToggle AutoOpenReportToggle;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label BatchesCountLabel;
+        private System.Windows.Forms.Panel BuildProgressPanel;
+        private VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge BuildGauge;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton CancelBuildButton;
     }
 }
 

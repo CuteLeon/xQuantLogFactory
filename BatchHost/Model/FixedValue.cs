@@ -52,5 +52,24 @@
             /// </summary>
             Pref = 4,
         }
+
+        /// <summary>
+        /// 生成界面状态
+        /// </summary>
+        public enum BuildStates
+        {
+            /// <summary>
+            /// 配置状态
+            /// </summary>
+            Config = 0,
+            /// <summary>
+            /// 生成状态
+            /// </summary>
+            Build = 1,
+            /// <summary>
+            /// 取消状态
+            /// </summary>
+            Cancel = 2,
+        }
     }
 }
