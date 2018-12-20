@@ -217,6 +217,47 @@ namespace BatchHost
             process.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
             process.Start();
         }
+
+        private void FindDirTextBox_ButtonClicked()
+        {
+            this.SelectFindDir();
+        }
+
+        private void BatchesSearchTextBox_ButtonClicked()
+        {
+            this.FindBatches(this.FindDirTextBox.Text, this.BatchesSearchTextBox.Text);
+        }
+
+        private void RefreshBatchesButton_Click(object sender, EventArgs e)
+        {
+            this.FindBatches(this.FindDirTextBox.Text);
+        }
+
+        private void BatchesCheckAllButton_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < this.BatchesListBox.Items.Count; index++)
+            {
+                this.BatchesListBox.SetItemChecked(index, true);
+            }
+        }
+
+        private void BatchesCheckNoneButton_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < this.BatchesListBox.Items.Count; index++)
+            {
+                this.BatchesListBox.SetItemChecked(index, false);
+            }
+        }
+
+        private void BatchesCheckInverseButton_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < this.BatchesListBox.Items.Count; index++)
+            {
+                this.BatchesListBox.SetItemChecked(
+                    index,
+                    !this.BatchesListBox.GetItemChecked(index));
+            }
+        }
         #endregion
 
         #region 方法
