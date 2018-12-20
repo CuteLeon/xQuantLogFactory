@@ -277,6 +277,18 @@ namespace BatchHost
 
             this.KillBatchProcess();
         }
+
+        private void SendInputButton_Click(object sender, EventArgs e)
+        {
+            this.SendToConsole(this.InputTextBox.Text);
+
+            this.InputTextBox.Text = string.Empty;
+        }
+
+        private void SendEnterButton_Click(object sender, EventArgs e)
+        {
+            this.SendToConsole("\n");
+        }
         #endregion
 
         #region 方法
@@ -284,6 +296,7 @@ namespace BatchHost
         {
             this.InitBuildTabPage();
             this.InitExecuteTabPage();
+            this.InitOutputTabPage();
         }
         #endregion
     }

@@ -65,7 +65,7 @@
     <Compile Include="PageController\ExecuteTabPageController.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PageController\MonitTabPageController.cs">
+    <Compile Include="PageController\OutputTabPageController.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />

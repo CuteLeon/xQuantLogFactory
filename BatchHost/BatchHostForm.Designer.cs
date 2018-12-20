@@ -90,7 +90,11 @@
             this.ExecuteGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
             this.OutputTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.ConsoleGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
+            this.OutputLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
+            this.InputTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
+            this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.SendEnterButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -109,6 +113,7 @@
             this.BatchesExecuteControlPanel.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
             this.ConsoleGroupBox.SuspendLayout();
+            this.OutputLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // TitlePanel
@@ -249,7 +254,7 @@
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 0;
+            this.MainTabControl.SelectedIndex = 2;
             this.MainTabControl.SelectorAlignment = System.Windows.Forms.TabAlignment.Bottom;
             this.MainTabControl.SelectorSpacing = 10;
             this.MainTabControl.SelectorThickness = 5;
@@ -1431,7 +1436,7 @@
             this.FindDirTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.FindDirTextBox.Size = new System.Drawing.Size(414, 26);
             this.FindDirTextBox.TabIndex = 4;
-            this.FindDirTextBox.TextBoxWidth = 376;
+            this.FindDirTextBox.TextBoxWidth = 404;
             this.FindDirTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.FindDirTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.FindDirTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1488,7 +1493,7 @@
             this.BatchesSearchTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.BatchesSearchTextBox.Size = new System.Drawing.Size(414, 26);
             this.BatchesSearchTextBox.TabIndex = 0;
-            this.BatchesSearchTextBox.TextBoxWidth = 376;
+            this.BatchesSearchTextBox.TextBoxWidth = 404;
             this.BatchesSearchTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.BatchesSearchTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BatchesSearchTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1931,7 +1936,7 @@
             this.ConsoleGroupBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
             this.ConsoleGroupBox.Border.Visible = true;
             this.ConsoleGroupBox.BoxStyle = VisualPlus.Toolkit.Controls.Layout.VisualGroupBox.GroupBoxStyle.Default;
-            this.ConsoleGroupBox.Controls.Add(this.ConsoleTextBox);
+            this.ConsoleGroupBox.Controls.Add(this.OutputLayoutPanel);
             this.ConsoleGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ConsoleGroupBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ConsoleGroupBox.ForeColor = System.Drawing.Color.DimGray;
@@ -1957,6 +1962,28 @@
             this.ConsoleGroupBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.ConsoleGroupBox.TitleBoxHeight = 25;
             // 
+            // OutputLayoutPanel
+            // 
+            this.OutputLayoutPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.OutputLayoutPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.OutputLayoutPanel.ColumnCount = 3;
+            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.OutputLayoutPanel.Controls.Add(this.SendEnterButton, 2, 1);
+            this.OutputLayoutPanel.Controls.Add(this.SendInputButton, 1, 1);
+            this.OutputLayoutPanel.Controls.Add(this.ConsoleTextBox, 0, 0);
+            this.OutputLayoutPanel.Controls.Add(this.InputTextBox, 0, 1);
+            this.OutputLayoutPanel.Location = new System.Drawing.Point(3, 28);
+            this.OutputLayoutPanel.Name = "OutputLayoutPanel";
+            this.OutputLayoutPanel.RowCount = 2;
+            this.OutputLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.OutputLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.OutputLayoutPanel.Size = new System.Drawing.Size(732, 393);
+            this.OutputLayoutPanel.TabIndex = 2;
+            // 
             // ConsoleTextBox
             // 
             this.ConsoleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1972,15 +1999,17 @@
             this.ConsoleTextBox.Border.Thickness = 1;
             this.ConsoleTextBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
             this.ConsoleTextBox.Border.Visible = true;
+            this.OutputLayoutPanel.SetColumnSpan(this.ConsoleTextBox, 3);
             this.ConsoleTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ConsoleTextBox.Location = new System.Drawing.Point(3, 28);
+            this.ConsoleTextBox.Location = new System.Drawing.Point(0, 0);
+            this.ConsoleTextBox.Margin = new System.Windows.Forms.Padding(0);
             this.ConsoleTextBox.MaxLength = 2147483647;
             this.ConsoleTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.ConsoleTextBox.Name = "ConsoleTextBox";
             this.ConsoleTextBox.ReadOnly = true;
             this.ConsoleTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
             this.ConsoleTextBox.ShowSelectionMargin = false;
-            this.ConsoleTextBox.Size = new System.Drawing.Size(732, 393);
+            this.ConsoleTextBox.Size = new System.Drawing.Size(732, 363);
             this.ConsoleTextBox.TabIndex = 1;
             this.ConsoleTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.ConsoleTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1989,6 +2018,125 @@
             this.ConsoleTextBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.ConsoleTextBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.ConsoleTextBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            // 
+            // InputTextBox
+            // 
+            this.InputTextBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.InputTextBox.BackColorState.Enabled = System.Drawing.Color.White;
+            this.InputTextBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.InputTextBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.InputTextBox.Border.HoverVisible = true;
+            this.InputTextBox.Border.Rounding = 6;
+            this.InputTextBox.Border.Thickness = 1;
+            this.InputTextBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.InputTextBox.Border.Visible = true;
+            this.InputTextBox.ButtonBorder.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.InputTextBox.ButtonBorder.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.InputTextBox.ButtonBorder.HoverVisible = true;
+            this.InputTextBox.ButtonBorder.Rounding = 6;
+            this.InputTextBox.ButtonBorder.Thickness = 1;
+            this.InputTextBox.ButtonBorder.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.InputTextBox.ButtonBorder.Visible = true;
+            this.InputTextBox.ButtonColor.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.InputTextBox.ButtonColor.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.InputTextBox.ButtonColor.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.InputTextBox.ButtonColor.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.InputTextBox.ButtonFont = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.InputTextBox.ButtonIndent = 3;
+            this.InputTextBox.ButtonText = "visualButton";
+            this.InputTextBox.ButtonVisible = false;
+            this.InputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.InputTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.InputTextBox.Image = null;
+            this.InputTextBox.ImageSize = new System.Drawing.Size(16, 16);
+            this.InputTextBox.ImageVisible = false;
+            this.InputTextBox.ImageWidth = 35;
+            this.InputTextBox.Location = new System.Drawing.Point(3, 366);
+            this.InputTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.InputTextBox.Name = "InputTextBox";
+            this.InputTextBox.PasswordChar = '\0';
+            this.InputTextBox.ReadOnly = false;
+            this.InputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.InputTextBox.Size = new System.Drawing.Size(526, 24);
+            this.InputTextBox.TabIndex = 2;
+            this.InputTextBox.TextBoxWidth = 516;
+            this.InputTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.InputTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.InputTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.InputTextBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.InputTextBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.InputTextBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.InputTextBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.InputTextBox.Watermark.Active = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.InputTextBox.Watermark.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.InputTextBox.Watermark.Inactive = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
+            this.InputTextBox.Watermark.Text = "输入要发送到控制台的文本 ...";
+            this.InputTextBox.Watermark.Visible = true;
+            this.InputTextBox.WordWrap = true;
+            // 
+            // SendInputButton
+            // 
+            this.SendInputButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendInputButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.SendInputButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendInputButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.SendInputButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.SendInputButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.SendInputButton.Border.HoverVisible = true;
+            this.SendInputButton.Border.Rounding = 6;
+            this.SendInputButton.Border.Thickness = 1;
+            this.SendInputButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.SendInputButton.Border.Visible = true;
+            this.SendInputButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SendInputButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.Image = null;
+            this.SendInputButton.Location = new System.Drawing.Point(535, 366);
+            this.SendInputButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.SendInputButton.Name = "SendInputButton";
+            this.SendInputButton.Size = new System.Drawing.Size(94, 24);
+            this.SendInputButton.TabIndex = 3;
+            this.SendInputButton.Text = "发送";
+            this.SendInputButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.SendInputButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.SendInputButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.SendInputButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.SendInputButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.SendInputButton.Click += new System.EventHandler(this.SendInputButton_Click);
+            // 
+            // SendEnterButton
+            // 
+            this.SendEnterButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendEnterButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.SendEnterButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendEnterButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.SendEnterButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.SendEnterButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.SendEnterButton.Border.HoverVisible = true;
+            this.SendEnterButton.Border.Rounding = 6;
+            this.SendEnterButton.Border.Thickness = 1;
+            this.SendEnterButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.SendEnterButton.Border.Visible = true;
+            this.SendEnterButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SendEnterButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.Image = null;
+            this.SendEnterButton.Location = new System.Drawing.Point(635, 366);
+            this.SendEnterButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.SendEnterButton.Name = "SendEnterButton";
+            this.SendEnterButton.Size = new System.Drawing.Size(94, 24);
+            this.SendEnterButton.TabIndex = 4;
+            this.SendEnterButton.Text = "发送回车";
+            this.SendEnterButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.SendEnterButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.SendEnterButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.SendEnterButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.SendEnterButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.SendEnterButton.Click += new System.EventHandler(this.SendEnterButton_Click);
             // 
             // BatchHostForm
             // 
@@ -2030,6 +2178,8 @@
             this.BatchesExecuteControlPanel.ResumeLayout(false);
             this.OutputTabPage.ResumeLayout(false);
             this.ConsoleGroupBox.ResumeLayout(false);
+            this.OutputLayoutPanel.ResumeLayout(false);
+            this.OutputLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2096,6 +2246,10 @@
         private VisualPlus.Toolkit.Child.VisualTabPage OutputTabPage;
         private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox ConsoleGroupBox;
         private VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox ConsoleTextBox;
+        private System.Windows.Forms.TableLayoutPanel OutputLayoutPanel;
+        private VisualPlus.Toolkit.Controls.Editors.VisualTextBox InputTextBox;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton SendEnterButton;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton SendInputButton;
     }
 }
 

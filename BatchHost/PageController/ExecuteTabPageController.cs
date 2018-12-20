@@ -19,11 +19,6 @@ namespace BatchHost
         /// </summary>
         public Process BatchProcess = null;
 
-        /// <summary>
-        /// 显示控制台消息代理
-        /// </summary>
-        private Action<string> PrintProcessOutputToTextBox = null;
-
         private PageStates executeState;
         /// <summary>
         /// 执行界面状态
@@ -207,10 +202,12 @@ namespace BatchHost
 
             try
             {
-                // TODO: 未开启自动关闭功能的批处理命令，需要手动干预以关闭进程
                 this.BatchProcess = new Process();
                 this.BatchProcess.StartInfo.FileName = path;
                 this.BatchProcess.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
+
+                // 输入信息
+                this.BatchProcess.StartInfo.RedirectStandardInput = true;
 
                 // 输出信息
                 this.BatchProcess.StartInfo.RedirectStandardOutput = true;
@@ -256,22 +253,6 @@ namespace BatchHost
         }
 
         /// <summary>
-        /// 打印进程输出
-        /// </summary>
-        /// <param name="output"></param>
-        private void PrintProcessOutput(string output)
-        {
-            if (this.ConsoleTextBox.InvokeRequired)
-            {
-                this.ConsoleTextBox.Invoke(this.PrintProcessOutputToTextBox, output);
-            }
-            else
-            {
-                this.ConsoleTextBox.AppendText(output);
-            }
-        }
-
-        /// <summary>
         /// 报告执行进度
         /// </summary>
         /// <param name="progress"></param>
@@ -299,11 +280,6 @@ namespace BatchHost
             this.ExecuteGauge.MinimumVisible = true;
             this.ExecuteGauge.MaximumVisible = true;
             this.ExecuteGauge.ProgressVisible = true;
-
-            this.PrintProcessOutputToTextBox = new Action<string>((output) =>
-            {
-                this.ConsoleTextBox.AppendText($"{output}\n");
-            });
 
             this.ExecuteState = PageStates.Finish;
         }
