@@ -249,7 +249,7 @@
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 1;
+            this.MainTabControl.SelectedIndex = 0;
             this.MainTabControl.SelectorAlignment = System.Windows.Forms.TabAlignment.Bottom;
             this.MainTabControl.SelectorSpacing = 10;
             this.MainTabControl.SelectorThickness = 5;
@@ -1036,6 +1036,7 @@
             // 
             // BuildProgressPanel
             // 
+            this.BuildProgressPanel.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BuildProgressPanel.Controls.Add(this.BuildCancelButton);
             this.BuildProgressPanel.Controls.Add(this.BuildGauge);
             this.BuildProgressPanel.Location = new System.Drawing.Point(0, 0);

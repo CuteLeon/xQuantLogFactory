@@ -233,6 +233,7 @@ namespace BatchHost
 
         private void RefreshBatchesButton_Click(object sender, EventArgs e)
         {
+            this.PreviewTextBox.Text = string.Empty;
             this.FindBatches(this.FindDirTextBox.Text);
         }
 
