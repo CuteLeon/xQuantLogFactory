@@ -199,6 +199,7 @@ namespace BatchHost
                 this.BatchProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 this.BatchProcess.StartInfo.FileName = path;
                 this.BatchProcess.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
+                // TODO: 输出重定向
                 this.BatchProcess.Start();
                 this.BatchProcess.WaitForExit();
                 // TODO: 处理退出代码
