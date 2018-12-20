@@ -1408,7 +1408,7 @@
             this.FindDirTextBox.ButtonText = "扫描";
             this.FindDirTextBox.ButtonVisible = true;
             this.FindDirTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FindDirTextBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FindDirTextBox.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FindDirTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.FindDirTextBox.Image = null;
             this.FindDirTextBox.ImageSize = new System.Drawing.Size(16, 16);
@@ -1418,9 +1418,9 @@
             this.FindDirTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.FindDirTextBox.Name = "FindDirTextBox";
             this.FindDirTextBox.PasswordChar = '\0';
-            this.FindDirTextBox.ReadOnly = false;
+            this.FindDirTextBox.ReadOnly = true;
             this.FindDirTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.FindDirTextBox.Size = new System.Drawing.Size(414, 24);
+            this.FindDirTextBox.Size = new System.Drawing.Size(414, 26);
             this.FindDirTextBox.TabIndex = 4;
             this.FindDirTextBox.TextBoxWidth = 372;
             this.FindDirTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
@@ -1436,6 +1436,7 @@
             this.FindDirTextBox.Watermark.Text = "请输入批处理文件存放目录 ...";
             this.FindDirTextBox.Watermark.Visible = true;
             this.FindDirTextBox.WordWrap = true;
+            this.FindDirTextBox.ButtonClicked += new VisualPlus.Toolkit.Controls.Editors.VisualTextBox.ButtonClickedEventHandler(this.FindDirTextBox_ButtonClicked);
             // 
             // BatchesSearchTextBox
             // 
@@ -1464,7 +1465,7 @@
             this.BatchesSearchTextBox.ButtonText = "搜索";
             this.BatchesSearchTextBox.ButtonVisible = true;
             this.BatchesSearchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BatchesSearchTextBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BatchesSearchTextBox.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BatchesSearchTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BatchesSearchTextBox.Image = null;
             this.BatchesSearchTextBox.ImageSize = new System.Drawing.Size(16, 16);
@@ -1476,7 +1477,7 @@
             this.BatchesSearchTextBox.PasswordChar = '\0';
             this.BatchesSearchTextBox.ReadOnly = false;
             this.BatchesSearchTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.BatchesSearchTextBox.Size = new System.Drawing.Size(414, 24);
+            this.BatchesSearchTextBox.Size = new System.Drawing.Size(414, 26);
             this.BatchesSearchTextBox.TabIndex = 0;
             this.BatchesSearchTextBox.TextBoxWidth = 372;
             this.BatchesSearchTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
@@ -1492,6 +1493,7 @@
             this.BatchesSearchTextBox.Watermark.Text = "请输入搜索关键字 ...";
             this.BatchesSearchTextBox.Watermark.Visible = true;
             this.BatchesSearchTextBox.WordWrap = true;
+            this.BatchesSearchTextBox.ButtonClicked += new VisualPlus.Toolkit.Controls.Editors.VisualTextBox.ButtonClickedEventHandler(this.BatchesSearchTextBox_ButtonClicked);
             // 
             // BatchesCheckControlPanel
             // 
@@ -1535,6 +1537,7 @@
             this.BatchesCheckAllButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.BatchesCheckAllButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.BatchesCheckAllButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BatchesCheckAllButton.Click += new System.EventHandler(this.BatchesCheckAllButton_Click);
             // 
             // BatchesCheckNoneButton
             // 
@@ -1566,6 +1569,7 @@
             this.BatchesCheckNoneButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.BatchesCheckNoneButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.BatchesCheckNoneButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BatchesCheckNoneButton.Click += new System.EventHandler(this.BatchesCheckNoneButton_Click);
             // 
             // BatchesCheckInverseButton
             // 
@@ -1597,6 +1601,7 @@
             this.BatchesCheckInverseButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.BatchesCheckInverseButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.BatchesCheckInverseButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BatchesCheckInverseButton.Click += new System.EventHandler(this.BatchesCheckInverseButton_Click);
             // 
             // RefreshBatchesButton
             // 
@@ -1629,6 +1634,7 @@
             this.RefreshBatchesButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.RefreshBatchesButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.RefreshBatchesButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.RefreshBatchesButton.Click += new System.EventHandler(this.RefreshBatchesButton_Click);
             // 
             // BatchPreviewGroupBox
             // 
