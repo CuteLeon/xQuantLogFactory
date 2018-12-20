@@ -1,7 +1,11 @@
 ﻿
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using xQuantLogFactory.BIZ.FileFinder;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactoryTests.Utils
@@ -86,22 +90,24 @@ namespace xQuantLogFactoryTests.Utils
                 "SrvLOG_ERROR.txt",
                 "SrVLoG_InFo.txt",
                 "SRVLOg_WArn.txt",
-                "CLTLOG_DebUg.txt",
-                "CltLOG_TraCe.txt",
-                "CLTLog_ErrOr.txt",
-                "CLtLog_InFo.txt",
-                "ClTLog_WaRn.txt",
-
                 "SRVLoG_DEBug.txt.1",
                 "SrVLog_TrAce.Txt.5",
                 "SRvLoG_ErrOr.tXt.25",
                 "SrVLog_Info.txT.625",
                 "SrvLOg_WarN.tXT.1500",
+
+                "CLTLOG_DebUg.txt",
+                "CltLOG_TraCe.txt",
+                "CLTLog_ErrOr.txt",
+                "CLtLog_InFo.txt",
+                "ClTLog_WaRn.txt",
                 "CltLog_DebUG.TXt.1",
                 "CltLoG_TraCE.txt.5",
                 "CLtLOg_ErrOr.txt.25",
                 "CltLoG_InfO.txt.625",
                 "ClTLOg_Warn.txt.1500",
+                "wanglu11_hp-PC_主版本号_20181127173028_CltLog_Debug.txt",
+                "wanglu11_hp-PC_主版本号_20181127173026_CltLog_Info.txt",
             };
 
             Regex logFileRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase);
@@ -118,6 +124,9 @@ namespace xQuantLogFactoryTests.Utils
                 Assert.IsTrue(logFileRegex.IsMatch(file));
             Assert.IsTrue(validlogFiles_1.All(file => logFileRegex.IsMatch(file)));
 
+            LogFileFinder fileFinder = new LogFileFinder();
+            Assert.IsTrue(validlogFiles_0.Take(10).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Server));
+            Assert.IsTrue(validlogFiles_0.Skip(10).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Client));
         }
     }
 }

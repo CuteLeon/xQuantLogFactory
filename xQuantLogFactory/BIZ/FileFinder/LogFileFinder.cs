@@ -71,15 +71,15 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// </summary>
         /// <param name="fileName">日志文件名称</param>
         /// <returns></returns>
-        private LogFileTypes GetLogFileType(string fileName)
+        public LogFileTypes GetLogFileType(string fileName)
         {
-            if (fileName.StartsWith(ConfigHelper.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
-            {
-                return LogFileTypes.Server;
-            }
-            else if (fileName.StartsWith(ConfigHelper.ClientLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            if (fileName.IndexOf($"{ConfigHelper.ClientLogFileNamePrefix}Log_", StringComparison.OrdinalIgnoreCase) > -1)
             {
                 return LogFileTypes.Client;
+            }
+            else if (fileName.StartsWith(ConfigHelper.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return LogFileTypes.Server;
             }
             else if (fileName.StartsWith(ConfigHelper.MiddlewareLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
             {

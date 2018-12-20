@@ -94,7 +94,7 @@ namespace xQuantLogFactory.Utils
                 }
                 else
                 {
-                    return $@"^({ServerLogFileNamePrefix}|{ClientLogFileNamePrefix})Log_{LogFileLevel}\.txt(|\.\d*)$";
+                    return $@"^({ServerLogFileNamePrefix}|.*?{ClientLogFileNamePrefix})Log_{LogFileLevel}\.txt(|\.\d*)$";
                 }
             }
         }
