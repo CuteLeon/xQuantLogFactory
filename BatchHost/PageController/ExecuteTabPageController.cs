@@ -134,7 +134,7 @@ namespace BatchHost
                 // 等待线程池请求返回后再切换界面
                 this.Invoke(new Action(() => { this.ExecuteState = PageStates.Working; }));
 
-                this.PrintProcessOutput("开始轮训执行批处理文件 ...");
+                this.PrintProcessOutput("开始执行批处理文件 ...");
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
 
@@ -147,7 +147,10 @@ namespace BatchHost
                     {
                         batch = batches[index];
 
-                        this.ConsoleGroupBox.Text = $"正在执行：{batch}";
+                        this.Invoke(new Action(() =>
+                        {
+                            this.ConsoleGroupBox.Text = $"正在执行：{batch}";
+                        }));
                         try
                         {
                             // 执行批处理任务
@@ -289,6 +292,8 @@ namespace BatchHost
 
         public void InitExecuteTabPage()
         {
+            this.BatchesSearchTextBox.TextBoxWidth = this.BatchesSearchTextBox.Width - 38;
+            this.FindDirTextBox.TextBoxWidth = this.FindDirTextBox.Width - 38;
             this.FindDirTextBox.Text = UnityUtils.BuildDirectory;
 
             this.ExecuteGauge.MinimumVisible = true;

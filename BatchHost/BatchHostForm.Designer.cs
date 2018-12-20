@@ -249,7 +249,7 @@
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 0;
+            this.MainTabControl.SelectedIndex = 1;
             this.MainTabControl.SelectorAlignment = System.Windows.Forms.TabAlignment.Bottom;
             this.MainTabControl.SelectorSpacing = 10;
             this.MainTabControl.SelectorThickness = 5;
