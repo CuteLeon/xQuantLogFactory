@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -100,6 +101,14 @@ namespace BatchHost
             this.UnityTaskArgument.BatchesCountChanged += this.ApplyBatchesCount;
 
             this.BuildDirTextBox.Text = UnityUtils.BuildDirectory;
+
+            this.BuildGauge.MinimumVisible = true;
+            this.BuildGauge.MaximumVisible = true;
+            this.BuildGauge.ProgressVisible = true;
+            this.ArgumentGroupBox.Separator = true;
+            this.MonitorGroupBox.Separator = true;
+            this.ArgumentGroupBox.SeparatorColor = Color.Gainsboro;
+            this.MonitorGroupBox.SeparatorColor = Color.Gainsboro;
         }
 
         /// <summary>

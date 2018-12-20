@@ -147,8 +147,8 @@ namespace BatchHost
                         process.Start();
                          */
 
-                        // 报告进度
-                        this.ReportExecuteProgress(Convert.ToInt32(Math.Round(++index / batches.Length * 100.0)));
+                        // 报告进度（100.0 * 位置和小数点不可调整，否则两个 int 直接相除后无法保留精度，而导致进度一致为 0）
+                        this.ReportExecuteProgress(Convert.ToInt32(Math.Round(100.0 * index / batches.Length)));
 
                         // 检查取消状态
                         if (this.ExecuteState == PageStates.Cancel)
@@ -160,8 +160,8 @@ namespace BatchHost
                     stopwatch.Stop();
                     this.Invoke(new Action(() =>
                     {
-                        this.ReportBuildProgress(100);
-                        MessageBox.Show(this, $"批处理文件执行完毕！\n共执行 {batches.Length} 个文件。\n共耗时 {stopwatch.Elapsed.TotalSeconds} 秒。", "批处理文件执行完毕", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.ReportExecuteProgress(100);
+                        MessageBox.Show(this, $"批处理文件执行完毕！\n共执行 {batches.Length} 个文件。\n共耗时 {stopwatch.Elapsed.TotalSeconds.ToString("N")} 秒。", "批处理文件执行完毕", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }));
                 }
                 catch (Exception ex)
@@ -184,7 +184,7 @@ namespace BatchHost
         /// <param name="progress"></param>
         private void ReportExecuteProgress(int progress)
         {
-            if (this.BuildGauge.InvokeRequired)
+            if (this.ExecuteGauge.InvokeRequired)
             {
                 this.Invoke(new Action(() =>
                 {
@@ -200,6 +200,10 @@ namespace BatchHost
         public void InitExecuteTabPage()
         {
             this.FindDirTextBox.Text = UnityUtils.BuildDirectory;
+
+            this.ExecuteGauge.MinimumVisible = true;
+            this.ExecuteGauge.MaximumVisible = true;
+            this.ExecuteGauge.ProgressVisible = true;
         }
 
         /// <summary>

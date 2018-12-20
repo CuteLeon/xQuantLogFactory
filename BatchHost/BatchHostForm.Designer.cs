@@ -1337,7 +1337,7 @@
             this.BatchesListGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.BatchesListGroupBox.Name = "BatchesListGroupBox";
             this.BatchesListGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
-            this.BatchesListGroupBox.Separator = true;
+            this.BatchesListGroupBox.Separator = false;
             this.BatchesListGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
             this.BatchesListGroupBox.Size = new System.Drawing.Size(528, 424);
             this.BatchesListGroupBox.TabIndex = 4;
@@ -1815,6 +1815,7 @@
             this.ExecuteCancelButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.ExecuteCancelButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.ExecuteCancelButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.ExecuteCancelButton.Click += new System.EventHandler(this.ExecuteCancelButton_Click);
             // 
             // ExecuteButton
             // 

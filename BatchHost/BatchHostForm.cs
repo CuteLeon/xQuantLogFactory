@@ -270,6 +270,11 @@ namespace BatchHost
                 this.ApplyBatchPreview(this.BatchesListBox.SelectedItem as string);
             }
         }
+
+        private void ExecuteCancelButton_Click(object sender, EventArgs e)
+        {
+            this.ExecuteState = PageStates.Cancel;
+        }
         #endregion
 
         #region 方法
