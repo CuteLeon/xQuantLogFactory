@@ -15,6 +15,11 @@ namespace BatchHost
     public partial class BatchHostForm
     {
         /// <summary>
+        /// 预览框文本
+        /// </summary>
+        private const string PREVIEW_GROUP_BOX_TEXT = "批处理文件预览：";
+
+        /// <summary>
         /// 批处理进程
         /// </summary>
         public Process BatchProcess = null;
@@ -144,7 +149,8 @@ namespace BatchHost
 
                         this.Invoke(new Action(() =>
                         {
-                            this.ConsoleGroupBox.Text = $"正在执行：{batch}";
+                            this.ConsoleGroupBox.Text = $"{OUTPUT_GROUP_BOX_TEXT}正在执行 => {Path.GetFileName(batch)}";
+                            this.ConsoleGroupBox.Refresh();
                         }));
                         try
                         {
@@ -184,6 +190,12 @@ namespace BatchHost
                 }
                 finally
                 {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.ConsoleGroupBox.Text = $"{OUTPUT_GROUP_BOX_TEXT}执行完毕！";
+                        this.ConsoleGroupBox.Refresh();
+                    }));
+
                     this.Invoke(new Action(() => { this.ExecuteState = PageStates.Finish; }));
                 }
             }));
@@ -263,16 +275,21 @@ namespace BatchHost
                 this.Invoke(new Action(() =>
                 {
                     this.ExecuteGauge.Value = progress;
+                    this.ExecuteGauge.Refresh();
                 }));
             }
             else
             {
                 this.ExecuteGauge.Value = progress;
+                this.ExecuteGauge.Refresh();
             }
         }
 
         public void InitExecuteTabPage()
         {
+            this.BatchPreviewGroupBox.Text = PREVIEW_GROUP_BOX_TEXT;
+            this.BatchPreviewGroupBox.Refresh();
+
             this.BatchesSearchTextBox.TextBoxWidth = this.BatchesSearchTextBox.Width - 38;
             this.FindDirTextBox.TextBoxWidth = this.FindDirTextBox.Width - 38;
             this.FindDirTextBox.Text = UnityUtils.BuildDirectory;
@@ -318,6 +335,9 @@ namespace BatchHost
         /// <param name="predicate"></param>
         private void FindBatches(string targetDir, string predicate = "*")
         {
+            this.PreviewTextBox.Text = string.Empty;
+            this.BatchPreviewGroupBox.Text = PREVIEW_GROUP_BOX_TEXT;
+            this.BatchPreviewGroupBox.Refresh();
             this.BatchesListBox.Items.Clear();
 
             try
@@ -344,6 +364,8 @@ namespace BatchHost
         {
             try
             {
+                this.BatchPreviewGroupBox.Text = $"{PREVIEW_GROUP_BOX_TEXT}{Path.GetFileName(path)}";
+                this.BatchPreviewGroupBox.Refresh();
                 this.PreviewTextBox.Text = File.ReadAllText(path, Encoding.Default);
             }
             catch (Exception ex)

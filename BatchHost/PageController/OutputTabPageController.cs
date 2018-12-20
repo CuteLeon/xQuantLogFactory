@@ -5,6 +5,11 @@ namespace BatchHost
     public partial class BatchHostForm
     {
         /// <summary>
+        /// 输出框文本
+        /// </summary>
+        private const string OUTPUT_GROUP_BOX_TEXT = "Console：";
+
+        /// <summary>
         /// 显示控制台消息代理
         /// </summary>
         private Action<string> PrintProcessOutputToTextBox = null;
@@ -27,6 +32,9 @@ namespace BatchHost
 
         private void InitOutputTabPage()
         {
+            this.ConsoleGroupBox.Text = OUTPUT_GROUP_BOX_TEXT;
+            this.ConsoleGroupBox.Refresh();
+
             this.PrintProcessOutputToTextBox = new Action<string>((output) =>
             {
                 this.ConsoleTextBox.AppendText($"{output}\n");

@@ -4,6 +4,8 @@ using System.Windows.Forms;
 
 using BatchHost.Utils;
 
+using VisualPlus.Toolkit.Controls.Editors;
+
 using static BatchHost.Model.FixedValue;
 
 namespace BatchHost
@@ -233,7 +235,6 @@ namespace BatchHost
 
         private void RefreshBatchesButton_Click(object sender, EventArgs e)
         {
-            this.PreviewTextBox.Text = string.Empty;
             this.FindBatches(this.FindDirTextBox.Text);
         }
 
@@ -288,6 +289,16 @@ namespace BatchHost
         private void SendEnterButton_Click(object sender, EventArgs e)
         {
             this.SendToConsole("\n");
+        }
+
+        private void BatchesTextBox_Resize(object sender, EventArgs e)
+        {
+            if (!(sender is VisualTextBox textbox))
+            {
+                return;
+            }
+
+            textbox.TextBoxWidth = textbox.Width - 38;
         }
         #endregion
 

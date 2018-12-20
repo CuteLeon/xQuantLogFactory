@@ -109,7 +109,7 @@ namespace BatchHost
             this.MonitorGroupBox.Separator = true;
             this.ArgumentGroupBox.SeparatorColor = Color.Gainsboro;
             this.MonitorGroupBox.SeparatorColor = Color.Gainsboro;
-            
+
             this.BuildState = PageStates.Finish;
         }
 
@@ -414,11 +414,13 @@ namespace BatchHost
                 this.Invoke(new Action(() =>
                 {
                     this.BuildGauge.Value = progress;
+                    this.BuildGauge.Refresh();
                 }));
             }
             else
             {
                 this.BuildGauge.Value = progress;
+                this.BuildGauge.Refresh();
             }
         }
 

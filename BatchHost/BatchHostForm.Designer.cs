@@ -91,10 +91,10 @@
             this.OutputTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.ConsoleGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.OutputLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.SendEnterButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.InputTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
-            this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
-            this.SendEnterButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -265,7 +265,7 @@
             this.MainTabControl.SeparatorThickness = 2F;
             this.MainTabControl.Size = new System.Drawing.Size(746, 457);
             this.MainTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.MainTabControl.State = VisualPlus.Enumerators.MouseStates.Normal;
+            this.MainTabControl.State = VisualPlus.Enumerators.MouseStates.Hover;
             this.MainTabControl.TabIndex = 3;
             this.MainTabControl.TabMenu = System.Drawing.Color.Transparent;
             this.MainTabControl.TabSelector = System.Drawing.Color.WhiteSmoke;
@@ -1374,10 +1374,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.BatchesListPanel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.BatchesListPanel.ColumnCount = 3;
-            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 420F));
-            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.BatchesListPanel.ColumnCount = 2;
+            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.BatchesListPanel.Controls.Add(this.FindDirTextBox, 0, 0);
             this.BatchesListPanel.Controls.Add(this.BatchesSearchTextBox, 0, 1);
             this.BatchesListPanel.Controls.Add(this.BatchesCheckControlPanel, 0, 4);
@@ -1434,9 +1433,9 @@
             this.FindDirTextBox.PasswordChar = '\0';
             this.FindDirTextBox.ReadOnly = true;
             this.FindDirTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.FindDirTextBox.Size = new System.Drawing.Size(414, 26);
+            this.FindDirTextBox.Size = new System.Drawing.Size(416, 26);
             this.FindDirTextBox.TabIndex = 4;
-            this.FindDirTextBox.TextBoxWidth = 404;
+            this.FindDirTextBox.TextBoxWidth = 406;
             this.FindDirTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.FindDirTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.FindDirTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1451,6 +1450,7 @@
             this.FindDirTextBox.Watermark.Visible = true;
             this.FindDirTextBox.WordWrap = true;
             this.FindDirTextBox.ButtonClicked += new VisualPlus.Toolkit.Controls.Editors.VisualTextBox.ButtonClickedEventHandler(this.FindDirTextBox_ButtonClicked);
+            this.FindDirTextBox.Resize += new System.EventHandler(this.BatchesTextBox_Resize);
             // 
             // BatchesSearchTextBox
             // 
@@ -1491,9 +1491,9 @@
             this.BatchesSearchTextBox.PasswordChar = '\0';
             this.BatchesSearchTextBox.ReadOnly = false;
             this.BatchesSearchTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.BatchesSearchTextBox.Size = new System.Drawing.Size(414, 26);
+            this.BatchesSearchTextBox.Size = new System.Drawing.Size(416, 26);
             this.BatchesSearchTextBox.TabIndex = 0;
-            this.BatchesSearchTextBox.TextBoxWidth = 404;
+            this.BatchesSearchTextBox.TextBoxWidth = 406;
             this.BatchesSearchTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.BatchesSearchTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BatchesSearchTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1508,6 +1508,7 @@
             this.BatchesSearchTextBox.Watermark.Visible = true;
             this.BatchesSearchTextBox.WordWrap = true;
             this.BatchesSearchTextBox.ButtonClicked += new VisualPlus.Toolkit.Controls.Editors.VisualTextBox.ButtonClickedEventHandler(this.BatchesSearchTextBox_ButtonClicked);
+            this.BatchesSearchTextBox.Resize += new System.EventHandler(this.BatchesTextBox_Resize);
             // 
             // BatchesCheckControlPanel
             // 
@@ -1518,7 +1519,7 @@
             this.BatchesCheckControlPanel.Location = new System.Drawing.Point(0, 363);
             this.BatchesCheckControlPanel.Margin = new System.Windows.Forms.Padding(0);
             this.BatchesCheckControlPanel.Name = "BatchesCheckControlPanel";
-            this.BatchesCheckControlPanel.Size = new System.Drawing.Size(420, 30);
+            this.BatchesCheckControlPanel.Size = new System.Drawing.Size(422, 30);
             this.BatchesCheckControlPanel.TabIndex = 1;
             // 
             // BatchesCheckAllButton
@@ -1630,15 +1631,14 @@
             this.RefreshBatchesButton.Border.Thickness = 1;
             this.RefreshBatchesButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
             this.RefreshBatchesButton.Border.Visible = true;
-            this.BatchesListPanel.SetColumnSpan(this.RefreshBatchesButton, 2);
             this.RefreshBatchesButton.Dock = System.Windows.Forms.DockStyle.Left;
             this.RefreshBatchesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.RefreshBatchesButton.Image = null;
-            this.RefreshBatchesButton.Location = new System.Drawing.Point(423, 3);
+            this.RefreshBatchesButton.Location = new System.Drawing.Point(425, 3);
             this.RefreshBatchesButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.RefreshBatchesButton.Name = "RefreshBatchesButton";
             this.BatchesListPanel.SetRowSpan(this.RefreshBatchesButton, 2);
-            this.RefreshBatchesButton.Size = new System.Drawing.Size(96, 54);
+            this.RefreshBatchesButton.Size = new System.Drawing.Size(94, 54);
             this.RefreshBatchesButton.TabIndex = 3;
             this.RefreshBatchesButton.Text = "刷新";
             this.RefreshBatchesButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
@@ -1653,7 +1653,7 @@
             // 
             // BatchPreviewGroupBox
             // 
-            this.BatchPreviewGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchPreviewGroupBox.BackColorState.Disabled = System.Drawing.Color.WhiteSmoke;
             this.BatchPreviewGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
             this.BatchPreviewGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.BatchPreviewGroupBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
@@ -1663,7 +1663,7 @@
             this.BatchPreviewGroupBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
             this.BatchPreviewGroupBox.Border.Visible = true;
             this.BatchPreviewGroupBox.BoxStyle = VisualPlus.Toolkit.Controls.Layout.VisualGroupBox.GroupBoxStyle.Classic;
-            this.BatchesListPanel.SetColumnSpan(this.BatchPreviewGroupBox, 3);
+            this.BatchesListPanel.SetColumnSpan(this.BatchPreviewGroupBox, 2);
             this.BatchPreviewGroupBox.Controls.Add(this.PreviewTextBox);
             this.BatchPreviewGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BatchPreviewGroupBox.ForeColor = System.Drawing.Color.DimGray;
@@ -1676,7 +1676,7 @@
             this.BatchPreviewGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
             this.BatchPreviewGroupBox.Size = new System.Drawing.Size(516, 71);
             this.BatchPreviewGroupBox.TabIndex = 2;
-            this.BatchPreviewGroupBox.Text = "批处理预览";
+            this.BatchPreviewGroupBox.Text = "批处理文件预览：";
             this.BatchPreviewGroupBox.TextAlignment = System.Drawing.StringAlignment.Near;
             this.BatchPreviewGroupBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.BatchPreviewGroupBox.TextLineAlignment = System.Drawing.StringAlignment.Center;
@@ -1727,7 +1727,7 @@
             this.BatchesListBox.BackColor = System.Drawing.Color.White;
             this.BatchesListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.BatchesListBox.CheckOnClick = true;
-            this.BatchesListPanel.SetColumnSpan(this.BatchesListBox, 3);
+            this.BatchesListPanel.SetColumnSpan(this.BatchesListBox, 2);
             this.BatchesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BatchesListBox.FormattingEnabled = true;
             this.BatchesListBox.IntegralHeight = false;
@@ -1984,6 +1984,70 @@
             this.OutputLayoutPanel.Size = new System.Drawing.Size(732, 393);
             this.OutputLayoutPanel.TabIndex = 2;
             // 
+            // SendEnterButton
+            // 
+            this.SendEnterButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendEnterButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.SendEnterButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendEnterButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.SendEnterButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.SendEnterButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.SendEnterButton.Border.HoverVisible = true;
+            this.SendEnterButton.Border.Rounding = 6;
+            this.SendEnterButton.Border.Thickness = 1;
+            this.SendEnterButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.SendEnterButton.Border.Visible = true;
+            this.SendEnterButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SendEnterButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.Image = null;
+            this.SendEnterButton.Location = new System.Drawing.Point(635, 366);
+            this.SendEnterButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.SendEnterButton.Name = "SendEnterButton";
+            this.SendEnterButton.Size = new System.Drawing.Size(94, 24);
+            this.SendEnterButton.TabIndex = 4;
+            this.SendEnterButton.Text = "发送回车";
+            this.SendEnterButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.SendEnterButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.SendEnterButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendEnterButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.SendEnterButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.SendEnterButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.SendEnterButton.Click += new System.EventHandler(this.SendEnterButton_Click);
+            // 
+            // SendInputButton
+            // 
+            this.SendInputButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendInputButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.SendInputButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.SendInputButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.SendInputButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.SendInputButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.SendInputButton.Border.HoverVisible = true;
+            this.SendInputButton.Border.Rounding = 6;
+            this.SendInputButton.Border.Thickness = 1;
+            this.SendInputButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.SendInputButton.Border.Visible = true;
+            this.SendInputButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SendInputButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.Image = null;
+            this.SendInputButton.Location = new System.Drawing.Point(535, 366);
+            this.SendInputButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.SendInputButton.Name = "SendInputButton";
+            this.SendInputButton.Size = new System.Drawing.Size(94, 24);
+            this.SendInputButton.TabIndex = 3;
+            this.SendInputButton.Text = "发送";
+            this.SendInputButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.SendInputButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.SendInputButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.SendInputButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.SendInputButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.SendInputButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.SendInputButton.Click += new System.EventHandler(this.SendInputButton_Click);
+            // 
             // ConsoleTextBox
             // 
             this.ConsoleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -2073,70 +2137,6 @@
             this.InputTextBox.Watermark.Text = "输入要发送到控制台的文本 ...";
             this.InputTextBox.Watermark.Visible = true;
             this.InputTextBox.WordWrap = true;
-            // 
-            // SendInputButton
-            // 
-            this.SendInputButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.SendInputButton.BackColorState.Enabled = System.Drawing.Color.White;
-            this.SendInputButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.SendInputButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.SendInputButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.SendInputButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
-            this.SendInputButton.Border.HoverVisible = true;
-            this.SendInputButton.Border.Rounding = 6;
-            this.SendInputButton.Border.Thickness = 1;
-            this.SendInputButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
-            this.SendInputButton.Border.Visible = true;
-            this.SendInputButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SendInputButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendInputButton.Image = null;
-            this.SendInputButton.Location = new System.Drawing.Point(535, 366);
-            this.SendInputButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
-            this.SendInputButton.Name = "SendInputButton";
-            this.SendInputButton.Size = new System.Drawing.Size(94, 24);
-            this.SendInputButton.TabIndex = 3;
-            this.SendInputButton.Text = "发送";
-            this.SendInputButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.SendInputButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
-            this.SendInputButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendInputButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendInputButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendInputButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.SendInputButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.SendInputButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.SendInputButton.Click += new System.EventHandler(this.SendInputButton_Click);
-            // 
-            // SendEnterButton
-            // 
-            this.SendEnterButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.SendEnterButton.BackColorState.Enabled = System.Drawing.Color.White;
-            this.SendEnterButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.SendEnterButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.SendEnterButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.SendEnterButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
-            this.SendEnterButton.Border.HoverVisible = true;
-            this.SendEnterButton.Border.Rounding = 6;
-            this.SendEnterButton.Border.Thickness = 1;
-            this.SendEnterButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
-            this.SendEnterButton.Border.Visible = true;
-            this.SendEnterButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SendEnterButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendEnterButton.Image = null;
-            this.SendEnterButton.Location = new System.Drawing.Point(635, 366);
-            this.SendEnterButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
-            this.SendEnterButton.Name = "SendEnterButton";
-            this.SendEnterButton.Size = new System.Drawing.Size(94, 24);
-            this.SendEnterButton.TabIndex = 4;
-            this.SendEnterButton.Text = "发送回车";
-            this.SendEnterButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.SendEnterButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
-            this.SendEnterButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendEnterButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendEnterButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.SendEnterButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.SendEnterButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.SendEnterButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.SendEnterButton.Click += new System.EventHandler(this.SendEnterButton_Click);
             // 
             // BatchHostForm
             // 
