@@ -54,22 +54,27 @@
         }
 
         /// <summary>
-        /// 生成界面状态
+        /// 界面状态
         /// </summary>
-        public enum BuildStates
+        public enum PageStates
         {
             /// <summary>
-            /// 配置状态
+            /// 准备状态
             /// </summary>
-            Config = 0,
+            Prepare = 0,
             /// <summary>
-            /// 生成状态
+            /// 工作状态
             /// </summary>
-            Build = 1,
+            Working = 1,
             /// <summary>
             /// 取消状态
             /// </summary>
             Cancel = 2,
+            /// <summary>
+            /// 任务结束
+            /// </summary>
+            Finish = 3,
         }
+
     }
 }

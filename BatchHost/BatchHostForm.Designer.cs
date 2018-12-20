@@ -63,7 +63,7 @@
             this.BatchesCountLabel = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.BuildProgressPanel = new System.Windows.Forms.Panel();
-            this.CancelBuildButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.BuildCancelButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.BuildGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
             this.MonitorGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.MonitorListBox = new System.Windows.Forms.CheckedListBox();
@@ -85,6 +85,7 @@
             this.BatchesListBox = new System.Windows.Forms.CheckedListBox();
             this.BatchesExecuteControlGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.BatchesExecuteControlPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.ExecuteCancelButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
             this.MonitTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
@@ -1030,7 +1031,7 @@
             // 
             // BuildProgressPanel
             // 
-            this.BuildProgressPanel.Controls.Add(this.CancelBuildButton);
+            this.BuildProgressPanel.Controls.Add(this.BuildCancelButton);
             this.BuildProgressPanel.Controls.Add(this.BuildGauge);
             this.BuildProgressPanel.Location = new System.Drawing.Point(0, 0);
             this.BuildProgressPanel.Name = "BuildProgressPanel";
@@ -1038,39 +1039,39 @@
             this.BuildProgressPanel.TabIndex = 5;
             this.BuildProgressPanel.Visible = false;
             // 
-            // CancelBuildButton
+            // BuildCancelButton
             // 
-            this.CancelBuildButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.CancelBuildButton.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.CancelBuildButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.CancelBuildButton.BackColorState.Enabled = System.Drawing.Color.White;
-            this.CancelBuildButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.CancelBuildButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.CancelBuildButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.CancelBuildButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
-            this.CancelBuildButton.Border.HoverVisible = true;
-            this.CancelBuildButton.Border.Rounding = 6;
-            this.CancelBuildButton.Border.Thickness = 1;
-            this.CancelBuildButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
-            this.CancelBuildButton.Border.Visible = true;
-            this.CancelBuildButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.CancelBuildButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.CancelBuildButton.Image = null;
-            this.CancelBuildButton.Location = new System.Drawing.Point(140, 232);
-            this.CancelBuildButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
-            this.CancelBuildButton.Name = "CancelBuildButton";
-            this.CancelBuildButton.Size = new System.Drawing.Size(120, 30);
-            this.CancelBuildButton.TabIndex = 4;
-            this.CancelBuildButton.Text = "取消";
-            this.CancelBuildButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.CancelBuildButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
-            this.CancelBuildButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.CancelBuildButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.CancelBuildButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.CancelBuildButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.CancelBuildButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.CancelBuildButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.CancelBuildButton.Click += new System.EventHandler(this.CancelBuildButton_Click);
+            this.BuildCancelButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.BuildCancelButton.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BuildCancelButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BuildCancelButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.BuildCancelButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BuildCancelButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.BuildCancelButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BuildCancelButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BuildCancelButton.Border.HoverVisible = true;
+            this.BuildCancelButton.Border.Rounding = 6;
+            this.BuildCancelButton.Border.Thickness = 1;
+            this.BuildCancelButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BuildCancelButton.Border.Visible = true;
+            this.BuildCancelButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BuildCancelButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildCancelButton.Image = null;
+            this.BuildCancelButton.Location = new System.Drawing.Point(140, 232);
+            this.BuildCancelButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BuildCancelButton.Name = "BuildCancelButton";
+            this.BuildCancelButton.Size = new System.Drawing.Size(120, 30);
+            this.BuildCancelButton.TabIndex = 4;
+            this.BuildCancelButton.Text = "取消";
+            this.BuildCancelButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.BuildCancelButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BuildCancelButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildCancelButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildCancelButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BuildCancelButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BuildCancelButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BuildCancelButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BuildCancelButton.Click += new System.EventHandler(this.BuildCancelButton_Click);
             // 
             // BuildGauge
             // 
@@ -1101,7 +1102,6 @@
             this.BuildGauge.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.BuildGauge.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.BuildGauge.Thickness = 50;
-            this.BuildGauge.Value = 50;
             // 
             // MonitorGroupBox
             // 
@@ -1422,7 +1422,7 @@
             this.FindDirTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.FindDirTextBox.Size = new System.Drawing.Size(414, 26);
             this.FindDirTextBox.TabIndex = 4;
-            this.FindDirTextBox.TextBoxWidth = 372;
+            this.FindDirTextBox.TextBoxWidth = 376;
             this.FindDirTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.FindDirTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.FindDirTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1479,7 +1479,7 @@
             this.BatchesSearchTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.BatchesSearchTextBox.Size = new System.Drawing.Size(414, 26);
             this.BatchesSearchTextBox.TabIndex = 0;
-            this.BatchesSearchTextBox.TextBoxWidth = 372;
+            this.BatchesSearchTextBox.TextBoxWidth = 376;
             this.BatchesSearchTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.BatchesSearchTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BatchesSearchTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -1490,7 +1490,7 @@
             this.BatchesSearchTextBox.Watermark.Active = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.BatchesSearchTextBox.Watermark.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BatchesSearchTextBox.Watermark.Inactive = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
-            this.BatchesSearchTextBox.Watermark.Text = "请输入搜索关键字 (支持 ? 和 * 通配字符)...";
+            this.BatchesSearchTextBox.Watermark.Text = "请输入搜索关键字 (支持 ? 和 * 通配字符) ...";
             this.BatchesSearchTextBox.Watermark.Visible = true;
             this.BatchesSearchTextBox.WordWrap = true;
             this.BatchesSearchTextBox.ButtonClicked += new VisualPlus.Toolkit.Controls.Editors.VisualTextBox.ButtonClickedEventHandler(this.BatchesSearchTextBox_ButtonClicked);
@@ -1768,16 +1768,53 @@
             this.BatchesExecuteControlPanel.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BatchesExecuteControlPanel.ColumnCount = 1;
             this.BatchesExecuteControlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.BatchesExecuteControlPanel.Controls.Add(this.ExecuteCancelButton, 0, 1);
             this.BatchesExecuteControlPanel.Controls.Add(this.ExecuteButton, 0, 0);
-            this.BatchesExecuteControlPanel.Controls.Add(this.ExecuteGauge, 0, 2);
+            this.BatchesExecuteControlPanel.Controls.Add(this.ExecuteGauge, 0, 3);
             this.BatchesExecuteControlPanel.Location = new System.Drawing.Point(3, 28);
             this.BatchesExecuteControlPanel.Name = "BatchesExecuteControlPanel";
-            this.BatchesExecuteControlPanel.RowCount = 3;
+            this.BatchesExecuteControlPanel.RowCount = 4;
+            this.BatchesExecuteControlPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.BatchesExecuteControlPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.BatchesExecuteControlPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.BatchesExecuteControlPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.BatchesExecuteControlPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.BatchesExecuteControlPanel.Size = new System.Drawing.Size(204, 393);
             this.BatchesExecuteControlPanel.TabIndex = 1;
+            // 
+            // ExecuteCancelButton
+            // 
+            this.ExecuteCancelButton.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ExecuteCancelButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ExecuteCancelButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.ExecuteCancelButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ExecuteCancelButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ExecuteCancelButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.ExecuteCancelButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.ExecuteCancelButton.Border.HoverVisible = true;
+            this.ExecuteCancelButton.Border.Rounding = 6;
+            this.ExecuteCancelButton.Border.Thickness = 1;
+            this.ExecuteCancelButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.ExecuteCancelButton.Border.Visible = true;
+            this.ExecuteCancelButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ExecuteCancelButton.Enabled = false;
+            this.ExecuteCancelButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ExecuteCancelButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ExecuteCancelButton.Image = null;
+            this.ExecuteCancelButton.Location = new System.Drawing.Point(3, 53);
+            this.ExecuteCancelButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.ExecuteCancelButton.Name = "ExecuteCancelButton";
+            this.ExecuteCancelButton.Size = new System.Drawing.Size(198, 44);
+            this.ExecuteCancelButton.TabIndex = 6;
+            this.ExecuteCancelButton.Text = "取消";
+            this.ExecuteCancelButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.ExecuteCancelButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.ExecuteCancelButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ExecuteCancelButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ExecuteCancelButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ExecuteCancelButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ExecuteCancelButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ExecuteCancelButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             // 
             // ExecuteButton
             // 
@@ -1951,7 +1988,7 @@
         private System.Windows.Forms.Label BatchesCountLabel;
         private System.Windows.Forms.Panel BuildProgressPanel;
         private VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge BuildGauge;
-        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton CancelBuildButton;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton BuildCancelButton;
         private System.Windows.Forms.FlowLayoutPanel BatchesCountPanel;
         private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox BatchesListGroupBox;
         private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox BatchesExecuteControlGroupBox;
@@ -1969,6 +2006,7 @@
         private System.Windows.Forms.TableLayoutPanel BatchesExecuteControlPanel;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton ExecuteButton;
         private VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge ExecuteGauge;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton ExecuteCancelButton;
     }
 }
 

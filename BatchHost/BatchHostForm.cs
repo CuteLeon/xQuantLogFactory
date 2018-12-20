@@ -126,7 +126,7 @@ namespace BatchHost
         {
             try
             {
-                this.CheckData();
+                this.CheckBuildData();
             }
             catch (Exception ex)
             {
@@ -201,21 +201,25 @@ namespace BatchHost
             this.UnityTaskArgument.LogFinishTime = this.LogFinishTimePicker.Checked ? new DateTime?(this.LogFinishTimePicker.Value) : null;
         }
 
-        private void CancelBuildButton_Click(object sender, EventArgs e)
+        private void BuildCancelButton_Click(object sender, EventArgs e)
         {
-            this.CancelBuildButton.Enabled = false;
-
-            this.BuildState = BuildStates.Cancel;
+            this.BuildState = PageStates.Cancel;
         }
 
         private void ExecuteButton_Click(object sender, EventArgs e)
         {
-            string path = @"E:\CSharp\xQuantLogFactory\Build\Debug\Batches\客户端启动日志v065.bat";
+            try
+            {
+                this.CheckExecuteData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "数据检查发现异常：", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            Process process = new Process();
-            process.StartInfo.FileName = path;
-            process.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
-            process.Start();
+            // 执行任务
+            this.ExecuteBatches();
         }
 
         private void FindDirTextBox_ButtonClicked()

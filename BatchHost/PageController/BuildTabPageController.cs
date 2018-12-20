@@ -23,11 +23,11 @@ namespace BatchHost
         /// </summary>
         public TaskArgumentDM UnityTaskArgument = new TaskArgumentDM();
 
-        private BuildStates buildState;
+        private PageStates buildState;
         /// <summary>
         /// 生成界面状态
         /// </summary>
-        public BuildStates BuildState
+        public PageStates BuildState
         {
             get => this.buildState;
             set
@@ -41,19 +41,24 @@ namespace BatchHost
 
                 switch (value)
                 {
-                    case BuildStates.Config:
+                    case PageStates.Prepare:
                         {
                             this.SwitchToConfigTask();
                             break;
                         }
-                    case BuildStates.Build:
+                    case PageStates.Working:
                         {
                             this.SwitchToBuild();
                             break;
                         }
-                    case BuildStates.Cancel:
+                    case PageStates.Cancel:
                         {
                             this.SwitchToCancelBuild();
+                            break;
+                        }
+                    case PageStates.Finish:
+                        {
+                            this.SwitchToBuildFinish();
                             break;
                         }
                     default:
@@ -137,10 +142,10 @@ namespace BatchHost
         }
 
         /// <summary>
-        /// 检查数据
+        /// 检查生成任务输入数据
         /// </summary>
         /// <returns></returns>
-        private void CheckData()
+        private void CheckBuildData()
         {
             if (string.IsNullOrWhiteSpace(this.LogDirTextBox.Text) && !Directory.Exists(this.LogDirTextBox.Text))
             {
@@ -221,7 +226,7 @@ namespace BatchHost
             ThreadPool.QueueUserWorkItem(new WaitCallback((x) =>
             {
                 // 等待线程池请求返回后再切换界面
-                this.Invoke(new Action(() => { this.BuildState = BuildStates.Build; }));
+                this.Invoke(new Action(() => { this.BuildState = PageStates.Working; }));
 
                 try
                 {
@@ -251,7 +256,7 @@ namespace BatchHost
                                 this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
 
                                 // 检查取消状态
-                                if (this.BuildState == BuildStates.Cancel)
+                                if (this.BuildState == PageStates.Cancel)
                                 {
                                     return;
                                 }
@@ -272,7 +277,7 @@ namespace BatchHost
                             this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
 
                             // 检查取消状态
-                            if (this.BuildState == BuildStates.Cancel)
+                            if (this.BuildState == PageStates.Cancel)
                             {
                                 return;
                             }
@@ -294,7 +299,7 @@ namespace BatchHost
                 }
                 finally
                 {
-                    this.Invoke(new Action(() => { this.BuildState = BuildStates.Config; }));
+                    this.Invoke(new Action(() => { this.BuildState = PageStates.Finish; }));
                 }
             }));
         }
@@ -361,10 +366,17 @@ namespace BatchHost
         /// <param name="progress"></param>
         private void ReportBuildProgress(int progress)
         {
-            this.Invoke(new Action(() =>
+            if (this.BuildGauge.InvokeRequired)
+            {
+                this.Invoke(new Action(() =>
+                {
+                    this.BuildGauge.Value = progress;
+                }));
+            }
+            else
             {
                 this.BuildGauge.Value = progress;
-            }));
+            }
         }
 
         /// <summary>
@@ -415,11 +427,6 @@ namespace BatchHost
         /// </summary>
         private void SwitchToBuild()
         {
-            // 初始化工作
-            this.BuildGauge.Value = 0;
-            this.CancelBuildButton.Text = "取消";
-            this.CancelBuildButton.Enabled = true;
-
             this.BuildProgressPanel.Show();
             this.BuildProgressPanel.Dock = DockStyle.Fill;
             this.ArgumentGroupBox.Hide();
@@ -428,11 +435,26 @@ namespace BatchHost
         }
 
         /// <summary>
+        /// 切换至生成结束界面
+        /// </summary>
+        private void SwitchToBuildFinish()
+        {
+            // 初始化工作
+            this.BuildGauge.Value = 0;
+            this.BuildCancelButton.Text = "取消";
+            this.BuildCancelButton.Enabled = true;
+
+            this.BuildState = PageStates.Prepare;
+        }
+
+
+        /// <summary>
         /// 取消任务
         /// </summary>
         private void SwitchToCancelBuild()
         {
-            this.CancelBuildButton.Text = "正在取消 ...";
+            this.BuildCancelButton.Enabled = false;
+            this.BuildCancelButton.Text = "正在取消 ...";
         }
     }
 }
