@@ -133,6 +133,16 @@ namespace BatchHost
                 return;
             }
 
+            // 预计生成批处理文件数量较大时弹出提示
+            int count = this.UnityTaskArgument.BatchesCount;
+            if (count > 512)
+            {
+                if (MessageBox.Show(this, $"预计生成 {count} 个批处理文件，数量较大。\n确认生成？", "确认生成？", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                {
+                    return;
+                }
+            }
+
             // 创建任务
             this.SaveTaskArgument();
 
