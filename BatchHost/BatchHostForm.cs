@@ -274,6 +274,8 @@ namespace BatchHost
         private void ExecuteCancelButton_Click(object sender, EventArgs e)
         {
             this.ExecuteState = PageStates.Cancel;
+
+            this.KillBatchProcess();
         }
         #endregion
 

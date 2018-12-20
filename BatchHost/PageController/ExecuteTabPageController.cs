@@ -14,6 +14,11 @@ namespace BatchHost
 {
     public partial class BatchHostForm
     {
+        /// <summary>
+        /// 批处理进程
+        /// </summary>
+        public Process BatchProcess = null;
+
         private PageStates executeState;
         /// <summary>
         /// 执行界面状态
@@ -136,16 +141,15 @@ namespace BatchHost
                     {
                         batch = batches[index];
 
-                        // TODO: 执行批处理任务
-                        Thread.Sleep(1500);
-                        /*
-                        string path = @"E:\CSharp\xQuantLogFactory\Build\Debug\Batches\客户端启动日志v065.bat";
-
-                        Process process = new Process();
-                        process.StartInfo.FileName = path;
-                        process.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
-                        process.Start();
-                         */
+                        try
+                        {
+                            // 执行批处理任务
+                            this.ExecuteBatch(batch);
+                        }
+                        catch (Exception ex)
+                        {
+                            // TODO: 进程遇到异常，输出信息
+                        }
 
                         // 报告进度（100.0 * 位置和小数点不可调整，否则两个 int 直接相除后无法保留精度，而导致进度一致为 0）
                         this.ReportExecuteProgress(Convert.ToInt32(Math.Round(100.0 * index / batches.Length)));
@@ -176,6 +180,34 @@ namespace BatchHost
                     this.Invoke(new Action(() => { this.ExecuteState = PageStates.Finish; }));
                 }
             }));
+        }
+
+        /// <summary>
+        /// 执行批处理任务
+        /// </summary>
+        /// <param name="path"></param>
+        private void ExecuteBatch(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException();
+            }
+
+            try
+            {
+                this.BatchProcess = new Process();
+                this.BatchProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                this.BatchProcess.StartInfo.FileName = path;
+                this.BatchProcess.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
+                this.BatchProcess.Start();
+                this.BatchProcess.WaitForExit();
+                // TODO: 处理退出代码
+                Console.WriteLine(this.BatchProcess.ExitCode);
+            }
+            finally
+            {
+                this.BatchProcess = null;
+            }
         }
 
         /// <summary>
@@ -219,6 +251,17 @@ namespace BatchHost
 
                     this.FindBatches(dialog.SelectedPath);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 终止批处理进程
+        /// </summary>
+        private void KillBatchProcess()
+        {
+            if (this.BatchProcess != null && !this.BatchProcess.HasExited)
+            {
+                this.BatchProcess.Kill();
             }
         }
 

@@ -243,7 +243,6 @@ namespace BatchHost
 
                     string batchName = string.Empty;
                     int index = 0;
-                    int timeIntervalMinutes = argument.TimeInterval * argument.TimeIntervalUnit.GetMinutes();
 
                     // 遍历监视规则
                     foreach (string monitorName in argument.MonitorNames)
@@ -251,12 +250,13 @@ namespace BatchHost
                         if (argument.SplitTaskTime)
                         {
                             // 遍历划分时段
+                            int timeIntervalMinutes = argument.TimeInterval * argument.TimeIntervalUnit.GetMinutes();
                             DateTime startTime = argument.LogStartTime.Value;
                             DateTime finishTime = startTime.AddMinutes(timeIntervalMinutes);
 
                             for (; startTime < argument.LogFinishTime;)
                             {
-                                batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_{startTime.ToString("yyyyMMddHHmmss")}.bat";
+                                batchName = this.GetBatchName(monitorName, startTime, finishTime);
 
                                 // 生成批处理文件
                                 this.SaveBatchFile(batchName, argument, monitorName, startTime, finishTime);
@@ -277,7 +277,7 @@ namespace BatchHost
                         }
                         else
                         {
-                            batchName = $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_不限时段.bat";
+                            batchName = this.GetBatchName(monitorName, argument.LogStartTime, argument.LogFinishTime);
 
                             // 生成批处理文件
                             this.SaveBatchFile(batchName, argument, monitorName, argument.LogStartTime, argument.LogFinishTime);
@@ -311,6 +311,38 @@ namespace BatchHost
                     this.Invoke(new Action(() => { this.BuildState = PageStates.Finish; }));
                 }
             }));
+        }
+
+        /// <summary>
+        /// 获取批处理文件名称
+        /// </summary>
+        /// <param name="monitorName"></param>
+        /// <param name="startTime"></param>
+        /// <param name="finishTime"></param>
+        private string GetBatchName(string monitorName, DateTime? startTime, DateTime? finishTime)
+        {
+            if (startTime.HasValue)
+            {
+                if (finishTime.HasValue)
+                {
+                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_介于_{startTime.Value.ToString("yyyyMMddHHmmss")}_{finishTime.Value.ToString("yyyyMMddHHmmss")}.bat";
+                }
+                else
+                {
+                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_晚于_{startTime.Value.ToString("yyyyMMddHHmmss")}.bat";
+                }
+            }
+            else
+            {
+                if (finishTime.HasValue)
+                {
+                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_早于_{finishTime.Value.ToString("yyyyMMddHHmmss")}.bat";
+                }
+                else
+                {
+                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_不限时段.bat";
+                }
+            }
         }
 
         /// <summary>
