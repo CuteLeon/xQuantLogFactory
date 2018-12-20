@@ -17,6 +17,16 @@ namespace BatchHost.Utils
         /// </summary>
         public static string xQuantName = Path.GetFileName(xQuantPath);
 
+        /// <summary>
+        /// xQuant日志分析工具目录
+        /// </summary>
+        public static string xQuantDirectory = Path.GetDirectoryName(xQuantPath);
+
+        /// <summary>
+        /// 生成目录
+        /// </summary>
+        public static string BuildDirectory = Path.Combine(xQuantDirectory, "Batches");
+
         [DllImport("user32.dll")]
         public static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprc, IntPtr hrgn, uint flags);
         [DllImportAttribute("user32.dll")]
