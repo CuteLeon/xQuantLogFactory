@@ -59,6 +59,7 @@
             this.AutoExitToggle = new VisualPlus.Toolkit.Controls.Interactivity.VisualToggle();
             this.label11 = new System.Windows.Forms.Label();
             this.AutoOpenReportToggle = new VisualPlus.Toolkit.Controls.Interactivity.VisualToggle();
+            this.BatchesCountPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.BatchesCountLabel = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.BuildProgressPanel = new System.Windows.Forms.Panel();
@@ -71,16 +72,15 @@
             this.BuildButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.MonitTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
             this.ArgumentGroupBox.SuspendLayout();
             this.ArgumentLayoutPanel.SuspendLayout();
+            this.BatchesCountPanel.SuspendLayout();
             this.BuildProgressPanel.SuspendLayout();
             this.MonitorGroupBox.SuspendLayout();
             this.BuildControlGroupBox.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TitlePanel
@@ -289,7 +289,7 @@
             this.ArgumentGroupBox.Name = "ArgumentGroupBox";
             this.ArgumentGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
             this.ArgumentGroupBox.Separator = true;
-            this.ArgumentGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
+            this.ArgumentGroupBox.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.ArgumentGroupBox.Size = new System.Drawing.Size(518, 364);
             this.ArgumentGroupBox.TabIndex = 4;
             this.ArgumentGroupBox.Text = "1.配置批量任务信息";
@@ -338,7 +338,7 @@
             this.ArgumentLayoutPanel.Controls.Add(this.AutoExitToggle, 1, 5);
             this.ArgumentLayoutPanel.Controls.Add(this.label11, 2, 5);
             this.ArgumentLayoutPanel.Controls.Add(this.AutoOpenReportToggle, 3, 5);
-            this.ArgumentLayoutPanel.Controls.Add(this.flowLayoutPanel1, 0, 7);
+            this.ArgumentLayoutPanel.Controls.Add(this.BatchesCountPanel, 0, 7);
             this.ArgumentLayoutPanel.Location = new System.Drawing.Point(5, 31);
             this.ArgumentLayoutPanel.Name = "ArgumentLayoutPanel";
             this.ArgumentLayoutPanel.RowCount = 8;
@@ -959,6 +959,19 @@
             this.AutoOpenReportToggle.TrueTextToggle = "将不会自动打开报告";
             this.AutoOpenReportToggle.Type = VisualPlus.Toolkit.Controls.Interactivity.VisualToggle.ToggleTypes.Custom;
             // 
+            // BatchesCountPanel
+            // 
+            this.ArgumentLayoutPanel.SetColumnSpan(this.BatchesCountPanel, 4);
+            this.BatchesCountPanel.Controls.Add(this.BatchesCountLabel);
+            this.BatchesCountPanel.Controls.Add(this.label12);
+            this.BatchesCountPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchesCountPanel.Location = new System.Drawing.Point(0, 287);
+            this.BatchesCountPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.BatchesCountPanel.Name = "BatchesCountPanel";
+            this.BatchesCountPanel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.BatchesCountPanel.Size = new System.Drawing.Size(507, 40);
+            this.BatchesCountPanel.TabIndex = 32;
+            // 
             // BatchesCountLabel
             // 
             this.BatchesCountLabel.AutoEllipsis = true;
@@ -1086,7 +1099,7 @@
             this.MonitorGroupBox.Name = "MonitorGroupBox";
             this.MonitorGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
             this.MonitorGroupBox.Separator = true;
-            this.MonitorGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
+            this.MonitorGroupBox.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.MonitorGroupBox.Size = new System.Drawing.Size(220, 364);
             this.MonitorGroupBox.TabIndex = 3;
             this.MonitorGroupBox.Text = "2.勾选监视规则文件";
@@ -1300,19 +1313,6 @@
             this.MonitTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.MonitTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
             // 
-            // flowLayoutPanel1
-            // 
-            this.ArgumentLayoutPanel.SetColumnSpan(this.flowLayoutPanel1, 4);
-            this.flowLayoutPanel1.Controls.Add(this.BatchesCountLabel);
-            this.flowLayoutPanel1.Controls.Add(this.label12);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 287);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(507, 40);
-            this.flowLayoutPanel1.TabIndex = 32;
-            // 
             // BatchHostForm
             // 
             this.AllowDrop = true;
@@ -1337,12 +1337,12 @@
             this.ArgumentGroupBox.ResumeLayout(false);
             this.ArgumentLayoutPanel.ResumeLayout(false);
             this.ArgumentLayoutPanel.PerformLayout();
+            this.BatchesCountPanel.ResumeLayout(false);
+            this.BatchesCountPanel.PerformLayout();
             this.BuildProgressPanel.ResumeLayout(false);
             this.MonitorGroupBox.ResumeLayout(false);
             this.BuildControlGroupBox.ResumeLayout(false);
             this.BuildControlGroupBox.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1389,7 +1389,7 @@
         private System.Windows.Forms.Panel BuildProgressPanel;
         private VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge BuildGauge;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton CancelBuildButton;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel BatchesCountPanel;
     }
 }
 
