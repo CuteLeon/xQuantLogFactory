@@ -182,7 +182,7 @@ namespace BatchHost
 
                     this.BatchProcessEvent.Close();
                     stopwatch.Stop();
-                    this.PrintProcessOutput("所有批处理文件执行完成 ...");
+                    this.PrintProcessOutput($"所有批处理文件执行完成，共耗时 {stopwatch.Elapsed.TotalSeconds.ToString("N")} 秒");
                     this.Invoke(new Action(() =>
                     {
                         this.ReportExecuteProgress(100);
