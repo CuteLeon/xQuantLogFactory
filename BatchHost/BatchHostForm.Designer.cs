@@ -88,7 +88,6 @@
             this.ExecuteCancelButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
-            this.MonitTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -236,7 +235,6 @@
             // 
             this.MainTabControl.Controls.Add(this.BuildTabPage);
             this.MainTabControl.Controls.Add(this.ExecuteTabPage);
-            this.MainTabControl.Controls.Add(this.MonitTabPage);
             this.MainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.MainTabControl.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -245,7 +243,7 @@
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 1;
+            this.MainTabControl.SelectedIndex = 0;
             this.MainTabControl.SelectorAlignment = System.Windows.Forms.TabAlignment.Bottom;
             this.MainTabControl.SelectorSpacing = 10;
             this.MainTabControl.SelectorThickness = 5;
@@ -1623,7 +1621,8 @@
             this.RefreshBatchesButton.Location = new System.Drawing.Point(423, 3);
             this.RefreshBatchesButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.RefreshBatchesButton.Name = "RefreshBatchesButton";
-            this.RefreshBatchesButton.Size = new System.Drawing.Size(86, 24);
+            this.BatchesListPanel.SetRowSpan(this.RefreshBatchesButton, 2);
+            this.RefreshBatchesButton.Size = new System.Drawing.Size(96, 54);
             this.RefreshBatchesButton.TabIndex = 3;
             this.RefreshBatchesButton.Text = "刷新";
             this.RefreshBatchesButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
@@ -1743,7 +1742,7 @@
             this.BatchesExecuteControlGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.BatchesExecuteControlGroupBox.Name = "BatchesExecuteControlGroupBox";
             this.BatchesExecuteControlGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
-            this.BatchesExecuteControlGroupBox.Separator = true;
+            this.BatchesExecuteControlGroupBox.Separator = false;
             this.BatchesExecuteControlGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
             this.BatchesExecuteControlGroupBox.Size = new System.Drawing.Size(210, 424);
             this.BatchesExecuteControlGroupBox.TabIndex = 5;
@@ -1862,13 +1861,13 @@
             this.ExecuteGauge.Location = new System.Drawing.Point(6, 249);
             this.ExecuteGauge.Margin = new System.Windows.Forms.Padding(6);
             this.ExecuteGauge.Maximum = 100;
-            this.ExecuteGauge.MaximumVisible = true;
+            this.ExecuteGauge.MaximumVisible = false;
             this.ExecuteGauge.Minimum = 0;
-            this.ExecuteGauge.MinimumVisible = true;
+            this.ExecuteGauge.MinimumVisible = false;
             this.ExecuteGauge.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.ExecuteGauge.Name = "ExecuteGauge";
             this.ExecuteGauge.Progress = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.ExecuteGauge.ProgressVisible = true;
+            this.ExecuteGauge.ProgressVisible = false;
             this.ExecuteGauge.Size = new System.Drawing.Size(192, 138);
             this.ExecuteGauge.SmallChange = 1;
             this.ExecuteGauge.TabIndex = 5;
@@ -1880,31 +1879,6 @@
             this.ExecuteGauge.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.ExecuteGauge.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.ExecuteGauge.Thickness = 25;
-            // 
-            // MonitTabPage
-            // 
-            this.MonitTabPage.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.MonitTabPage.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.MonitTabPage.Border.Rounding = 6;
-            this.MonitTabPage.Border.Thickness = 1;
-            this.MonitTabPage.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rectangle;
-            this.MonitTabPage.Border.Visible = false;
-            this.MonitTabPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(181)))), ((int)(((byte)(187)))));
-            this.MonitTabPage.HeaderImage = null;
-            this.MonitTabPage.Image = null;
-            this.MonitTabPage.ImageSize = new System.Drawing.Size(16, 16);
-            this.MonitTabPage.Location = new System.Drawing.Point(4, 29);
-            this.MonitTabPage.Name = "MonitTabPage";
-            this.MonitTabPage.Size = new System.Drawing.Size(738, 424);
-            this.MonitTabPage.TabHover = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(38)))));
-            this.MonitTabPage.TabIndex = 3;
-            this.MonitTabPage.TabNormal = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(61)))), ((int)(((byte)(73)))));
-            this.MonitTabPage.TabSelected = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(76)))), ((int)(((byte)(88)))));
-            this.MonitTabPage.Text = "监视";
-            this.MonitTabPage.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.MonitTabPage.TextImageRelation = VisualPlus.Toolkit.Child.VisualTabPage.TextImageRelations.Text;
-            this.MonitTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.MonitTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
             // 
             // BatchHostForm
             // 
@@ -1955,7 +1929,6 @@
         private VisualPlus.Toolkit.Controls.Navigation.VisualTabControl MainTabControl;
         private VisualPlus.Toolkit.Child.VisualTabPage ExecuteTabPage;
         private VisualPlus.Toolkit.Child.VisualTabPage BuildTabPage;
-        private VisualPlus.Toolkit.Child.VisualTabPage MonitTabPage;
         private VisualPlus.Toolkit.Controls.Editors.VisualTextBox LogDirTextBox;
         private System.Windows.Forms.Label label1;
         private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox BuildControlGroupBox;

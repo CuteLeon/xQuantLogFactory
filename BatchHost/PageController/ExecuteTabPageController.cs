@@ -19,6 +19,11 @@ namespace BatchHost
         /// </summary>
         public Process BatchProcess = null;
 
+        /// <summary>
+        /// 批处理进程执行信号量
+        /// </summary>
+        ManualResetEvent BatchProcessEvent = null;
+
         private PageStates executeState;
         /// <summary>
         /// 执行界面状态
@@ -129,8 +134,12 @@ namespace BatchHost
                 // 等待线程池请求返回后再切换界面
                 this.Invoke(new Action(() => { this.ExecuteState = PageStates.Working; }));
 
+                this.PrintProcessOutput("开始轮训执行批处理文件 ...");
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
+
+                // 初始化信号量
+                this.BatchProcessEvent = new ManualResetEvent(true);
 
                 try
                 {
@@ -141,6 +150,10 @@ namespace BatchHost
                     {
                         batch = batches[index];
 
+                        // 阻塞同步信号量
+                        this.PrintProcessOutput("阻塞批处理进程同步信号量 ...");
+                        this.BatchProcessEvent.Reset();
+
                         try
                         {
                             // 执行批处理任务
@@ -148,8 +161,14 @@ namespace BatchHost
                         }
                         catch (Exception ex)
                         {
-                            // TODO: 进程遇到异常，输出信息
+                            // 进程遇到异常，输出信息
+                            this.PrintProcessOutput($"批处理进程遇到异常：{ex.Message}");
                         }
+
+                        // 等待信号量放行后才可以继续执行
+                        this.PrintProcessOutput("等待批处理进程同步信号量放行 ...");
+                        this.BatchProcessEvent.WaitOne();
+                        this.PrintProcessOutput("批处理进程继续执行 ...");
 
                         // 报告进度（100.0 * 位置和小数点不可调整，否则两个 int 直接相除后无法保留精度，而导致进度一致为 0）
                         this.ReportExecuteProgress(Convert.ToInt32(Math.Round(100.0 * index / batches.Length)));
@@ -161,7 +180,9 @@ namespace BatchHost
                         }
                     }
 
+                    this.BatchProcessEvent.Close();
                     stopwatch.Stop();
+                    this.PrintProcessOutput("所有批处理文件执行完成 ...");
                     this.Invoke(new Action(() =>
                     {
                         this.ReportExecuteProgress(100);
@@ -195,20 +216,73 @@ namespace BatchHost
 
             try
             {
+                // TODO: 未开启自动关闭功能的批处理命令，需要手动干预以关闭进程
                 this.BatchProcess = new Process();
-                this.BatchProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 this.BatchProcess.StartInfo.FileName = path;
                 this.BatchProcess.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
-                // TODO: 输出重定向
+
+                // 退出事件
+                this.BatchProcess.EnableRaisingEvents = true;
+                this.BatchProcess.Exited += this.BatchProcess_Exited;
+
+                // 输出信息
+                this.BatchProcess.StartInfo.RedirectStandardOutput = true;
+                this.BatchProcess.StartInfo.RedirectStandardError = true;
+                this.BatchProcess.ErrorDataReceived += this.BatchProcess_OutputDataReceived;
+                this.BatchProcess.OutputDataReceived += this.BatchProcess_OutputDataReceived;
+
+                // 隐藏窗口
+                this.BatchProcess.StartInfo.UseShellExecute = false;
+                this.BatchProcess.StartInfo.CreateNoWindow = true;
+                this.BatchProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                // 启动
                 this.BatchProcess.Start();
-                this.BatchProcess.WaitForExit();
-                // TODO: 处理退出代码
-                Console.WriteLine(this.BatchProcess.ExitCode);
+
+                // 开始读取输出信息
+                this.BatchProcess.BeginOutputReadLine();
+                this.BatchProcess.BeginErrorReadLine();
             }
             finally
             {
-                this.BatchProcess = null;
+                // 此时进程还在运行，这里无法同步等待进程，使用异步信号量控制各个进程按同步队列执行，而非异步并行
             }
+        }
+
+        /// <summary>
+        /// 进程退出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BatchProcess_Exited(object sender, EventArgs e)
+        {
+            // 释放进程
+            this.PrintProcessOutput($"日志分析工具退出代码：{this.BatchProcess.ExitCode}");
+            this.BatchProcess.Close();
+            this.BatchProcess = null;
+
+            // 放行信号量
+            this.PrintProcessOutput("批处理进程同步信号量放行 ...");
+            this.BatchProcessEvent.Set();
+        }
+
+        /// <summary>
+        /// 接收到控制台输出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BatchProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            this.PrintProcessOutput(e.Data);
+        }
+
+        /// <summary>
+        /// 打印进程输出
+        /// </summary>
+        /// <param name="output"></param>
+        private void PrintProcessOutput(string output)
+        {
+            Console.WriteLine(output);
         }
 
         /// <summary>
