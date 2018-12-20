@@ -19,6 +19,11 @@ namespace BatchHost
         /// </summary>
         public Process BatchProcess = null;
 
+        /// <summary>
+        /// 显示控制台消息代理
+        /// </summary>
+        private Action<string> PrintProcessOutputToTextBox = null;
+
         private PageStates executeState;
         /// <summary>
         /// 执行界面状态
@@ -142,6 +147,7 @@ namespace BatchHost
                     {
                         batch = batches[index];
 
+                        this.ConsoleGroupBox.Text = $"正在执行：{batch}";
                         try
                         {
                             // 执行批处理任务
@@ -252,7 +258,14 @@ namespace BatchHost
         /// <param name="output"></param>
         private void PrintProcessOutput(string output)
         {
-            Console.WriteLine(output);
+            if (this.ConsoleTextBox.InvokeRequired)
+            {
+                this.ConsoleTextBox.Invoke(this.PrintProcessOutputToTextBox, output);
+            }
+            else
+            {
+                this.ConsoleTextBox.AppendText(output);
+            }
         }
 
         /// <summary>
@@ -281,6 +294,13 @@ namespace BatchHost
             this.ExecuteGauge.MinimumVisible = true;
             this.ExecuteGauge.MaximumVisible = true;
             this.ExecuteGauge.ProgressVisible = true;
+
+            this.PrintProcessOutputToTextBox = new Action<string>((output) =>
+            {
+                this.ConsoleTextBox.AppendText($"{output}\n");
+            });
+
+            this.ExecuteState = PageStates.Finish;
         }
 
         /// <summary>

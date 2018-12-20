@@ -88,6 +88,9 @@
             this.ExecuteCancelButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
+            this.OutputTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
+            this.ConsoleGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
+            this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -104,6 +107,8 @@
             this.BatchPreviewGroupBox.SuspendLayout();
             this.BatchesExecuteControlGroupBox.SuspendLayout();
             this.BatchesExecuteControlPanel.SuspendLayout();
+            this.OutputTabPage.SuspendLayout();
+            this.ConsoleGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // TitlePanel
@@ -235,6 +240,7 @@
             // 
             this.MainTabControl.Controls.Add(this.BuildTabPage);
             this.MainTabControl.Controls.Add(this.ExecuteTabPage);
+            this.MainTabControl.Controls.Add(this.OutputTabPage);
             this.MainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.MainTabControl.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -262,7 +268,7 @@
             // 
             // BuildTabPage
             // 
-            this.BuildTabPage.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BuildTabPage.BackColor = System.Drawing.Color.Transparent;
             this.BuildTabPage.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.BuildTabPage.Border.Rounding = 6;
             this.BuildTabPage.Border.Thickness = 1;
@@ -291,6 +297,7 @@
             // 
             // ArgumentGroupBox
             // 
+            this.ArgumentGroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ArgumentGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ArgumentGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
             this.ArgumentGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -1103,6 +1110,7 @@
             // 
             // MonitorGroupBox
             // 
+            this.MonitorGroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.MonitorGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.MonitorGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
             this.MonitorGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -1157,6 +1165,7 @@
             // 
             // BuildControlGroupBox
             // 
+            this.BuildControlGroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BuildControlGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.BuildControlGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
             this.BuildControlGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -1289,7 +1298,7 @@
             // 
             // ExecuteTabPage
             // 
-            this.ExecuteTabPage.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ExecuteTabPage.BackColor = System.Drawing.Color.Transparent;
             this.ExecuteTabPage.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
             this.ExecuteTabPage.Border.Rounding = 6;
             this.ExecuteTabPage.Border.Thickness = 1;
@@ -1316,6 +1325,7 @@
             // 
             // BatchesListGroupBox
             // 
+            this.BatchesListGroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BatchesListGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.BatchesListGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
             this.BatchesListGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -1723,6 +1733,7 @@
             // 
             // BatchesExecuteControlGroupBox
             // 
+            this.BatchesExecuteControlGroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BatchesExecuteControlGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.BatchesExecuteControlGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
             this.BatchesExecuteControlGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -1880,6 +1891,104 @@
             this.ExecuteGauge.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.ExecuteGauge.Thickness = 25;
             // 
+            // OutputTabPage
+            // 
+            this.OutputTabPage.BackColor = System.Drawing.Color.Transparent;
+            this.OutputTabPage.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.OutputTabPage.Border.Rounding = 6;
+            this.OutputTabPage.Border.Thickness = 1;
+            this.OutputTabPage.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rectangle;
+            this.OutputTabPage.Border.Visible = false;
+            this.OutputTabPage.Controls.Add(this.ConsoleGroupBox);
+            this.OutputTabPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(181)))), ((int)(((byte)(187)))));
+            this.OutputTabPage.HeaderImage = null;
+            this.OutputTabPage.Image = null;
+            this.OutputTabPage.ImageSize = new System.Drawing.Size(16, 16);
+            this.OutputTabPage.Location = new System.Drawing.Point(4, 29);
+            this.OutputTabPage.Name = "OutputTabPage";
+            this.OutputTabPage.Size = new System.Drawing.Size(738, 424);
+            this.OutputTabPage.TabHover = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(38)))));
+            this.OutputTabPage.TabIndex = 3;
+            this.OutputTabPage.TabNormal = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(61)))), ((int)(((byte)(73)))));
+            this.OutputTabPage.TabSelected = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(76)))), ((int)(((byte)(88)))));
+            this.OutputTabPage.Text = "输出";
+            this.OutputTabPage.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.OutputTabPage.TextImageRelation = VisualPlus.Toolkit.Child.VisualTabPage.TextImageRelations.Text;
+            this.OutputTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.OutputTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
+            // 
+            // ConsoleGroupBox
+            // 
+            this.ConsoleGroupBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ConsoleGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ConsoleGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
+            this.ConsoleGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.ConsoleGroupBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.ConsoleGroupBox.Border.HoverVisible = true;
+            this.ConsoleGroupBox.Border.Rounding = 6;
+            this.ConsoleGroupBox.Border.Thickness = 1;
+            this.ConsoleGroupBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.ConsoleGroupBox.Border.Visible = true;
+            this.ConsoleGroupBox.BoxStyle = VisualPlus.Toolkit.Controls.Layout.VisualGroupBox.GroupBoxStyle.Default;
+            this.ConsoleGroupBox.Controls.Add(this.ConsoleTextBox);
+            this.ConsoleGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConsoleGroupBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ConsoleGroupBox.ForeColor = System.Drawing.Color.DimGray;
+            this.ConsoleGroupBox.Image = null;
+            this.ConsoleGroupBox.Location = new System.Drawing.Point(0, 0);
+            this.ConsoleGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.ConsoleGroupBox.Name = "ConsoleGroupBox";
+            this.ConsoleGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
+            this.ConsoleGroupBox.Separator = false;
+            this.ConsoleGroupBox.SeparatorColor = System.Drawing.Color.WhiteSmoke;
+            this.ConsoleGroupBox.Size = new System.Drawing.Size(738, 424);
+            this.ConsoleGroupBox.TabIndex = 7;
+            this.ConsoleGroupBox.Text = "Console";
+            this.ConsoleGroupBox.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleGroupBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.ConsoleGroupBox.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleGroupBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.ConsoleGroupBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleGroupBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleGroupBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleGroupBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleGroupBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleGroupBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.ConsoleGroupBox.TitleBoxHeight = 25;
+            // 
+            // ConsoleTextBox
+            // 
+            this.ConsoleTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ConsoleTextBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ConsoleTextBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(249)))));
+            this.ConsoleTextBox.BackColorState.Enabled = System.Drawing.Color.Black;
+            this.ConsoleTextBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.ConsoleTextBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.ConsoleTextBox.Border.HoverVisible = true;
+            this.ConsoleTextBox.Border.Rounding = 6;
+            this.ConsoleTextBox.Border.Thickness = 1;
+            this.ConsoleTextBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.ConsoleTextBox.Border.Visible = true;
+            this.ConsoleTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.ConsoleTextBox.Location = new System.Drawing.Point(3, 28);
+            this.ConsoleTextBox.MaxLength = 2147483647;
+            this.ConsoleTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.ConsoleTextBox.Name = "ConsoleTextBox";
+            this.ConsoleTextBox.ReadOnly = true;
+            this.ConsoleTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.ConsoleTextBox.ShowSelectionMargin = false;
+            this.ConsoleTextBox.Size = new System.Drawing.Size(732, 393);
+            this.ConsoleTextBox.TabIndex = 1;
+            this.ConsoleTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.ConsoleTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleTextBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleTextBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleTextBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleTextBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            // 
             // BatchHostForm
             // 
             this.AllowDrop = true;
@@ -1918,6 +2027,8 @@
             this.BatchPreviewGroupBox.ResumeLayout(false);
             this.BatchesExecuteControlGroupBox.ResumeLayout(false);
             this.BatchesExecuteControlPanel.ResumeLayout(false);
+            this.OutputTabPage.ResumeLayout(false);
+            this.ConsoleGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1981,6 +2092,9 @@
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton ExecuteButton;
         private VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge ExecuteGauge;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton ExecuteCancelButton;
+        private VisualPlus.Toolkit.Child.VisualTabPage OutputTabPage;
+        private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox ConsoleGroupBox;
+        private VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox ConsoleTextBox;
     }
 }
 

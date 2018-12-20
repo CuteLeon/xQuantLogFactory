@@ -109,6 +109,8 @@ namespace BatchHost
             this.MonitorGroupBox.Separator = true;
             this.ArgumentGroupBox.SeparatorColor = Color.Gainsboro;
             this.MonitorGroupBox.SeparatorColor = Color.Gainsboro;
+            
+            this.BuildState = PageStates.Finish;
         }
 
         /// <summary>
