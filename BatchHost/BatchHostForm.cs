@@ -258,6 +258,14 @@ namespace BatchHost
                     !this.BatchesListBox.GetItemChecked(index));
             }
         }
+
+        private void BatchesListBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (this.BatchesListBox.SelectedItem != null)
+            {
+                this.ApplyBatchPreview(this.BatchesListBox.SelectedItem as string);
+            }
+        }
         #endregion
 
         #region 方法

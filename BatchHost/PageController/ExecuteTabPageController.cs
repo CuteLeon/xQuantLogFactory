@@ -42,6 +42,9 @@ namespace BatchHost
 
             try
             {
+                // 未使用通配字符时，自动嵌套星号
+                predicate = $"*{predicate}*";
+
                 this.BatchesListBox.Items.AddRange(
                     Directory.GetFiles(targetDir, predicate, SearchOption.AllDirectories)
                     // .Select(path => Path.GetFileName(path))
@@ -50,6 +53,22 @@ namespace BatchHost
             catch (Exception ex)
             {
                 MessageBox.Show(this, $"查找批处理文件遇到错误：\n{ex.Message}", "查找批处理文件遇到错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        /// <summary>
+        /// 显示批处理预览
+        /// </summary>
+        /// <param name="path"></param>
+        private void ApplyBatchPreview(string path)
+        {
+            try
+            {
+                this.PreviewTextBox.Text = File.ReadAllText(path, Encoding.Default);
+            }
+            catch (Exception ex)
+            {
+                this.PreviewTextBox.Text = ex.Message;
             }
         }
     }

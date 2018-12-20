@@ -1490,7 +1490,7 @@
             this.BatchesSearchTextBox.Watermark.Active = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.BatchesSearchTextBox.Watermark.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BatchesSearchTextBox.Watermark.Inactive = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
-            this.BatchesSearchTextBox.Watermark.Text = "请输入搜索关键字 ...";
+            this.BatchesSearchTextBox.Watermark.Text = "请输入搜索关键字 (支持 ? 和 * 通配字符)...";
             this.BatchesSearchTextBox.Watermark.Visible = true;
             this.BatchesSearchTextBox.WordWrap = true;
             this.BatchesSearchTextBox.ButtonClicked += new VisualPlus.Toolkit.Controls.Editors.VisualTextBox.ButtonClickedEventHandler(this.BatchesSearchTextBox_ButtonClicked);
@@ -1720,6 +1720,7 @@
             this.BatchesListBox.Name = "BatchesListBox";
             this.BatchesListBox.Size = new System.Drawing.Size(516, 220);
             this.BatchesListBox.TabIndex = 3;
+            this.BatchesListBox.SelectedValueChanged += new System.EventHandler(this.BatchesListBox_SelectedValueChanged);
             // 
             // BatchesExecuteControlGroupBox
             // 
