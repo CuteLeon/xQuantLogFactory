@@ -72,6 +72,18 @@
             this.BuildButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.MonitTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
+            this.BatchesListGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
+            this.ExecuteControlGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
+            this.BatchesListPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.BatchesSearchTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
+            this.BatchesCheckControlPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.BatchesCheckAllButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.BatchesCheckNoneButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.BatchesCheckInverseButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.BatchPreviewGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
+            this.PreviewTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
+            this.BatchesListBox = new System.Windows.Forms.CheckedListBox();
+            this.FindDirTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -81,6 +93,11 @@
             this.BuildProgressPanel.SuspendLayout();
             this.MonitorGroupBox.SuspendLayout();
             this.BuildControlGroupBox.SuspendLayout();
+            this.ExecuteTabPage.SuspendLayout();
+            this.BatchesListGroupBox.SuspendLayout();
+            this.BatchesListPanel.SuspendLayout();
+            this.BatchesCheckControlPanel.SuspendLayout();
+            this.BatchPreviewGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // TitlePanel
@@ -221,7 +238,7 @@
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 0;
+            this.MainTabControl.SelectedIndex = 1;
             this.MainTabControl.SelectorAlignment = System.Windows.Forms.TabAlignment.Bottom;
             this.MainTabControl.SelectorSpacing = 10;
             this.MainTabControl.SelectorThickness = 5;
@@ -288,7 +305,7 @@
             this.ArgumentGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.ArgumentGroupBox.Name = "ArgumentGroupBox";
             this.ArgumentGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
-            this.ArgumentGroupBox.Separator = true;
+            this.ArgumentGroupBox.Separator = false;
             this.ArgumentGroupBox.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.ArgumentGroupBox.Size = new System.Drawing.Size(518, 364);
             this.ArgumentGroupBox.TabIndex = 4;
@@ -386,6 +403,7 @@
             this.LogLevelComboBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.LogLevelComboBox.Name = "LogLevelComboBox";
             this.LogLevelComboBox.SeparatorColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.LogLevelComboBox.SeparatorVisible = false;
             this.LogLevelComboBox.Size = new System.Drawing.Size(148, 30);
             this.LogLevelComboBox.State = VisualPlus.Enumerators.MouseStates.Normal;
             this.LogLevelComboBox.TabIndex = 25;
@@ -453,6 +471,7 @@
             this.ReportModeComboBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.ReportModeComboBox.Name = "ReportModeComboBox";
             this.ReportModeComboBox.SeparatorColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.ReportModeComboBox.SeparatorVisible = false;
             this.ReportModeComboBox.Size = new System.Drawing.Size(147, 30);
             this.ReportModeComboBox.State = VisualPlus.Enumerators.MouseStates.Normal;
             this.ReportModeComboBox.TabIndex = 23;
@@ -786,6 +805,7 @@
             this.TimeUnitComboBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.TimeUnitComboBox.Name = "TimeUnitComboBox";
             this.TimeUnitComboBox.SeparatorColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.TimeUnitComboBox.SeparatorVisible = false;
             this.TimeUnitComboBox.Size = new System.Drawing.Size(148, 30);
             this.TimeUnitComboBox.State = VisualPlus.Enumerators.MouseStates.Normal;
             this.TimeUnitComboBox.TabIndex = 17;
@@ -1057,13 +1077,13 @@
             this.BuildGauge.Location = new System.Drawing.Point(50, 50);
             this.BuildGauge.Margin = new System.Windows.Forms.Padding(6);
             this.BuildGauge.Maximum = 100;
-            this.BuildGauge.MaximumVisible = true;
+            this.BuildGauge.MaximumVisible = false;
             this.BuildGauge.Minimum = 0;
-            this.BuildGauge.MinimumVisible = true;
+            this.BuildGauge.MinimumVisible = false;
             this.BuildGauge.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.BuildGauge.Name = "BuildGauge";
             this.BuildGauge.Progress = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.BuildGauge.ProgressVisible = true;
+            this.BuildGauge.ProgressVisible = false;
             this.BuildGauge.Size = new System.Drawing.Size(300, 150);
             this.BuildGauge.SmallChange = 1;
             this.BuildGauge.TabIndex = 0;
@@ -1098,7 +1118,7 @@
             this.MonitorGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.MonitorGroupBox.Name = "MonitorGroupBox";
             this.MonitorGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
-            this.MonitorGroupBox.Separator = true;
+            this.MonitorGroupBox.Separator = false;
             this.MonitorGroupBox.SeparatorColor = System.Drawing.Color.Gainsboro;
             this.MonitorGroupBox.Size = new System.Drawing.Size(220, 364);
             this.MonitorGroupBox.TabIndex = 3;
@@ -1271,6 +1291,8 @@
             this.ExecuteTabPage.Border.Thickness = 1;
             this.ExecuteTabPage.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
             this.ExecuteTabPage.Border.Visible = false;
+            this.ExecuteTabPage.Controls.Add(this.BatchesListGroupBox);
+            this.ExecuteTabPage.Controls.Add(this.ExecuteControlGroupBox);
             this.ExecuteTabPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(181)))), ((int)(((byte)(187)))));
             this.ExecuteTabPage.HeaderImage = null;
             this.ExecuteTabPage.Image = null;
@@ -1313,6 +1335,407 @@
             this.MonitTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.MonitTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
             // 
+            // BatchesListGroupBox
+            // 
+            this.BatchesListGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesListGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
+            this.BatchesListGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BatchesListGroupBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BatchesListGroupBox.Border.HoverVisible = true;
+            this.BatchesListGroupBox.Border.Rounding = 6;
+            this.BatchesListGroupBox.Border.Thickness = 1;
+            this.BatchesListGroupBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BatchesListGroupBox.Border.Visible = true;
+            this.BatchesListGroupBox.BoxStyle = VisualPlus.Toolkit.Controls.Layout.VisualGroupBox.GroupBoxStyle.Default;
+            this.BatchesListGroupBox.Controls.Add(this.BatchesListPanel);
+            this.BatchesListGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchesListGroupBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BatchesListGroupBox.ForeColor = System.Drawing.Color.DimGray;
+            this.BatchesListGroupBox.Image = null;
+            this.BatchesListGroupBox.Location = new System.Drawing.Point(220, 0);
+            this.BatchesListGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BatchesListGroupBox.Name = "BatchesListGroupBox";
+            this.BatchesListGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
+            this.BatchesListGroupBox.Separator = true;
+            this.BatchesListGroupBox.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.BatchesListGroupBox.Size = new System.Drawing.Size(518, 424);
+            this.BatchesListGroupBox.TabIndex = 4;
+            this.BatchesListGroupBox.Text = "批处理文件列表";
+            this.BatchesListGroupBox.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesListGroupBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.BatchesListGroupBox.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesListGroupBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BatchesListGroupBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesListGroupBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesListGroupBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesListGroupBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesListGroupBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesListGroupBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BatchesListGroupBox.TitleBoxHeight = 25;
+            // 
+            // ExecuteControlGroupBox
+            // 
+            this.ExecuteControlGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ExecuteControlGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
+            this.ExecuteControlGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.ExecuteControlGroupBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.ExecuteControlGroupBox.Border.HoverVisible = true;
+            this.ExecuteControlGroupBox.Border.Rounding = 6;
+            this.ExecuteControlGroupBox.Border.Thickness = 1;
+            this.ExecuteControlGroupBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.ExecuteControlGroupBox.Border.Visible = true;
+            this.ExecuteControlGroupBox.BoxStyle = VisualPlus.Toolkit.Controls.Layout.VisualGroupBox.GroupBoxStyle.Default;
+            this.ExecuteControlGroupBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ExecuteControlGroupBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ExecuteControlGroupBox.ForeColor = System.Drawing.Color.DimGray;
+            this.ExecuteControlGroupBox.Image = null;
+            this.ExecuteControlGroupBox.Location = new System.Drawing.Point(0, 0);
+            this.ExecuteControlGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.ExecuteControlGroupBox.Name = "ExecuteControlGroupBox";
+            this.ExecuteControlGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
+            this.ExecuteControlGroupBox.Separator = true;
+            this.ExecuteControlGroupBox.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.ExecuteControlGroupBox.Size = new System.Drawing.Size(220, 424);
+            this.ExecuteControlGroupBox.TabIndex = 5;
+            this.ExecuteControlGroupBox.Text = "执行批处理";
+            this.ExecuteControlGroupBox.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ExecuteControlGroupBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.ExecuteControlGroupBox.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ExecuteControlGroupBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.ExecuteControlGroupBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ExecuteControlGroupBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ExecuteControlGroupBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ExecuteControlGroupBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ExecuteControlGroupBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ExecuteControlGroupBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.ExecuteControlGroupBox.TitleBoxHeight = 25;
+            // 
+            // BatchesListPanel
+            // 
+            this.BatchesListPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BatchesListPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BatchesListPanel.ColumnCount = 3;
+            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 450F));
+            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.BatchesListPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.BatchesListPanel.Controls.Add(this.FindDirTextBox, 0, 0);
+            this.BatchesListPanel.Controls.Add(this.BatchesSearchTextBox, 0, 1);
+            this.BatchesListPanel.Controls.Add(this.BatchesCheckControlPanel, 0, 4);
+            this.BatchesListPanel.Controls.Add(this.BatchPreviewGroupBox, 0, 3);
+            this.BatchesListPanel.Controls.Add(this.BatchesListBox, 0, 2);
+            this.BatchesListPanel.Location = new System.Drawing.Point(3, 28);
+            this.BatchesListPanel.Name = "BatchesListPanel";
+            this.BatchesListPanel.RowCount = 5;
+            this.BatchesListPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.BatchesListPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.BatchesListPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.BatchesListPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 77F));
+            this.BatchesListPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.BatchesListPanel.Size = new System.Drawing.Size(512, 393);
+            this.BatchesListPanel.TabIndex = 1;
+            // 
+            // BatchesSearchTextBox
+            // 
+            this.BatchesSearchTextBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.BatchesSearchTextBox.BackColorState.Enabled = System.Drawing.Color.White;
+            this.BatchesSearchTextBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BatchesSearchTextBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BatchesSearchTextBox.Border.HoverVisible = true;
+            this.BatchesSearchTextBox.Border.Rounding = 6;
+            this.BatchesSearchTextBox.Border.Thickness = 1;
+            this.BatchesSearchTextBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BatchesSearchTextBox.Border.Visible = true;
+            this.BatchesSearchTextBox.ButtonBorder.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BatchesSearchTextBox.ButtonBorder.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BatchesSearchTextBox.ButtonBorder.HoverVisible = true;
+            this.BatchesSearchTextBox.ButtonBorder.Rounding = 6;
+            this.BatchesSearchTextBox.ButtonBorder.Thickness = 1;
+            this.BatchesSearchTextBox.ButtonBorder.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BatchesSearchTextBox.ButtonBorder.Visible = true;
+            this.BatchesSearchTextBox.ButtonColor.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesSearchTextBox.ButtonColor.Enabled = System.Drawing.Color.WhiteSmoke;
+            this.BatchesSearchTextBox.ButtonColor.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesSearchTextBox.ButtonColor.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.BatchesSearchTextBox.ButtonFont = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BatchesSearchTextBox.ButtonIndent = 3;
+            this.BatchesSearchTextBox.ButtonText = "搜索";
+            this.BatchesSearchTextBox.ButtonVisible = true;
+            this.BatchesSearchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchesSearchTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesSearchTextBox.Image = null;
+            this.BatchesSearchTextBox.ImageSize = new System.Drawing.Size(16, 16);
+            this.BatchesSearchTextBox.ImageVisible = false;
+            this.BatchesSearchTextBox.ImageWidth = 35;
+            this.BatchesSearchTextBox.Location = new System.Drawing.Point(3, 33);
+            this.BatchesSearchTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BatchesSearchTextBox.Name = "BatchesSearchTextBox";
+            this.BatchesSearchTextBox.PasswordChar = '\0';
+            this.BatchesSearchTextBox.ReadOnly = false;
+            this.BatchesSearchTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.BatchesSearchTextBox.Size = new System.Drawing.Size(444, 24);
+            this.BatchesSearchTextBox.TabIndex = 0;
+            this.BatchesSearchTextBox.TextBoxWidth = 401;
+            this.BatchesSearchTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BatchesSearchTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesSearchTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesSearchTextBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesSearchTextBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesSearchTextBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesSearchTextBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BatchesSearchTextBox.Watermark.Active = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.BatchesSearchTextBox.Watermark.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.BatchesSearchTextBox.Watermark.Inactive = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
+            this.BatchesSearchTextBox.Watermark.Text = "请输入搜索关键字 ...";
+            this.BatchesSearchTextBox.Watermark.Visible = true;
+            this.BatchesSearchTextBox.WordWrap = true;
+            // 
+            // BatchesCheckControlPanel
+            // 
+            this.BatchesCheckControlPanel.Controls.Add(this.BatchesCheckAllButton);
+            this.BatchesCheckControlPanel.Controls.Add(this.BatchesCheckNoneButton);
+            this.BatchesCheckControlPanel.Controls.Add(this.BatchesCheckInverseButton);
+            this.BatchesCheckControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchesCheckControlPanel.Location = new System.Drawing.Point(0, 363);
+            this.BatchesCheckControlPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.BatchesCheckControlPanel.Name = "BatchesCheckControlPanel";
+            this.BatchesCheckControlPanel.Size = new System.Drawing.Size(450, 30);
+            this.BatchesCheckControlPanel.TabIndex = 1;
+            // 
+            // BatchesCheckAllButton
+            // 
+            this.BatchesCheckAllButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesCheckAllButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.BatchesCheckAllButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesCheckAllButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.BatchesCheckAllButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BatchesCheckAllButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BatchesCheckAllButton.Border.HoverVisible = true;
+            this.BatchesCheckAllButton.Border.Rounding = 6;
+            this.BatchesCheckAllButton.Border.Thickness = 1;
+            this.BatchesCheckAllButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BatchesCheckAllButton.Border.Visible = true;
+            this.BatchesCheckAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckAllButton.Image = null;
+            this.BatchesCheckAllButton.Location = new System.Drawing.Point(10, 3);
+            this.BatchesCheckAllButton.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.BatchesCheckAllButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BatchesCheckAllButton.Name = "BatchesCheckAllButton";
+            this.BatchesCheckAllButton.Size = new System.Drawing.Size(80, 24);
+            this.BatchesCheckAllButton.TabIndex = 0;
+            this.BatchesCheckAllButton.Text = "全选";
+            this.BatchesCheckAllButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.BatchesCheckAllButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BatchesCheckAllButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckAllButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckAllButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckAllButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesCheckAllButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesCheckAllButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            // 
+            // BatchesCheckNoneButton
+            // 
+            this.BatchesCheckNoneButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesCheckNoneButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.BatchesCheckNoneButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesCheckNoneButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.BatchesCheckNoneButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BatchesCheckNoneButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BatchesCheckNoneButton.Border.HoverVisible = true;
+            this.BatchesCheckNoneButton.Border.Rounding = 6;
+            this.BatchesCheckNoneButton.Border.Thickness = 1;
+            this.BatchesCheckNoneButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BatchesCheckNoneButton.Border.Visible = true;
+            this.BatchesCheckNoneButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckNoneButton.Image = null;
+            this.BatchesCheckNoneButton.Location = new System.Drawing.Point(110, 3);
+            this.BatchesCheckNoneButton.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.BatchesCheckNoneButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BatchesCheckNoneButton.Name = "BatchesCheckNoneButton";
+            this.BatchesCheckNoneButton.Size = new System.Drawing.Size(80, 24);
+            this.BatchesCheckNoneButton.TabIndex = 1;
+            this.BatchesCheckNoneButton.Text = "全不选";
+            this.BatchesCheckNoneButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.BatchesCheckNoneButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BatchesCheckNoneButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckNoneButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckNoneButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckNoneButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesCheckNoneButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesCheckNoneButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            // 
+            // BatchesCheckInverseButton
+            // 
+            this.BatchesCheckInverseButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesCheckInverseButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.BatchesCheckInverseButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchesCheckInverseButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.BatchesCheckInverseButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BatchesCheckInverseButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BatchesCheckInverseButton.Border.HoverVisible = true;
+            this.BatchesCheckInverseButton.Border.Rounding = 6;
+            this.BatchesCheckInverseButton.Border.Thickness = 1;
+            this.BatchesCheckInverseButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BatchesCheckInverseButton.Border.Visible = true;
+            this.BatchesCheckInverseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckInverseButton.Image = null;
+            this.BatchesCheckInverseButton.Location = new System.Drawing.Point(210, 3);
+            this.BatchesCheckInverseButton.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.BatchesCheckInverseButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BatchesCheckInverseButton.Name = "BatchesCheckInverseButton";
+            this.BatchesCheckInverseButton.Size = new System.Drawing.Size(80, 24);
+            this.BatchesCheckInverseButton.TabIndex = 2;
+            this.BatchesCheckInverseButton.Text = "反选";
+            this.BatchesCheckInverseButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.BatchesCheckInverseButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BatchesCheckInverseButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckInverseButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckInverseButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchesCheckInverseButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesCheckInverseButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchesCheckInverseButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            // 
+            // BatchPreviewGroupBox
+            // 
+            this.BatchPreviewGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.BatchPreviewGroupBox.BackColorState.Enabled = System.Drawing.Color.WhiteSmoke;
+            this.BatchPreviewGroupBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.BatchPreviewGroupBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.BatchPreviewGroupBox.Border.HoverVisible = true;
+            this.BatchPreviewGroupBox.Border.Rounding = 6;
+            this.BatchPreviewGroupBox.Border.Thickness = 1;
+            this.BatchPreviewGroupBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.BatchPreviewGroupBox.Border.Visible = true;
+            this.BatchPreviewGroupBox.BoxStyle = VisualPlus.Toolkit.Controls.Layout.VisualGroupBox.GroupBoxStyle.Classic;
+            this.BatchesListPanel.SetColumnSpan(this.BatchPreviewGroupBox, 3);
+            this.BatchPreviewGroupBox.Controls.Add(this.PreviewTextBox);
+            this.BatchPreviewGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchPreviewGroupBox.ForeColor = System.Drawing.Color.DimGray;
+            this.BatchPreviewGroupBox.Image = null;
+            this.BatchPreviewGroupBox.Location = new System.Drawing.Point(3, 289);
+            this.BatchPreviewGroupBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.BatchPreviewGroupBox.Name = "BatchPreviewGroupBox";
+            this.BatchPreviewGroupBox.Padding = new System.Windows.Forms.Padding(5, 26, 5, 5);
+            this.BatchPreviewGroupBox.Separator = false;
+            this.BatchPreviewGroupBox.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.BatchPreviewGroupBox.Size = new System.Drawing.Size(506, 71);
+            this.BatchPreviewGroupBox.TabIndex = 2;
+            this.BatchPreviewGroupBox.Text = "批处理预览";
+            this.BatchPreviewGroupBox.TextAlignment = System.Drawing.StringAlignment.Near;
+            this.BatchPreviewGroupBox.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.BatchPreviewGroupBox.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchPreviewGroupBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.BatchPreviewGroupBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchPreviewGroupBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchPreviewGroupBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.BatchPreviewGroupBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchPreviewGroupBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.BatchPreviewGroupBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.BatchPreviewGroupBox.TitleBoxHeight = 25;
+            // 
+            // PreviewTextBox
+            // 
+            this.PreviewTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PreviewTextBox.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.PreviewTextBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(244)))), ((int)(((byte)(249)))));
+            this.PreviewTextBox.BackColorState.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.PreviewTextBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.PreviewTextBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.PreviewTextBox.Border.HoverVisible = true;
+            this.PreviewTextBox.Border.Rounding = 6;
+            this.PreviewTextBox.Border.Thickness = 1;
+            this.PreviewTextBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.PreviewTextBox.Border.Visible = true;
+            this.PreviewTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.PreviewTextBox.Location = new System.Drawing.Point(3, 28);
+            this.PreviewTextBox.MaxLength = 2147483647;
+            this.PreviewTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.PreviewTextBox.Name = "PreviewTextBox";
+            this.PreviewTextBox.ReadOnly = true;
+            this.PreviewTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Both;
+            this.PreviewTextBox.ShowSelectionMargin = false;
+            this.PreviewTextBox.Size = new System.Drawing.Size(500, 40);
+            this.PreviewTextBox.TabIndex = 1;
+            this.PreviewTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.PreviewTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.PreviewTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.PreviewTextBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.PreviewTextBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.PreviewTextBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.PreviewTextBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            // 
+            // BatchesListBox
+            // 
+            this.BatchesListBox.BackColor = System.Drawing.Color.White;
+            this.BatchesListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.BatchesListBox.CheckOnClick = true;
+            this.BatchesListPanel.SetColumnSpan(this.BatchesListBox, 3);
+            this.BatchesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchesListBox.FormattingEnabled = true;
+            this.BatchesListBox.IntegralHeight = false;
+            this.BatchesListBox.Location = new System.Drawing.Point(3, 63);
+            this.BatchesListBox.Name = "BatchesListBox";
+            this.BatchesListBox.Size = new System.Drawing.Size(506, 220);
+            this.BatchesListBox.TabIndex = 3;
+            // 
+            // FindDirTextBox
+            // 
+            this.FindDirTextBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.FindDirTextBox.BackColorState.Enabled = System.Drawing.Color.White;
+            this.FindDirTextBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.FindDirTextBox.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.FindDirTextBox.Border.HoverVisible = true;
+            this.FindDirTextBox.Border.Rounding = 6;
+            this.FindDirTextBox.Border.Thickness = 1;
+            this.FindDirTextBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.FindDirTextBox.Border.Visible = true;
+            this.FindDirTextBox.ButtonBorder.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.FindDirTextBox.ButtonBorder.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.FindDirTextBox.ButtonBorder.HoverVisible = true;
+            this.FindDirTextBox.ButtonBorder.Rounding = 6;
+            this.FindDirTextBox.ButtonBorder.Thickness = 1;
+            this.FindDirTextBox.ButtonBorder.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.FindDirTextBox.ButtonBorder.Visible = true;
+            this.FindDirTextBox.ButtonColor.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.FindDirTextBox.ButtonColor.Enabled = System.Drawing.Color.WhiteSmoke;
+            this.FindDirTextBox.ButtonColor.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.FindDirTextBox.ButtonColor.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.FindDirTextBox.ButtonFont = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FindDirTextBox.ButtonIndent = 3;
+            this.FindDirTextBox.ButtonText = "扫描";
+            this.FindDirTextBox.ButtonVisible = true;
+            this.FindDirTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FindDirTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.FindDirTextBox.Image = null;
+            this.FindDirTextBox.ImageSize = new System.Drawing.Size(16, 16);
+            this.FindDirTextBox.ImageVisible = false;
+            this.FindDirTextBox.ImageWidth = 35;
+            this.FindDirTextBox.Location = new System.Drawing.Point(3, 3);
+            this.FindDirTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.FindDirTextBox.Name = "FindDirTextBox";
+            this.FindDirTextBox.PasswordChar = '\0';
+            this.FindDirTextBox.ReadOnly = false;
+            this.FindDirTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.FindDirTextBox.Size = new System.Drawing.Size(444, 24);
+            this.FindDirTextBox.TabIndex = 4;
+            this.FindDirTextBox.TextBoxWidth = 401;
+            this.FindDirTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.FindDirTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.FindDirTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.FindDirTextBox.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.FindDirTextBox.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.FindDirTextBox.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.FindDirTextBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.FindDirTextBox.Watermark.Active = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.FindDirTextBox.Watermark.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.FindDirTextBox.Watermark.Inactive = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
+            this.FindDirTextBox.Watermark.Text = "请输入批处理文件存放目录 ...";
+            this.FindDirTextBox.Watermark.Visible = true;
+            this.FindDirTextBox.WordWrap = true;
+            // 
             // BatchHostForm
             // 
             this.AllowDrop = true;
@@ -1343,6 +1766,12 @@
             this.MonitorGroupBox.ResumeLayout(false);
             this.BuildControlGroupBox.ResumeLayout(false);
             this.BuildControlGroupBox.PerformLayout();
+            this.ExecuteTabPage.ResumeLayout(false);
+            this.BatchesListGroupBox.ResumeLayout(false);
+            this.BatchesListPanel.ResumeLayout(false);
+            this.BatchesListPanel.PerformLayout();
+            this.BatchesCheckControlPanel.ResumeLayout(false);
+            this.BatchPreviewGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1390,6 +1819,18 @@
         private VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge BuildGauge;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton CancelBuildButton;
         private System.Windows.Forms.FlowLayoutPanel BatchesCountPanel;
+        private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox BatchesListGroupBox;
+        private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox ExecuteControlGroupBox;
+        private System.Windows.Forms.TableLayoutPanel BatchesListPanel;
+        private VisualPlus.Toolkit.Controls.Editors.VisualTextBox BatchesSearchTextBox;
+        private System.Windows.Forms.FlowLayoutPanel BatchesCheckControlPanel;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton BatchesCheckAllButton;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton BatchesCheckNoneButton;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton BatchesCheckInverseButton;
+        private VisualPlus.Toolkit.Controls.Layout.VisualGroupBox BatchPreviewGroupBox;
+        private VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox PreviewTextBox;
+        private System.Windows.Forms.CheckedListBox BatchesListBox;
+        private VisualPlus.Toolkit.Controls.Editors.VisualTextBox FindDirTextBox;
     }
 }
 
