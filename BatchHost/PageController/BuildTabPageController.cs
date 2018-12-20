@@ -375,7 +375,14 @@ namespace BatchHost
         /// <returns></returns>
         private void ApplyBatchesCount(int count)
         {
-            if (count < 128)
+            if (count < 0)
+            {
+                // 带签名int类型溢出了都，第一个比特位被置为1，表示为负数
+                this.BatchesCountLabel.ForeColor = System.Drawing.Color.Red;
+                this.BatchesCountLabel.Text = "任务过于繁重 ...";
+                return;
+            }
+            else if (count < 128)
             {
                 this.BatchesCountLabel.ForeColor = System.Drawing.Color.LimeGreen;
             }
@@ -388,7 +395,7 @@ namespace BatchHost
                 this.BatchesCountLabel.ForeColor = System.Drawing.Color.OrangeRed;
             }
 
-            this.BatchesCountLabel.Text = count.ToString();
+            this.BatchesCountLabel.Text = count.ToString("N0");
         }
 
         /// <summary>
