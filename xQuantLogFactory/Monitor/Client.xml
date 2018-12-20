@@ -4,7 +4,7 @@
   <Item Name="统计缓存" Begin="统计耗时：" DirectedAnalysiser="CacheSize" GroupAnalysiser="SelfSealing" Sheet="缓存"/>
   <Item Name="打开窗体" Begin="开始打开窗体" GroupAnalysiser="FormAsync" End="完成打开窗体" Sheet="窗体"/>
   <Item Name="查询报表" Begin="开始查询报表" GroupAnalysiser="ReportAsync" End="完成查询报表" Sheet="报表"/>
-  <Item Name="客户端启动" Begin="登录成功" End="主窗口初始化结束">
+  <Item Name="客户端启动" Begin="登录成功" End="初始化第二阶段结束-----------">
     <Item Name="版本升级" Begin="检查最新版本开始" End="检查最新版本结束"/>
     <Item Name="注册远程服务" Begin="检查最新版本结束" End="客户端启动初始化本地缓存前"/>
     <Item Name="初始化本地缓存数据Schema" Begin="客户端启动初始化本地缓存前" End="客户端启动初始化本地缓存后"/>
