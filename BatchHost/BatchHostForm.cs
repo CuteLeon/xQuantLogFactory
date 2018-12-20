@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -206,12 +207,23 @@ namespace BatchHost
 
             this.BuildState = BuildStates.Cancel;
         }
+
+        private void ExecuteButton_Click(object sender, EventArgs e)
+        {
+            string path = @"E:\CSharp\xQuantLogFactory\Build\Debug\Batches\客户端启动日志v065.bat";
+
+            Process process = new Process();
+            process.StartInfo.FileName = path;
+            process.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
+            process.Start();
+        }
         #endregion
 
         #region 方法
         private void InitControl()
         {
             this.InitBuildTabPage();
+            this.InitExecuteTabPage();
         }
         #endregion
     }

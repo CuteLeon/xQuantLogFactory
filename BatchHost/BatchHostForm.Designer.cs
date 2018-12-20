@@ -79,15 +79,15 @@
             this.BatchesCheckAllButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.BatchesCheckNoneButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.BatchesCheckInverseButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.RefreshBatchesButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.BatchPreviewGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.PreviewTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.BatchesListBox = new System.Windows.Forms.CheckedListBox();
             this.BatchesExecuteControlGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
-            this.MonitTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
-            this.RefreshBatchesButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.BatchesExecuteControlPanel = new System.Windows.Forms.TableLayoutPanel();
             this.ExecuteButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ExecuteGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
+            this.MonitTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -1408,6 +1408,7 @@
             this.FindDirTextBox.ButtonText = "扫描";
             this.FindDirTextBox.ButtonVisible = true;
             this.FindDirTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FindDirTextBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FindDirTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.FindDirTextBox.Image = null;
             this.FindDirTextBox.ImageSize = new System.Drawing.Size(16, 16);
@@ -1463,6 +1464,7 @@
             this.BatchesSearchTextBox.ButtonText = "搜索";
             this.BatchesSearchTextBox.ButtonVisible = true;
             this.BatchesSearchTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BatchesSearchTextBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BatchesSearchTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.BatchesSearchTextBox.Image = null;
             this.BatchesSearchTextBox.ImageSize = new System.Drawing.Size(16, 16);
@@ -1596,6 +1598,38 @@
             this.BatchesCheckInverseButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.BatchesCheckInverseButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             // 
+            // RefreshBatchesButton
+            // 
+            this.RefreshBatchesButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.RefreshBatchesButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.RefreshBatchesButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.RefreshBatchesButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.RefreshBatchesButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.RefreshBatchesButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.RefreshBatchesButton.Border.HoverVisible = true;
+            this.RefreshBatchesButton.Border.Rounding = 6;
+            this.RefreshBatchesButton.Border.Thickness = 1;
+            this.RefreshBatchesButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.RefreshBatchesButton.Border.Visible = true;
+            this.BatchesListPanel.SetColumnSpan(this.RefreshBatchesButton, 2);
+            this.RefreshBatchesButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.RefreshBatchesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.RefreshBatchesButton.Image = null;
+            this.RefreshBatchesButton.Location = new System.Drawing.Point(423, 3);
+            this.RefreshBatchesButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.RefreshBatchesButton.Name = "RefreshBatchesButton";
+            this.RefreshBatchesButton.Size = new System.Drawing.Size(86, 24);
+            this.RefreshBatchesButton.TabIndex = 3;
+            this.RefreshBatchesButton.Text = "刷新";
+            this.RefreshBatchesButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.RefreshBatchesButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.RefreshBatchesButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.RefreshBatchesButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.RefreshBatchesButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.RefreshBatchesButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.RefreshBatchesButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.RefreshBatchesButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            // 
             // BatchPreviewGroupBox
             // 
             this.BatchPreviewGroupBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -1719,63 +1753,6 @@
             this.BatchesExecuteControlGroupBox.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.BatchesExecuteControlGroupBox.TitleBoxHeight = 25;
             // 
-            // MonitTabPage
-            // 
-            this.MonitTabPage.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.MonitTabPage.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.MonitTabPage.Border.Rounding = 6;
-            this.MonitTabPage.Border.Thickness = 1;
-            this.MonitTabPage.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rectangle;
-            this.MonitTabPage.Border.Visible = false;
-            this.MonitTabPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(181)))), ((int)(((byte)(187)))));
-            this.MonitTabPage.HeaderImage = null;
-            this.MonitTabPage.Image = null;
-            this.MonitTabPage.ImageSize = new System.Drawing.Size(16, 16);
-            this.MonitTabPage.Location = new System.Drawing.Point(4, 29);
-            this.MonitTabPage.Name = "MonitTabPage";
-            this.MonitTabPage.Size = new System.Drawing.Size(738, 424);
-            this.MonitTabPage.TabHover = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(38)))));
-            this.MonitTabPage.TabIndex = 3;
-            this.MonitTabPage.TabNormal = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(61)))), ((int)(((byte)(73)))));
-            this.MonitTabPage.TabSelected = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(76)))), ((int)(((byte)(88)))));
-            this.MonitTabPage.Text = "监视";
-            this.MonitTabPage.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.MonitTabPage.TextImageRelation = VisualPlus.Toolkit.Child.VisualTabPage.TextImageRelations.Text;
-            this.MonitTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.MonitTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
-            // 
-            // RefreshBatchesButton
-            // 
-            this.RefreshBatchesButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.RefreshBatchesButton.BackColorState.Enabled = System.Drawing.Color.White;
-            this.RefreshBatchesButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.RefreshBatchesButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.RefreshBatchesButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.RefreshBatchesButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
-            this.RefreshBatchesButton.Border.HoverVisible = true;
-            this.RefreshBatchesButton.Border.Rounding = 6;
-            this.RefreshBatchesButton.Border.Thickness = 1;
-            this.RefreshBatchesButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
-            this.RefreshBatchesButton.Border.Visible = true;
-            this.BatchesListPanel.SetColumnSpan(this.RefreshBatchesButton, 2);
-            this.RefreshBatchesButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.RefreshBatchesButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.RefreshBatchesButton.Image = null;
-            this.RefreshBatchesButton.Location = new System.Drawing.Point(423, 3);
-            this.RefreshBatchesButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
-            this.RefreshBatchesButton.Name = "RefreshBatchesButton";
-            this.RefreshBatchesButton.Size = new System.Drawing.Size(86, 24);
-            this.RefreshBatchesButton.TabIndex = 3;
-            this.RefreshBatchesButton.Text = "刷新";
-            this.RefreshBatchesButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.RefreshBatchesButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
-            this.RefreshBatchesButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.RefreshBatchesButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.RefreshBatchesButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.RefreshBatchesButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.RefreshBatchesButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.RefreshBatchesButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            // 
             // BatchesExecuteControlPanel
             // 
             this.BatchesExecuteControlPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -1827,6 +1804,7 @@
             this.ExecuteButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.ExecuteButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.ExecuteButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.ExecuteButton.Click += new System.EventHandler(this.ExecuteButton_Click);
             // 
             // ExecuteGauge
             // 
@@ -1857,7 +1835,31 @@
             this.ExecuteGauge.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.ExecuteGauge.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.ExecuteGauge.Thickness = 25;
-            this.ExecuteGauge.Value = 50;
+            // 
+            // MonitTabPage
+            // 
+            this.MonitTabPage.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.MonitTabPage.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.MonitTabPage.Border.Rounding = 6;
+            this.MonitTabPage.Border.Thickness = 1;
+            this.MonitTabPage.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rectangle;
+            this.MonitTabPage.Border.Visible = false;
+            this.MonitTabPage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(181)))), ((int)(((byte)(187)))));
+            this.MonitTabPage.HeaderImage = null;
+            this.MonitTabPage.Image = null;
+            this.MonitTabPage.ImageSize = new System.Drawing.Size(16, 16);
+            this.MonitTabPage.Location = new System.Drawing.Point(4, 29);
+            this.MonitTabPage.Name = "MonitTabPage";
+            this.MonitTabPage.Size = new System.Drawing.Size(738, 424);
+            this.MonitTabPage.TabHover = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(36)))), ((int)(((byte)(38)))));
+            this.MonitTabPage.TabIndex = 3;
+            this.MonitTabPage.TabNormal = System.Drawing.Color.FromArgb(((int)(((byte)(55)))), ((int)(((byte)(61)))), ((int)(((byte)(73)))));
+            this.MonitTabPage.TabSelected = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(76)))), ((int)(((byte)(88)))));
+            this.MonitTabPage.Text = "监视";
+            this.MonitTabPage.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitTabPage.TextImageRelation = VisualPlus.Toolkit.Child.VisualTabPage.TextImageRelations.Text;
+            this.MonitTabPage.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitTabPage.TextSelected = System.Drawing.Color.FromArgb(((int)(((byte)(217)))), ((int)(((byte)(220)))), ((int)(((byte)(227)))));
             // 
             // BatchHostForm
             // 

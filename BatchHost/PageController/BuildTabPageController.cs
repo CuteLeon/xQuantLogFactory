@@ -94,8 +94,7 @@ namespace BatchHost
 
             this.UnityTaskArgument.BatchesCountChanged += this.ApplyBatchesCount;
 
-            // 默认生成到程序目录
-            this.BuildDirTextBox.Text = AppDomain.CurrentDomain.BaseDirectory;
+            this.BuildDirTextBox.Text = UnityUtils.BuildDirectory;
         }
 
         /// <summary>
