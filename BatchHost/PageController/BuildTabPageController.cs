@@ -434,21 +434,21 @@ namespace BatchHost
             if (count < 0)
             {
                 // 带签名int类型溢出了都，第一个比特位被置为1，表示为负数
-                this.BatchesCountLabel.ForeColor = System.Drawing.Color.Red;
+                this.BatchesCountLabel.ForeColor = Color.Red;
                 this.BatchesCountLabel.Text = "任务过于繁重 ...";
                 return;
             }
             else if (count < 128)
             {
-                this.BatchesCountLabel.ForeColor = System.Drawing.Color.LimeGreen;
+                this.BatchesCountLabel.ForeColor = Color.LimeGreen;
             }
             else if (count < 512)
             {
-                this.BatchesCountLabel.ForeColor = System.Drawing.Color.Orange;
+                this.BatchesCountLabel.ForeColor = Color.Orange;
             }
             else
             {
-                this.BatchesCountLabel.ForeColor = System.Drawing.Color.OrangeRed;
+                this.BatchesCountLabel.ForeColor = Color.OrangeRed;
             }
 
             this.BatchesCountLabel.Text = count.ToString("N0");

@@ -300,6 +300,11 @@ namespace BatchHost
 
             textbox.TextBoxWidth = textbox.Width - 38;
         }
+
+        private void ConsoleClearButton_Click(object sender, EventArgs e)
+        {
+            this.ConsoleTextBox.Clear();
+        }
         #endregion
 
         #region 方法

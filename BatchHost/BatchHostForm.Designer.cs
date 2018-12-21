@@ -95,6 +95,7 @@
             this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.InputTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
+            this.ConsoleClearButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -254,7 +255,7 @@
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 0;
+            this.MainTabControl.SelectedIndex = 2;
             this.MainTabControl.SelectorAlignment = System.Windows.Forms.TabAlignment.Bottom;
             this.MainTabControl.SelectorSpacing = 10;
             this.MainTabControl.SelectorThickness = 5;
@@ -265,7 +266,7 @@
             this.MainTabControl.SeparatorThickness = 2F;
             this.MainTabControl.Size = new System.Drawing.Size(746, 457);
             this.MainTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.MainTabControl.State = VisualPlus.Enumerators.MouseStates.Hover;
+            this.MainTabControl.State = VisualPlus.Enumerators.MouseStates.Normal;
             this.MainTabControl.TabIndex = 3;
             this.MainTabControl.TabMenu = System.Drawing.Color.Transparent;
             this.MainTabControl.TabSelector = System.Drawing.Color.WhiteSmoke;
@@ -1968,14 +1969,16 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.OutputLayoutPanel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.OutputLayoutPanel.ColumnCount = 3;
+            this.OutputLayoutPanel.ColumnCount = 4;
+            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.OutputLayoutPanel.Controls.Add(this.SendEnterButton, 2, 1);
-            this.OutputLayoutPanel.Controls.Add(this.SendInputButton, 1, 1);
+            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.OutputLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.OutputLayoutPanel.Controls.Add(this.ConsoleClearButton, 0, 1);
+            this.OutputLayoutPanel.Controls.Add(this.SendEnterButton, 3, 1);
+            this.OutputLayoutPanel.Controls.Add(this.SendInputButton, 2, 1);
             this.OutputLayoutPanel.Controls.Add(this.ConsoleTextBox, 0, 0);
-            this.OutputLayoutPanel.Controls.Add(this.InputTextBox, 0, 1);
+            this.OutputLayoutPanel.Controls.Add(this.InputTextBox, 1, 1);
             this.OutputLayoutPanel.Location = new System.Drawing.Point(3, 28);
             this.OutputLayoutPanel.Name = "OutputLayoutPanel";
             this.OutputLayoutPanel.RowCount = 2;
@@ -2000,10 +2003,10 @@
             this.SendEnterButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SendEnterButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.SendEnterButton.Image = null;
-            this.SendEnterButton.Location = new System.Drawing.Point(635, 366);
+            this.SendEnterButton.Location = new System.Drawing.Point(655, 366);
             this.SendEnterButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.SendEnterButton.Name = "SendEnterButton";
-            this.SendEnterButton.Size = new System.Drawing.Size(94, 24);
+            this.SendEnterButton.Size = new System.Drawing.Size(74, 24);
             this.SendEnterButton.TabIndex = 4;
             this.SendEnterButton.Text = "发送回车";
             this.SendEnterButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
@@ -2032,10 +2035,10 @@
             this.SendInputButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SendInputButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.SendInputButton.Image = null;
-            this.SendInputButton.Location = new System.Drawing.Point(535, 366);
+            this.SendInputButton.Location = new System.Drawing.Point(575, 366);
             this.SendInputButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.SendInputButton.Name = "SendInputButton";
-            this.SendInputButton.Size = new System.Drawing.Size(94, 24);
+            this.SendInputButton.Size = new System.Drawing.Size(74, 24);
             this.SendInputButton.TabIndex = 3;
             this.SendInputButton.Text = "发送";
             this.SendInputButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
@@ -2063,7 +2066,7 @@
             this.ConsoleTextBox.Border.Thickness = 1;
             this.ConsoleTextBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
             this.ConsoleTextBox.Border.Visible = true;
-            this.OutputLayoutPanel.SetColumnSpan(this.ConsoleTextBox, 3);
+            this.OutputLayoutPanel.SetColumnSpan(this.ConsoleTextBox, 4);
             this.ConsoleTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.ConsoleTextBox.Location = new System.Drawing.Point(0, 0);
             this.ConsoleTextBox.Margin = new System.Windows.Forms.Padding(0);
@@ -2115,15 +2118,15 @@
             this.InputTextBox.ImageSize = new System.Drawing.Size(16, 16);
             this.InputTextBox.ImageVisible = false;
             this.InputTextBox.ImageWidth = 35;
-            this.InputTextBox.Location = new System.Drawing.Point(3, 366);
+            this.InputTextBox.Location = new System.Drawing.Point(83, 366);
             this.InputTextBox.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
             this.InputTextBox.Name = "InputTextBox";
             this.InputTextBox.PasswordChar = '\0';
             this.InputTextBox.ReadOnly = false;
             this.InputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.InputTextBox.Size = new System.Drawing.Size(526, 24);
+            this.InputTextBox.Size = new System.Drawing.Size(486, 24);
             this.InputTextBox.TabIndex = 2;
-            this.InputTextBox.TextBoxWidth = 516;
+            this.InputTextBox.TextBoxWidth = 476;
             this.InputTextBox.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
             this.InputTextBox.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.InputTextBox.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -2137,6 +2140,38 @@
             this.InputTextBox.Watermark.Text = "输入要发送到控制台的文本 ...";
             this.InputTextBox.Watermark.Visible = true;
             this.InputTextBox.WordWrap = true;
+            // 
+            // ConsoleClearButton
+            // 
+            this.ConsoleClearButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ConsoleClearButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.ConsoleClearButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ConsoleClearButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ConsoleClearButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.ConsoleClearButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.ConsoleClearButton.Border.HoverVisible = true;
+            this.ConsoleClearButton.Border.Rounding = 6;
+            this.ConsoleClearButton.Border.Thickness = 1;
+            this.ConsoleClearButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.ConsoleClearButton.Border.Visible = true;
+            this.ConsoleClearButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConsoleClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.Image = null;
+            this.ConsoleClearButton.Location = new System.Drawing.Point(3, 366);
+            this.ConsoleClearButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.ConsoleClearButton.Name = "ConsoleClearButton";
+            this.ConsoleClearButton.Size = new System.Drawing.Size(74, 24);
+            this.ConsoleClearButton.TabIndex = 5;
+            this.ConsoleClearButton.Text = "清空";
+            this.ConsoleClearButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.ConsoleClearButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.ConsoleClearButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleClearButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleClearButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.ConsoleClearButton.Click += new System.EventHandler(this.ConsoleClearButton_Click);
             // 
             // BatchHostForm
             // 
@@ -2250,6 +2285,7 @@
         private VisualPlus.Toolkit.Controls.Editors.VisualTextBox InputTextBox;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton SendEnterButton;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton SendInputButton;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton ConsoleClearButton;
     }
 }
 
