@@ -34,6 +34,9 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\BatchHostIcon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>BatchHost.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />

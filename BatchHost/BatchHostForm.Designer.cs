@@ -91,11 +91,11 @@
             this.OutputTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.ConsoleGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.OutputLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.ConsoleClearButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.SendEnterButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.InputTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
-            this.ConsoleClearButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -255,7 +255,7 @@
             this.MainTabControl.MinimumSize = new System.Drawing.Size(144, 85);
             this.MainTabControl.Multiline = true;
             this.MainTabControl.Name = "MainTabControl";
-            this.MainTabControl.SelectedIndex = 2;
+            this.MainTabControl.SelectedIndex = 0;
             this.MainTabControl.SelectorAlignment = System.Windows.Forms.TabAlignment.Bottom;
             this.MainTabControl.SelectorSpacing = 10;
             this.MainTabControl.SelectorThickness = 5;
@@ -1987,6 +1987,38 @@
             this.OutputLayoutPanel.Size = new System.Drawing.Size(732, 393);
             this.OutputLayoutPanel.TabIndex = 2;
             // 
+            // ConsoleClearButton
+            // 
+            this.ConsoleClearButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ConsoleClearButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.ConsoleClearButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.ConsoleClearButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.ConsoleClearButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.ConsoleClearButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.ConsoleClearButton.Border.HoverVisible = true;
+            this.ConsoleClearButton.Border.Rounding = 6;
+            this.ConsoleClearButton.Border.Thickness = 1;
+            this.ConsoleClearButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.ConsoleClearButton.Border.Visible = true;
+            this.ConsoleClearButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ConsoleClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.Image = null;
+            this.ConsoleClearButton.Location = new System.Drawing.Point(3, 366);
+            this.ConsoleClearButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.ConsoleClearButton.Name = "ConsoleClearButton";
+            this.ConsoleClearButton.Size = new System.Drawing.Size(74, 24);
+            this.ConsoleClearButton.TabIndex = 5;
+            this.ConsoleClearButton.Text = "清空";
+            this.ConsoleClearButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.ConsoleClearButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.ConsoleClearButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.ConsoleClearButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleClearButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.ConsoleClearButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.ConsoleClearButton.Click += new System.EventHandler(this.ConsoleClearButton_Click);
+            // 
             // SendEnterButton
             // 
             this.SendEnterButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -2140,38 +2172,6 @@
             this.InputTextBox.Watermark.Text = "输入要发送到控制台的文本 ...";
             this.InputTextBox.Watermark.Visible = true;
             this.InputTextBox.WordWrap = true;
-            // 
-            // ConsoleClearButton
-            // 
-            this.ConsoleClearButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ConsoleClearButton.BackColorState.Enabled = System.Drawing.Color.White;
-            this.ConsoleClearButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ConsoleClearButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.ConsoleClearButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.ConsoleClearButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
-            this.ConsoleClearButton.Border.HoverVisible = true;
-            this.ConsoleClearButton.Border.Rounding = 6;
-            this.ConsoleClearButton.Border.Thickness = 1;
-            this.ConsoleClearButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
-            this.ConsoleClearButton.Border.Visible = true;
-            this.ConsoleClearButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ConsoleClearButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.ConsoleClearButton.Image = null;
-            this.ConsoleClearButton.Location = new System.Drawing.Point(3, 366);
-            this.ConsoleClearButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
-            this.ConsoleClearButton.Name = "ConsoleClearButton";
-            this.ConsoleClearButton.Size = new System.Drawing.Size(74, 24);
-            this.ConsoleClearButton.TabIndex = 5;
-            this.ConsoleClearButton.Text = "清空";
-            this.ConsoleClearButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.ConsoleClearButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
-            this.ConsoleClearButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.ConsoleClearButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.ConsoleClearButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.ConsoleClearButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.ConsoleClearButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
-            this.ConsoleClearButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.ConsoleClearButton.Click += new System.EventHandler(this.ConsoleClearButton_Click);
             // 
             // BatchHostForm
             // 
