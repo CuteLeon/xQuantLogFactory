@@ -69,6 +69,7 @@ namespace xQuantLogFactory.BIZ.Parser
                         {
                             match = this.GeneralLogRegex.Match(logLine);
                         }
+
                         if (match.Success)
                         {
                             // 跳过日志时间在任务时间范围外的日志行
@@ -78,8 +79,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
 
-                            if (!argument.CheckLogStartTime(logTime) ||
-                                !argument.CheckLogFinishTime(logTime))
+                            if (!argument.CheckLogTime(logTime))
                             {
                                 continue;
                             }

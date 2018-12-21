@@ -51,8 +51,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     continue;
                 }
 
-                if ((argument.CheckLogStartTime(CreationTime) && argument.CheckLogFinishTime(CreationTime)) ||
-                    (argument.CheckLogStartTime(LastWriteTime) && argument.CheckLogFinishTime(LastWriteTime)))
+                if (argument.CheckLogFileTime(CreationTime, LastWriteTime))
                 {
                     logFiles.Add(new LogFile(
                         this.GetLogFileType(fileName),

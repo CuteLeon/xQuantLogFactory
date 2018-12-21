@@ -115,8 +115,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
 
-                            if (!argument.CheckLogStartTime(logTime) ||
-                                !argument.CheckLogFinishTime(logTime))
+                            if (!argument.CheckLogTime(logTime))
                             {
                                 continue;
                             }
