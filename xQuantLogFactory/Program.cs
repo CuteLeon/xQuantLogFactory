@@ -26,6 +26,7 @@ using xQuantLogFactory.Utils.Trace;
 Pref分析结果处理完初始化树；
 
 后续优化：
+实体使用泛型定义：LogFileBase<monitorResultType, ...> where monitorResultType : MonitorTyoeBase{} TerminalLogFile : LogFileBase<TerminalMonitorResult, ...>
 PerformanceMonitorItem和TerminalMonitorItem，提取MonitorItemBase抽象基类；
 PerformanceMonitorResult和TerminalMonitorResult监视结果提取MonitorResultBase抽象基类；
 PerformanceAnalysisResult和TerminalAnalysisResult分析结果提取AnalysisResultBase抽象基类；
