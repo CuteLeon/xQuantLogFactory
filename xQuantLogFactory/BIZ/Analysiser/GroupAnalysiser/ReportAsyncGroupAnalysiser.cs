@@ -17,19 +17,33 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
     /// <remarks>此组分析器会自动完成键值对分析，不需要再指定 DirectedAnalysiser="KeyValuePair"</remarks>
     public class ReportAsyncGroupAnalysiser : AsyncGroupLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReportAsyncGroupAnalysiser"/> class.
+        /// </summary>
         public ReportAsyncGroupAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReportAsyncGroupAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public ReportAsyncGroupAnalysiser(ITracer tracer)
             : base(tracer)
         {
         }
 
+        /// <summary>
+        /// Gets or sets 分析正则
+        /// </summary>
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
             @"(开始|完成)查询报表\[报表代码=(?<Code>.*?),报表名称=(?<Name>.*?),查询参数=(?<Param>.*?)\]",
             RegexOptions.RightToLeft | RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        /// <summary>
+        /// 分析
+        /// </summary>
+        /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
             if (argument == null)
@@ -58,6 +72,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                         {
                             analysisMatch = this.AnalysisRegex.Match(monitorResult.LogContent);
                         }
+
                         reportName = analysisMatch.Groups["Name"].Value;
                         reportCode = analysisMatch.Groups["Code"].Value;
                         queryParam = analysisMatch.Groups["Param"].Value;
@@ -80,6 +95,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 
                                     break;
                                 }
+
                             case GroupTypes.Finish:
                                 {
                                     if (analysisResult != null &&
@@ -107,6 +123,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 
                         // Console.WriteLine($"设置分析数据：{coreServiceName}, {index}, {elapsed}; 寄存器数据：{unintactResults.Count} 个");
                     }
+
                     this.Tracer?.WriteLine($"<<<分析完成，分析结果数量：{targetMonitor.AnalysisResults.Count}\t监视规则：{targetMonitor.Name}");
                 });
         }

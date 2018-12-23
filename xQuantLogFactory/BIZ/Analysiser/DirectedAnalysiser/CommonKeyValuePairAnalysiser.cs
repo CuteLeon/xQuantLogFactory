@@ -16,10 +16,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// </summary>
     public class CommonKeyValuePairAnalysiser : DirectedLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonKeyValuePairAnalysiser"/> class.
+        /// </summary>
         public CommonKeyValuePairAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonKeyValuePairAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CommonKeyValuePairAnalysiser(ITracer tracer)
             : base(tracer)
         {
@@ -75,6 +82,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                         {
                             analysisMatch = this.AnalysisRegex.Match(firstResult.LogContent);
                         }
+
                         if (analysisMatch.Success && analysisMatch.Groups["Pairs"].Success)
                         {
                             // 匹配日志内容中所有的中括号包含的内容

@@ -16,10 +16,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
     /// </summary>
     public class CoreAsyncGroupAnalysiser : AsyncGroupLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreAsyncGroupAnalysiser"/> class.
+        /// </summary>
         public CoreAsyncGroupAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoreAsyncGroupAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CoreAsyncGroupAnalysiser(ITracer tracer)
             : base(tracer)
         {
@@ -36,6 +43,10 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
             @"\<-(?<CoreServiceName>.*)(?<Index>\d*)\|(执行(?<Trigger>.*)|结束:(?<Elapsed>\d*))-\>",
             RegexOptions.RightToLeft | RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        /// <summary>
+        /// 分析
+        /// </summary>
+        /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
             if (argument == null)
@@ -65,6 +76,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                         {
                             analysisMatch = this.AnalysisRegex.Match(monitorResult.LogContent);
                         }
+
                         coreServiceName = analysisMatch.Groups["CoreServiceName"].Value;
                         index = int.TryParse(analysisMatch.Groups["Index"].Value, out int value) ? value : -1;
                         trigger = analysisMatch.Groups["Trigger"].Value;
@@ -88,6 +100,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 
                                     break;
                                 }
+
                             case GroupTypes.Finish:
                                 {
                                     if (analysisResult != null &&
@@ -115,6 +128,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 
                         // Console.WriteLine($"设置分析数据：{coreServiceName}, {index}, {elapsed}; 寄存器数据：{unintactResults.Count} 个");
                     }
+
                     this.Tracer?.WriteLine($"<<<分析完成，分析结果数量：{targetMonitor.AnalysisResults.Count}\t监视规则：{targetMonitor.Name}");
                 });
         }

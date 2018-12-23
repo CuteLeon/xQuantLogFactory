@@ -9,15 +9,21 @@ using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Factory
 {
+    /// <summary>
+    /// CreateTaskArgumentForm
+    /// </summary>
     public partial class CreateTaskArgumentForm : Form
     {
+        private TaskArgument targetTaskArgument;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateTaskArgumentForm"/> class.
+        /// </summary>
         public CreateTaskArgumentForm()
         {
             this.InitializeComponent();
             this.Icon = UnityResource.xQuantLogFactoryIcon;
         }
-
-        private TaskArgument targetTaskArgument;
 
         /// <summary>
         /// Gets or sets 创建任务参数对象

@@ -15,10 +15,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// </summary>
     public class CommonPrefixAnalysiser : DirectedLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonPrefixAnalysiser"/> class.
+        /// </summary>
         public CommonPrefixAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonPrefixAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CommonPrefixAnalysiser(ITracer tracer)
             : base(tracer)
         {
@@ -66,6 +73,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                         {
                             customeData = firstResult.LogContent;
                         }
+
                         childMonitor = this.TryGetOrAddChildMonitor(targetMonitor, customeData);
 
                         targetMonitor.AnalysisResults.Remove(analysisResult);
@@ -78,6 +86,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                             childMonitor.MonitorResults.Add(analysisResult.StartMonitorResult);
                             targetMonitor.MonitorResults.Remove(analysisResult.StartMonitorResult);
                         }
+
                         if (analysisResult.FinishMonitorResult != null)
                         {
                             analysisResult.FinishMonitorResult.MonitorItem = childMonitor;

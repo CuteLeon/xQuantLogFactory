@@ -9,6 +9,12 @@ namespace xQuantLogFactory.Model.Report
     /// </summary>
     public class ExcelWorksheetPackage : IDisposable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExcelWorksheetPackage"/> class.
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <param name="rowID"></param>
+        /// <param name="excelRange"></param>
         public ExcelWorksheetPackage(ExcelWorksheet worksheet, int rowID, ExcelRange excelRange)
         {
             this.Worksheet = worksheet;
@@ -65,6 +71,7 @@ namespace xQuantLogFactory.Model.Report
         public void Dispose()
         {
             this.Dispose(true);
+
             // GC.SuppressFinalize(this);
         }
         #endregion

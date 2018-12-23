@@ -17,12 +17,31 @@ using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
+/* TODO: Performance监视、分析功能实现解决方案：
+增加PerformanceMonitorItem实体，作为Pref监视规则，监视规则容器增加List<PerformaceMonitorItem>列表，XML文件内使用<Pref>作为此类型标记，PerformanceMonitorItem内也增加List<PerformaceMonitorItem>列表：两种监视规则节点都只允许包含同类节点作为子节点；
+容器中两种节点都要初始化为树，对不同文件使用不同监视规则的树进行扫描；
+增加PerformanceAnalysisResult实体，作为Pref分析结果，PerformanceMonitorItem、TaskArgument和LogFile都增加List<PerformanceAnalysisResult>以记录Pref分析结果；
+修改Performance日志解析器，以启用PerformanceMonitorItem树；
+增加Performance日志通用同步分析器，对Performance监视结果匹配成组；
+Pref分析结果处理完初始化树；
+
+后续优化：
+PerformanceMonitorItem和TerminalMonitorItem，提取MonitorItemBase抽象基类；
+PerformanceMonitorResult和TerminalMonitorResult监视结果提取MonitorResultBase抽象基类；
+PerformanceAnalysisResult和TerminalAnalysisResult分析结果提取AnalysisResultBase抽象基类；
+LogFile提取LogFileBase抽象基类，实现TerminalLogFile和PerformanceLogFile；
+两种文件实体，都只实现对应的List<监视结果>和List<分析结果>；
+ */
+
 // 在 VS 内通过 [按键:Alt+F2] 或 [菜单:(调试|分析)>性能探查器] 打开 [性能探查器] 分析方法或对象CPU或内存的性能影响
 
 // TODO: [全局任务] 移除和排除 using
 // TODO: [全局任务] 编写单元测试
 namespace xQuantLogFactory
 {
+    /// <summary>
+    /// Program
+    /// </summary>
     internal class Program
     {
         /// <summary>
@@ -523,12 +542,12 @@ namespace xQuantLogFactory
         /// <param name="e"></param>
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            if (!(e.ExceptionObject is Exception UnhandledException))
+            if (!(e.ExceptionObject is Exception unhandledException))
             {
                 return;
             }
 
-            if (UnhandledException is OutOfMemoryException)
+            if (unhandledException is OutOfMemoryException)
             {
                 GC.KeepAlive(UnityTaskArgument);
                 GC.Collect();
@@ -548,12 +567,12 @@ namespace xQuantLogFactory
                 "\t【异常信息】: {4}\r\n" +
                 "\t【调用堆栈】: \r\n{5}\r\n" +
                 "\t【即将终止】: {6}",
-                UnhandledException.GetType().ToString(),
-                UnhandledException.Source,
-                UnhandledException.TargetSite.Name,
-                UnhandledException.TargetSite.Module.FullyQualifiedName,
-                UnhandledException.Message,
-                UnhandledException.StackTrace,
+                unhandledException.GetType().ToString(),
+                unhandledException.Source,
+                unhandledException.TargetSite.Name,
+                unhandledException.TargetSite.Module.FullyQualifiedName,
+                unhandledException.Message,
+                unhandledException.StackTrace,
                 e.IsTerminating);
 
             Console.WriteLine("——————————————————");

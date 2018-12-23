@@ -20,10 +20,17 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public abstract class CSLogParserBase : LogParserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CSLogParserBase"/> class.
+        /// </summary>
         public CSLogParserBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CSLogParserBase"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CSLogParserBase(ITracer tracer)
             : base(tracer)
         {
@@ -92,6 +99,7 @@ namespace xQuantLogFactory.BIZ.Parser
                         {
                             generalMatch = this.GeneralLogRegex.Match(logLine);
                         }
+
                         if (generalMatch.Success)
                         {
                             // 跳过未匹配到内容的日志行
@@ -130,6 +138,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 {
                                     particularMatch = this.ParticularRegex.Match(logContent);
                                 }
+
                                 if (particularMatch.Success && particularMatch.Groups["LogContent"].Success)
                                 {
                                     logContent = particularMatch.Groups["LogContent"].Value;

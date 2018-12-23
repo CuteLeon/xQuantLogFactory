@@ -11,15 +11,25 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// </summary>
     public abstract class DirectedLogAnalysiserBase : LogAnalysiserBase, ICustomLogAnalysiser
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectedLogAnalysiserBase"/> class.
+        /// </summary>
         public DirectedLogAnalysiserBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DirectedLogAnalysiserBase"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public DirectedLogAnalysiserBase(ITracer tracer)
             : base(tracer)
         {
         }
 
+        /// <summary>
+        /// Gets or sets 分析正则
+        /// </summary>
         public virtual Regex AnalysisRegex { get; protected set; }
 
         /// <summary>

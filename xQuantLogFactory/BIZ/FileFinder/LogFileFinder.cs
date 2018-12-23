@@ -39,11 +39,11 @@ namespace xQuantLogFactory.BIZ.FileFinder
             DirectoryInfo directoryInfo = new DirectoryInfo(directory);
             Regex logRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
 
-            foreach (var (FullName, CreationTime, LastWriteTime) in directoryInfo
+            foreach (var (fullName, creationTime, lastWriteTime) in directoryInfo
                 .GetFiles("*.txt*", SearchOption.AllDirectories)
                 .Select(info => (info.FullName, info.CreationTime, info.LastWriteTime)))
             {
-                string fileName = Path.GetFileName(FullName);
+                string fileName = Path.GetFileName(fullName);
 
                 // 按格式筛选日志文件，以免查找到无用的文件
                 if (!logRegex.IsMatch(fileName))
@@ -51,14 +51,14 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     continue;
                 }
 
-                if (argument.CheckLogFileTime(CreationTime, LastWriteTime))
+                if (argument.CheckLogFileTime(creationTime, lastWriteTime))
                 {
                     logFiles.Add(new LogFile(
                         this.GetLogFileType(fileName),
-                        FullName,
-                        CreationTime,
-                        LastWriteTime,
-                        FullName.Remove(0, argument.LogDirectory.Length)));
+                        fullName,
+                        creationTime,
+                        lastWriteTime,
+                        fullName.Remove(0, argument.LogDirectory.Length)));
                 }
             }
 

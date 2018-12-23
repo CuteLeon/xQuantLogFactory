@@ -12,6 +12,12 @@ namespace xQuantLogFactory.Model.EqualityComparer
     public class LogResultEqualityComparer<T> : IEqualityComparer<T>
         where T : LogResultBase
     {
+        /// <summary>
+        /// Equals
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public bool Equals(T x, T y)
         {
             return
@@ -22,6 +28,11 @@ namespace xQuantLogFactory.Model.EqualityComparer
                 x.LineNumber == y.LineNumber;
         }
 
+        /// <summary>
+        /// GetHashCode
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public int GetHashCode(T obj)
             => obj.GetHashCode();
     }

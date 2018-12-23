@@ -14,10 +14,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
     /// </summary>
     public class CommonGroupLogAnalysiser : GroupLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonGroupLogAnalysiser"/> class.
+        /// </summary>
         public CommonGroupLogAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonGroupLogAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CommonGroupLogAnalysiser(ITracer tracer)
             : base(tracer)
         {
@@ -54,6 +61,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                                 analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
                                 break;
                             }
+
                         case GroupTypes.Finish:
                             {
                                 if (analysisResult == null ||
@@ -76,6 +84,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                             }
                     }
                 }
+
                 this.Tracer?.WriteLine($"<<<分析完成，分析结果数量：{targetMonitor.AnalysisResults.Count}\t监视规则：{targetMonitor.Name}");
             });
         }

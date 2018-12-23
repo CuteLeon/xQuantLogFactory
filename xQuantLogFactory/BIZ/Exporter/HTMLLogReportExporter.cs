@@ -11,7 +11,6 @@ using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
-
     /// <summary>
     /// HTML日志报告导出器
     /// </summary>
@@ -132,17 +131,16 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 foreach (var analysisResult in logFile.AnalysisResults
-                    .OrderByDescending(result => result.ElapsedMillisecond)
-                    )
+                    .OrderByDescending(result => result.ElapsedMillisecond))
                 {
                     MonitorResult startResult = analysisResult.StartMonitorResult;
                     MonitorResult finishResult = analysisResult.FinishMonitorResult;
+                    string body = $@"监视规则：{analysisResult.MonitorItem?.Name}<br><hr>
+开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
+结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}";
                     this.WriteCard(
                         $"耗时：<b>{analysisResult.ElapsedMillisecond.ToString("N")} ms</b>",
-                        $@"监视规则：{analysisResult.MonitorItem?.Name}<br><hr>
-开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
-结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
-                        );
+                        body);
                 }
             }
 
@@ -169,12 +167,12 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     MonitorResult startResult = analysisResult.StartMonitorResult;
                     MonitorResult finishResult = analysisResult.FinishMonitorResult;
+                    string body = $@"日志文件：{analysisResult.LogFile?.RelativePath}<br><hr>
+开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
+结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}";
                     this.WriteCard(
                         $"耗时：<b>{analysisResult.ElapsedMillisecond.ToString("N")} ms</b>",
-                        $@"日志文件：{analysisResult.LogFile?.RelativePath}<br><hr>
-开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
-结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}"
-                        );
+                        body);
                 }
             }
 
@@ -346,13 +344,14 @@ namespace xQuantLogFactory.BIZ.Exporter
                         .GroupBy(result => result.MethodName)
                         .OrderByDescending(result => result.Count()))
                     {
-                        this.WriteCard(
-                            $"方法名称：<b>{methodNameResult.Key}</b>",
-                            $@"<b>方法调用次数：{methodNameResult.Count().ToString("N0")}</b><br>
+                        string body = $@"<b>方法调用次数：{methodNameResult.Count().ToString("N0")}</b><br>
 调用客户端数：<b>{methodNameResult.Select(result => result.Client).Distinct().Count().ToString("N0")}</b><br>
 调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count().ToString("N0")}</b><br>
 返回总流长度：<b>{methodNameResult.Sum(result => result.StreamLength)}</b><br>
-流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>");
+流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>";
+                        this.WriteCard(
+                            $"方法名称：<b>{methodNameResult.Key}</b>",
+                            body);
                     }
 
                     this.WriteCardFooter($"方法总数：<b>{requesURIResult.Select(result => result.MethodName).Distinct().Count().ToString("N0")}</b> 个， 调用总次数：<b>{requesURIResult.Count().ToString("N0")}</b> 个， 总耗时：<b>{requesURIResult.Sum(result => result.Elapsed)}</b> 毫秒");

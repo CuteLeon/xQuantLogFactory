@@ -127,6 +127,6 @@ namespace xQuantLogFactory.Model.Fixed
         /// 生成Excel
         /// </summary>
         [AmbientValue("xlsx")]
-        Excel = 3
+        Excel = 3,
     }
 }

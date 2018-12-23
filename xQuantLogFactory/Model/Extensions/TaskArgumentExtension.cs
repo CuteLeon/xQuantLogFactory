@@ -19,7 +19,6 @@ namespace xQuantLogFactory.Model.Extensions
             // 如果文件创建时间晚于文件最后写入时间，则此文件是被复制而来，将文件创建时间当做无限早处理
             if (fileCreationTime > lastWriteTime)
             {
-
                 fileCreationTime = DateTime.MinValue;
             }
 

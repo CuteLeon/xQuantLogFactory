@@ -2,7 +2,6 @@
 
 namespace xQuantLogFactory.BIZ.Exporter
 {
-
     /// <summary>
     /// 日志报告导出器接口
     /// </summary>
