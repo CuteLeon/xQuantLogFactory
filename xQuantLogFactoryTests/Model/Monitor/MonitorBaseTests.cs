@@ -14,26 +14,29 @@ namespace xQuantLogFactory.Model.Monitor.Tests
         {
             MonitorContainer container = new MonitorContainer();
 
-            Assert.AreEqual(0, container.MonitorTreeRoots.Count);
+            Assert.AreEqual(0, container.TerminalMonitorTreeRoots.Count);
             Assert.AreEqual(0, container.GetTerminalMonitorItems().Count());
 
             Random random = new Random();
-            MonitorBase currentMonitor = null;
+            TerminalMonitorItem root = new TerminalMonitorItem("临时监视规则");
+            TerminalMonitorItem currentMonitor = null;
 
             for (int index = 0; index < 100; index++)
             {
-                currentMonitor = container;
-                if (currentMonitor.HasChildren && random.NextDouble() > 0.3)
+                currentMonitor = root;
+                if (currentMonitor.HasChild() && random.NextDouble() > 0.3)
                     currentMonitor = currentMonitor.MonitorTreeRoots[random.Next(0, currentMonitor.MonitorTreeRoots.Count)];
 
                 currentMonitor.MonitorTreeRoots.Add(new TerminalMonitorItem($"监视规则-{index}"));
             }
+            container.TerminalMonitorTreeRoots.AddRange(root.MonitorTreeRoots);
+            root = null;
 
-            Console.WriteLine($"根节点 ({container.MonitorTreeRoots.Count}个)：{string.Join("、", container.MonitorTreeRoots.Select(monitor => monitor.Name))}");
+            Console.WriteLine($"根节点 ({container.TerminalMonitorTreeRoots.Count}个)：{string.Join("、", container.TerminalMonitorTreeRoots.Select(monitor => monitor.Name))}");
             var monitorItems = container.GetTerminalMonitorItems().ToList();
             Console.WriteLine($"所有节点 ({monitorItems.Count}个)：{string.Join("、", monitorItems.Select(monitor => monitor.Name))}");
 
-            Assert.IsTrue(container.MonitorTreeRoots.Count > 0 && container.MonitorTreeRoots.Count < 100);
+            Assert.IsTrue(container.TerminalMonitorTreeRoots.Count > 0 && container.TerminalMonitorTreeRoots.Count < 100);
             Assert.AreEqual(100, monitorItems.Count);
         }
 
@@ -57,7 +60,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             TerminalMonitorItem N = new TerminalMonitorItem("N");
             TerminalMonitorItem O = new TerminalMonitorItem("O");
             TerminalMonitorItem P = new TerminalMonitorItem("P");
-            container.MonitorTreeRoots.AddRange(new TerminalMonitorItem[] { A, B, C });
+            container.TerminalMonitorTreeRoots.AddRange(new TerminalMonitorItem[] { A, B, C });
 
             A.MonitorTreeRoots.AddRange(new TerminalMonitorItem[] { D, E, F });
             B.MonitorTreeRoots.AddRange(new TerminalMonitorItem[] { G, H });
@@ -82,18 +85,19 @@ namespace xQuantLogFactory.Model.Monitor.Tests
         [TestMethod()]
         public void GetNextChildCANOTest()
         {
-            MonitorContainer container = new MonitorContainer();
-            container.MonitorTreeRoots.Add(new TerminalMonitorItem());
+            TerminalMonitorItem root = new TerminalMonitorItem();
 
-            Assert.AreEqual("0001", container.GetNextChildCANO());
+            Assert.AreEqual("0001", root.GetNextChildCANO());
 
-            container.MonitorTreeRoots.Add(new TerminalMonitorItem() { CANO = container.GetNextChildCANO() });
-            container.MonitorTreeRoots.Add(new TerminalMonitorItem() { CANO = container.GetNextChildCANO() });
-            container.MonitorTreeRoots.Add(new TerminalMonitorItem() { CANO = container.GetNextChildCANO() });
+            root.MonitorTreeRoots.Add(new TerminalMonitorItem());
 
-            Assert.AreEqual("0001", container.MonitorTreeRoots[1].CANO);
-            Assert.AreEqual("0002", container.MonitorTreeRoots[2].CANO);
-            Assert.AreEqual("0003", container.MonitorTreeRoots[3].CANO);
+            root.MonitorTreeRoots.Add(new TerminalMonitorItem() { CANO = root.GetNextChildCANO() });
+            root.MonitorTreeRoots.Add(new TerminalMonitorItem() { CANO = root.GetNextChildCANO() });
+            root.MonitorTreeRoots.Add(new TerminalMonitorItem() { CANO = root.GetNextChildCANO() });
+
+            Assert.AreEqual("0001", root.MonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0002", root.MonitorTreeRoots[2].CANO);
+            Assert.AreEqual("0003", root.MonitorTreeRoots[3].CANO);
         }
     }
 }

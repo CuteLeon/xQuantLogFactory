@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Result;
 
@@ -30,7 +31,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// <summary>
         /// Gets or sets 子监视规则列表
         /// </summary>
-        [XmlElement("Item")]
+        [XmlElement(FixedDatas.TERMINAL_MONITOR_XML_ELEMENT_NAME)]
         public override List<TerminalMonitorItem> MonitorTreeRoots { get; set; } = new List<TerminalMonitorItem>();
 
         /// <summary>

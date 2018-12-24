@@ -13,11 +13,10 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
     [TestClass()]
     public class XMLSerializationExtensionTests
     {
-
         [TestMethod()]
         public void SerializeToXMLTest()
         {
-            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorTreeRoots = new List<TerminalMonitorItem>() };
+            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", TerminalMonitorTreeRoots = new List<TerminalMonitorItem>() };
 
             TerminalMonitorItem clientItem = new TerminalMonitorItem
             {
@@ -50,11 +49,35 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 SheetName = "内存"
             };
 
-            container.MonitorTreeRoots.Add(clientItem);
-            container.MonitorTreeRoots.Add(memoryItem);
+            PerformanceMonitorItem logonItem = new PerformanceMonitorItem()
+            {
+                StartPattern = "logonstart",
+                FinishPatterny = "logonfinish",
+                DirectedAnalysiser = DirectedAnalysiserTypes.Load,
+                GroupAnalysiser = GroupAnalysiserTypes.FormAsync,
+            };
+            PerformanceMonitorItem logonFail = new PerformanceMonitorItem()
+            {
+                StartPattern = "登录失败",
+                DirectedAnalysiser = DirectedAnalysiserTypes.Prefix,
+                GroupAnalysiser = GroupAnalysiserTypes.SelfSealing,
+            };
+            PerformanceMonitorItem reportItem = new PerformanceMonitorItem()
+            {
+                StartPattern = "requestreport",
+                SheetName = "内存",
+                Memory = true,
+            };
+
+            container.TerminalMonitorTreeRoots.Add(clientItem);
+            container.TerminalMonitorTreeRoots.Add(memoryItem);
             clientItem.MonitorTreeRoots.Add(dataItem);
             clientItem.MonitorTreeRoots.Add(new TerminalMonitorItem() { Name = "额外任务" });
             dataItem.MonitorTreeRoots.Add(bondItem);
+
+            container.PerformanceMonitorTreeRoots.Add(logonItem);
+            container.PerformanceMonitorTreeRoots.Add(reportItem);
+            logonItem.MonitorTreeRoots.Add(logonFail);
 
             string xmlContent = container.SerializeToXML();
             Assert.IsNotNull(xmlContent);
@@ -70,18 +93,29 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 throw new ArgumentNullException(nameof(xmlContent));
 
             MonitorContainer container = xmlContent.DeserializeToObject<MonitorContainer>();
+
             container.InitTerminalMonitorTree();
+            container.InitPerformanceMonitorTree();
 
             Assert.IsNotNull(container);
             Assert.AreEqual("监听客户端启动方案", container.Name);
-            Assert.AreEqual(2, container.MonitorTreeRoots[0].MonitorTreeRoots.Count);
+            Assert.AreEqual(2, container.TerminalMonitorTreeRoots[0].MonitorTreeRoots.Count);
             Assert.AreEqual(5, container.GetTerminalMonitorItems().Count());
-            Assert.IsTrue(container.MonitorTreeRoots[1].Memory);
-            Assert.AreEqual("内存", container.MonitorTreeRoots[1].SheetName);
-            Assert.AreEqual(DirectedAnalysiserTypes.Load, container.MonitorTreeRoots[0].MonitorTreeRoots[0].DirectedAnalysiser);
+            Assert.IsTrue(container.TerminalMonitorTreeRoots[1].Memory);
+            Assert.AreEqual("内存", container.TerminalMonitorTreeRoots[1].SheetName);
+            Assert.AreEqual(DirectedAnalysiserTypes.Load, container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].DirectedAnalysiser);
 
-            Assert.AreSame(null, container.MonitorTreeRoots[0].ParentMonitorItem);
-            Assert.AreSame(container.MonitorTreeRoots[0], container.MonitorTreeRoots[0].MonitorTreeRoots[0].ParentMonitorItem);
+            Assert.AreSame(null, container.TerminalMonitorTreeRoots[0].ParentMonitorItem);
+            Assert.AreSame(container.TerminalMonitorTreeRoots[0], container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].ParentMonitorItem);
+
+            Assert.AreEqual(1, container.PerformanceMonitorTreeRoots[0].MonitorTreeRoots.Count);
+            Assert.AreEqual(3, container.GetPerformanceMonitorItems().Count());
+            Assert.IsTrue(container.PerformanceMonitorTreeRoots[1].Memory);
+            Assert.AreEqual("内存", container.PerformanceMonitorTreeRoots[1].SheetName);
+            Assert.AreEqual(DirectedAnalysiserTypes.Prefix, container.PerformanceMonitorTreeRoots[0].MonitorTreeRoots[0].DirectedAnalysiser);
+
+            Assert.AreSame(null, container.PerformanceMonitorTreeRoots[0].ParentMonitorItem);
+            Assert.AreSame(container.PerformanceMonitorTreeRoots[0], container.PerformanceMonitorTreeRoots[0].MonitorTreeRoots[0].ParentMonitorItem);
         }
     }
 }

@@ -137,5 +137,18 @@
         /// </summary>
         public const string CACHE_SHEET_NAME = "缓存";
         #endregion
+
+        #region 实体
+
+        /// <summary>
+        /// 客户端和服务端监视规则XML序列化元素名称
+        /// </summary>
+        public const string TERMINAL_MONITOR_XML_ELEMENT_NAME = "Item";
+
+        /// <summary>
+        /// Performance监视规则XML序列化元素名称
+        /// </summary>
+        public const string PERFORMANCE_MONITOR_XML_ELEMENT_NAME = "Perf";
+        #endregion
     }
 }

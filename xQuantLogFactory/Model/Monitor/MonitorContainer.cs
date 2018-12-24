@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
@@ -20,11 +21,13 @@ namespace xQuantLogFactory.Model.Monitor
         /// <summary>
         /// 客户端和服务端监视规则树根节点
         /// </summary>
+        [XmlElement(FixedDatas.TERMINAL_MONITOR_XML_ELEMENT_NAME)]
         public List<TerminalMonitorItem> TerminalMonitorTreeRoots = new List<TerminalMonitorItem>();
 
         /// <summary>
         /// Performance 监视规则树根节点
         /// </summary>
+        [XmlElement(FixedDatas.PERFORMANCE_MONITOR_XML_ELEMENT_NAME)]
         public List<PerformanceMonitorItem> PerformanceMonitorTreeRoots = new List<PerformanceMonitorItem>();
         #endregion
 
@@ -50,7 +53,7 @@ namespace xQuantLogFactory.Model.Monitor
             }
 
             // 使用一个根节点辅助
-            TMonitor root = new TMonitor() { Name = "临时辅助节点", CANO = string.Empty, MonitorTreeRoots = monitors };
+            TMonitor root = new TMonitor() { Name = string.Empty, CANO = string.Empty, MonitorTreeRoots = monitors };
             TMonitor currentMonitor = null;
 
             foreach (TMonitor parentMonitor in root.GetMonitorsWithSelf())
@@ -168,7 +171,7 @@ namespace xQuantLogFactory.Model.Monitor
                 throw new ArgumentNullException(nameof(monitors));
             }
 
-            TMonitor root = new TMonitor() { Name = "临时辅助节点", CANO = string.Empty, MonitorTreeRoots = monitors };
+            TMonitor root = new TMonitor() { Name = string.Empty, CANO = string.Empty, MonitorTreeRoots = monitors };
 
             foreach (var monitor in root.GetMonitors())
             {

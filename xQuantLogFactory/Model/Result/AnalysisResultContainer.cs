@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using xQuantLogFactory.Model.LogFile;
@@ -110,6 +111,77 @@ namespace xQuantLogFactory.Model.Result
         public void InitPerformanceAnalysisResultTree(List<PerformanceAnalysisResult> analysisResults)
         {
             this.InitAnalysisResultTree<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>(analysisResults, this.PerformanceAnalysisResultRoots);
+        }
+        #endregion
+
+        #region 扫描分析结果树
+
+        /// <summary>
+        /// 是否含有客户端和服务端分析结果
+        /// </summary>
+        /// <returns></returns>
+        public bool HasTerminalAnalysisResults()
+        {
+            return this.TerminalAnalysisResultRoots != null && this.TerminalAnalysisResultRoots.Count > 0;
+        }
+
+        /// <summary>
+        /// 是否含有Performance分析结果
+        /// </summary>
+        /// <returns></returns>
+        public bool HasPerformanceAnalysisResults()
+        {
+            return this.PerformanceAnalysisResultRoots != null && this.PerformanceAnalysisResultRoots.Count > 0;
+        }
+
+        /// <summary>
+        /// 获取所有子分析结果及其子分析结果
+        /// </summary>
+        /// <typeparam name="TMonitor"></typeparam>
+        /// <typeparam name="TMonitorResult"></typeparam>
+        /// <typeparam name="TAnalysisResult"></typeparam>
+        /// <typeparam name="TLogFile"></typeparam>
+        /// <param name="analysisResults"></param>
+        /// <returns></returns>
+        /// <remarks>IEnumerable<>对象即使储存为变量，每次访问依然会进入此方法，若要减少计算量，需要将此方法返回数据 .ToList()</remarks>
+        public IEnumerable<TAnalysisResult> GetAnalysisResults<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TAnalysisResult> analysisResults)
+            where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
+            where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        {
+            if (analysisResults == null)
+            {
+                throw new ArgumentNullException(nameof(analysisResults));
+            }
+
+            TAnalysisResult root = new TAnalysisResult() { AnalysisResultRoots = analysisResults };
+
+            foreach (var analysisResult in root.GetAnalysisResults())
+            {
+                yield return analysisResult;
+            }
+
+            // 销毁 root
+            root = null;
+        }
+
+        /// <summary>
+        /// 获取客户端和服务端分析结果
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<TerminalAnalysisResult> GetTerminalAnalysisResults()
+        {
+            return this.GetAnalysisResults<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>(this.TerminalAnalysisResultRoots);
+        }
+
+        /// <summary>
+        /// 获取Performance分析结果
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<PerformanceAnalysisResult> GetPerformanceAnalysisResults()
+        {
+            return this.GetAnalysisResults<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>(this.PerformanceAnalysisResultRoots);
         }
         #endregion
     }

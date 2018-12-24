@@ -99,7 +99,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             Match middlewareMatch = middlewareParser.GeneralLogRegex.Match(MiddlewareLog);
             Assert.IsTrue(middlewareMatch.Success);
             Assert.AreEqual("2018-11-01 10:41:39.968", middlewareMatch.Groups["LogTime"].Value);
-            Assert.AreEqual("172.28.40.110", middlewareMatch.Groups["Client"].Value);
+            Assert.AreEqual("172.28.40.110", middlewareMatch.Groups["IPAddress"].Value);
             Assert.AreEqual("leon", middlewareMatch.Groups["UserCode"].Value);
             Assert.AreEqual("2018-11-01 10:41:39.968", middlewareMatch.Groups["StartTime"].Value);
             Assert.AreEqual("10", middlewareMatch.Groups["Elapsed"].Value);

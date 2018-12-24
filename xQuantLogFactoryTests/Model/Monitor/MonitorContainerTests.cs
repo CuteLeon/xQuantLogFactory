@@ -1,9 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using xQuantLogFactory.Model.Monitor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using xQuantLogFactory.Utils.Extensions;
 
 namespace xQuantLogFactory.Model.Monitor.Tests
@@ -36,38 +32,38 @@ namespace xQuantLogFactory.Model.Monitor.Tests
 
             container.InitTerminalMonitorTree();
 
-            Assert.AreEqual("0001", container.MonitorTreeRoots[0].CANO);
-            Assert.AreEqual("0001.0001", container.MonitorTreeRoots[0].MonitorTreeRoots[0].CANO);
-            Assert.AreEqual("0001.0001.0001", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].CANO);
-            Assert.AreEqual("0001.0001.0002", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[1].CANO);
-            Assert.AreEqual("0001.0001.0003", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[2].CANO);
-            Assert.AreEqual("0001.0002", container.MonitorTreeRoots[0].MonitorTreeRoots[1].CANO);
-            Assert.AreEqual("0002", container.MonitorTreeRoots[1].CANO);
-            Assert.AreEqual("0003", container.MonitorTreeRoots[2].CANO);
-            Assert.AreEqual("0004", container.MonitorTreeRoots[3].CANO);
-            Assert.AreEqual("0005", container.MonitorTreeRoots[4].CANO);
+            Assert.AreEqual("0001", container.TerminalMonitorTreeRoots[0].CANO);
+            Assert.AreEqual("0001.0001", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].CANO);
+            Assert.AreEqual("0001.0001.0001", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].CANO);
+            Assert.AreEqual("0001.0001.0002", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0001.0001.0003", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[2].CANO);
+            Assert.AreEqual("0001.0002", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0002", container.TerminalMonitorTreeRoots[1].CANO);
+            Assert.AreEqual("0003", container.TerminalMonitorTreeRoots[2].CANO);
+            Assert.AreEqual("0004", container.TerminalMonitorTreeRoots[3].CANO);
+            Assert.AreEqual("0005", container.TerminalMonitorTreeRoots[4].CANO);
 
-            Assert.AreEqual("A", container.MonitorTreeRoots[0].Name);
-            Assert.AreEqual("A-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].Name);
-            Assert.AreEqual("A-1-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].Name);
-            Assert.AreEqual("A-1-2", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[1].Name);
-            Assert.AreEqual("A-1-3", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[2].Name);
-            Assert.AreEqual("A-2", container.MonitorTreeRoots[0].MonitorTreeRoots[1].Name);
-            Assert.AreEqual("B", container.MonitorTreeRoots[1].Name);
-            Assert.AreEqual("C", container.MonitorTreeRoots[2].Name);
-            Assert.AreEqual("D", container.MonitorTreeRoots[3].Name);
-            Assert.AreEqual("E", container.MonitorTreeRoots[4].Name);
+            Assert.AreEqual("A", container.TerminalMonitorTreeRoots[0].Name);
+            Assert.AreEqual("A-1", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].Name);
+            Assert.AreEqual("A-1-1", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].Name);
+            Assert.AreEqual("A-1-2", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[1].Name);
+            Assert.AreEqual("A-1-3", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[2].Name);
+            Assert.AreEqual("A-2", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[1].Name);
+            Assert.AreEqual("B", container.TerminalMonitorTreeRoots[1].Name);
+            Assert.AreEqual("C", container.TerminalMonitorTreeRoots[2].Name);
+            Assert.AreEqual("D", container.TerminalMonitorTreeRoots[3].Name);
+            Assert.AreEqual("E", container.TerminalMonitorTreeRoots[4].Name);
 
-            Assert.AreEqual("A", container.MonitorTreeRoots[0].SheetName);
-            Assert.AreEqual("A-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].SheetName);
-            Assert.AreEqual("A-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].SheetName);
-            Assert.AreEqual("A-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[1].SheetName);
-            Assert.AreEqual("A-1", container.MonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[2].SheetName);
-            Assert.AreEqual("A", container.MonitorTreeRoots[0].MonitorTreeRoots[1].SheetName);
-            Assert.AreEqual("B", container.MonitorTreeRoots[1].SheetName);
-            Assert.AreEqual("原始", container.MonitorTreeRoots[2].SheetName);
-            Assert.AreEqual("原始", container.MonitorTreeRoots[3].SheetName);
-            Assert.AreEqual("原始", container.MonitorTreeRoots[4].SheetName);
+            Assert.AreEqual("A", container.TerminalMonitorTreeRoots[0].SheetName);
+            Assert.AreEqual("A-1", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].SheetName);
+            Assert.AreEqual("A-1", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[0].SheetName);
+            Assert.AreEqual("A-1", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[1].SheetName);
+            Assert.AreEqual("A-1", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].MonitorTreeRoots[2].SheetName);
+            Assert.AreEqual("A", container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[1].SheetName);
+            Assert.AreEqual("B", container.TerminalMonitorTreeRoots[1].SheetName);
+            Assert.AreEqual("原始", container.TerminalMonitorTreeRoots[2].SheetName);
+            Assert.AreEqual("原始", container.TerminalMonitorTreeRoots[3].SheetName);
+            Assert.AreEqual("原始", container.TerminalMonitorTreeRoots[4].SheetName);
         }
 
         [TestMethod]
@@ -98,7 +94,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             MonitorContainer container = xmlContent.DeserializeToObject<MonitorContainer>();
             container.InitTerminalMonitorTree();
 
-            TerminalMonitorItem targetMonitor = container.MonitorTreeRoots[1];
+            TerminalMonitorItem targetMonitor = container.TerminalMonitorTreeRoots[1];
             Assert.IsNotNull(targetMonitor);
 
             Assert.AreEqual(targetMonitor.StartPattern, targetMonitor.MonitorTreeRoots[0].StartPattern);

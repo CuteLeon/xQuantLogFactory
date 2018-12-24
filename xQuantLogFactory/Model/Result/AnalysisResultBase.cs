@@ -114,7 +114,7 @@ namespace xQuantLogFactory.Model.Result
         /// 获取自身及所有子分析结果及其子分析结果
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<TAnalysisResult> GetAnalysisResultWithRoot()
+        public IEnumerable<TAnalysisResult> GetAnalysisResultWithSelf()
         {
             yield return (this as TAnalysisResult) ?? throw new Exception("泛型列表中父节点必须与子节点类型保持一致");
 
@@ -133,7 +133,7 @@ namespace xQuantLogFactory.Model.Result
         public IEnumerable<TAnalysisResult> GetAnalysisResults()
         {
             Stack<TAnalysisResult> resultRoots = new Stack<TAnalysisResult>();
-            TAnalysisResult currentResult = this as TAnalysisResult;
+            TAnalysisResult currentResult = this as TAnalysisResult ?? throw new Exception("泛型列表中父节点必须与子节点类型保持一致");
 
             while (true)
             {

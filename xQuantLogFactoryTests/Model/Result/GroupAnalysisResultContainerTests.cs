@@ -56,13 +56,13 @@ namespace xQuantLogFactory.Model.Result.Tests
             results.Add(analysisResult_1);
             results.Add(analysisResult_2);
 
-            container.InitAnalysisResultTree(results);
-            Assert.AreEqual(results.Count, container.GetAnalysisResults().Count());
+            container.InitTerminalAnalysisResultTree(results);
+            Assert.AreEqual(results.Count, container.GetTerminalAnalysisResults().Count());
             Assert.AreEqual(2, results.Count(result => result.ParentAnalysisResult == null));
             Assert.AreEqual(2, container.TerminalAnalysisResultRoots.Count);
 
-            container.InitAnalysisResultTree(results);
-            Assert.AreEqual(results.Count, container.GetAnalysisResults().Count());
+            container.InitTerminalAnalysisResultTree(results);
+            Assert.AreEqual(results.Count, container.GetTerminalAnalysisResults().Count());
             Assert.AreEqual(2, results.Count(result => result.ParentAnalysisResult == null));
             Assert.AreEqual(2, container.TerminalAnalysisResultRoots.Count);
         }

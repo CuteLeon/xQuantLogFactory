@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 
 namespace xQuantLogFactory.BIZ.Parser.Tests
 {
@@ -23,7 +24,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
                 LogStartTime = new DateTime(2018, 10, 30, 12, 04, 0, 0),
             };
             argument.LogFinishTime = argument.LogStartTime?.AddSeconds(5);
-            argument.LogFiles.Add(new LogFile()
+            argument.PerformanceLogFiles.Add(new PerformanceLogFile()
             {
                 LogFileType = LogFileTypes.Middleware,
                 FilePath = filePath,
@@ -32,9 +33,9 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
 
             Assert.AreEqual("2018-10-30 12:04:00.000", argument.LogStartTime?.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             Assert.AreEqual("2018-10-30 12:04:05.000", argument.LogFinishTime?.ToString("yyyy-MM-dd HH:mm:ss.fff"));
-            Assert.AreEqual(1, argument.LogFiles.Count);
-            Assert.AreEqual("\\performanceLog20181030.txt", argument.LogFiles.First().RelativePath);
-            Assert.AreEqual("performanceLog20181030.txt", Path.GetFileName(argument.LogFiles.First().FilePath));
+            Assert.AreEqual(1, argument.PerformanceLogFiles.Count);
+            Assert.AreEqual("\\performanceLog20181030.txt", argument.PerformanceLogFiles.First().RelativePath);
+            Assert.AreEqual("performanceLog20181030.txt", Path.GetFileName(argument.PerformanceLogFiles.First().FilePath));
 
             /*
             ILogParser parser = new MiddlewareLogParser();

@@ -124,6 +124,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// <summary>
         /// Gets or sets 监控项目树根节点列表
         /// </summary>
+        [XmlIgnore]
         public abstract List<TMonitor> MonitorTreeRoots { get; set; }
 
         /// <summary>
@@ -146,7 +147,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         /// <param name="parentCANO"></param>
         /// <returns></returns>
-        public virtual string GetNextChildCANO(string parentCANO = null)
+        public virtual string GetNextChildCANO()
         {
             /* 目录编号生成算法：
              * 才能够当前子节点目录编号取最大值，以点分隔为数组，取数组最后一个元素转换为数字，数字即为子节点中的最大编号，在此编号上增加一，即为下一个节点编号
@@ -155,7 +156,7 @@ namespace xQuantLogFactory.Model.Monitor
              * 即为下一节点目录编号
              */
             int nextCANO = (int.TryParse(this.MonitorTreeRoots.Select(monitor => monitor.CANO ?? "0").Max()?.Split('.')?.LastOrDefault(), out int cano) ? cano : 0) + 1;
-            return $"{(parentCANO == null ? string.Empty : $"{parentCANO}.")}{nextCANO.ToString("0000")}";
+            return $"{(string.IsNullOrEmpty(this.CANO) ? string.Empty : $"{this.CANO}.")}{nextCANO.ToString("0000")}";
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace xQuantLogFactory.Model.Monitor
                     this.FinishPatterny = this.ParentMonitorItem.FinishPatterny;
                 }
 
-                parentMonitor.MonitorTreeRoots.Add(this as TMonitor);
+                parentMonitor.MonitorTreeRoots.Add(this as TMonitor ?? throw new Exception("泛型列表中父节点必须与子节点类型保持一致"));
             }
         }
 
