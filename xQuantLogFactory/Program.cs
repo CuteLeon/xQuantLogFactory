@@ -16,7 +16,9 @@ using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
-/* TODO: Performance监视、分析功能实现解决方案：
+// TODO: 1. 优化 Processer 内数据查询条件 => 监视规则、监视结果、分析结果
+
+/* TODO: 2. Performance监视、分析功能实现解决方案：
 增加PerformanceMonitorItem实体，作为Perf监视规则，监视规则容器增加List<PerformaceMonitorItem>列表，XML文件内使用<Perf>作为此类型标记，PerformanceMonitorItem内也增加List<PerformaceMonitorItem>列表：两种监视规则节点都只允许包含同类节点作为子节点；
 容器中两种节点都要初始化为树，对不同文件使用不同监视规则的树进行扫描；
 增加PerformanceAnalysisResult实体，作为Perf分析结果，PerformanceMonitorItem、TaskArgument和LogFile都增加List<PerformanceAnalysisResult>以记录Perf析结果；
@@ -32,6 +34,8 @@ PerformanceAnalysisResult和TerminalAnalysisResult分析结果提取AnalysisResu
 LogFile提取LogFileBase抽象基类，实现TerminalLogFile和PerformanceLogFile；
 两种文件实体，都只实现对应的List<监视结果>和List<分析结果>；
  */
+
+// TODO: 2. 重写文档
 
 // 在 VS 内通过 [按键:Alt+F2] 或 [菜单:(调试|分析)>性能探查器] 打开 [性能探查器] 分析方法或对象CPU或内存的性能影响
 
