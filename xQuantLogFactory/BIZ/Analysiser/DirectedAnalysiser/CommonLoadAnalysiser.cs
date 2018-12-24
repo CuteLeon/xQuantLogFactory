@@ -15,10 +15,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// </summary>
     public class CommonLoadAnalysiser : DirectedLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonLoadAnalysiser"/> class.
+        /// </summary>
         public CommonLoadAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonLoadAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CommonLoadAnalysiser(ITracer tracer)
             : base(tracer)
         {

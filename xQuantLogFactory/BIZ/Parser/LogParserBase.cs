@@ -1,11 +1,7 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Fixed;
-using xQuantLogFactory.Model.Monitor;
-using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser
@@ -15,10 +11,17 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public abstract class LogParserBase : LogProcesserBase, ILogParser
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogParserBase"/> class.
+        /// </summary>
         public LogParserBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogParserBase"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public LogParserBase(ITracer tracer)
             : base(tracer)
         {

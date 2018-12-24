@@ -25,10 +25,17 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// </summary>
         public readonly List<DirectedLogAnalysiserBase> DirectedAnalysiserProvider = new List<DirectedLogAnalysiserBase>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogAnalysiserHost"/> class.
+        /// </summary>
         public LogAnalysiserHost()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogAnalysiserHost"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public LogAnalysiserHost(ITracer tracer)
             : base(tracer)
         {
@@ -43,6 +50,10 @@ namespace xQuantLogFactory.BIZ.Analysiser
             this.DirectedAnalysiserProvider?.Add(logAnalysiser);
         }
 
+        /// <summary>
+        /// 分析
+        /// </summary>
+        /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
             if (argument == null)
@@ -68,6 +79,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
             // 分析结果匹配完成后按日志时间排序
             this.Tracer?.WriteLine(">>>————— 分析结果池排序 —————");
             argument.TerminalAnalysisResults = argument.TerminalAnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
+            argument.PerformanceAnalysisResults = argument.PerformanceAnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
             this.Tracer?.WriteLine("<<< 排序完成");
 
             // 初始化分析结果树
@@ -87,26 +99,34 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public void PrepareGroupLogAnalysiser(TaskArgument argument)
         {
-            this.GroupAnalysiserProvider.Add(new CommonGroupLogAnalysiser(this.Tracer));
-
-            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync))
+            if (argument.TerminalMonitorResults.Count > 0)
             {
-                this.GroupAnalysiserProvider.Add(new CoreAsyncGroupAnalysiser(this.Tracer));
+                this.GroupAnalysiserProvider.Add(new CommonGroupLogAnalysiser(this.Tracer));
+
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync))
+                {
+                    this.GroupAnalysiserProvider.Add(new CoreAsyncGroupAnalysiser(this.Tracer));
+                }
+
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.FormAsync))
+                {
+                    this.GroupAnalysiserProvider.Add(new FormAsyncGroupAnalysiser(this.Tracer));
+                }
+
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync))
+                {
+                    this.GroupAnalysiserProvider.Add(new ReportAsyncGroupAnalysiser(this.Tracer));
+                }
+
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.SelfSealing))
+                {
+                    this.GroupAnalysiserProvider.Add(new CommonSelfSealingGroupAnalysiser(this.Tracer));
+                }
             }
 
-            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.FormAsync))
+            if (argument.PerformanceMonitorResults.Count > 0)
             {
-                this.GroupAnalysiserProvider.Add(new FormAsyncGroupAnalysiser(this.Tracer));
-            }
-
-            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync))
-            {
-                this.GroupAnalysiserProvider.Add(new ReportAsyncGroupAnalysiser(this.Tracer));
-            }
-
-            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.SelfSealing))
-            {
-                this.GroupAnalysiserProvider.Add(new CommonSelfSealingGroupAnalysiser(this.Tracer));
+                // TODO: 准备 Performance 组分析器
             }
         }
 
@@ -153,7 +173,18 @@ namespace xQuantLogFactory.BIZ.Analysiser
         public virtual void FigureOutAnalysisResults(TaskArgument argument)
         {
             this.Tracer?.WriteLine("未完全匹配的监视规则：");
+
             foreach (var monitor in argument.MonitorContainerRoot.GetTerminalMonitorItems()
+                .Where(monitor => monitor.MonitorResults.Count > 0))
+            {
+                double matchingRate = monitor.MatchingRate;
+                if (matchingRate < 1.0)
+                {
+                    this.Tracer?.WriteLine($"匹配率：{matchingRate.ToString("P2")}\t监视规则：{monitor.Name}");
+                }
+            }
+
+            foreach (var monitor in argument.MonitorContainerRoot.GetPerformanceMonitorItems()
                 .Where(monitor => monitor.MonitorResults.Count > 0))
             {
                 double matchingRate = monitor.MatchingRate;

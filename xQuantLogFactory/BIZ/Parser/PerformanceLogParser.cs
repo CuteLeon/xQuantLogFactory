@@ -6,26 +6,35 @@ using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
-using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser
 {
     /// <summary>
-    /// 中间件日志解析器
+    /// Performance日志解析器
     /// </summary>
-    public class MiddlewareLogParser : LogParserBase
+    public class PerformanceLogParser : LogParserBase
     {
-        public MiddlewareLogParser()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceLogParser"/> class.
+        /// </summary>
+        public PerformanceLogParser()
         {
         }
 
-        public MiddlewareLogParser(ITracer tracer)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceLogParser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
+        public PerformanceLogParser(ITracer tracer)
             : base(tracer)
         {
         }
 
+        /// <summary>
+        /// Gets 日志总体正则表达式
+        /// </summary>
         public override Regex GeneralLogRegex { get; } = new Regex(
             @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<IPAddress>\d{1,3}(\.\d{1,3}){3})\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>\/.*?)\s(?<MethodName>.*?)\s(?<StreamLength>\d*?)\s(?<Message>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
@@ -42,7 +51,7 @@ namespace xQuantLogFactory.BIZ.Parser
             }
 
             // 遍历文件
-            argument.PerformanceLogFiles.Where(file => file.LogFileType == LogFileTypes.Middleware).AsParallel().ForAll(logFile =>
+            argument.PerformanceLogFiles.AsParallel().ForAll(logFile =>
             {
                 this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}");
 

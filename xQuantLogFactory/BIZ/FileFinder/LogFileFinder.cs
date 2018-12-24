@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -68,7 +67,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                                 break;
                             }
 
-                        case LogFileTypes.Middleware:
+                        case LogFileTypes.Performance:
                             {
                                 argument.PerformanceLogFiles.Add(new PerformanceLogFile(
                                     fileType,
@@ -103,9 +102,9 @@ namespace xQuantLogFactory.BIZ.FileFinder
             {
                 return LogFileTypes.Server;
             }
-            else if (fileName.StartsWith(ConfigHelper.MiddlewareLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            else if (fileName.StartsWith(ConfigHelper.PerformanceLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
             {
-                return LogFileTypes.Middleware;
+                return LogFileTypes.Performance;
             }
 
             return default;

@@ -103,9 +103,9 @@
         public const string MEMORY_SHEET_NAME = "内存";
 
         /// <summary>
-        /// 中间件日志表名
+        /// Performance日志表名
         /// </summary>
-        public const string MIDDLEWARE_SHEET_NAME = "中间件日志";
+        public const string PERFORMANCE_SHEET_NAME = "Performance";
 
         /// <summary>
         /// 分析表名

@@ -10,7 +10,6 @@ using OfficeOpenXml;
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.EqualityComparer;
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Report;
 using xQuantLogFactory.Model.Result;
@@ -30,7 +29,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         private static readonly string[] SpecialSheetNames = new string[]
         {
             FixedDatas.MEMORY_SHEET_NAME,
-            FixedDatas.MIDDLEWARE_SHEET_NAME,
+            FixedDatas.PERFORMANCE_SHEET_NAME,
             FixedDatas.TRADE_SETTLE_SHEET_NAME,
             FixedDatas.ANALYSIS_SHEET_NAME,
             FixedDatas.CORE_SERVICE_SHEET_NAME,
@@ -85,7 +84,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
                     this.ExportMemorySheet(excel, argument);
-                    this.ExportMiddlewareSheet(excel, argument);
+                    this.ExportPerformanceSheet(excel, argument);
                     this.ExportTradeClearingSheet(excel, argument);
                     this.ExportCoreServiceSheet(excel, argument);
                     this.ExportFormSheet(excel, argument);
@@ -538,36 +537,36 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 导出中间件日志表
+        /// 导出Performance日志表
         /// </summary>
         /// <param name="excel"></param>
         /// <param name="argument"></param>
-        public void ExportMiddlewareSheet(ExcelPackage excel, TaskArgument argument)
+        public void ExportPerformanceSheet(ExcelPackage excel, TaskArgument argument)
         {
-            ExcelWorksheet middlewareDataSheet = excel.Workbook.Worksheets[FixedDatas.MIDDLEWARE_SHEET_NAME];
-            if (middlewareDataSheet == null)
+            ExcelWorksheet dataSheet = excel.Workbook.Worksheets[FixedDatas.PERFORMANCE_SHEET_NAME];
+            if (dataSheet == null)
             {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.MIDDLEWARE_SHEET_NAME} 数据表，写入失败！");
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.PERFORMANCE_SHEET_NAME} 数据表，写入失败！");
             }
             else
             {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.MIDDLEWARE_SHEET_NAME} 表数据 ...");
-                Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.PerformanceMonitorResults.Count);
-                using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_SHEET_NAME} 表数据 ...");
+                Rectangle rectangle = new Rectangle(1, 2, 9, argument.PerformanceMonitorResults.Count);
+                using (ExcelRange range = dataSheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
-                    int rowID = middlewareRectangle.Top;
+                    int rowID = rectangle.Top;
                     foreach (var result in argument.PerformanceMonitorResults
                         .OrderBy(result => result.LogTime))
                     {
-                        middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        middlewareRange[rowID, 2].Value = result.IPAddress;
-                        middlewareRange[rowID, 3].Value = result.UserCode;
-                        middlewareRange[rowID, 4].Value = result.StartTime;
-                        middlewareRange[rowID, 5].Value = result.Elapsed;
-                        middlewareRange[rowID, 6].Value = result.RequestURI;
-                        middlewareRange[rowID, 7].Value = result.MethodName;
-                        middlewareRange[rowID, 8].Value = result.StreamLength;
-                        middlewareRange[rowID, 9].Value = result.Message;
+                        range[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        range[rowID, 2].Value = result.IPAddress;
+                        range[rowID, 3].Value = result.UserCode;
+                        range[rowID, 4].Value = result.StartTime;
+                        range[rowID, 5].Value = result.Elapsed;
+                        range[rowID, 6].Value = result.RequestURI;
+                        range[rowID, 7].Value = result.MethodName;
+                        range[rowID, 8].Value = result.StreamLength;
+                        range[rowID, 9].Value = result.Message;
 
                         rowID++;
                     }

@@ -15,10 +15,17 @@ namespace xQuantLogFactory.BIZ.Parser
     /// </summary>
     public class ClientLogParser : TerminalLogParserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientLogParser"/> class.
+        /// </summary>
         public ClientLogParser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientLogParser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public ClientLogParser(ITracer tracer)
             : base(tracer)
         {

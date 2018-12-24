@@ -12,10 +12,17 @@ namespace xQuantLogFactory.BIZ.Analysiser
     /// </summary>
     public abstract class LogAnalysiserBase : LogProcesserBase, ILogAnalysiser
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogAnalysiserBase"/> class.
+        /// </summary>
         public LogAnalysiserBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogAnalysiserBase"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public LogAnalysiserBase(ITracer tracer)
             : base(tracer)
         {

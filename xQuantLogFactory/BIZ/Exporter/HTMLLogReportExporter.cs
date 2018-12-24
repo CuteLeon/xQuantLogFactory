@@ -51,13 +51,13 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             this.WriteNodeTitle("日志分析结果：");
             this.htmlBuilder.Value.AppendLine("<div id=\"tab\">");
-            this.WriteTabTitles("监视规则", "客户端日志文件", "服务端日志文件", "中间件日志文件");
+            this.WriteTabTitles("监视规则", "客户端日志文件", "服务端日志文件", "Performance日志文件");
             this.htmlBuilder.Value.AppendLine("<div id=\"tab-container\">");
 
             this.WriteMonitorItemTabContent(argument);
             this.WriteClientLogFileTabContent(argument);
             this.WriteServerLogFileTabContent(argument);
-            this.WriteMiddlewareLogFileTabContent(argument);
+            this.WritePerformanceLogFileTabContent(argument);
 
             this.htmlBuilder.Value.AppendLine("</div>\n</div>");
             this.htmlBuilder.Value.AppendLine("</body>\n</html>");
@@ -322,10 +322,10 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 写入中间件日志文件卡片
+        /// 写入Performance日志文件卡片
         /// </summary>
         /// <param name="logFile"></param>
-        private void WriteMiddlewareLogFileCard(PerformanceLogFile logFile)
+        private void WritePerformanceLogFileCard(PerformanceLogFile logFile)
         {
             this.WriteCardHeader($"日志文件：<b>{logFile.RelativePath}</b>");
             this.htmlBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
@@ -363,15 +363,15 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 写入中间件日志文件查看容器
+        /// 写入Performance日志文件查看容器
         /// </summary>
         /// <param name="argument"></param>
-        private void WriteMiddlewareLogFileTabContent(TaskArgument argument)
+        private void WritePerformanceLogFileTabContent(TaskArgument argument)
         {
             this.htmlBuilder.Value.AppendLine(@"<div class=""tabContent"">");
 
             this.htmlBuilder.Value.AppendLine(@"<table class=""datatable"">
-<caption><h3>中间件日志文件查看：</h3></caption>
+<caption><h3>Performance日志文件查看：</h3></caption>
 <thead>
     <th>文件路径</th>
     <th>创建时间</th>
@@ -381,7 +381,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 <tbody>");
 
             IOrderedEnumerable<PerformanceLogFile> logFiles = argument.PerformanceLogFiles
-                .Where(logFile => logFile.LogFileType == LogFileTypes.Middleware)
+                .Where(logFile => logFile.LogFileType == LogFileTypes.Performance)
                 .OrderByDescending(logFile => logFile.MonitorResults.Count);
 
             foreach (var logFile in logFiles)
@@ -498,7 +498,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.WriteSectionTitle("日志文件详情：");
             foreach (var logFile in logFiles)
             {
-                this.WriteMiddlewareLogFileCard(logFile);
+                this.WritePerformanceLogFileCard(logFile);
             }
 
             this.htmlBuilder.Value.AppendLine("</div>");
@@ -628,7 +628,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             <td class=""value"">{argument.TerminalMonitorResults.Count().ToString("N0")}</td>
         </tr>
         <tr>
-            <td class=""label"">中间件日志结果数量：</td>
+            <td class=""label"">Performance日志结果数量：</td>
             <td class=""value"">{argument.PerformanceMonitorResults.Count().ToString("N0")}</td>
         </tr>
         <tr>

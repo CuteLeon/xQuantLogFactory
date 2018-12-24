@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
@@ -18,10 +17,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// <remarks>暂时无法处理跨文件、穿插、嵌套情况</remarks>
     public class CacheSizeAnalysiser : DirectedLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CacheSizeAnalysiser"/> class.
+        /// </summary>
         public CacheSizeAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CacheSizeAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CacheSizeAnalysiser(ITracer tracer)
             : base(tracer)
         {
@@ -34,14 +40,24 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
             $@"统计耗时：(?<Elapsed>.*?)秒",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        /// <summary>
+        /// Gets or sets 对象缓存正则表达式
+        /// </summary>
         public Regex ObjectRegex { get; protected set; } = new Regex(
             $@"\s(?<Type>.*?)\(数量:(?<Count>\d*)\)",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.RightToLeft);
 
+        /// <summary>
+        /// Gets or sets 拼音缓存正则表达式
+        /// </summary>
         public Regex PinYinRegex { get; protected set; } = new Regex(
             $@"拼音缓存个数：(?<Count>\d*);",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        /// <summary>
+        /// 分析任务
+        /// </summary>
+        /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
             if (argument == null)

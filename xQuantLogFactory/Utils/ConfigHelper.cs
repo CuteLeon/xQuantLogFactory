@@ -21,14 +21,14 @@ namespace xQuantLogFactory.Utils
         public const string ClientLogFileNamePrefix = "Clt";
 
         /// <summary>
-        /// 中间件日志文件名称前缀
+        /// Performance日志文件名称前缀
         /// </summary>
-        public const string MiddlewareLogFileNamePrefix = "performanceLog";
+        public const string PerformanceLogFileNamePrefix = "performanceLog";
 
         /// <summary>
-        /// 中间件日志文件别名
+        /// Performance日志文件别名
         /// </summary>
-        public const string MiddlewareLogFileAlias = "PERF";
+        public const string PerformanceLogFileAlias = "PERF";
 
         /// <summary>
         /// 默认导出报告模式
@@ -88,9 +88,9 @@ namespace xQuantLogFactory.Utils
         {
             get
             {
-                if (string.Equals(LogFileLevel, MiddlewareLogFileAlias, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(LogFileLevel, PerformanceLogFileAlias, StringComparison.OrdinalIgnoreCase))
                 {
-                    return $@"^{MiddlewareLogFileNamePrefix}\d{{8}}\.txt$";
+                    return $@"^{PerformanceLogFileNamePrefix}\d{{8}}\.txt$";
                 }
                 else
                 {

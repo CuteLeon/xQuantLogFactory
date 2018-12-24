@@ -12,10 +12,17 @@ namespace xQuantLogFactory.BIZ.Processer
         /// </summary>
         protected object lockSeed = new object();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogProcesserBase"/> class.
+        /// </summary>
         public LogProcesserBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogProcesserBase"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public LogProcesserBase(ITracer tracer)
             => this.Tracer = tracer;
 

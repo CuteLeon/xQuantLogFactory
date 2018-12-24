@@ -26,7 +26,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             argument.LogFinishTime = argument.LogStartTime?.AddSeconds(5);
             argument.PerformanceLogFiles.Add(new PerformanceLogFile()
             {
-                LogFileType = LogFileTypes.Middleware,
+                LogFileType = LogFileTypes.Performance,
                 FilePath = filePath,
                 RelativePath = filePath.Remove(0, argument.LogDirectory.Length),
             });
@@ -36,13 +36,6 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             Assert.AreEqual(1, argument.PerformanceLogFiles.Count);
             Assert.AreEqual("\\performanceLog20181030.txt", argument.PerformanceLogFiles.First().RelativePath);
             Assert.AreEqual("performanceLog20181030.txt", Path.GetFileName(argument.PerformanceLogFiles.First().FilePath));
-
-            /*
-            ILogParser parser = new MiddlewareLogParser();
-            parser.Parse(argument);
-            Assert.IsFalse(File.Exists(argument.LogFiles.First().FilePath) && argument.MiddlewareResults.Count == 0);
-            Console.WriteLine(argument.MiddlewareResults.Count);
-             */
         }
     }
 }

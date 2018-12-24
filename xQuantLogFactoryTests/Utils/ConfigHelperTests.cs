@@ -117,7 +117,7 @@ namespace xQuantLogFactoryTests.Utils
                 Assert.IsTrue(logFileRegex.IsMatch(file));
             Assert.IsTrue(validlogFiles_0.All(file => logFileRegex.IsMatch(file)));
 
-            ConfigHelper.LogFileLevel = ConfigHelper.MiddlewareLogFileAlias;
+            ConfigHelper.LogFileLevel = ConfigHelper.PerformanceLogFileAlias;
             logFileRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase);
 
             foreach (string file in validlogFiles_1)

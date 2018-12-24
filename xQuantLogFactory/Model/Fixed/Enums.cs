@@ -101,9 +101,9 @@ namespace xQuantLogFactory.Model.Fixed
         Server = 2,
 
         /// <summary>
-        /// 中间件日志
+        /// Performance日志
         /// </summary>
-        Middleware = 3,
+        Performance = 3,
     }
 
     /// <summary>

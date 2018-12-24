@@ -14,15 +14,26 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
     /// </summary>
     public class CommonSelfSealingGroupAnalysiser : GroupLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonSelfSealingGroupAnalysiser"/> class.
+        /// </summary>
         public CommonSelfSealingGroupAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonSelfSealingGroupAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CommonSelfSealingGroupAnalysiser(ITracer tracer)
             : base(tracer)
         {
         }
 
+        /// <summary>
+        /// 分析
+        /// </summary>
+        /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
             if (argument == null)

@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
@@ -8,15 +9,25 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
     /// </summary>
     public abstract class AsyncGroupLogAnalysiserBase : GroupLogAnalysiserBase, ICustomLogAnalysiser
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AsyncGroupLogAnalysiserBase"/> class.
+        /// </summary>
         public AsyncGroupLogAnalysiserBase()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AsyncGroupLogAnalysiserBase"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public AsyncGroupLogAnalysiserBase(ITracer tracer)
             : base(tracer)
         {
         }
 
+        /// <summary>
+        /// Gets or sets 分析正则表达式
+        /// </summary>
         public virtual Regex AnalysisRegex { get; protected set; }
     }
 }

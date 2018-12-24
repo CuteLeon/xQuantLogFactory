@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
@@ -16,10 +15,17 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
     /// </summary>
     public class CommonMemoryAnalysiser : DirectedLogAnalysiserBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonMemoryAnalysiser"/> class.
+        /// </summary>
         public CommonMemoryAnalysiser()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommonMemoryAnalysiser"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public CommonMemoryAnalysiser(ITracer tracer)
             : base(tracer)
         {
