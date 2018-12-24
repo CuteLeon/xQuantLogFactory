@@ -57,11 +57,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key;
+                    TerminalMonitorItem targetMonitor = resultGroup.Key;
 
                     // 待匹配监视结果寄存字典
-                    Dictionary<(string, string), GroupAnalysisResult> unintactResults = new Dictionary<(string, string), GroupAnalysisResult>();
-                    GroupAnalysisResult analysisResult = null;
+                    Dictionary<(string, string), TerminalAnalysisResult> unintactResults = new Dictionary<(string, string), TerminalAnalysisResult>();
+                    TerminalAnalysisResult analysisResult = null;
                     Match analysisMatch = null;
                     string formName = string.Empty, moduleCode = string.Empty;
 

@@ -48,9 +48,9 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key;
-                    MonitorItem childMonitor = null;
-                    MonitorResult firstResult = null;
+                    TerminalMonitorItem targetMonitor = resultGroup.Key;
+                    TerminalMonitorItem childMonitor = null;
+                    TerminalMonitorResult firstResult = null;
                     string customeData = string.Empty;
                     string pattern = string.Empty;
 

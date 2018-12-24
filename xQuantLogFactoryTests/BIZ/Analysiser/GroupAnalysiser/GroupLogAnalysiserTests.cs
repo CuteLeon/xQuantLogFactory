@@ -12,12 +12,12 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Tests
         [TestMethod()]
         public void CheckMatchTest()
         {
-            MonitorResult result0 = new MonitorResult()
+            TerminalMonitorResult result0 = new TerminalMonitorResult()
             {
                 GroupType = GroupTypes.Start,
                 LogTime = DateTime.Parse("1997-1-1"),
             };
-            MonitorResult result1 = new MonitorResult()
+            TerminalMonitorResult result1 = new TerminalMonitorResult()
             {
                 GroupType = GroupTypes.Finish,
                 LogTime = DateTime.Parse("1997-1-1"),

@@ -38,7 +38,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         /// <param name="parentMonitor">父监视规则</param>
         /// <param name="childMonitorName">子监视规则名称</param>
         /// <returns></returns>
-        public virtual MonitorItem TryGetOrAddChildMonitor(MonitorItem parentMonitor, string childMonitorName)
+        public virtual TerminalMonitorItem TryGetOrAddChildMonitor(TerminalMonitorItem parentMonitor, string childMonitorName)
         {
             if (parentMonitor == null)
             {
@@ -47,10 +47,10 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
 
             lock (parentMonitor)
             {
-                MonitorItem childMonitor = parentMonitor.FindChildMonitorItem(childMonitorName);
+                TerminalMonitorItem childMonitor = parentMonitor.FindChildMonitorItem(childMonitorName);
                 if (childMonitor == null)
                 {
-                    childMonitor = new MonitorItem(childMonitorName);
+                    childMonitor = new TerminalMonitorItem(childMonitorName);
 
                     // 绑定父节点并复制父节点配置信息
                     childMonitor.BindParentMonitor(parentMonitor, true);

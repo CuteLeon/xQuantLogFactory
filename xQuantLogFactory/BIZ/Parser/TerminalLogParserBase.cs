@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
@@ -18,20 +19,20 @@ namespace xQuantLogFactory.BIZ.Parser
     /// <summary>
     /// 客户端和服务端日志解析抽象类
     /// </summary>
-    public abstract class CSLogParserBase : LogParserBase
+    public abstract class TerminalLogParserBase : LogParserBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CSLogParserBase"/> class.
+        /// Initializes a new instance of the <see cref="TerminalLogParserBase"/> class.
         /// </summary>
-        public CSLogParserBase()
+        public TerminalLogParserBase()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CSLogParserBase"/> class.
+        /// Initializes a new instance of the <see cref="TerminalLogParserBase"/> class.
         /// </summary>
         /// <param name="tracer"></param>
-        public CSLogParserBase(ITracer tracer)
+        public TerminalLogParserBase(ITracer tracer)
             : base(tracer)
         {
         }
@@ -83,10 +84,10 @@ namespace xQuantLogFactory.BIZ.Parser
                     Match particularMatch = null;
 
                     // 缓存变量，减少树扫描次数，需要 .ToList()
-                    List<MonitorItem> monitorItems = null;
+                    List<TerminalMonitorItem> monitorItems = null;
                     lock (argument.MonitorContainerRoot)
                     {
-                        monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
+                        monitorItems = argument.MonitorContainerRoot.GetTerminalMonitorItems().ToList();
                     }
 
                     while (!streamRreader.EndOfStream)
@@ -146,7 +147,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             }
 
                             // 匹配所有监视规则
-                            foreach (MonitorItem monitor in monitorItems)
+                            foreach (TerminalMonitorItem monitor in monitorItems)
                             {
                                 GroupTypes groupType = monitor.MatchLogContent(logContent);
                                 if (groupType == GroupTypes.Unmatch)
@@ -155,7 +156,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                     continue;
                                 }
 
-                                MonitorResult result = this.CreateMonitorResult(argument, logFile, monitor);
+                                TerminalMonitorResult result = this.CreateMonitorResult(argument, logFile, monitor);
                                 result.LogTime = logTime;
                                 result.GroupType = groupType;
                                 result.LineNumber = lineNumber;
@@ -176,7 +177,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             // 记录不为空的未识别的日志行
                             if (logLine.Length > 0)
                             {
-                                logFile.UnparsedResults.Add(new UnparsedResult(argument, logFile, lineNumber, logLine));
+                                logFile.UnparsedResults.Add(new TerminalUnparsedResult(argument, logFile, lineNumber, logLine));
                             }
                         }
                     }
@@ -212,13 +213,35 @@ namespace xQuantLogFactory.BIZ.Parser
         /// </summary>
         /// <param name="argument"></param>
         /// <returns></returns>
-        protected abstract IEnumerable<LogFile> GetFileFiltered(TaskArgument argument);
+        protected abstract IEnumerable<TerminalLogFile> GetFileFiltered(TaskArgument argument);
 
         /// <summary>
         /// 应用精准匹配数据
         /// </summary>
         /// <param name="result"></param>
         /// <param name="particularMatch"></param>
-        protected abstract void ApplyParticularMatch(MonitorResult result, Match particularMatch);
+        protected abstract void ApplyParticularMatch(TerminalMonitorResult result, Match particularMatch);
+
+        /// <summary>
+        /// 创建解析结果对象
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <param name="logFile"></param>
+        /// <param name="monitor"></param>
+        /// <returns></returns>
+        protected TerminalMonitorResult CreateMonitorResult(TaskArgument argument, TerminalLogFile logFile, TerminalMonitorItem monitor)
+        {
+            TerminalMonitorResult monitorResult = new TerminalMonitorResult(argument, logFile, monitor);
+
+            // 反向关联日志监视结果
+            lock (this.lockSeed)
+            {
+                argument.MonitorResults.Add(monitorResult);
+                logFile.MonitorResults.Add(monitorResult);
+                monitor.MonitorResults.Add(monitorResult);
+            }
+
+            return monitorResult;
+        }
     }
 }

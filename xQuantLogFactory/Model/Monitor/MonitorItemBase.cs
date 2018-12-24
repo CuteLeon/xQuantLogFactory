@@ -5,24 +5,34 @@ using System.Xml.Serialization;
 
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.Model.Monitor
 {
     /// <summary>
-    /// 监视规则
+    /// 监视规则基类
     /// </summary>
-    [Serializable]
-    public class MonitorItem : MonitorBase
+    /// <typeparam name="TMonitor"></typeparam>
+    /// <typeparam name="TMonitorResult"></typeparam>
+    /// <typeparam name="TAnalysisResult"></typeparam>
+    /// <typeparam name="TLogFile"></typeparam>
+    public abstract class MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : MonitorBase
+        where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
     {
-        public MonitorItem()
-        {
-        }
+        /// <summary>
+        /// Gets or sets 监控项目树根节点列表
+        /// </summary>
+        public abstract List<TMonitor> MonitorTreeRoots { get; set; }
 
-        public MonitorItem(string name)
-            => this.Name = name;
-
-        #region 数据库字段
+        /// <summary>
+        /// Gets a value indicating whether 是否有子监控项目
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool HasChild() => this.MonitorTreeRoots != null && this.MonitorTreeRoots.Count > 0;
 
         /// <summary>
         /// Gets 带有层级前缀的名称
@@ -100,26 +110,113 @@ namespace xQuantLogFactory.Model.Monitor
         [XmlAttribute("GroupAnalysiser")]
         public GroupAnalysiserTypes GroupAnalysiser { get; set; }
 
+
+        /// <summary>
+        /// 获取下一个子节点的目录编号
+        /// </summary>
+        /// <param name="parentCANO"></param>
+        /// <returns></returns>
+        public virtual string GetNextChildCANO(string parentCANO = null)
+        {
+            /* 目录编号生成算法：
+             * 才能够当前子节点目录编号取最大值，以点分隔为数组，取数组最后一个元素转换为数字，数字即为子节点中的最大编号，在此编号上增加一，即为下一个节点编号
+             * 在编号数字左边补0填充，
+             * 如果存在父级节点编号：继续在左边连接父级节点目录编号，并以点分隔，
+             * 即为下一节点目录编号
+             */
+            int nextCANO = (int.TryParse(this.MonitorTreeRoots.Select(monitor => monitor.CANO ?? "0").Max()?.Split('.')?.LastOrDefault(), out int cano) ? cano : 0) + 1;
+            return $"{(parentCANO == null ? string.Empty : $"{parentCANO}.")}{nextCANO.ToString("0000")}";
+        }
+
+        /// <summary>
+        /// 获取所有监视规则节点（包括当前节点自身）
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<TMonitor> GetMonitorBasesWithSelf()
+        {
+            yield return this as TMonitor;
+
+            foreach (var childMonitor in this.GetMonitorItems())
+            {
+                yield return childMonitor;
+            }
+        }
+
+        /// <summary>
+        /// 查找指定名称的第一个子监视规则
+        /// </summary>
+        /// <param name="monitorName"></param>
+        /// <returns></returns>
+        /// <remarks>不要使用Linq和foreach，否则在定向分析器中对监视规则子列表做了修改后遍历会产生错误，使用索引器查找</remarks>
+        public TMonitor FindChildMonitorItem(string monitorName)
+        {
+            int index = 0;
+            TMonitor currentMonitor = null;
+
+            while (index < this.MonitorTreeRoots.Count)
+            {
+                currentMonitor = this.MonitorTreeRoots[index];
+                if (string.Equals(currentMonitor.Name, monitorName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return currentMonitor;
+                }
+
+                index++;
+            }
+
+            return default;
+        }
+
+        /// <summary>
+        /// 获取所有节点及其子节点
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>IEnumerable<>对象即使储存为变量，每次访问依然会进入此方法，若要减少计算量，需要将此方法返回数据 .ToList()</remarks>
+        public IEnumerable<TMonitor> GetMonitorItems()
+        {
+            Stack<TMonitor> monitorRoots = new Stack<TMonitor>();
+            TMonitor currentMonitor = this as TMonitor;
+
+            while (true)
+            {
+                if (currentMonitor.HasChild())
+                {
+                    foreach (var monitor in currentMonitor.MonitorTreeRoots
+                        .AsEnumerable().Reverse())
+                    {
+                        monitorRoots.Push(monitor);
+                    }
+                }
+
+                if (monitorRoots.Count > 0)
+                {
+                    currentMonitor = monitorRoots.Pop();
+                    yield return currentMonitor;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
         /// <summary>
         /// Gets or sets 父级监视规则
         /// </summary>
         [XmlIgnore]
-        public virtual MonitorItem ParentMonitorItem { get; set; }
+        public virtual TMonitor ParentMonitorItem { get; set; }
 
         /// <summary>
         /// Gets or sets 监视日志解析结果表
         /// </summary>
         [XmlIgnore]
-        public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
+        public virtual List<TMonitorResult> MonitorResults { get; set; } = new List<TMonitorResult>();
 
         /// <summary>
         /// Gets or sets 日志分析结果表
         /// </summary>
         [XmlIgnore]
-        public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
-        #endregion
-
-        #region 监视配置
+        public virtual List<TAnalysisResult> AnalysisResults { get; set; } = new List<TAnalysisResult>();
 
         /// <summary>
         /// Gets or sets a value indicating whether 记录内存消耗
@@ -132,19 +229,6 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         [XmlAttribute("Sheet")]
         public string SheetName { get; set; }
-        #endregion
-
-        #region 方法
-
-        /// <summary>
-        /// 获取当前节点的下一个子节点目录编号
-        /// </summary>
-        /// <param name="parentCANO"></param>
-        /// <returns></returns>
-        public override string GetNextChildCANO(string parentCANO = null)
-        {
-            return base.GetNextChildCANO(this.CANO);
-        }
 
         /// <summary>
         /// 匹配日志内容
@@ -175,7 +259,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         /// <param name="parentMonitor">父级节点</param>
         /// <param name="createNew">是否为新建子节点，为true时将会赋值更多父级节点的配置</param>
-        public void BindParentMonitor(MonitorItem parentMonitor, bool createNew = false)
+        public void BindParentMonitor(TMonitor parentMonitor, bool createNew = false)
         {
             // TODO: [提醒] 需要复制父节点配置信息
             this.ParentMonitorItem = parentMonitor ?? throw new ArgumentNullException(nameof(parentMonitor));
@@ -222,7 +306,7 @@ namespace xQuantLogFactory.Model.Monitor
                     this.FinishPatterny = this.ParentMonitorItem.FinishPatterny;
                 }
 
-                parentMonitor.MonitorTreeRoots.Add(this);
+                parentMonitor.MonitorTreeRoots.Add(this as TMonitor);
             }
         }
 
@@ -234,12 +318,5 @@ namespace xQuantLogFactory.Model.Monitor
         {
             return this.CANO?.Split('.')?.Length ?? 0;
         }
-
-        public override string ToString()
-        {
-            return $"【名称】={this.Name}\t 【开始条件】={this.StartPattern}\t 【结束条件】={this.FinishPatterny}\t 【子规则】={this.MonitorTreeRoots.Count}";
-        }
-
-        #endregion
     }
 }

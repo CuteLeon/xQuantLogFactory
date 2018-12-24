@@ -55,8 +55,8 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key;
-                    MonitorResult firstResult = null;
+                    TerminalMonitorItem targetMonitor = resultGroup.Key;
+                    TerminalMonitorResult firstResult = null;
                     Match analysisMatch = null;
 
                     this.Tracer?.WriteLine($">>>正在分析监视规则：{targetMonitor.Name}，结果数量：{resultGroup.Count()}");
@@ -91,7 +91,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         /// </summary>
         /// <param name="monitorResult"></param>
         /// <param name="analysisResult"></param>
-        private void AnalysisUnparsedResults(MonitorResult monitorResult, GroupAnalysisResult analysisResult)
+        private void AnalysisUnparsedResults(TerminalMonitorResult monitorResult, TerminalAnalysisResult analysisResult)
         {
             int startIndex = monitorResult.LogFile.UnparsedResults.FindIndex(result => result.LineNumber >= monitorResult.LineNumber);
             int cacheIndex = monitorResult.LogFile.UnparsedResults.FindIndex(startIndex, result => result.LogContent.IndexOf("缓存对象：", StringComparison.Ordinal) > -1);
@@ -140,7 +140,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         /// <param name="unparsedResult"></param>
         /// <param name="monitorItem"></param>
         /// <param name="analysisResult"></param>
-        private void AnalysisObjectCount(UnparsedResult unparsedResult, MonitorItem monitorItem, GroupAnalysisResult analysisResult)
+        private void AnalysisObjectCount(TerminalUnparsedResult unparsedResult, TerminalMonitorItem monitorItem, TerminalAnalysisResult analysisResult)
         {
             Match match = this.ObjectRegex.Match(unparsedResult.LogContent);
             if (match.Success &&
@@ -149,15 +149,15 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                 int.TryParse(match.Groups["Count"].Value, out int count))
             {
                 string resourceName = match.Groups["Type"].Value;
-                MonitorItem childMonitor = this.TryGetOrAddChildMonitor(monitorItem, resourceName);
+                TerminalMonitorItem childMonitor = this.TryGetOrAddChildMonitor(monitorItem, resourceName);
 
                 // 深度克隆原分析结果的开始监视结果并修改行号和日志内容，作为子分析结果的开始监视结果
-                MonitorResult childResult = analysisResult.StartMonitorResult.DeepClone();
+                TerminalMonitorResult childResult = analysisResult.StartMonitorResult.DeepClone();
                 childResult.LineNumber = unparsedResult.LineNumber;
                 childResult.LogContent = unparsedResult.LogContent;
 
                 // 创建子分析结果
-                GroupAnalysisResult childAnalysisResult = this.CreateAnalysisResult(
+                TerminalAnalysisResult childAnalysisResult = this.CreateAnalysisResult(
                     analysisResult.TaskArgument,
                     childMonitor,
                     childResult);
@@ -173,22 +173,22 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
         /// <param name="unparsedResult"></param>
         /// <param name="monitorItem"></param>
         /// <param name="analysisResult"></param>
-        private void AnalysisPinYinCount(UnparsedResult unparsedResult, MonitorItem monitorItem, GroupAnalysisResult analysisResult)
+        private void AnalysisPinYinCount(TerminalUnparsedResult unparsedResult, TerminalMonitorItem monitorItem, TerminalAnalysisResult analysisResult)
         {
             Match match = this.PinYinRegex.Match(unparsedResult.LogContent);
             if (match.Success &&
                 match.Groups["Count"].Success &&
                 int.TryParse(match.Groups["Count"].Value, out int count))
             {
-                MonitorItem childMonitor = this.TryGetOrAddChildMonitor(monitorItem, "拼音缓存");
+                TerminalMonitorItem childMonitor = this.TryGetOrAddChildMonitor(monitorItem, "拼音缓存");
 
                 // 深度克隆原分析结果的开始监视结果并修改行号和日志内容，作为子分析结果的开始监视结果
-                MonitorResult childResult = analysisResult.StartMonitorResult.DeepClone();
+                TerminalMonitorResult childResult = analysisResult.StartMonitorResult.DeepClone();
                 childResult.LineNumber = unparsedResult.LineNumber;
                 childResult.LogContent = unparsedResult.LogContent;
 
                 // 创建子分析结果
-                GroupAnalysisResult childAnalysisResult = this.CreateAnalysisResult(
+                TerminalAnalysisResult childAnalysisResult = this.CreateAnalysisResult(
                     analysisResult.TaskArgument,
                     childMonitor,
                     childResult);

@@ -18,8 +18,8 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             string ClientLog = "2018-10-29 16:51:04,457 TRACE 安信证券 1.3.0.065 192.168.7.101 初始化准备";
             string MiddlewareLog = "2018-11-01 10:41:39.968	172.28.40.110	leon	2018-11-01 10:41:39.968	10	/LogonManager.soap	GetMessageList	100	开始";
 
-            CSLogParserBase serverParser = new ServerLogParser();
-            CSLogParserBase clientParser = new ClientLogParser();
+            TerminalLogParserBase serverParser = new ServerLogParser();
+            TerminalLogParserBase clientParser = new ClientLogParser();
             LogParserBase middlewareParser = new MiddlewareLogParser();
 
             Match generalMatch = clientParser.GeneralLogRegex.Match(generalLog);

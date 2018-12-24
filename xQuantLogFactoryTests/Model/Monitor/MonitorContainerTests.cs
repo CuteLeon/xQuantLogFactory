@@ -34,7 +34,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
 
             Assert.IsNotNull(container);
 
-            container.InitMonitorTree();
+            container.InitTerminalMonitorTree();
 
             Assert.AreEqual("0001", container.MonitorTreeRoots[0].CANO);
             Assert.AreEqual("0001.0001", container.MonitorTreeRoots[0].MonitorTreeRoots[0].CANO);
@@ -96,9 +96,9 @@ namespace xQuantLogFactory.Model.Monitor.Tests
 </MonitorRoot>";
 
             MonitorContainer container = xmlContent.DeserializeToObject<MonitorContainer>();
-            container.InitMonitorTree();
+            container.InitTerminalMonitorTree();
 
-            MonitorItem targetMonitor = container.MonitorTreeRoots[1];
+            TerminalMonitorItem targetMonitor = container.MonitorTreeRoots[1];
             Assert.IsNotNull(targetMonitor);
 
             Assert.AreEqual(targetMonitor.StartPattern, targetMonitor.MonitorTreeRoots[0].StartPattern);

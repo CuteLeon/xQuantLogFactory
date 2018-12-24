@@ -60,11 +60,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key;
+                    TerminalMonitorItem targetMonitor = resultGroup.Key;
 
                     // 待匹配监视结果寄存字典
-                    Dictionary<(string, int), GroupAnalysisResult> unintactResults = new Dictionary<(string, int), GroupAnalysisResult>();
-                    GroupAnalysisResult analysisResult = null;
+                    Dictionary<(string, int), TerminalAnalysisResult> unintactResults = new Dictionary<(string, int), TerminalAnalysisResult>();
+                    TerminalAnalysisResult analysisResult = null;
                     Match analysisMatch = null;
                     string coreServiceName = string.Empty, elapsed = string.Empty, trigger = string.Empty;
                     int index = -1;

@@ -17,9 +17,9 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
         [TestMethod()]
         public void SerializeToXMLTest()
         {
-            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorTreeRoots = new List<MonitorItem>() };
+            MonitorContainer container = new MonitorContainer() { Name = "监听客户端启动方案", MonitorTreeRoots = new List<TerminalMonitorItem>() };
 
-            MonitorItem clientItem = new MonitorItem
+            TerminalMonitorItem clientItem = new TerminalMonitorItem
             {
                 Name = "客户端启动",
                 StartPattern = "客户端启动开始",
@@ -27,7 +27,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 DirectedAnalysiser = DirectedAnalysiserTypes.None,
                 Memory = false,
             };
-            MonitorItem dataItem = new MonitorItem()
+            TerminalMonitorItem dataItem = new TerminalMonitorItem()
             {
                 Name = "数据加载",
                 StartPattern = "加载中债参数设置表",
@@ -35,14 +35,14 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 DirectedAnalysiser = DirectedAnalysiserTypes.Load,
                 Memory = true,
             };
-            MonitorItem bondItem = new MonitorItem()
+            TerminalMonitorItem bondItem = new TerminalMonitorItem()
             {
                 Name = "债券加载",
                 StartPattern = "加载TBND查询",
                 FinishPatterny = "加载TBND",
                 DirectedAnalysiser = DirectedAnalysiserTypes.Prefix,
             };
-            MonitorItem memoryItem = new MonitorItem()
+            TerminalMonitorItem memoryItem = new TerminalMonitorItem()
             {
                 Name = "监视内存",
                 StartPattern = "内存消耗",
@@ -53,7 +53,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             container.MonitorTreeRoots.Add(clientItem);
             container.MonitorTreeRoots.Add(memoryItem);
             clientItem.MonitorTreeRoots.Add(dataItem);
-            clientItem.MonitorTreeRoots.Add(new MonitorItem() { Name = "额外任务" });
+            clientItem.MonitorTreeRoots.Add(new TerminalMonitorItem() { Name = "额外任务" });
             dataItem.MonitorTreeRoots.Add(bondItem);
 
             string xmlContent = container.SerializeToXML();
@@ -70,12 +70,12 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 throw new ArgumentNullException(nameof(xmlContent));
 
             MonitorContainer container = xmlContent.DeserializeToObject<MonitorContainer>();
-            container.InitMonitorTree();
+            container.InitTerminalMonitorTree();
 
             Assert.IsNotNull(container);
             Assert.AreEqual("监听客户端启动方案", container.Name);
             Assert.AreEqual(2, container.MonitorTreeRoots[0].MonitorTreeRoots.Count);
-            Assert.AreEqual(5, container.GetMonitorItems().Count());
+            Assert.AreEqual(5, container.GetTerminalMonitorItems().Count());
             Assert.IsTrue(container.MonitorTreeRoots[1].Memory);
             Assert.AreEqual("内存", container.MonitorTreeRoots[1].SheetName);
             Assert.AreEqual(DirectedAnalysiserTypes.Load, container.MonitorTreeRoots[0].MonitorTreeRoots[0].DirectedAnalysiser);

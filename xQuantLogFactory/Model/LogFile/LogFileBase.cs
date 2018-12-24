@@ -1,29 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 
-namespace xQuantLogFactory.Model
+namespace xQuantLogFactory.Model.LogFile
 {
     /// <summary>
-    /// 日志文件
+    /// 日志文件基类
     /// </summary>
-    public class LogFile
+    public class LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
     {
-        public LogFile()
-        {
-        }
-
-        public LogFile(LogFileTypes logFileTypes, string filePath, DateTime createTime, DateTime lastWriteTime, string relativePath)
-        {
-            this.LogFileType = logFileTypes;
-            this.FilePath = filePath;
-            this.CreateTime = createTime;
-            this.LastWriteTime = lastWriteTime;
-            this.RelativePath = relativePath;
-        }
 
         /// <summary>
         /// Gets or sets 日志文件路径
@@ -64,21 +57,16 @@ namespace xQuantLogFactory.Model
         /// <summary>
         /// Gets or sets 监视日志解析结果列表
         /// </summary>
-        public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
+        public virtual List<TMonitorResult> MonitorResults { get; set; } = new List<TMonitorResult>();
 
         /// <summary>
         /// Gets or sets 未解析日志结果列表
         /// </summary>
-        public virtual List<UnparsedResult> UnparsedResults { get; set; } = new List<UnparsedResult>();
-
-        /// <summary>
-        /// Gets or sets 中间件日志解析结果表
-        /// </summary>
-        public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();
+        public virtual List<TerminalUnparsedResult> UnparsedResults { get; set; } = new List<TerminalUnparsedResult>();
 
         /// <summary>
         /// Gets or sets 日志分析结果表
         /// </summary>
-        public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
+        public virtual List<TAnalysisResult> AnalysisResults { get; set; } = new List<TAnalysisResult>();
     }
 }

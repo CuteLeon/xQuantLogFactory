@@ -36,13 +36,13 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key;
+                    TerminalMonitorItem targetMonitor = resultGroup.Key;
 
                     this.Tracer?.WriteLine($">>>开始分析，监视结果数量：{resultGroup.Count()}\t监视规则：{targetMonitor.Name}");
 
                     foreach (var monitorResult in resultGroup)
                     {
-                        GroupAnalysisResult analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
+                        TerminalAnalysisResult analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
 
                         analysisResult.StartMonitorResult = analysisResult.FinishMonitorResult = monitorResult;
                     }

@@ -34,12 +34,12 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="monitor">监视规则</param>
         /// <param name="monitorResult">监视结果</param>
         /// <returns></returns>
-        protected GroupAnalysisResult CreateAnalysisResult(
+        protected TerminalAnalysisResult CreateAnalysisResult(
             TaskArgument argument,
-            MonitorItem monitor,
-            MonitorResult monitorResult)
+            TerminalMonitorItem monitor,
+            TerminalMonitorResult monitorResult)
         {
-            GroupAnalysisResult analysisResult = new GroupAnalysisResult(argument, monitor, monitorResult.LogFile);
+            TerminalAnalysisResult analysisResult = new TerminalAnalysisResult(argument, monitor, monitorResult.LogFile);
 
             // 反向关联日志监视结果
             lock (this.lockSeed)

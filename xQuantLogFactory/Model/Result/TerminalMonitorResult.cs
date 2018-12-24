@@ -1,4 +1,5 @@
 ﻿using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
@@ -6,18 +7,18 @@ namespace xQuantLogFactory.Model.Result
     /// <summary>
     /// 监视规则解析结果
     /// </summary>
-    public class MonitorResult : LogResultBase
+    public class TerminalMonitorResult : MonitorResultBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
     {
         /// <summary>
         /// 空的占位监视结果
         /// </summary>
-        public static readonly MonitorResult Empty = new MonitorResult();
+        public static readonly TerminalMonitorResult Empty = new TerminalMonitorResult();
 
-        public MonitorResult()
+        public TerminalMonitorResult()
         {
         }
 
-        public MonitorResult(TaskArgument argument, LogFile logFile, MonitorItem monitor)
+        public TerminalMonitorResult(TaskArgument argument, TerminalLogFile logFile, TerminalMonitorItem monitor)
         {
             this.TaskArgument = argument;
             this.LogFile = logFile;
@@ -27,7 +28,7 @@ namespace xQuantLogFactory.Model.Result
         /// <summary>
         /// Gets or sets 监控项目
         /// </summary>
-        public MonitorItem MonitorItem { get; set; }
+        public TerminalMonitorItem MonitorItem { get; set; }
 
         /// <summary>
         /// Gets or sets 监视结果匹配模式
@@ -64,7 +65,7 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         /// <param name="targetResult"></param>
         /// <returns></returns>
-        public bool CheckMatch(MonitorResult targetResult)
+        public bool CheckMatch(TerminalMonitorResult targetResult)
         {
             if (targetResult == null)
             {

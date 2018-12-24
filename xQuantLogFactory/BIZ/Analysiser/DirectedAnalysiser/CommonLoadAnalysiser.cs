@@ -49,9 +49,9 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    MonitorItem targetMonitor = resultGroup.Key;
-                    MonitorItem childMonitor = null;
-                    MonitorResult monitorResult = null;
+                    TerminalMonitorItem targetMonitor = resultGroup.Key;
+                    TerminalMonitorItem childMonitor = null;
+                    TerminalMonitorResult monitorResult = null;
                     Match logMatch = null;
                     string resourceName = string.Empty;
                     string childMonitorName = string.Empty;

@@ -116,7 +116,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public void PrepareDirectedLogAnalysiser(TaskArgument argument)
         {
-            var monitorItems = argument.MonitorContainerRoot.GetMonitorItems().ToList();
+            var monitorItems = argument.MonitorContainerRoot.GetTerminalMonitorItems().ToList();
             if (monitorItems.Count > 0)
             {
                 if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.Prefix))
@@ -153,7 +153,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         public virtual void FigureOutAnalysisResults(TaskArgument argument)
         {
             this.Tracer?.WriteLine("未完全匹配的监视规则：");
-            foreach (var monitor in argument.MonitorContainerRoot.GetMonitorItems()
+            foreach (var monitor in argument.MonitorContainerRoot.GetTerminalMonitorItems()
                 .Where(monitor => monitor.MonitorResults.Count > 0))
             {
                 double matchingRate = monitor.MatchingRate;

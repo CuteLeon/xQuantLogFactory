@@ -15,28 +15,28 @@ namespace xQuantLogFactory.Model.Monitor.Tests
         public void MonitorItemTest()
         {
             MonitorContainer container = new MonitorContainer();
-            container.MonitorTreeRoots.Add(new MonitorItem("A"));
-            container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new MonitorItem("A1"));
-            container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new MonitorItem("A2"));
-            container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new MonitorItem("A3"));
-            container.MonitorTreeRoots.Add(new MonitorItem("B"));
-            container.MonitorTreeRoots.Add(new MonitorItem("C"));
-            container.MonitorTreeRoots[2].MonitorTreeRoots.Add(new MonitorItem("C1"));
-            container.MonitorTreeRoots[2].MonitorTreeRoots.Add(new MonitorItem("C2"));
-            container.MonitorTreeRoots.Add(new MonitorItem("D"));
+            container.MonitorTreeRoots.Add(new TerminalMonitorItem("A"));
+            container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new TerminalMonitorItem("A1"));
+            container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new TerminalMonitorItem("A2"));
+            container.MonitorTreeRoots[0].MonitorTreeRoots.Add(new TerminalMonitorItem("A3"));
+            container.MonitorTreeRoots.Add(new TerminalMonitorItem("B"));
+            container.MonitorTreeRoots.Add(new TerminalMonitorItem("C"));
+            container.MonitorTreeRoots[2].MonitorTreeRoots.Add(new TerminalMonitorItem("C1"));
+            container.MonitorTreeRoots[2].MonitorTreeRoots.Add(new TerminalMonitorItem("C2"));
+            container.MonitorTreeRoots.Add(new TerminalMonitorItem("D"));
 
-            container.InitMonitorTree();
+            container.InitTerminalMonitorTree();
             Console.WriteLine("监视规则目录编号：");
-            container.GetMonitorItems().ToList().ForEach(monitor => Console.WriteLine(monitor.CANO));
+            container.GetTerminalMonitorItems().ToList().ForEach(monitor => Console.WriteLine(monitor.CANO));
 
-            List<MonitorResult> results = new List<MonitorResult>
+            List<TerminalMonitorResult> results = new List<TerminalMonitorResult>
             {
-                new MonitorResult() { MonitorItem = container.MonitorTreeRoots[2], LogTime = DateTime.FromBinary(200) },
-                new MonitorResult() { MonitorItem = container.MonitorTreeRoots[0].MonitorTreeRoots[1], LogTime = DateTime.FromBinary(100) },
-                new MonitorResult() { MonitorItem = container.MonitorTreeRoots[0], LogTime = DateTime.FromBinary(100) },
-                new MonitorResult() { MonitorItem = container.MonitorTreeRoots[3], LogTime = DateTime.FromBinary(300) },
-                new MonitorResult() { MonitorItem = container.MonitorTreeRoots[0].MonitorTreeRoots[0], LogTime = DateTime.FromBinary(100) },
-                new MonitorResult() { MonitorItem = container.MonitorTreeRoots[2].MonitorTreeRoots[0], LogTime = DateTime.FromBinary(200) }
+                new TerminalMonitorResult() { MonitorItem = container.MonitorTreeRoots[2], LogTime = DateTime.FromBinary(200) },
+                new TerminalMonitorResult() { MonitorItem = container.MonitorTreeRoots[0].MonitorTreeRoots[1], LogTime = DateTime.FromBinary(100) },
+                new TerminalMonitorResult() { MonitorItem = container.MonitorTreeRoots[0], LogTime = DateTime.FromBinary(100) },
+                new TerminalMonitorResult() { MonitorItem = container.MonitorTreeRoots[3], LogTime = DateTime.FromBinary(300) },
+                new TerminalMonitorResult() { MonitorItem = container.MonitorTreeRoots[0].MonitorTreeRoots[0], LogTime = DateTime.FromBinary(100) },
+                new TerminalMonitorResult() { MonitorItem = container.MonitorTreeRoots[2].MonitorTreeRoots[0], LogTime = DateTime.FromBinary(200) }
             };
 
             Console.WriteLine("监视结果关联监视规则目录编号：");

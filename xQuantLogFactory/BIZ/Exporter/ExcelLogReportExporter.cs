@@ -142,7 +142,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         executeID++;
 
                         // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
                             .Where(result => result.MonitorItem.SheetName == FixedDatas.CACHE_SHEET_NAME))
                         {
                             range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
@@ -199,7 +199,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         executeID++;
 
                         // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
                             .Where(result => result.MonitorItem.SheetName == FixedDatas.REPORT_SHEET_NAME))
                         {
                             range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
@@ -261,7 +261,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         executeID++;
 
                         // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
                             .Where(result => result.MonitorItem.SheetName == FixedDatas.FORM_SHEET_NAME))
                         {
                             range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
@@ -319,7 +319,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         executeID++;
 
                         // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
                             .Where(result => result.MonitorItem.SheetName == FixedDatas.CORE_SERVICE_SHEET_NAME))
                         {
                             range[rowID, 1].Value = analysisResult.Version;
@@ -361,7 +361,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         public void ExportCommonSheet(ExcelPackage excel, TaskArgument argument)
         {
             this.Tracer?.WriteLine("开始导出通用表数据 ...");
-            foreach (var monitorGroup in argument.MonitorContainerRoot.GetMonitorItems()
+            foreach (var monitorGroup in argument.MonitorContainerRoot.GetTerminalMonitorItems()
                 .GroupBy(monitor => monitor.SheetName))
             {
                 // 特殊表名单独处理
@@ -387,7 +387,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     int rowID = sheetRectangle.Top, executeID = 0;
 
                     // 合并所有分析结果数据
-                    var analysiserResults = new List<GroupAnalysisResult>();
+                    var analysiserResults = new List<TerminalAnalysisResult>();
                     monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
                         .ForEach(resultList => analysiserResults.AddRange(resultList));
 
@@ -433,7 +433,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.Tracer?.WriteLine("开始准备通用数据表字典");
             Dictionary<string, ExcelWorksheetPackage> commonWorksheets = new Dictionary<string, ExcelWorksheetPackage>();
 
-            foreach (var sheetName in argument.MonitorContainerRoot.GetMonitorItems()
+            foreach (var sheetName in argument.MonitorContainerRoot.GetTerminalMonitorItems()
                 .Where(monitor => monitor.AnalysisResults.Count > 0)
                 .Select(monitor => monitor.SheetName).Distinct())
             {
@@ -453,7 +453,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     ExcelWorksheetPackage newPackage = this.CreateCommonWorksheetPackage(
                         worksheet,
-                        argument.MonitorContainerRoot.GetMonitorItems()
+                        argument.MonitorContainerRoot.GetTerminalMonitorItems()
                             .Where(monitor => monitor.SheetName == sheetName)
                             .Sum(monitor => monitor.AnalysisResults.Count));
 
@@ -470,7 +470,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 executeID++;
 
                 // 遍历根节点所有子节点输出分析结果数据
-                foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot())
+                foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot())
                 {
                     // 保留表名的结果不处理
                     if (!SpecialSheetNames.Contains(analysisResult.MonitorItem.SheetName))
@@ -520,7 +520,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     int rowID = memoryRectangle.Top;
                     foreach (var result in argument.AnalysisResults
                         .Where(result => result.MonitorItem.Memory)
-                        .Distinct(new LogResultEqualityComparer<GroupAnalysisResult>()))
+                        .Distinct(new TerminalAnalysisResultEqualityComparer<TerminalAnalysisResult>()))
                     {
                         memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
                         memoryRange[rowID, 2].Value = result.Version;
@@ -603,7 +603,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         executeID++;
 
                         // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (GroupAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
+                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithRoot()
                             .Where(result => result.MonitorItem.SheetName == FixedDatas.TRADE_SETTLE_SHEET_NAME))
                         {
                             range[rowID, 1].Value = analysisResult.MonitorItem?.PrefixName;
@@ -648,7 +648,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="rowID">行号</param>
         /// <param name="analysisResult">分析结果</param>
         /// <param name="executeID">执行序号</param>
-        private void WriteCommonAnlysisResult(ExcelRange range, int rowID, GroupAnalysisResult analysisResult, int executeID)
+        private void WriteCommonAnlysisResult(ExcelRange range, int rowID, TerminalAnalysisResult analysisResult, int executeID)
         {
             range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
             range[rowID, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;

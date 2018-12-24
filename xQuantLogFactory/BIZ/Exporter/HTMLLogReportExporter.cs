@@ -6,6 +6,7 @@ using System.Text;
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 
@@ -88,13 +89,13 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>匹配组平均耗时</th>
 </thead>
 <tbody>");
-            foreach (var monitor in argument.MonitorContainerRoot.GetMonitorItems())
+            foreach (var monitor in argument.MonitorContainerRoot.GetTerminalMonitorItems())
             {
                 this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{monitor.PrefixName}</td>
     <td>{monitor.StartPattern}</td>
     <td>{monitor.FinishPatterny}</td>
-    <td>{argument.LogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor)).ToString("N0")}</td>
+    <td>{argument.TerminalLogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor)).ToString("N0")}</td>
     <td>{monitor.MonitorResults.Count.ToString("N0")}</td>
     <td>{monitor.AnalysisResults.Count.ToString("N0")}</td>
     <td>{monitor.ElapsedMillisecond.ToString("N")}</td>
@@ -106,7 +107,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.WriteHR();
 
             this.WriteSectionTitle("监视规则详情：");
-            foreach (var monitor in argument.MonitorContainerRoot.GetMonitorItems()
+            foreach (var monitor in argument.MonitorContainerRoot.GetTerminalMonitorItems()
                 .OrderByDescending(monitor => monitor.ElapsedMillisecond))
             {
                 this.WriteMonitorItemCard(monitor);
@@ -119,7 +120,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// 写入客户端或服务端日志文件卡片
         /// </summary>
         /// <param name="logFile"></param>
-        private void WriteCSLogFileCard(LogFile logFile)
+        private void WriteCSLogFileCard(TerminalLogFile logFile)
         {
             this.WriteCardHeader($"日志文件：<b>{logFile.RelativePath}</b>");
             this.htmlBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
@@ -133,8 +134,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                 foreach (var analysisResult in logFile.AnalysisResults
                     .OrderByDescending(result => result.ElapsedMillisecond))
                 {
-                    MonitorResult startResult = analysisResult.StartMonitorResult;
-                    MonitorResult finishResult = analysisResult.FinishMonitorResult;
+                    TerminalMonitorResult startResult = analysisResult.StartMonitorResult;
+                    TerminalMonitorResult finishResult = analysisResult.FinishMonitorResult;
                     string body = $@"监视规则：{analysisResult.MonitorItem?.Name}<br><hr>
 开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
 结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}";
@@ -151,7 +152,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// 写入监视规则卡片
         /// </summary>
         /// <param name="monitor"></param>
-        private void WriteMonitorItemCard(MonitorItem monitor)
+        private void WriteMonitorItemCard(TerminalMonitorItem monitor)
         {
             this.WriteCardHeader($"监视规则：<b>{monitor.Name}</b>");
             this.htmlBuilder.Value.Append($"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPatterny ?? "无"}</b><hr>匹配结果：");
@@ -165,8 +166,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                 foreach (var analysisResult in monitor.AnalysisResults
                     .OrderByDescending(result => result.ElapsedMillisecond))
                 {
-                    MonitorResult startResult = analysisResult.StartMonitorResult;
-                    MonitorResult finishResult = analysisResult.FinishMonitorResult;
+                    TerminalMonitorResult startResult = analysisResult.StartMonitorResult;
+                    TerminalMonitorResult finishResult = analysisResult.FinishMonitorResult;
                     string body = $@"日志文件：{analysisResult.LogFile?.RelativePath}<br><hr>
 开始日志：{(startResult == null ? "无" : $"<b>{startResult.LogTime}</b> 行号: <b>{startResult.LineNumber.ToString("N0")}</b> 等级: <b>{startResult.LogLevel}</b> 内容: <b>{startResult.LogContent}")}</b><br>
 结束日志：{(finishResult == null ? "无" : $"<b>{finishResult.LogTime}</b> 行号: <b>{finishResult.LineNumber.ToString("N0")}</b> 等级: <b>{finishResult.LogLevel}</b> 内容: <b>{finishResult.LogContent}</b>")}";
@@ -241,7 +242,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 </thead>
 <tbody>");
 
-            IOrderedEnumerable<LogFile> logFiles = argument.LogFiles
+            IOrderedEnumerable<TerminalLogFile> logFiles = argument.TerminalLogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Client)
                 .OrderByDescending(logFile => logFile.ElapsedMillisecond);
 
@@ -291,7 +292,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 </thead>
 <tbody>");
 
-            IOrderedEnumerable<LogFile> logFiles = argument.LogFiles
+            IOrderedEnumerable<TerminalLogFile> logFiles = argument.TerminalLogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Server)
                 .OrderByDescending(logFile => logFile.MonitorResults.Count);
 
@@ -324,18 +325,18 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// 写入中间件日志文件卡片
         /// </summary>
         /// <param name="logFile"></param>
-        private void WriteMiddlewareLogFileCard(LogFile logFile)
+        private void WriteMiddlewareLogFileCard(PerformanceLogFile logFile)
         {
             this.WriteCardHeader($"日志文件：<b>{logFile.RelativePath}</b>");
             this.htmlBuilder.Value.Append($"创建时间：<b>{logFile.CreateTime}</b><br>最后访问时间：<b>{logFile.LastWriteTime}</b><hr>匹配结果：");
 
-            if (logFile.MiddlewareResults.Count == 0)
+            if (logFile.MonitorResults.Count == 0)
             {
                 this.htmlBuilder.Value.Append("无");
             }
             else
             {
-                foreach (var requesURIResult in logFile.MiddlewareResults
+                foreach (var requesURIResult in logFile.MonitorResults
                     .GroupBy(result => result.RequestURI))
                 {
                     this.WriteCardHeader($"请求路径：<b>{requesURIResult.Key}</b>");
@@ -379,9 +380,9 @@ namespace xQuantLogFactory.BIZ.Exporter
 </thead>
 <tbody>");
 
-            IOrderedEnumerable<LogFile> logFiles = argument.LogFiles
+            IOrderedEnumerable<PerformanceLogFile> logFiles = argument.PerformanceLogFiles
                 .Where(logFile => logFile.LogFileType == LogFileTypes.Middleware)
-                .OrderByDescending(logFile => logFile.MiddlewareResults.Count);
+                .OrderByDescending(logFile => logFile.MonitorResults.Count);
 
             foreach (var logFile in logFiles)
             {
@@ -389,7 +390,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{logFile.RelativePath}</td>
     <td>{logFile.CreateTime}</td>
     <td>{logFile.LastWriteTime}</td>
-    <td><b>{logFile.MiddlewareResults.Count.ToString("N0")}</b></td>
+    <td><b>{logFile.MonitorResults.Count.ToString("N0")}</b></td>
 </tr>");
             }
 
@@ -608,15 +609,15 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">监控规则数量：</td>
-            <td class=""value"">{argument.MonitorContainerRoot.GetMonitorItems().Count().ToString("N0")}</td>
+            <td class=""value"">{argument.MonitorContainerRoot.GetTerminalMonitorItems().Count().ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">监控规则名称：</td>
-            <td class=""value"">{string.Join("、", argument.MonitorContainerRoot.GetMonitorItems().Select(monitor => monitor.Name))}</td>
+            <td class=""value"">{string.Join("、", argument.MonitorContainerRoot.GetTerminalMonitorItems().Select(monitor => monitor.Name))}</td>
         </tr>
         <tr>
             <td class=""label"">日志文件数量：</td>
-            <td class=""value"">{argument.LogFiles.Count.ToString("N0")}</td>
+            <td class=""value"">{(argument.TerminalLogFiles.Count + argument.PerformanceLogFiles.Count).ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">报告导出模式：</td>

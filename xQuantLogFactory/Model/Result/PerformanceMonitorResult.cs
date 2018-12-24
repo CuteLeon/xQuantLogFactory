@@ -1,17 +1,19 @@
 ﻿using System;
+using xQuantLogFactory.Model.LogFile;
+using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
     /// 中间件日志结果
     /// </summary>
-    public class MiddlewareResult : LogResultBase
+    public class PerformanceMonitorResult : MonitorResultBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
     {
-        public MiddlewareResult()
+        public PerformanceMonitorResult()
         {
         }
 
-        public MiddlewareResult(TaskArgument argument, LogFile logFile, DateTime logTime, int lineNumber)
+        public PerformanceMonitorResult(TaskArgument argument, PerformanceLogFile logFile, DateTime logTime, int lineNumber)
         {
             this.TaskArgument = argument;
             this.LogFile = logFile;

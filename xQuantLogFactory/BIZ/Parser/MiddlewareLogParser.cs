@@ -42,7 +42,7 @@ namespace xQuantLogFactory.BIZ.Parser
             }
 
             // 遍历文件
-            argument.LogFiles.Where(file => file.LogFileType == LogFileTypes.Middleware).AsParallel().ForAll(logFile =>
+            argument.PerformanceLogFiles.Where(file => file.LogFileType == LogFileTypes.Middleware).AsParallel().ForAll(logFile =>
             {
                 this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}");
 
@@ -84,13 +84,13 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
 
-                            MiddlewareResult result = new MiddlewareResult(argument, logFile, logTime, lineNumber);
+                            PerformanceMonitorResult result = new PerformanceMonitorResult(argument, logFile, logTime, lineNumber);
 
                             // 反向关联日志解析结果
                             lock (this.lockSeed)
                             {
                                 argument.MiddlewareResults.Add(result);
-                                logFile.MiddlewareResults.Add(result);
+                                logFile.MonitorResults.Add(result);
                             }
 
                             if (match.Groups["Client"].Success)
@@ -139,11 +139,11 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    this.Tracer?.WriteLine($">>>日志文件解析完成：{logFile.RelativePath}, 结果数量：{logFile.MiddlewareResults.Count}");
+                    this.Tracer?.WriteLine($">>>日志文件解析完成：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}");
                 }
                 catch (Exception ex)
                 {
-                    this.Tracer?.WriteLine($"——日志文件解析失败：{logFile.RelativePath}, 结果数量：{logFile.MiddlewareResults.Count}\n\tException: {ex.Message}");
+                    this.Tracer?.WriteLine($"——日志文件解析失败：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}\n\tException: {ex.Message}");
                 }
                 finally
                 {

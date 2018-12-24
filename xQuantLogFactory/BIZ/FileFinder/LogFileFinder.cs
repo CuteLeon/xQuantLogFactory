@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.BIZ.FileFinder
@@ -35,7 +36,6 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 throw new ArgumentNullException(nameof(argument));
             }
 
-            List<LogFile> logFiles = new List<LogFile>();
             DirectoryInfo directoryInfo = new DirectoryInfo(directory);
             Regex logRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
 
@@ -53,16 +53,39 @@ namespace xQuantLogFactory.BIZ.FileFinder
 
                 if (argument.CheckLogFileTime(creationTime, lastWriteTime))
                 {
-                    logFiles.Add(new LogFile(
-                        this.GetLogFileType(fileName),
-                        fullName,
-                        creationTime,
-                        lastWriteTime,
-                        fullName.Remove(0, argument.LogDirectory.Length)));
+                    LogFileTypes fileType = this.GetLogFileType(fileName);
+                    switch (fileType)
+                    {
+                        case LogFileTypes.Client:
+                        case LogFileTypes.Server:
+                            {
+                                argument.TerminalLogFiles.Add(new TerminalLogFile(
+                                    fileType,
+                                    fullName,
+                                    creationTime,
+                                    lastWriteTime,
+                                    fullName.Remove(0, argument.LogDirectory.Length)));
+                                break;
+                            }
+
+                        case LogFileTypes.Middleware:
+                            {
+                                argument.PerformanceLogFiles.Add(new PerformanceLogFile(
+                                    fileType,
+                                    fullName,
+                                    creationTime,
+                                    lastWriteTime,
+                                    fullName.Remove(0, argument.LogDirectory.Length)));
+                                break;
+                            }
+
+                        default:
+                            break;
+                    }
                 }
             }
 
-            return logFiles as T;
+            return null;
         }
 
         /// <summary>

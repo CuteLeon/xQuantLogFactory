@@ -34,27 +34,5 @@ namespace xQuantLogFactory.BIZ.Parser
         /// </summary>
         /// <param name="argument">任务参数</param>
         public abstract void Parse(TaskArgument argument);
-
-        /// <summary>
-        /// 创建解析结果对象
-        /// </summary>
-        /// <param name="argument"></param>
-        /// <param name="logFile"></param>
-        /// <param name="monitor"></param>
-        /// <returns></returns>
-        protected MonitorResult CreateMonitorResult(TaskArgument argument, LogFile logFile, MonitorItem monitor)
-        {
-            MonitorResult monitorResult = new MonitorResult(argument, logFile, monitor);
-
-            // 反向关联日志监视结果
-            lock (this.lockSeed)
-            {
-                argument.MonitorResults.Add(monitorResult);
-                logFile.MonitorResults.Add(monitorResult);
-                monitor.MonitorResults.Add(monitorResult);
-            }
-
-            return monitorResult;
-        }
     }
 }

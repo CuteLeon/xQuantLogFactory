@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
@@ -12,7 +13,7 @@ namespace xQuantLogFactory.BIZ.Parser
     /// <summary>
     /// 服务端日志解析器
     /// </summary>
-    public class ServerLogParser : CSLogParserBase
+    public class ServerLogParser : TerminalLogParserBase
     {
         public ServerLogParser()
         {
@@ -36,15 +37,15 @@ namespace xQuantLogFactory.BIZ.Parser
         /// </summary>
         /// <param name="argument"></param>
         /// <returns></returns>
-        protected override IEnumerable<LogFile> GetFileFiltered(TaskArgument argument)
-            => argument?.LogFiles.Where(file => file.LogFileType == LogFileTypes.Server);
+        protected override IEnumerable<TerminalLogFile> GetFileFiltered(TaskArgument argument)
+            => argument?.TerminalLogFiles.Where(file => file.LogFileType == LogFileTypes.Server);
 
         /// <summary>
         /// 应用精准匹配数据
         /// </summary>
         /// <param name="result"></param>
         /// <param name="particularMatch"></param>
-        protected override void ApplyParticularMatch(MonitorResult result, Match particularMatch)
+        protected override void ApplyParticularMatch(TerminalMonitorResult result, Match particularMatch)
         {
             result.Version = particularMatch.Groups["Version"].Success ? particularMatch.Groups["Version"].Value : string.Empty;
             result.Client = particularMatch.Groups["Client"].Success ? particularMatch.Groups["Client"].Value : string.Empty;

@@ -11,7 +11,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
         [TestMethod()]
         public void MatchMonitorTest()
         {
-            MonitorItem monitor = new MonitorItem()
+            TerminalMonitorItem monitor = new TerminalMonitorItem()
             {
                 Name = "测试监视规则",
                 StartPattern = "开始",

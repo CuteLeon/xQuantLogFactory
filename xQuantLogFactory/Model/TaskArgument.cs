@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
@@ -116,31 +117,38 @@ namespace xQuantLogFactory.Model
         /// Gets or sets 分析结果容器
         /// </summary>
         [XmlIgnore]
-        public virtual GroupAnalysisResultContainer AnalysisResultContainerRoot { get; set; } = new GroupAnalysisResultContainer();
+        public virtual TerminalAnalysisResultContainer AnalysisResultContainerRoot { get; set; } = new TerminalAnalysisResultContainer();
 
         /// <summary>
         /// Gets or sets 日志文件列表
         /// </summary>
         [XmlIgnore]
-        public virtual List<LogFile> LogFiles { get; set; } = new List<LogFile>();
+        public virtual List<TerminalLogFile> TerminalLogFiles { get; set; } = new List<TerminalLogFile>();
+
+        /// <summary>
+        /// Gets or sets 日志文件列表
+        /// </summary>
+        [XmlIgnore]
+        public virtual List<PerformanceLogFile> PerformanceLogFiles { get; set; } = new List<PerformanceLogFile>();
+
 
         /// <summary>
         /// Gets or sets 监视日志解析结果表
         /// </summary>
         [XmlIgnore]
-        public virtual List<MonitorResult> MonitorResults { get; set; } = new List<MonitorResult>();
+        public virtual List<TerminalMonitorResult> MonitorResults { get; set; } = new List<TerminalMonitorResult>();
 
         /// <summary>
         /// Gets or sets 中间件日志解析结果表
         /// </summary>
         [XmlIgnore]
-        public virtual List<MiddlewareResult> MiddlewareResults { get; set; } = new List<MiddlewareResult>();
+        public virtual List<PerformanceMonitorResult> MiddlewareResults { get; set; } = new List<PerformanceMonitorResult>();
 
         /// <summary>
         /// Gets or sets 日志分析结果表
         /// </summary>
         [XmlIgnore]
-        public virtual List<GroupAnalysisResult> AnalysisResults { get; set; } = new List<GroupAnalysisResult>();
+        public virtual List<TerminalAnalysisResult> AnalysisResults { get; set; } = new List<TerminalAnalysisResult>();
 
         /// <summary>
         /// 初始化分析结果树

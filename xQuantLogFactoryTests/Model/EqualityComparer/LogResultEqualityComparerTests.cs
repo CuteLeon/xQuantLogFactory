@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.Model.EqualityComparer.Tests
@@ -10,39 +10,37 @@ namespace xQuantLogFactory.Model.EqualityComparer.Tests
         [TestMethod()]
         public void EqualsTest()
         {
-            LogResultEqualityComparer<LogResultBase> comparer = new LogResultEqualityComparer<LogResultBase>();
+            TerminalLogFile logFile_0 = new TerminalLogFile() { FilePath = "A" };
+            TerminalLogFile logFile_1 = new TerminalLogFile() { FilePath = "B" };
 
-            LogFile logFile_0 = new LogFile() { FilePath = "A" };
-            LogFile logFile_1 = new LogFile() { FilePath = "B" };
-
-            MonitorResult result_0 = new MonitorResult()
+            TerminalMonitorResult result_0 = new TerminalMonitorResult()
             {
                 LogFile = logFile_0,
                 LineNumber = 0,
             };
-            MonitorResult result_1 = new MonitorResult()
+            TerminalMonitorResult result_1 = new TerminalMonitorResult()
             {
                 LogFile = logFile_1,
                 LineNumber = 1,
             };
-            MonitorResult result_2 = new MonitorResult()
+            TerminalMonitorResult result_2 = new TerminalMonitorResult()
             {
                 LogFile = logFile_0,
                 LineNumber = 0,
             };
-            MonitorResult result_3 = new MonitorResult()
+            TerminalMonitorResult result_3 = new TerminalMonitorResult()
             {
                 LogFile = logFile_1,
                 LineNumber = 1,
             };
 
-            Assert.IsTrue(comparer.Equals(result_0, result_2));
-            Assert.IsTrue(comparer.Equals(result_1, result_3));
+            Assert.IsTrue(Equals(result_0, result_2));
+            Assert.IsTrue(Equals(result_1, result_3));
 
-            Assert.IsFalse(comparer.Equals(result_0, result_1));
-            Assert.IsFalse(comparer.Equals(result_1, result_2));
-            Assert.IsFalse(comparer.Equals(result_2, result_3));
-            Assert.IsFalse(comparer.Equals(result_3, result_0));
+            Assert.IsFalse(Equals(result_0, result_1));
+            Assert.IsFalse(Equals(result_1, result_2));
+            Assert.IsFalse(Equals(result_2, result_3));
+            Assert.IsFalse(Equals(result_3, result_0));
         }
     }
 }
