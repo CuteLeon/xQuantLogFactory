@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.Utils
@@ -17,6 +15,8 @@ namespace xQuantLogFactory.Utils
         {
             this.Tracer = tracer;
             this.Actived = actived;
+
+            this.CodeLinesCount();
         }
 
         public bool Actived { get; set; } = false;
@@ -53,6 +53,35 @@ namespace xQuantLogFactory.Utils
         /// <param name="argument"></param>
         public void CustomDebugFunction(TaskArgument argument)
         {
+        }
+
+        /// <summary>
+        /// 代码行数统计
+        /// </summary>
+        private void CodeLinesCount()
+        {
+            int counts = 0;
+            string projectDir = @"..\..\";
+            DirectoryInfo directoryInfo = new DirectoryInfo(projectDir);
+            Console.WriteLine($"正在统计代码行数：{directoryInfo.FullName}");
+
+            foreach (var csFile in directoryInfo.GetFiles("*.cs", SearchOption.AllDirectories))
+            {
+                int count = 0;
+                try
+                {
+                    count = File.ReadAllLines(csFile.FullName).Length;
+                }
+                catch
+                {
+                    count = 0;
+                }
+
+                Console.WriteLine($"行数：{count}\t 目录：{csFile.FullName}");
+                counts += count;
+            }
+
+            Console.WriteLine($"代码总行数：{counts}");
         }
     }
 }
