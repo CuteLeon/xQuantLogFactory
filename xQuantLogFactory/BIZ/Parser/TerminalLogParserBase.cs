@@ -204,7 +204,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
             // 监视结果解析完毕后按日志时间排序
             this.Tracer?.WriteLine(">>>————— 监视结果池排序 —————");
-            argument.MonitorResults = argument.MonitorResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
+            argument.TerminalMonitorResults = argument.TerminalMonitorResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
             this.Tracer?.WriteLine("<<< 排序完成");
         }
 
@@ -236,7 +236,7 @@ namespace xQuantLogFactory.BIZ.Parser
             // 反向关联日志监视结果
             lock (this.lockSeed)
             {
-                argument.MonitorResults.Add(monitorResult);
+                argument.TerminalMonitorResults.Add(monitorResult);
                 logFile.MonitorResults.Add(monitorResult);
                 monitor.MonitorResults.Add(monitorResult);
             }

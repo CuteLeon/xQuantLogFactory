@@ -299,7 +299,7 @@ namespace xQuantLogFactory
                     "[客户端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityTaskArgument.TerminalLogFiles.Count(file => file.LogFileType == LogFileTypes.Client && file.MonitorResults.Count > 0),
                     UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Client)),
-                    UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Client));
+                    UnityTaskArgument.TerminalMonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Client));
             }
         }
 
@@ -319,7 +319,7 @@ namespace xQuantLogFactory
                     "[服务端] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个监视规则的 {2} 个结果\n————————",
                     UnityTaskArgument.TerminalLogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.MonitorResults.Count > 0),
                     UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().Count(monitor => monitor.MonitorResults.Any(result => result.LogFile.LogFileType == LogFileTypes.Server)),
-                    UnityTaskArgument.MonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server));
+                    UnityTaskArgument.TerminalMonitorResults.Count(result => result.LogFile.LogFileType == LogFileTypes.Server));
             }
         }
 
@@ -338,7 +338,7 @@ namespace xQuantLogFactory
                 UnityTracer.WriteLine(
                     "[中间件] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个结果\n————————",
                     UnityTaskArgument.TerminalLogFiles.Count(file => file.LogFileType == LogFileTypes.Middleware && file.MonitorResults.Count > 0),
-                    UnityTaskArgument.MiddlewareResults.Count);
+                    UnityTaskArgument.PerformanceMonitorResults.Count);
             }
         }
 
@@ -352,7 +352,7 @@ namespace xQuantLogFactory
         private static void AnalysisTerminalLog()
         {
             // 分析结果前先清空分析结果
-            UnityTaskArgument.AnalysisResults.Clear();
+            UnityTaskArgument.TerminalAnalysisResults.Clear();
             UnityTaskArgument.TerminalLogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
             UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().ToList().ForEach(monitor => monitor.AnalysisResults.Clear());
 
@@ -602,8 +602,8 @@ namespace xQuantLogFactory
                 "所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现 {1} 个监视规则的 {2} 个监视结果和 {3} 个中间件结果\n————————",
                 UnityTaskArgument.TerminalLogFiles.Count(file => file.MonitorResults.Count > 0) + UnityTaskArgument.PerformanceLogFiles.Count(file => file.MonitorResults.Count > 0),
                 UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().Count(monitor => monitor.MonitorResults.Count > 0),
-                UnityTaskArgument.MonitorResults.Count,
-                UnityTaskArgument.MiddlewareResults.Count());
+                UnityTaskArgument.TerminalMonitorResults.Count,
+                UnityTaskArgument.PerformanceMonitorResults.Count());
         }
 
         /// <summary>
@@ -615,7 +615,7 @@ namespace xQuantLogFactory
                 "日志解析结果分析完成：\n\t在 {0} 个文件中匹配到 {1} 个监视规则的 {2} 组分析结果\n————————",
                 UnityTaskArgument.TerminalLogFiles.Count(file => file.AnalysisResults.Count > 0),
                 UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().Count(monitor => monitor.AnalysisResults.Count > 0),
-                UnityTaskArgument.AnalysisResults.Count);
+                UnityTaskArgument.TerminalAnalysisResults.Count);
             /*
             UnityTrace.WriteLine("分析结果树：");
             UnityTaskArgument.AnalysisResultContainerRoot

@@ -24,6 +24,8 @@ namespace xQuantLogFactory.Model
             this.TaskStartTime = DateTime.Now;
         }
 
+        #region 基础属性
+
         /// <summary>
         /// Gets or sets 任务ID
         /// </summary>
@@ -106,18 +108,18 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlElement("MonitorFileName")]
         public string MonitorFileName { get; set; }
+        #endregion
+
+        #region 监视规则
 
         /// <summary>
         /// Gets or sets 监控规则容器
         /// </summary>
         [XmlIgnore]
         public virtual MonitorContainer MonitorContainerRoot { get; set; }
+        #endregion
 
-        /// <summary>
-        /// Gets or sets 分析结果容器
-        /// </summary>
-        [XmlIgnore]
-        public virtual TerminalAnalysisResultContainer AnalysisResultContainerRoot { get; set; } = new TerminalAnalysisResultContainer();
+        #region 日志文件
 
         /// <summary>
         /// Gets or sets 日志文件列表
@@ -130,37 +132,60 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlIgnore]
         public virtual List<PerformanceLogFile> PerformanceLogFiles { get; set; } = new List<PerformanceLogFile>();
+        #endregion
 
-
-        /// <summary>
-        /// Gets or sets 监视日志解析结果表
-        /// </summary>
-        [XmlIgnore]
-        public virtual List<TerminalMonitorResult> MonitorResults { get; set; } = new List<TerminalMonitorResult>();
+        #region 日志结果
 
         /// <summary>
-        /// Gets or sets 中间件日志解析结果表
+        /// Gets or sets 分析结果容器
         /// </summary>
         [XmlIgnore]
-        public virtual List<PerformanceMonitorResult> MiddlewareResults { get; set; } = new List<PerformanceMonitorResult>();
+        public virtual AnalysisResultContainer AnalysisResultContainerRoot { get; set; } = new AnalysisResultContainer();
 
         /// <summary>
-        /// Gets or sets 日志分析结果表
+        /// Gets or sets 客户端和服务端解析结果列表
         /// </summary>
         [XmlIgnore]
-        public virtual List<TerminalAnalysisResult> AnalysisResults { get; set; } = new List<TerminalAnalysisResult>();
+        public virtual List<TerminalMonitorResult> TerminalMonitorResults { get; set; } = new List<TerminalMonitorResult>();
+
+        /// <summary>
+        /// Gets or sets Performance解析结果列表
+        /// </summary>
+        [XmlIgnore]
+        public virtual List<PerformanceMonitorResult> PerformanceMonitorResults { get; set; } = new List<PerformanceMonitorResult>();
+
+        /// <summary>
+        /// Gets or sets 客户端和服务端分析结果列表
+        /// </summary>
+        [XmlIgnore]
+        public virtual List<TerminalAnalysisResult> TerminalAnalysisResults { get; set; } = new List<TerminalAnalysisResult>();
+
+        /// <summary>
+        /// Gets or sets Performance分析结果列表
+        /// </summary>
+        [XmlIgnore]
+        public virtual List<PerformanceAnalysisResult> PerformanceAnalysisResults { get; set; } = new List<PerformanceAnalysisResult>();
 
         /// <summary>
         /// 初始化分析结果树
         /// </summary>
         public void InitAnalysisResultTree()
         {
-            this.AnalysisResultContainerRoot.InitAnalysisResultTree(this.AnalysisResults);
+            this.AnalysisResultContainerRoot.InitTerminalAnalysisResultTree(this.TerminalAnalysisResults);
+            this.AnalysisResultContainerRoot.InitPerformanceAnalysisResultTree(this.PerformanceAnalysisResults);
         }
+        #endregion
 
+        #region 业务
+
+        /// <summary>
+        /// ToString
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return $"\t日志文件目录：{this.LogDirectory}\n\t含客户端信息：{this.IncludeClientInfo}\n\t包含系统信息：{this.IncludeSystemInfo}\n\t监视规则文件：{(string.IsNullOrEmpty(this.MonitorFileName) ? "[全部规则文件]" : this.MonitorFileName)}\n\t日志开始时间：{this.LogStartTime?.ToString() ?? "[不限制]"}\n\t日志截止时间：{this.LogFinishTime?.ToString() ?? "[不限制]"}\n\t报告导出格式：{this.ReportMode.ToString()}\n\t任务执行时间：{this.TaskStartTime}";
         }
+        #endregion
     }
 }

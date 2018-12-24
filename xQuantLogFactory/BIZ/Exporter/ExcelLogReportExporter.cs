@@ -130,13 +130,13 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.CACHE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 12, argument.MonitorResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 12, argument.TerminalMonitorResults.Count);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
                     {
                         // 每个分析结果根节点使执行序号自增
                         executeID++;
@@ -187,13 +187,13 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.REPORT_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, argument.MonitorResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 11, argument.TerminalMonitorResults.Count);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
                     {
                         // 每个分析结果根节点使执行序号自增
                         executeID++;
@@ -249,13 +249,13 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.FORM_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, argument.MonitorResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 11, argument.TerminalMonitorResults.Count);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
                     {
                         // 每个分析结果根节点使执行序号自增
                         executeID++;
@@ -306,13 +306,13 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.CORE_SERVICE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, argument.MonitorResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 11, argument.TerminalMonitorResults.Count);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots
                         .Where(root => root.IsIntactGroup()))
                     {
                         // 每个分析结果根节点使执行序号自增
@@ -464,7 +464,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             // 输出监视规则树
             int executeID = 0;
             ExcelWorksheetPackage excelPackage = null;
-            foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots)
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
             {
                 // 每个分析结果根节点使执行序号自增
                 executeID++;
@@ -514,11 +514,11 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.MEMORY_SHEET_NAME} 表数据 ...");
-                Rectangle memoryRectangle = new Rectangle(1, 2, 5, argument.MonitorResults.Count);
+                Rectangle memoryRectangle = new Rectangle(1, 2, 5, argument.TerminalMonitorResults.Count);
                 using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                 {
                     int rowID = memoryRectangle.Top;
-                    foreach (var result in argument.AnalysisResults
+                    foreach (var result in argument.TerminalAnalysisResults
                         .Where(result => result.MonitorItem.Memory)
                         .Distinct(new TerminalAnalysisResultEqualityComparer<TerminalAnalysisResult>()))
                     {
@@ -552,11 +552,11 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.MIDDLEWARE_SHEET_NAME} 表数据 ...");
-                Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.MiddlewareResults.Count);
+                Rectangle middlewareRectangle = new Rectangle(1, 2, 9, argument.PerformanceMonitorResults.Count);
                 using (ExcelRange middlewareRange = middlewareDataSheet.Cells[middlewareRectangle.Top, middlewareRectangle.Left, middlewareRectangle.Bottom - 1, middlewareRectangle.Right - 1])
                 {
                     int rowID = middlewareRectangle.Top;
-                    foreach (var result in argument.MiddlewareResults
+                    foreach (var result in argument.PerformanceMonitorResults
                         .OrderBy(result => result.LogTime))
                     {
                         middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -590,13 +590,13 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.TRADE_SETTLE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 13, argument.MonitorResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 13, argument.TerminalMonitorResults.Count);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.AnalysisResultRoots
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots
                         .Where(root => root.IsIntactGroup()))
                     {
                         // 每个分析结果根节点使执行序号自增

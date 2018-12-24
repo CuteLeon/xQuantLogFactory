@@ -52,7 +52,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
             }
 
             this.Tracer?.WriteLine($"执行 窗体异步组分析器 ....");
-            argument.MonitorResults
+            argument.TerminalMonitorResults
                 .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.FormAsync)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>

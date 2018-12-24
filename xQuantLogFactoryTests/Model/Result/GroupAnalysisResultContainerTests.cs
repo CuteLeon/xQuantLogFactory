@@ -16,7 +16,7 @@ namespace xQuantLogFactory.Model.Result.Tests
         public void InitAnalysisResultTreeTest()
         {
             List<TerminalAnalysisResult> results = new List<TerminalAnalysisResult>();
-            TerminalAnalysisResultContainer container = new TerminalAnalysisResultContainer();
+            AnalysisResultContainer container = new AnalysisResultContainer();
             TerminalMonitorItem monitor_0 = new TerminalMonitorItem();
             TerminalMonitorItem monitor_1 = new TerminalMonitorItem();
             TerminalMonitorItem monitor_2 = new TerminalMonitorItem();
@@ -59,12 +59,12 @@ namespace xQuantLogFactory.Model.Result.Tests
             container.InitAnalysisResultTree(results);
             Assert.AreEqual(results.Count, container.GetAnalysisResults().Count());
             Assert.AreEqual(2, results.Count(result => result.ParentAnalysisResult == null));
-            Assert.AreEqual(2, container.AnalysisResultRoots.Count);
+            Assert.AreEqual(2, container.TerminalAnalysisResultRoots.Count);
 
             container.InitAnalysisResultTree(results);
             Assert.AreEqual(results.Count, container.GetAnalysisResults().Count());
             Assert.AreEqual(2, results.Count(result => result.ParentAnalysisResult == null));
-            Assert.AreEqual(2, container.AnalysisResultRoots.Count);
+            Assert.AreEqual(2, container.TerminalAnalysisResultRoots.Count);
         }
     }
 }

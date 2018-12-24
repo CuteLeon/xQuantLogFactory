@@ -43,7 +43,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
             }
 
             this.Tracer?.WriteLine($"执行 通用前缀定向分析器 ....");
-            argument.AnalysisResults
+            argument.TerminalAnalysisResults
                 .Where(result => result.MonitorItem.DirectedAnalysiser == DirectedAnalysiserTypes.Prefix)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>

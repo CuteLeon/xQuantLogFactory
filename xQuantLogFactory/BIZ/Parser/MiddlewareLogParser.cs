@@ -89,7 +89,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             // 反向关联日志解析结果
                             lock (this.lockSeed)
                             {
-                                argument.MiddlewareResults.Add(result);
+                                argument.PerformanceMonitorResults.Add(result);
                                 logFile.MonitorResults.Add(result);
                             }
 

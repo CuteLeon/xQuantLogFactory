@@ -44,7 +44,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
             // 反向关联日志监视结果
             lock (this.lockSeed)
             {
-                argument.AnalysisResults.Add(analysisResult);
+                argument.TerminalAnalysisResults.Add(analysisResult);
                 monitorResult.LogFile.AnalysisResults.Add(analysisResult);
                 monitor.AnalysisResults.Add(analysisResult);
             }

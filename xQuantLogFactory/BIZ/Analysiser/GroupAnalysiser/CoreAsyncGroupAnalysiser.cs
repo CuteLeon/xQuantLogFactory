@@ -55,7 +55,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
             }
 
             this.Tracer?.WriteLine($"执行 Core服务异步组分析器 ....");
-            argument.MonitorResults
+            argument.TerminalMonitorResults
                 .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>

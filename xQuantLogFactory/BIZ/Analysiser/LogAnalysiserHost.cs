@@ -67,7 +67,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
             // 分析结果匹配完成后按日志时间排序
             this.Tracer?.WriteLine(">>>————— 分析结果池排序 —————");
-            argument.AnalysisResults = argument.AnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
+            argument.TerminalAnalysisResults = argument.TerminalAnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
             this.Tracer?.WriteLine("<<< 排序完成");
 
             // 初始化分析结果树
@@ -89,22 +89,22 @@ namespace xQuantLogFactory.BIZ.Analysiser
         {
             this.GroupAnalysiserProvider.Add(new CommonGroupLogAnalysiser(this.Tracer));
 
-            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync))
+            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync))
             {
                 this.GroupAnalysiserProvider.Add(new CoreAsyncGroupAnalysiser(this.Tracer));
             }
 
-            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.FormAsync))
+            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.FormAsync))
             {
                 this.GroupAnalysiserProvider.Add(new FormAsyncGroupAnalysiser(this.Tracer));
             }
 
-            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync))
+            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync))
             {
                 this.GroupAnalysiserProvider.Add(new ReportAsyncGroupAnalysiser(this.Tracer));
             }
 
-            if (argument.MonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.SelfSealing))
+            if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.SelfSealing))
             {
                 this.GroupAnalysiserProvider.Add(new CommonSelfSealingGroupAnalysiser(this.Tracer));
             }

@@ -44,7 +44,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
             }
 
             this.Tracer?.WriteLine($"执行 通用加载定向分析器 ....");
-            argument.AnalysisResults
+            argument.TerminalAnalysisResults
                 .Where(result => result.MonitorItem.DirectedAnalysiser == DirectedAnalysiserTypes.Load)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
@@ -94,11 +94,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                         else
                         {
                             // 匹配失败，删除无效的结果
-                            monitorResult.TaskArgument.MonitorResults.Remove(monitorResult);
+                            monitorResult.TaskArgument.TerminalMonitorResults.Remove(monitorResult);
                             monitorResult.MonitorItem.MonitorResults.Remove(monitorResult);
                             monitorResult.LogFile.MonitorResults.Remove(monitorResult);
 
-                            analysisResult.TaskArgument.AnalysisResults.Remove(analysisResult);
+                            analysisResult.TaskArgument.TerminalAnalysisResults.Remove(analysisResult);
                             analysisResult.MonitorItem.AnalysisResults.Remove(analysisResult);
                             analysisResult.LogFile.AnalysisResults.Remove(analysisResult);
                         }

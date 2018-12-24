@@ -42,7 +42,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
             }
 
             this.Tracer?.WriteLine($"执行 通用组分析器 ....");
-            argument.MonitorResults
+            argument.TerminalMonitorResults
                 .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.Common)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
