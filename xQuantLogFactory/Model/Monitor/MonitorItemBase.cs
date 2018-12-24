@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Result;
@@ -13,7 +12,7 @@ namespace xQuantLogFactory.Model.Monitor
     /// <summary>
     /// 监视规则基类
     /// </summary>
-    /// <typeparam name="TMonitor"></typeparam>
+    /// <typeparam name="TMonitor">泛型列表中父节点必须与子节点类型保持一致</typeparam>
     /// <typeparam name="TMonitorResult"></typeparam>
     /// <typeparam name="TAnalysisResult"></typeparam>
     /// <typeparam name="TLogFile"></typeparam>
@@ -23,16 +22,7 @@ namespace xQuantLogFactory.Model.Monitor
         where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
     {
-        /// <summary>
-        /// Gets or sets 监控项目树根节点列表
-        /// </summary>
-        public abstract List<TMonitor> MonitorTreeRoots { get; set; }
-
-        /// <summary>
-        /// Gets a value indicating whether 是否有子监控项目
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool HasChild() => this.MonitorTreeRoots != null && this.MonitorTreeRoots.Count > 0;
+        #region 基础属性
 
         /// <summary>
         /// Gets 带有层级前缀的名称
@@ -110,6 +100,46 @@ namespace xQuantLogFactory.Model.Monitor
         [XmlAttribute("GroupAnalysiser")]
         public GroupAnalysiserTypes GroupAnalysiser { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether 记录内存消耗
+        /// </summary>
+        [XmlAttribute("Memory")]
+        public bool Memory { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets 输出表名
+        /// </summary>
+        [XmlAttribute("Sheet")]
+        public string SheetName { get; set; }
+        #endregion
+
+        #region 泛型类型
+
+        /// <summary>
+        /// Gets or sets 父级监视规则
+        /// </summary>
+        [XmlIgnore]
+        public virtual TMonitor ParentMonitorItem { get; set; }
+
+        /// <summary>
+        /// Gets or sets 监控项目树根节点列表
+        /// </summary>
+        public abstract List<TMonitor> MonitorTreeRoots { get; set; }
+
+        /// <summary>
+        /// Gets or sets 监视日志解析结果表
+        /// </summary>
+        [XmlIgnore]
+        public virtual List<TMonitorResult> MonitorResults { get; set; } = new List<TMonitorResult>();
+
+        /// <summary>
+        /// Gets or sets 日志分析结果表
+        /// </summary>
+        [XmlIgnore]
+        public virtual List<TAnalysisResult> AnalysisResults { get; set; } = new List<TAnalysisResult>();
+        #endregion
+
+        #region 监视规则树
 
         /// <summary>
         /// 获取下一个子节点的目录编号
@@ -126,132 +156,6 @@ namespace xQuantLogFactory.Model.Monitor
              */
             int nextCANO = (int.TryParse(this.MonitorTreeRoots.Select(monitor => monitor.CANO ?? "0").Max()?.Split('.')?.LastOrDefault(), out int cano) ? cano : 0) + 1;
             return $"{(parentCANO == null ? string.Empty : $"{parentCANO}.")}{nextCANO.ToString("0000")}";
-        }
-
-        /// <summary>
-        /// 获取所有监视规则节点（包括当前节点自身）
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<TMonitor> GetMonitorBasesWithSelf()
-        {
-            yield return this as TMonitor;
-
-            foreach (var childMonitor in this.GetMonitorItems())
-            {
-                yield return childMonitor;
-            }
-        }
-
-        /// <summary>
-        /// 查找指定名称的第一个子监视规则
-        /// </summary>
-        /// <param name="monitorName"></param>
-        /// <returns></returns>
-        /// <remarks>不要使用Linq和foreach，否则在定向分析器中对监视规则子列表做了修改后遍历会产生错误，使用索引器查找</remarks>
-        public TMonitor FindChildMonitorItem(string monitorName)
-        {
-            int index = 0;
-            TMonitor currentMonitor = null;
-
-            while (index < this.MonitorTreeRoots.Count)
-            {
-                currentMonitor = this.MonitorTreeRoots[index];
-                if (string.Equals(currentMonitor.Name, monitorName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return currentMonitor;
-                }
-
-                index++;
-            }
-
-            return default;
-        }
-
-        /// <summary>
-        /// 获取所有节点及其子节点
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks>IEnumerable<>对象即使储存为变量，每次访问依然会进入此方法，若要减少计算量，需要将此方法返回数据 .ToList()</remarks>
-        public IEnumerable<TMonitor> GetMonitorItems()
-        {
-            Stack<TMonitor> monitorRoots = new Stack<TMonitor>();
-            TMonitor currentMonitor = this as TMonitor;
-
-            while (true)
-            {
-                if (currentMonitor.HasChild())
-                {
-                    foreach (var monitor in currentMonitor.MonitorTreeRoots
-                        .AsEnumerable().Reverse())
-                    {
-                        monitorRoots.Push(monitor);
-                    }
-                }
-
-                if (monitorRoots.Count > 0)
-                {
-                    currentMonitor = monitorRoots.Pop();
-                    yield return currentMonitor;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets 父级监视规则
-        /// </summary>
-        [XmlIgnore]
-        public virtual TMonitor ParentMonitorItem { get; set; }
-
-        /// <summary>
-        /// Gets or sets 监视日志解析结果表
-        /// </summary>
-        [XmlIgnore]
-        public virtual List<TMonitorResult> MonitorResults { get; set; } = new List<TMonitorResult>();
-
-        /// <summary>
-        /// Gets or sets 日志分析结果表
-        /// </summary>
-        [XmlIgnore]
-        public virtual List<TAnalysisResult> AnalysisResults { get; set; } = new List<TAnalysisResult>();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether 记录内存消耗
-        /// </summary>
-        [XmlAttribute("Memory")]
-        public bool Memory { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets 输出表名
-        /// </summary>
-        [XmlAttribute("Sheet")]
-        public string SheetName { get; set; }
-
-        /// <summary>
-        /// 匹配日志内容
-        /// </summary>
-        /// <param name="logContent">日志内容</param>
-        /// <returns>匹配监视规则类型</returns>
-        public GroupTypes MatchLogContent(string logContent)
-        {
-            // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
-            if (this.StartPattern?.Length > 0 &&
-                logContent.IndexOf(this.StartPattern, StringComparison.Ordinal) > -1)
-            {
-                return GroupTypes.Start;
-            }
-            else if (this.FinishPatterny?.Length > 0 &&
-                logContent.IndexOf(this.FinishPatterny, StringComparison.Ordinal) > -1)
-            {
-                return GroupTypes.Finish;
-            }
-            else
-            {
-                return GroupTypes.Unmatch;
-            }
         }
 
         /// <summary>
@@ -315,8 +219,115 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         /// <returns></returns>
         public int GetLayerDepth()
+            => this.CANO?.Split('.')?.Length ?? 0;
+        #endregion
+
+        #region 扫描监视规则
+
+        /// <summary>
+        /// Gets a value indicating whether 是否有子监控项目
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool HasChild() => this.MonitorTreeRoots != null && this.MonitorTreeRoots.Count > 0;
+
+        /// <summary>
+        /// 获取所有监视规则节点（包括当前节点自身）
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<TMonitor> GetMonitorsWithSelf()
         {
-            return this.CANO?.Split('.')?.Length ?? 0;
+            yield return (this as TMonitor) ?? throw new Exception("泛型列表中父节点必须与子节点类型保持一致");
+
+            foreach (var childMonitor in this.GetMonitors())
+            {
+                yield return childMonitor;
+            }
         }
+
+        /// <summary>
+        /// 查找指定名称的第一个子监视规则
+        /// </summary>
+        /// <param name="monitorName"></param>
+        /// <returns></returns>
+        /// <remarks>不要使用Linq和foreach，否则在定向分析器中对监视规则子列表做了修改后遍历会产生错误，使用索引器查找</remarks>
+        public TMonitor FindChildMonitorItem(string monitorName)
+        {
+            int index = 0;
+            TMonitor currentMonitor = null;
+
+            while (index < this.MonitorTreeRoots.Count)
+            {
+                currentMonitor = this.MonitorTreeRoots[index];
+                if (string.Equals(currentMonitor.Name, monitorName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return currentMonitor;
+                }
+
+                index++;
+            }
+
+            return default;
+        }
+
+        /// <summary>
+        /// 获取所有节点及其子节点
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>IEnumerable<>对象即使储存为变量，每次访问依然会进入此方法，若要减少计算量，需要将此方法返回数据 .ToList()</remarks>
+        public IEnumerable<TMonitor> GetMonitors()
+        {
+            Stack<TMonitor> monitorRoots = new Stack<TMonitor>();
+            TMonitor currentMonitor = this as TMonitor ?? throw new Exception("泛型列表中父节点必须与子节点类型保持一致");
+
+            while (true)
+            {
+                if (currentMonitor.HasChild())
+                {
+                    foreach (var monitor in currentMonitor.MonitorTreeRoots
+                        .AsEnumerable().Reverse())
+                    {
+                        monitorRoots.Push(monitor);
+                    }
+                }
+
+                if (monitorRoots.Count > 0)
+                {
+                    currentMonitor = monitorRoots.Pop();
+                    yield return currentMonitor;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        #endregion
+
+        #region 业务方法
+
+        /// <summary>
+        /// 匹配日志内容
+        /// </summary>
+        /// <param name="logContent">日志内容</param>
+        /// <returns>匹配监视规则类型</returns>
+        public GroupTypes MatchLogContent(string logContent)
+        {
+            // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
+            if (this.StartPattern?.Length > 0 &&
+                logContent.IndexOf(this.StartPattern, StringComparison.Ordinal) > -1)
+            {
+                return GroupTypes.Start;
+            }
+            else if (this.FinishPatterny?.Length > 0 &&
+                logContent.IndexOf(this.FinishPatterny, StringComparison.Ordinal) > -1)
+            {
+                return GroupTypes.Finish;
+            }
+            else
+            {
+                return GroupTypes.Unmatch;
+            }
+        }
+        #endregion
     }
 }

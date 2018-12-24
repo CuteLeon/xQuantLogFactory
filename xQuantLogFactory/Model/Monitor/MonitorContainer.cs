@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
+using xQuantLogFactory.Model.LogFile;
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
@@ -13,47 +15,52 @@ namespace xQuantLogFactory.Model.Monitor
     [XmlRoot("MonitorRoot")]
     public class MonitorContainer : MonitorBase, IMonitorContainer
     {
+        #region 监视规则列表
+
         /// <summary>
         /// 客户端和服务端监视规则树根节点
         /// </summary>
-        List<TerminalMonitorItem> TerminalMonitorTreeRoots = new List<TerminalMonitorItem>();
+        public List<TerminalMonitorItem> TerminalMonitorTreeRoots = new List<TerminalMonitorItem>();
 
         /// <summary>
         /// Performance 监视规则树根节点
         /// </summary>
-        List<PerformanceMonitorItem> PerformanceMonitorTreeRoots = new List<PerformanceMonitorItem>();
+        public List<PerformanceMonitorItem> PerformanceMonitorTreeRoots = new List<PerformanceMonitorItem>();
+        #endregion
 
-        /// <summary>
-        /// 是否含有客户端和服务端监视规则
-        /// </summary>
-        /// <returns></returns>
-        public bool HasTerminalMonitors() => this.TerminalMonitorTreeRoots != null && this.TerminalMonitorTreeRoots.Count > 0;
-
-        /// <summary>
-        /// 是否含有Performance监视规则
-        /// </summary>
-        /// <returns></returns>
-        public bool HasPerformanceMonitors() => this.PerformanceMonitorTreeRoots != null && this.PerformanceMonitorTreeRoots.Count > 0;
+        #region 初始化监视规则树方法
 
         /// <summary>
         /// 初始化监视规则树
         /// </summary>
-        public void InitTerminalMonitorTree()
+        /// <typeparam name="TMonitor"></typeparam>
+        /// <typeparam name="TMonitorResult"></typeparam>
+        /// <typeparam name="TAnalysisResult"></typeparam>
+        /// <typeparam name="TLogFile"></typeparam>
+        /// <param name="monitors"></param>
+        public void InitMonitorTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TMonitor> monitors)
+            where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
+            where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         {
-            // TODO: 初始化监视规则树
-            /*
-            TerminalMonitorItem currentMonitor = null;
-
-            // 处理所有父节点
-            foreach (MonitorBase parentMonitor in this.GetMonitorBasesWithSelf())
+            if (monitors == null)
             {
-                if (parentMonitor.HasChildren)
+                throw new ArgumentNullException(nameof(monitors));
+            }
+
+            // 使用一个根节点辅助
+            TMonitor root = new TMonitor() { Name = "临时辅助节点", CANO = string.Empty, MonitorTreeRoots = monitors };
+            TMonitor currentMonitor = null;
+
+            foreach (TMonitor parentMonitor in root.GetMonitorsWithSelf())
+            {
+                if (parentMonitor.HasChild())
                 {
-                    // 处理父节点的子节点
-                    for (int index = 0; index < parentMonitor..Count; index++)
+                    for (int index = 0; index < parentMonitor.MonitorTreeRoots.Count; index++)
                     {
                         // 将父节点的子节点作为当前节点
-                        currentMonitor = parentMonitor.TerminalMonitorTreeRoots[index];
+                        currentMonitor = parentMonitor.MonitorTreeRoots[index];
 
                         // 预设默认表名
                         if (string.IsNullOrEmpty(currentMonitor.SheetName))
@@ -71,14 +78,10 @@ namespace xQuantLogFactory.Model.Monitor
                         {
                             if (index == 0)
                             {
-                                // 容器的第一层根节点无法取容器的开始条件，因为容器没有监视条件
-                                if (parentMonitor is TerminalMonitorItem parent)
+                                // 第一个节点使用父节点的开始条件
+                                if (!string.IsNullOrEmpty(parentMonitor.StartPattern))
                                 {
-                                    // 第一个节点使用父节点的开始条件
-                                    if (!string.IsNullOrEmpty(parent.StartPattern))
-                                    {
-                                        currentMonitor.StartPattern = parent.StartPattern;
-                                    }
+                                    currentMonitor.StartPattern = parentMonitor.StartPattern;
                                 }
                             }
                             else
@@ -91,7 +94,7 @@ namespace xQuantLogFactory.Model.Monitor
                             }
                         }
 
-                        if (currentMonitor.HasChild)
+                        if (currentMonitor.HasChild())
                         {
                             // 遍历当前节点的子节点
                             currentMonitor.MonitorTreeRoots.ForEach(childMonitor =>
@@ -109,35 +112,90 @@ namespace xQuantLogFactory.Model.Monitor
                     }
                 }
             }
-             */
+
+            // 销毁 root
+            root = null;
         }
 
         /// <summary>
-        /// 扫描容器子节点
+        /// 初始化客户端和服务端监视规则树
+        /// </summary>
+        public void InitTerminalMonitorTree()
+        {
+            this.InitMonitorTree<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>(this.TerminalMonitorTreeRoots);
+        }
+
+        /// <summary>
+        /// 初始化Performance监视规则树
+        /// </summary>
+        public void InitPerformanceMonitorTree()
+        {
+            this.InitMonitorTree<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>(this.PerformanceMonitorTreeRoots);
+        }
+        #endregion
+
+        #region 扫描监视规则方法
+
+        /// <summary>
+        /// 是否含有客户端和服务端监视规则
+        /// </summary>
+        /// <returns></returns>
+        public bool HasTerminalMonitors() => this.TerminalMonitorTreeRoots != null && this.TerminalMonitorTreeRoots.Count > 0;
+
+        /// <summary>
+        /// 是否含有Performance监视规则
+        /// </summary>
+        /// <returns></returns>
+        public bool HasPerformanceMonitors() => this.PerformanceMonitorTreeRoots != null && this.PerformanceMonitorTreeRoots.Count > 0;
+
+        /// <summary>
+        /// 扫描监视规则树
+        /// </summary>
+        /// <typeparam name="TMonitor"></typeparam>
+        /// <typeparam name="TMonitorResult"></typeparam>
+        /// <typeparam name="TAnalysisResult"></typeparam>
+        /// <typeparam name="TLogFile"></typeparam>
+        /// <param name="monitors"></param>
+        /// <returns></returns>
+        public IEnumerable<TMonitor> GetMonitorTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TMonitor> monitors)
+            where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
+            where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        {
+            if (monitors == null)
+            {
+                throw new ArgumentNullException(nameof(monitors));
+            }
+
+            TMonitor root = new TMonitor() { Name = "临时辅助节点", CANO = string.Empty, MonitorTreeRoots = monitors };
+
+            foreach (var monitor in root.GetMonitors())
+            {
+                yield return monitor;
+            }
+
+            // 销毁 root
+            root = null;
+        }
+
+        /// <summary>
+        /// 扫描容器所有客户端和服务端监视规则节点
         /// </summary>
         /// <returns></returns>
         public IEnumerable<TerminalMonitorItem> GetTerminalMonitorItems()
         {
-            // TODO: 实现容器扫描
-            return null;
+            return this.GetMonitorTree<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>(this.TerminalMonitorTreeRoots);
         }
 
         /// <summary>
-        /// 初始化监视规则树
-        /// </summary>
-        public void InitPerformanceMonitorTree()
-        {
-            // TODO: 初始化监视规则树
-        }
-
-        /// <summary>
-        /// 扫描容器子节点
+        /// 扫描容器所有Performance监视规则节点
         /// </summary>
         /// <returns></returns>
         public IEnumerable<PerformanceMonitorItem> GetPerformanceMonitorItems()
         {
-            // TODO: 实现容器扫描
-            return null;
+            return this.GetMonitorTree<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>(this.PerformanceMonitorTreeRoots);
         }
+        #endregion
     }
 }

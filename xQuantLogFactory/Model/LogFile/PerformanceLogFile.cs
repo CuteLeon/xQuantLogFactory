@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
@@ -13,6 +11,21 @@ namespace xQuantLogFactory.Model.LogFile
     /// </summary>
     public class PerformanceLogFile : LogFileBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceLogFile"/> class.
+        /// </summary>
+        public PerformanceLogFile()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceLogFile"/> class.
+        /// </summary>
+        /// <param name="logFileTypes"></param>
+        /// <param name="filePath"></param>
+        /// <param name="createTime"></param>
+        /// <param name="lastWriteTime"></param>
+        /// <param name="relativePath"></param>
         public PerformanceLogFile(LogFileTypes logFileTypes, string filePath, DateTime createTime, DateTime lastWriteTime, string relativePath)
         {
             this.LogFileType = logFileTypes;

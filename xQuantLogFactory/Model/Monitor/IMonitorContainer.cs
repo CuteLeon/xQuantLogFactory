@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace xQuantLogFactory.Model.Monitor
 {
@@ -10,6 +7,26 @@ namespace xQuantLogFactory.Model.Monitor
     /// </summary>
     public interface IMonitorContainer
     {
-        // TODO: 获取子监视规则方法迁移至监视规则容器共同基类层
+        /// <summary>
+        /// 初始化客户端和服务端监视规则树
+        /// </summary>
+        void InitTerminalMonitorTree();
+
+        /// <summary>
+        /// 初始化Performance监视规则树
+        /// </summary>
+        void InitPerformanceMonitorTree();
+
+        /// <summary>
+        /// 扫描客户端和服务端监视规则树
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<TerminalMonitorItem> GetTerminalMonitorItems();
+
+        /// <summary>
+        /// 扫描Performance监视规则树
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<PerformanceMonitorItem> GetPerformanceMonitorItems();
     }
 }
