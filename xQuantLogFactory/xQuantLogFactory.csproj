@@ -109,6 +109,7 @@
     <Compile Include="Model\Factory\ITaskArgumentFactory.cs" />
     <Compile Include="Model\Fixed\FixedDatas.cs" />
     <Compile Include="Model\Fixed\Enums.cs" />
+    <Compile Include="Model\LogFile\FileBase.cs" />
     <Compile Include="Model\LogFile\LogFileBase.cs" />
     <Compile Include="Model\LogFile\PerformanceLogFile.cs" />
     <Compile Include="Model\Monitor\IMonitorContainer.cs" />

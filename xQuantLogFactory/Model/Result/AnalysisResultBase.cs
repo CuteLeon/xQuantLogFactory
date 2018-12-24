@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 
@@ -10,31 +10,28 @@ namespace xQuantLogFactory.Model.Result
     /// <summary>
     /// 抽象结果基类
     /// </summary>
-    public class AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : LogResultBase
+    /// <typeparam name="TMonitor"></typeparam>
+    /// <typeparam name="TMonitorResult"></typeparam>
+    /// <typeparam name="TAnalysisResult"></typeparam>
+    /// <typeparam name="TLogFile"></typeparam>
+    public abstract class AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : LogResultBase<TLogFile>
         where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
     {
-        private TMonitorResult startMonitorResult;
-        private TMonitorResult finishMonitorResult;
+        #region 基础属性
 
         /// <summary>
         /// Gets or sets 结果耗时（单位：毫秒）
         /// </summary>
         public double ElapsedMillisecond { get; set; }
 
-        /// <summary>
-        /// Gets or sets 日志文件
-        /// </summary>
-        public TLogFile LogFile { get; set; }
+        #endregion
 
+        #region 泛型类型
 
-        /// <summary>
-        /// Gets or sets 监控项目
-        /// </summary>
-        public TMonitor MonitorItem { get; set; }
-
+        private TMonitorResult startMonitorResult;
         /// <summary>
         /// Gets or sets 匹配开始结果
         /// </summary>
@@ -58,6 +55,7 @@ namespace xQuantLogFactory.Model.Result
             }
         }
 
+        private TMonitorResult finishMonitorResult;
         /// <summary>
         /// Gets or sets 匹配结束结果
         /// </summary>
@@ -82,14 +80,35 @@ namespace xQuantLogFactory.Model.Result
         }
 
         /// <summary>
-        /// Gets or sets 父分析结果
+        /// Gets or sets 监控项目
         /// </summary>
-        public TAnalysisResult ParentAnalysisResult { get; set; }
+        public TMonitor MonitorItem { get; set; }
 
         /// <summary>
         /// Gets or sets 子分析结果
         /// </summary>
         public List<TAnalysisResult> AnalysisResultRoots { get; set; } = new List<TAnalysisResult>();
+        #endregion
+
+        #region 分析结果树
+
+        /// <summary>
+        /// Gets or sets 父分析结果
+        /// </summary>
+        public TAnalysisResult ParentAnalysisResult { get; set; }
+        #endregion
+
+        #region 扫描分析结果树
+
+        /// <summary>
+        /// 是否有子监控项目
+        /// </summary>
+        /// <param name="targetResult"></param>
+        /// <returns></returns>
+        public bool HasChild()
+        {
+            return this.AnalysisResultRoots != null && this.AnalysisResultRoots.Count > 0;
+        }
 
         /// <summary>
         /// 获取自身及所有子分析结果及其子分析结果
@@ -97,43 +116,11 @@ namespace xQuantLogFactory.Model.Result
         /// <returns></returns>
         public IEnumerable<TAnalysisResult> GetAnalysisResultWithRoot()
         {
-            yield return this as TAnalysisResult;
+            yield return (this as TAnalysisResult) ?? throw new Exception("泛型列表中父节点必须与子节点类型保持一致");
 
             foreach (var analysisResult in this.GetAnalysisResults())
             {
                 yield return analysisResult;
-            }
-        }
-
-        /// <summary>
-        /// 绑定解析结果属性为分析结果属性
-        /// </summary>
-        /// <param name="monitorResult"></param>
-        public virtual void BindMonitorResult(TMonitorResult monitorResult)
-        {
-            if (monitorResult == null)
-            {
-                this.LineNumber = 0;
-                this.LogTime = DateTime.MinValue;
-            }
-            else
-            {
-                this.LineNumber = monitorResult.LineNumber;
-                this.LogTime = monitorResult.LogTime;
-            }
-        }
-
-        /// <summary>
-        /// 计算耗时
-        /// </summary>
-        public void CalcElapsedMillisecond()
-        {
-            if (this.StartMonitorResult != null &&
-                this.StartMonitorResult.LogTime != null &&
-                this.FinishMonitorResult != null &&
-                this.FinishMonitorResult.LogTime != null)
-            {
-                this.ElapsedMillisecond = (this.FinishMonitorResult.LogTime - this.StartMonitorResult.LogTime).TotalMilliseconds;
             }
         }
 
@@ -170,15 +157,40 @@ namespace xQuantLogFactory.Model.Result
                 }
             }
         }
+        #endregion
+
+        #region 业务
 
         /// <summary>
-        /// 是否有子监控项目
+        /// 绑定解析结果属性为分析结果属性
         /// </summary>
-        /// <param name="targetResult"></param>
-        /// <returns></returns>
-        public bool HasChild()
+        /// <param name="monitorResult"></param>
+        public virtual void BindMonitorResult(TMonitorResult monitorResult)
         {
-            return this.AnalysisResultRoots != null && this.AnalysisResultRoots.Count > 0;
+            if (monitorResult == null)
+            {
+                this.LineNumber = 0;
+                this.LogTime = DateTime.MinValue;
+            }
+            else
+            {
+                this.LineNumber = monitorResult.LineNumber;
+                this.LogTime = monitorResult.LogTime;
+            }
+        }
+
+        /// <summary>
+        /// 计算耗时
+        /// </summary>
+        public void CalcElapsedMillisecond()
+        {
+            if (this.StartMonitorResult != null &&
+                this.StartMonitorResult.LogTime != null &&
+                this.FinishMonitorResult != null &&
+                this.FinishMonitorResult.LogTime != null)
+            {
+                this.ElapsedMillisecond = (this.FinishMonitorResult.LogTime - this.StartMonitorResult.LogTime).TotalMilliseconds;
+            }
         }
 
         /// <summary>
@@ -202,5 +214,6 @@ namespace xQuantLogFactory.Model.Result
         {
             return this.StartMonitorResult ?? this.FinishMonitorResult;
         }
+        #endregion
     }
 }

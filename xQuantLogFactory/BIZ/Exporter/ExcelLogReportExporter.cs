@@ -560,7 +560,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         .OrderBy(result => result.LogTime))
                     {
                         middlewareRange[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        middlewareRange[rowID, 2].Value = result.Client;
+                        middlewareRange[rowID, 2].Value = result.IPAddress;
                         middlewareRange[rowID, 3].Value = result.UserCode;
                         middlewareRange[rowID, 4].Value = result.StartTime;
                         middlewareRange[rowID, 5].Value = result.Elapsed;

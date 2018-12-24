@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 
@@ -14,15 +11,38 @@ namespace xQuantLogFactory.Model.Result
     /// <typeparam name="TMonitorResult"></typeparam>
     /// <typeparam name="TAnalysisResult"></typeparam>
     /// <typeparam name="TLogFile"></typeparam>
-    public class MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : LogResultBase
+    public abstract class MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : LogResultBase<TLogFile>
         where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
     {
+        #region 基础属性
+
         /// <summary>
-        /// Gets or sets 日志文件
+        /// Gets or sets 监控项目
         /// </summary>
-        public TLogFile LogFile { get; set; }
+        public TMonitor MonitorItem { get; set; }
+
+        /// <summary>
+        /// Gets or sets iP地址
+        /// </summary>
+        public string IPAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets 监视结果匹配模式
+        /// </summary>
+        public GroupTypes GroupType { get; set; }
+        #endregion
+
+        #region 业务
+
+        /// <summary>
+        /// 检查两个监视结果是否匹配
+        /// </summary>
+        /// <param name="targetResult"></param>
+        /// <returns></returns>
+        public abstract bool CheckMatch(TMonitorResult targetResult);
+        #endregion
     }
 }

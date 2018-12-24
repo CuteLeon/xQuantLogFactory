@@ -346,7 +346,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         .OrderByDescending(result => result.Count()))
                     {
                         string body = $@"<b>方法调用次数：{methodNameResult.Count().ToString("N0")}</b><br>
-调用客户端数：<b>{methodNameResult.Select(result => result.Client).Distinct().Count().ToString("N0")}</b><br>
+调用客户端数：<b>{methodNameResult.Select(result => result.IPAddress).Distinct().Count().ToString("N0")}</b><br>
 调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count().ToString("N0")}</b><br>
 返回总流长度：<b>{methodNameResult.Sum(result => result.StreamLength)}</b><br>
 流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>";
@@ -419,7 +419,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td><b>{resultGroup.Key.RequestURI}</b></td>
     <td><b>{resultGroup.Key.MethodName}</b></td>
     <td>{resultGroup.Count().ToString("N0")}</td>
-    <td>{resultGroup.Select(result => result.Client).Distinct().Count().ToString("N0")}</td>
+    <td>{resultGroup.Select(result => result.IPAddress).Distinct().Count().ToString("N0")}</td>
     <td>{resultGroup.Min(result => result.StreamLength)}</td>
     <td>{resultGroup.Max(result => result.StreamLength)}</td>
     <td>{resultGroup.Sum(result => result.StreamLength)}</td>
@@ -452,7 +452,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{resultGroup.Key.RequestURI}</td>
     <td>{resultGroup.Key.MethodName}</td>
     <td>{resultGroup.Count().ToString("N0")}</td>
-    <td>{resultGroup.Select(result => result.Client).Distinct().Count().ToString("N0")}</td>
+    <td>{resultGroup.Select(result => result.IPAddress).Distinct().Count().ToString("N0")}</td>
     <td>{resultGroup.Min(result => result.StreamLength)}</td>
     <td>{resultGroup.Max(result => result.StreamLength)}</td>
     <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
@@ -477,11 +477,11 @@ namespace xQuantLogFactory.BIZ.Exporter
 </thead>
 <tbody>");
             foreach (var resultGroup in argument.MiddlewareResults
-                .GroupBy(result => (result.Client, result.RequestURI, result.MethodName))
+                .GroupBy(result => (result.IPAddress, result.RequestURI, result.MethodName))
                 .OrderByDescending(results => results.Sum(result => result.Elapsed)))
             {
                 this.htmlBuilder.Value.AppendLine($@"<tr>
-    <td>{resultGroup.Key.Client}</td>
+    <td>{resultGroup.Key.IPAddress}</td>
     <td>{resultGroup.Key.RequestURI}</td>
     <td>{resultGroup.Key.MethodName}</td>
     <td>{resultGroup.Count().ToString("N0")}</td>

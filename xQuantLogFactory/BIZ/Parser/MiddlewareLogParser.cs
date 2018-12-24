@@ -27,7 +27,7 @@ namespace xQuantLogFactory.BIZ.Parser
         }
 
         public override Regex GeneralLogRegex { get; } = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Client>\d{1,3}(\.\d{1,3}){3})\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>\/.*?)\s(?<MethodName>.*?)\s(?<StreamLength>\d*?)\s(?<Message>.+)$",
+            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<IPAddress>\d{1,3}(\.\d{1,3}){3})\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>\/.*?)\s(?<MethodName>.*?)\s(?<StreamLength>\d*?)\s(?<Message>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -93,9 +93,9 @@ namespace xQuantLogFactory.BIZ.Parser
                                 logFile.MonitorResults.Add(result);
                             }
 
-                            if (match.Groups["Client"].Success)
+                            if (match.Groups["IPAddress"].Success)
                             {
-                                result.Client = match.Groups["Client"].Value;
+                                result.IPAddress = match.Groups["IPAddress"].Value;
                             }
 
                             if (match.Groups["UserCode"].Success)

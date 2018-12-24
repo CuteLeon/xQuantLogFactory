@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
@@ -38,7 +37,7 @@ namespace xQuantLogFactory.Model.Result
                     if (analysisResult.MonitorItem.HasChild())
                     {
                         // 关联子监视规则的分析结果（以当前节点为树根遍历监视规则树，防止分析结果之间断级，而造成分析结果树断开）
-                        foreach (TerminalMonitorItem childMonitor in analysisResult.MonitorItem.GetMonitorItems())
+                        foreach (TerminalMonitorItem childMonitor in analysisResult.MonitorItem.GetMonitors())
                         {
                             childMonitor.AnalysisResults
                                 .Where(result =>

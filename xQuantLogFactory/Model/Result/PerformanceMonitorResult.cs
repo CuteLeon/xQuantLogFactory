@@ -1,18 +1,30 @@
 ﻿using System;
+
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
 {
     /// <summary>
-    /// 中间件日志结果
+    /// Performance解析结果
     /// </summary>
     public class PerformanceMonitorResult : MonitorResultBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceMonitorResult"/> class.
+        /// </summary>
         public PerformanceMonitorResult()
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceMonitorResult"/> class.
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <param name="logFile"></param>
+        /// <param name="logTime"></param>
+        /// <param name="lineNumber"></param>
         public PerformanceMonitorResult(TaskArgument argument, PerformanceLogFile logFile, DateTime logTime, int lineNumber)
         {
             this.TaskArgument = argument;
@@ -21,10 +33,7 @@ namespace xQuantLogFactory.Model.Result
             this.LineNumber = lineNumber;
         }
 
-        /// <summary>
-        /// Gets or sets 客户端
-        /// </summary>
-        public string Client { get; set; }
+        #region 基础属性
 
         /// <summary>
         /// Gets or sets 用户代码
@@ -60,5 +69,34 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 消息
         /// </summary>
         public string Message { get; set; }
+        #endregion
+
+        #region 业务
+
+        /// <summary>
+        /// 检查两个监视结果是否匹配
+        /// </summary>
+        /// <param name="targetResult"></param>
+        /// <returns></returns>
+        public override bool CheckMatch(PerformanceMonitorResult targetResult)
+        {
+            if (targetResult == null)
+            {
+                return false;
+            }
+
+            if (this.GroupType == targetResult.GroupType)
+            {
+                return false;
+            }
+
+            bool matched =
+                (string.IsNullOrEmpty(this.IPAddress) || string.IsNullOrEmpty(targetResult.IPAddress) || this.IPAddress == targetResult.IPAddress) &&
+                (string.IsNullOrEmpty(this.UserCode) || string.IsNullOrEmpty(targetResult.UserCode) || this.UserCode == targetResult.UserCode) &&
+                ((this.GroupType == GroupTypes.Start && this.LogTime <= targetResult.LogTime) || (this.GroupType == GroupTypes.Finish && this.LogTime >= targetResult.LogTime));
+
+            return matched;
+        }
+        #endregion
     }
 }
