@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -12,7 +11,6 @@ using xQuantLogFactory.BIZ.Parser;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Fixed;
-using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;

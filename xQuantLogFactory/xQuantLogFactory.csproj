@@ -96,7 +96,7 @@
     <Compile Include="BIZ\Processer\LogProcesserBase.cs" />
     <Compile Include="BIZ\Parser\MiddlewareLogParser.cs" />
     <Compile Include="BIZ\Parser\ServerLogParser.cs" />
-    <Compile Include="Model\EqualityComparer\LogResultEqualityComparer.cs" />
+    <Compile Include="Model\EqualityComparer\TerminalAnalysisResultEqualityComparer.cs" />
     <Compile Include="Model\Extensions\TaskArgumentExtension.cs" />
     <Compile Include="Model\Factory\ArgsTaskArgumentFactory.cs" />
     <Compile Include="Model\Factory\CreateTaskArgumentForm.cs">
