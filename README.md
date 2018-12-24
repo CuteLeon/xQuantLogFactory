@@ -208,7 +208,7 @@ readToEnd(yes)->generalRegex
 | sysinfo  | 是否记录系统信息   | **选填*  | 默认:false | true 或 false                     |
 | cltinfo  | 是否记录客户端信息 | **选填*  | 默认:false | true 或 false                     |
 | report   | 导出报告格式       | **选填*  | 默认:excel | excel 或 html 或 word             |
-| level    | 日志文件的等级     | **选填*  | 默认:debug | debug 或 trace 或 info 或 pref 等 |
+| level    | 日志文件的等级     | **选填*  | 默认:debug | debug 或 trace 或 info 或 perf 等 |
 | exit     | 自动退出           | **选填*  | 默认:false | true 或 false                     |
 | open     | 自动打开报告       | **选填*  | 默认:true  | true 或 false                     |
 

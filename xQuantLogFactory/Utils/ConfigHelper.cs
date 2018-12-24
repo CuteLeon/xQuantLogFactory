@@ -28,7 +28,7 @@ namespace xQuantLogFactory.Utils
         /// <summary>
         /// 中间件日志文件别名
         /// </summary>
-        public const string MiddlewareLogFileAlias = "PREF";
+        public const string MiddlewareLogFileAlias = "PERF";
 
         /// <summary>
         /// 默认导出报告模式

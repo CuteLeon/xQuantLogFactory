@@ -204,7 +204,6 @@
     <None Include="ReportTemplet\xQuant_EXCEL_Templet.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="stylecop.json" />
     <None Include="xQuantLogFactory.ruleset" />
     <None Include="xQuantLogFactoryIcon.ico" />
     <Content Include="Monitor\Server.xml">
