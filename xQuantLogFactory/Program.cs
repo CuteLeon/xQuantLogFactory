@@ -18,8 +18,6 @@ using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
-// TODO: 重写文档
-
 // 在 VS 内通过 [按键:Alt+F2] 或 [菜单:(调试|分析)>性能探查器] 打开 [性能探查器] 分析方法或对象CPU或内存的性能影响
 
 // TODO: [全局任务] 移除和排除 using
