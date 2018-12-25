@@ -22,7 +22,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             {
                 Name = "客户端启动",
                 StartPattern = "客户端启动开始",
-                FinishPatterny = "初始化第二阶段开始",
+                FinishPattern = "初始化第二阶段开始",
                 DirectedAnalysiser = TerminalDirectedAnalysiserTypes.None,
                 Memory = false,
             };
@@ -30,7 +30,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             {
                 Name = "数据加载",
                 StartPattern = "加载中债参数设置表",
-                FinishPatterny = "加载当前登录部门",
+                FinishPattern = "加载当前登录部门",
                 DirectedAnalysiser = TerminalDirectedAnalysiserTypes.Load,
                 Memory = true,
             };
@@ -38,7 +38,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             {
                 Name = "债券加载",
                 StartPattern = "加载TBND查询",
-                FinishPatterny = "加载TBND",
+                FinishPattern = "加载TBND",
                 DirectedAnalysiser = TerminalDirectedAnalysiserTypes.Prefix,
             };
             TerminalMonitorItem memoryItem = new TerminalMonitorItem()
@@ -52,7 +52,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             PerformanceMonitorItem logonItem = new PerformanceMonitorItem()
             {
                 StartPattern = "logonstart",
-                FinishPatterny = "logonfinish",
+                FinishPattern = "logonfinish",
                 /*
                 DirectedAnalysiser = DirectedAnalysiserTypes.Load,
                 GroupAnalysiser = GroupAnalysiserTypes.FormAsync,

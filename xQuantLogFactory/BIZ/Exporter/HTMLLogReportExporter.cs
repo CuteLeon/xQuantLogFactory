@@ -94,7 +94,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 this.htmlBuilder.Value.AppendLine($@"<tr>
     <td>{monitor.PrefixName}</td>
     <td>{monitor.StartPattern}</td>
-    <td>{monitor.FinishPatterny}</td>
+    <td>{monitor.FinishPattern}</td>
     <td>{argument.TerminalLogFiles.Count(logFile => logFile.MonitorResults.Any(result => result.MonitorItem == monitor)).ToString("N0")}</td>
     <td>{monitor.MonitorResults.Count.ToString("N0")}</td>
     <td>{monitor.AnalysisResults.Count.ToString("N0")}</td>
@@ -155,7 +155,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         private void WriteMonitorItemCard(TerminalMonitorItem monitor)
         {
             this.WriteCardHeader($"监视规则：<b>{monitor.Name}</b>");
-            this.htmlBuilder.Value.Append($"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPatterny ?? "无"}</b><hr>匹配结果：");
+            this.htmlBuilder.Value.Append($"开始匹配：<b>{monitor.StartPattern ?? "无"}</b><br>结束匹配：<b>{monitor.FinishPattern ?? "无"}</b><hr>匹配结果：");
 
             if (monitor.AnalysisResults.Count == 0)
             {

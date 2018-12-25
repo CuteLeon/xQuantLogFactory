@@ -63,7 +63,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
                         }
 
                         // 判断日志内容是否以监视规则的条件为开头，true：在监视规则中移除开始的条件字符串；false：直接使用日志内容作为子监视规则名称
-                        pattern = firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPatterny : targetMonitor.StartPattern;
+                        pattern = firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPattern : targetMonitor.StartPattern;
                         if (firstResult.LogContent.IndexOf(pattern, StringComparison.OrdinalIgnoreCase) > -1)
                         {
                             customeData = firstResult.LogContent.Substring(pattern.Length).Trim();

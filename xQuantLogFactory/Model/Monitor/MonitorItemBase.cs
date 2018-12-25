@@ -40,7 +40,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// Gets or sets 结束匹配模式
         /// </summary>
         [XmlAttribute("End")]
-        public string FinishPatterny { get; set; }
+        public string FinishPattern { get; set; }
 
         /// <summary>
         /// Gets 结果总耗时（单位：毫秒）
@@ -168,9 +168,9 @@ namespace xQuantLogFactory.Model.Monitor
                     this.StartPattern = this.ParentMonitorItem.StartPattern;
                 }
 
-                if (string.IsNullOrEmpty(this.FinishPatterny))
+                if (string.IsNullOrEmpty(this.FinishPattern))
                 {
-                    this.FinishPatterny = this.ParentMonitorItem.FinishPatterny;
+                    this.FinishPattern = this.ParentMonitorItem.FinishPattern;
                 }
 
                 parentMonitor.MonitorTreeRoots.Add(this as TMonitor ?? throw new Exception("泛型列表中父节点必须与子节点类型保持一致"));
@@ -269,20 +269,20 @@ namespace xQuantLogFactory.Model.Monitor
         #region 业务方法
 
         /// <summary>
-        /// 匹配日志内容
+        /// 匹配日志
         /// </summary>
-        /// <param name="logContent">日志内容</param>
+        /// <param name="log">日志</param>
         /// <returns>匹配监视规则类型</returns>
-        public GroupTypes MatchLogContent(string logContent)
+        public virtual GroupTypes MatchLog(string log)
         {
             // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
             if (this.StartPattern?.Length > 0 &&
-                logContent.IndexOf(this.StartPattern, StringComparison.Ordinal) > -1)
+                log.IndexOf(this.StartPattern, StringComparison.Ordinal) > -1)
             {
                 return GroupTypes.Start;
             }
-            else if (this.FinishPatterny?.Length > 0 &&
-                logContent.IndexOf(this.FinishPatterny, StringComparison.Ordinal) > -1)
+            else if (this.FinishPattern?.Length > 0 &&
+                log.IndexOf(this.FinishPattern, StringComparison.Ordinal) > -1)
             {
                 return GroupTypes.Finish;
             }

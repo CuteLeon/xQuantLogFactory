@@ -38,6 +38,10 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.CACHE_SHEET_NAME,
         };
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExcelLogReportExporter"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
         public ExcelLogReportExporter(ITracer tracer)
             : base(tracer)
         {
@@ -80,7 +84,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Subject = properties.Title;
 
                     // 导出通用表数据
-                    this.ExportCommonSheetEx(excel, argument);
+                    this.ExportTerminalCommonSheetEx(excel, argument);
 
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
                     this.ExportMemorySheet(excel, argument);
@@ -416,11 +420,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 导出通用表数据
+        /// 导出客户端和服务端通用表格式数据
         /// </summary>
         /// <param name="excel"></param>
         /// <param name="argument"></param>
-        public void ExportCommonSheetEx(ExcelPackage excel, TaskArgument argument)
+        public void ExportTerminalCommonSheetEx(ExcelPackage excel, TaskArgument argument)
         {
             /* 按分析结果树分表导出问题：
              * 1. 需要在一个方法内同时维护所有通用数据表对象，若数据总量较大，会产生比原算法更严重的内存压力

@@ -15,12 +15,12 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             {
                 Name = "测试监视规则",
                 StartPattern = "开始",
-                FinishPatterny = "结束",
+                FinishPattern = "结束",
             };
 
-            Assert.AreEqual(GroupTypes.Unmatch, monitor.MatchLogContent("*=*"));
-            Assert.AreEqual(GroupTypes.Start, monitor.MatchLogContent("*开始*"));
-            Assert.AreEqual(GroupTypes.Finish, monitor.MatchLogContent("*结束*"));
+            Assert.AreEqual(GroupTypes.Unmatch, monitor.MatchLog("*=*"));
+            Assert.AreEqual(GroupTypes.Start, monitor.MatchLog("*开始*"));
+            Assert.AreEqual(GroupTypes.Finish, monitor.MatchLog("*结束*"));
         }
     }
 }

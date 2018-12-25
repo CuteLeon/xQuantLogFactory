@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -6,6 +8,9 @@ using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
+using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.LogFile;
+using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
@@ -55,6 +60,10 @@ namespace xQuantLogFactory.BIZ.Parser
             {
                 this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}");
 
+                // 检测日志文件解析耗时
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+
                 FileStream fileStream = null;
                 StreamReader streamRreader = null;
                 try
@@ -64,9 +73,17 @@ namespace xQuantLogFactory.BIZ.Parser
 
                     // 临时变量放于循环外，防止内存爆炸
                     Match match = null;
-                    string logLine = string.Empty;
+                    string logLine = string.Empty,
+                              methodName = string.Empty;
                     int lineNumber = 0;
                     DateTime logTime = DateTime.MinValue;
+
+                    // 缓存变量，减少树扫描次数，需要 .ToList()
+                    List<PerformanceMonitorItem> monitorItems = null;
+                    lock (argument.MonitorContainerRoot)
+                    {
+                        monitorItems = argument.MonitorContainerRoot.GetPerformanceMonitorItems().ToList();
+                    }
 
                     while (!streamRreader.EndOfStream)
                     {
@@ -93,53 +110,27 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
 
-                            PerformanceMonitorResult result = new PerformanceMonitorResult(argument, logFile, logTime, lineNumber);
-
-                            // 反向关联日志解析结果
-                            lock (this.lockSeed)
+                            // 匹配所有监视规则
+                            foreach (PerformanceMonitorItem monitor in monitorItems)
                             {
-                                argument.PerformanceMonitorResults.Add(result);
-                                logFile.MonitorResults.Add(result);
-                            }
+                                methodName = match.Groups["MethodName"].Value;
+                                GroupTypes groupType = monitor.MatchLog(methodName);
 
-                            if (match.Groups["IPAddress"].Success)
-                            {
-                                result.IPAddress = match.Groups["IPAddress"].Value;
-                            }
+                                if (groupType == GroupTypes.Unmatch)
+                                {
+                                    // 未匹配到任何监视规则，尝试下一条规则
+                                    continue;
+                                }
 
-                            if (match.Groups["UserCode"].Success)
-                            {
-                                result.UserCode = match.Groups["UserCode"].Value;
-                            }
+                                PerformanceMonitorResult result = this.CreateMonitorResult(argument, logFile, monitor);
+                                result.LogTime = logTime;
+                                result.GroupType = groupType;
+                                result.LineNumber = lineNumber;
+                                result.MethodName = methodName;
 
-                            if (match.Groups["StartTime"].Success)
-                            {
-                                result.StartTime = match.Groups["StartTime"].Value;
-                            }
+                                this.ApplyRegexMatch(match, result);
 
-                            if (match.Groups["Elapsed"].Success && int.TryParse(match.Groups["Elapsed"].Value, out int elapsed))
-                            {
-                                result.Elapsed = elapsed;
-                            }
-
-                            if (match.Groups["StreamLength"].Success && int.TryParse(match.Groups["StreamLength"].Value, out int streamLength))
-                            {
-                                result.StreamLength = streamLength;
-                            }
-
-                            if (match.Groups["Message"].Success)
-                            {
-                                result.Message = match.Groups["Message"].Value;
-                            }
-
-                            if (match.Groups["RequestURI"].Success)
-                            {
-                                result.RequestURI = match.Groups["RequestURI"].Value;
-                            }
-
-                            if (match.Groups["MethodName"].Success)
-                            {
-                                result.MethodName = match.Groups["MethodName"].Value;
+                                // this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.RelativePath} 行号= {result.LineNumber} IP地址= {result.IPAddress} 方法名称= {result.MethodName}");
                             }
                         }
                         else
@@ -148,11 +139,15 @@ namespace xQuantLogFactory.BIZ.Parser
                         }
                     }
 
-                    this.Tracer?.WriteLine($">>>日志文件解析完成：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}");
+                    // 停止日志文件解析计时器
+                    stopWatch.Stop();
+                    this.Tracer?.WriteLine($">>>日志文件解析完成：{logFile.RelativePath}\t结果数量：{logFile.MonitorResults.Count}\t耗时：{stopWatch.ElapsedMilliseconds.ToString("N0")} ms");
                 }
                 catch (Exception ex)
                 {
-                    this.Tracer?.WriteLine($"——日志文件解析失败：{logFile.RelativePath}, 结果数量：{logFile.MonitorResults.Count}\n\tException: {ex.Message}");
+                    // 停止日志文件解析计时器
+                    stopWatch.Stop();
+                    this.Tracer?.WriteLine($"——日志文件解析失败：{logFile.RelativePath}\t结果数量：{logFile.MonitorResults.Count}\t耗时：{stopWatch.ElapsedMilliseconds.ToString("N0")} ms\n\tException: {ex.Message}");
                 }
                 finally
                 {
@@ -163,6 +158,86 @@ namespace xQuantLogFactory.BIZ.Parser
                     fileStream?.Dispose();
                 }
             });
+
+            // 监视结果解析完毕后按日志时间排序
+            this.Tracer?.WriteLine(">>>————— 监视结果池排序 —————");
+            argument.PerformanceMonitorResults = argument.PerformanceMonitorResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
+            this.Tracer?.WriteLine("<<< 排序完成");
+        }
+
+        /// <summary>
+        /// 将正则匹配结果应用到监视结果
+        /// </summary>
+        /// <param name="match"></param>
+        /// <param name="result"></param>
+        protected void ApplyRegexMatch(Match match, in PerformanceMonitorResult result)
+        {
+            if (match == null)
+            {
+                throw new ArgumentNullException(nameof(match));
+            }
+
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(result));
+            }
+
+            if (match.Groups["IPAddress"].Success)
+            {
+                result.IPAddress = match.Groups["IPAddress"].Value;
+            }
+
+            if (match.Groups["UserCode"].Success)
+            {
+                result.UserCode = match.Groups["UserCode"].Value;
+            }
+
+            if (match.Groups["StartTime"].Success)
+            {
+                result.StartTime = match.Groups["StartTime"].Value;
+            }
+
+            if (match.Groups["Elapsed"].Success && int.TryParse(match.Groups["Elapsed"].Value, out int elapsed))
+            {
+                result.Elapsed = elapsed;
+            }
+
+            if (match.Groups["StreamLength"].Success && int.TryParse(match.Groups["StreamLength"].Value, out int streamLength))
+            {
+                result.StreamLength = streamLength;
+            }
+
+            if (match.Groups["Message"].Success)
+            {
+                result.Message = match.Groups["Message"].Value;
+            }
+
+            if (match.Groups["RequestURI"].Success)
+            {
+                result.RequestURI = match.Groups["RequestURI"].Value;
+            }
+        }
+
+        /// <summary>
+        /// 创建解析结果对象
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <param name="logFile"></param>
+        /// <param name="monitor"></param>
+        /// <returns></returns>
+        protected PerformanceMonitorResult CreateMonitorResult(TaskArgument argument, PerformanceLogFile logFile, PerformanceMonitorItem monitor)
+        {
+            PerformanceMonitorResult monitorResult = new PerformanceMonitorResult(argument, logFile, monitor);
+
+            // 反向关联日志监视结果
+            lock (this.lockSeed)
+            {
+                argument.PerformanceMonitorResults.Add(monitorResult);
+                logFile.MonitorResults.Add(monitorResult);
+                monitor.MonitorResults.Add(monitorResult);
+            }
+
+            return monitorResult;
         }
     }
 }

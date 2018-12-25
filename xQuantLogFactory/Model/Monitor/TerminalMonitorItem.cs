@@ -89,7 +89,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// <returns></returns>
         public override string ToString()
         {
-            return $"【名称】={this.Name}\t 【开始条件】={this.StartPattern}\t 【结束条件】={this.FinishPatterny}\t 【子规则】={this.MonitorTreeRoots.Count}";
+            return $"【名称】={this.Name}\t 【开始条件】={this.StartPattern}\t 【结束条件】={this.FinishPattern}\t 【子规则】={this.MonitorTreeRoots.Count}";
         }
     }
 }

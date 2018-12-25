@@ -23,14 +23,12 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         /// <param name="argument"></param>
         /// <param name="logFile"></param>
-        /// <param name="logTime"></param>
-        /// <param name="lineNumber"></param>
-        public PerformanceMonitorResult(TaskArgument argument, PerformanceLogFile logFile, DateTime logTime, int lineNumber)
+        /// <param name="monitor"></param>
+        public PerformanceMonitorResult(TaskArgument argument, PerformanceLogFile logFile, PerformanceMonitorItem monitor)
         {
             this.TaskArgument = argument;
             this.LogFile = logFile;
-            this.LogTime = logTime;
-            this.LineNumber = lineNumber;
+            this.MonitorItem = monitor;
         }
 
         #region 基础属性

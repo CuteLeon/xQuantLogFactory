@@ -90,9 +90,9 @@ namespace xQuantLogFactory.Model.Monitor
                             else
                             {
                                 // 剩余节点使用前驱节点的结束条件
-                                if (!string.IsNullOrEmpty(parentMonitor.MonitorTreeRoots[index - 1].FinishPatterny))
+                                if (!string.IsNullOrEmpty(parentMonitor.MonitorTreeRoots[index - 1].FinishPattern))
                                 {
-                                    currentMonitor.StartPattern = parentMonitor.MonitorTreeRoots[index - 1].FinishPatterny;
+                                    currentMonitor.StartPattern = parentMonitor.MonitorTreeRoots[index - 1].FinishPattern;
                                 }
                             }
                         }

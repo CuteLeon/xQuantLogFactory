@@ -101,7 +101,7 @@ namespace xQuantLogFactory.Model.Monitor.Tests
             for (int index = 1; index < targetMonitor.MonitorTreeRoots.Count; index++)
             {
                 Assert.AreEqual(
-                    targetMonitor.MonitorTreeRoots[index - 1].FinishPatterny,
+                    targetMonitor.MonitorTreeRoots[index - 1].FinishPattern,
                     targetMonitor.MonitorTreeRoots[index].StartPattern);
             }
         }

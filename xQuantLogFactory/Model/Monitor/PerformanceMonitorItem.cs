@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Model.Fixed;
@@ -33,12 +34,36 @@ namespace xQuantLogFactory.Model.Monitor
         public override List<PerformanceMonitorItem> MonitorTreeRoots { get; set; } = new List<PerformanceMonitorItem>();
 
         /// <summary>
+        /// 匹配日志
+        /// </summary>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        public override GroupTypes MatchLog(string log)
+        {
+            // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
+            if (this.StartPattern?.Length > 0 &&
+                this.StartPattern.Equals(log, StringComparison.OrdinalIgnoreCase))
+            {
+                return GroupTypes.Start;
+            }
+            else if (this.FinishPattern?.Length > 0 &&
+                this.FinishPattern.Equals(log, StringComparison.OrdinalIgnoreCase))
+            {
+                return GroupTypes.Finish;
+            }
+            else
+            {
+                return GroupTypes.Unmatch;
+            }
+        }
+
+        /// <summary>
         /// ToString
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return $"【名称】={this.Name}\t 【开始条件】={this.StartPattern}\t 【结束条件】={this.FinishPatterny}\t 【子规则】={this.MonitorTreeRoots.Count}";
+            return $"【名称】={this.Name}\t 【开始条件】={this.StartPattern}\t 【结束条件】={this.FinishPattern}\t 【子规则】={this.MonitorTreeRoots.Count}";
         }
     }
 }

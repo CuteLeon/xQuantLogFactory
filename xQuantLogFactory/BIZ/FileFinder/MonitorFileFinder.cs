@@ -42,7 +42,8 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 MonitorContainer container = File.ReadAllText(xmlFile, Encoding.UTF8).DeserializeToObject<MonitorContainer>();
 
                 // 初始化监视规则树
-                container?.InitTerminalMonitorTree();
+                container.InitTerminalMonitorTree();
+                container.InitPerformanceMonitorTree();
 
                 // 使用配置文件名称自动补全容器名称
                 if (string.IsNullOrWhiteSpace(container.Name))
