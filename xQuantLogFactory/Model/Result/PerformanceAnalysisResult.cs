@@ -1,6 +1,4 @@
-﻿using System;
-
-using xQuantLogFactory.Model.LogFile;
+﻿using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
@@ -38,11 +36,6 @@ namespace xQuantLogFactory.Model.Result
         public string UserCode { get; set; }
 
         /// <summary>
-        /// Gets or sets 开始时间
-        /// </summary>
-        public DateTime StartTime { get; set; }
-
-        /// <summary>
         /// Gets or sets iP地址
         /// </summary>
         public string IPAddress { get; set; }
@@ -60,13 +53,11 @@ namespace xQuantLogFactory.Model.Result
             {
                 this.IPAddress = string.Empty;
                 this.UserCode = string.Empty;
-                this.StartTime = DateTime.MinValue;
             }
             else
             {
                 this.IPAddress = monitorResult.IPAddress;
                 this.UserCode = monitorResult.UserCode;
-                this.StartTime = monitorResult.StartTime;
             }
         }
     }

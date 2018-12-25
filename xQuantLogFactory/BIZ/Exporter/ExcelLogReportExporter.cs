@@ -356,12 +356,12 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 导出通用表数据
+        /// 导出客户端和服务端通用表数据
         /// </summary>
         /// <param name="excel">excel文档</param>
         /// <param name="argument">任务</param>
         [Obsolete]
-        public void ExportCommonSheet(ExcelPackage excel, TaskArgument argument)
+        public void ExportTerminalCommonSheet(ExcelPackage excel, TaskArgument argument)
         {
             this.Tracer?.WriteLine("开始导出通用表数据 ...");
             foreach (var monitorGroup in argument.MonitorContainerRoot.GetTerminalMonitorItems()
@@ -547,32 +547,41 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         public void ExportPerformanceSheet(ExcelPackage excel, TaskArgument argument)
         {
-            ExcelWorksheet dataSheet = excel.Workbook.Worksheets[FixedDatas.PERFORMANCE_SHEET_NAME];
-            if (dataSheet == null)
+            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.PERFORMANCE_SHEET_NAME];
+            if (sheet == null)
             {
                 this.Tracer?.WriteLine($"未发现 {FixedDatas.PERFORMANCE_SHEET_NAME} 数据表，写入失败！");
             }
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 9, argument.PerformanceMonitorResults.Count);
-                using (ExcelRange range = dataSheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
+                Rectangle rectangle = new Rectangle(1, 2, 10, argument.PerformanceAnalysisResults.Count);
+                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
-                    int rowID = rectangle.Top;
-                    foreach (var result in argument.PerformanceMonitorResults
-                        .OrderBy(result => result.LogTime))
-                    {
-                        range[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        range[rowID, 2].Value = result.IPAddress;
-                        range[rowID, 3].Value = result.UserCode;
-                        range[rowID, 4].Value = result.StartTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        range[rowID, 5].Value = result.Elapsed;
-                        range[rowID, 6].Value = result.RequestURI;
-                        range[rowID, 7].Value = result.MethodName;
-                        range[rowID, 8].Value = result.StreamLength;
-                        range[rowID, 9].Value = result.Message;
+                    int rowID = rectangle.Top, executeID = 0;
 
-                        rowID++;
+                    // 输出监视规则树
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.PerformanceAnalysisResultRoots)
+                    {
+                        // 每个分析结果根节点使执行序号自增
+                        executeID++;
+
+                        // 遍历根节点及所有子节点输出分析结果数据
+                        foreach (PerformanceAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf())
+                        {
+                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
+                            range[rowID, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
+                            range[rowID, 3].Value = executeID;
+                            range[rowID, 4].Value = analysisResult.IPAddress;
+                            range[rowID, 5].Value = analysisResult.UserCode;
+                            range[rowID, 6].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
+                            range[rowID, 7].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 8].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 9].Value = analysisResult.LogFile.RelativePath;
+                            range[rowID, 10].Value = analysisResult.LineNumber;
+
+                            rowID++;
+                        }
                     }
                 }
             }
