@@ -1,12 +1,19 @@
 # xQuant 日志分析工具
 
 > - author: Leon
+>
 > - date: 2018/12/14
-> - last-edit: 2018/12/21
+>
+> - last-edit: 2018/12/25
+>
 > - tips: 文档内部分图形需要使用 Typora
+>
 > - e-mail: zichao.liu@xquant.com
+>
 > - github: [https://github.com/CuteLeon/xQuantLogFactory](https://github.com/CuteLeon/xQuantLogFactory)
+>
 > - release: [https://github.com/CuteLeon/xQuantLogFactory/releases](https://github.com/CuteLeon/xQuantLogFactory/releases)
+>
 ---
 
 [TOC]
@@ -20,24 +27,25 @@
 ## 2.项目架构	
 
 
-| 路径                                        | 角色             | 说明                                   |
-| :------------------------------------------ | ---------------- | -------------------------------------- |
-| *..\BIZ*\\**Analysiser**                    | 日志分析器       | 分析日志解析结果                       |
-| *..\BIZ\Analysiser*\\**DirectedAnalysiser** | 定向分析器       | 深入提取解析结果内日志内容包含的数据   |
-| *..\BIZ\Analysiser*\\**GroupAnalysiser**    | 组分析器         | 将开始和结束解析结果匹配为分析结果     |
-| *..\BIZ*\\**Exporter**                      | 导出器           | 日志分析结果导出器                     |
-| *..\BIZ*\\**FileFinder**                    | 文件查找器       | 查找指定目录内与任务相关的文件         |
-| *..\BIZ*\\**Parser**                        | 日志解析器       | 使用监视规则命中日志文件内容为解析结果 |
-| *..\Model*\\**EqualityComparer**            | 实体比较器       | 使用自定义规则分析实体是否指向相同数据 |
-| *..\Model*\\**Extensions**                  | 实体扩展         | 实体静态扩展                           |
-| *..\Model*\\**Factory**                     | 实体工厂         | 实体工厂                               |
-| *..\Model*\\**Fixed**                       | 固定数据         | 枚举或常量                             |
-| *..\Model*\\**Monitor**                     | 监视规则实体     | 监视规则或容器                         |
-| *..\Model*\\**Report**                      | 报告相关实体     | 导出报告相关实体                       |
-| *..\Model*\\**Result**                      | 日志处理结果实体 | 日志解析结果、分析结果、中间件结果     |
-| *..\\***Monitor**                                 | 监视规则配置文件 | 预设监视规则配置XML文件                |
-| *..\\***ReportTemplate**                          | 导出报告模板     | 预设导出报告模板                       |
-| *..\\***Utils**                                   | 工具集合         | 静态工具、助手                         |
+| 路径                                        | 角色             | 说明                                    |
+| :------------------------------------------ | ---------------- | --------------------------------------- |
+| *..\BIZ*\\**Analysiser**                    | 日志分析器       | 分析日志解析结果                        |
+| *..\BIZ\Analysiser*\\**DirectedAnalysiser** | 定向分析器       | 深入提取解析结果内日志内容包含的数据    |
+| *..\BIZ\Analysiser*\\**GroupAnalysiser**    | 组分析器         | 将开始和结束解析结果匹配为分析结果      |
+| *..\BIZ*\\**Exporter**                      | 导出器           | 日志分析结果导出器                      |
+| *..\BIZ*\\**FileFinder**                    | 文件查找器       | 查找指定目录内与任务相关的文件          |
+| *..\BIZ*\\**Parser**                        | 日志解析器       | 使用监视规则命中日志文件内容为解析结果  |
+| *..\Model*\\**EqualityComparer**            | 实体比较器       | 使用自定义规则分析实体是否指向相同数据  |
+| *..\Model*\\**Extensions**                  | 实体扩展         | 实体静态扩展                            |
+| *..\Model*\\**Factory**                     | 实体工厂         | 实体工厂                                |
+| *..\Model*\\**Fixed**                       | 固定数据         | 枚举或常量                              |
+| *..\Model*\\**LogFile**                     | 日志文件         | 日志文件相关实体                        |
+| *..\Model*\\**Monitor**                     | 监视规则实体     | 监视规则或容器                          |
+| *..\Model*\\**Report**                      | 报告相关实体     | 导出报告相关实体                        |
+| *..\Model*\\**Result**                      | 日志处理结果实体 | 日志解析结果、分析结果、Performance结果 |
+| *..\\***Monitor**                           | 监视规则配置文件 | 预设监视规则配置XML文件                 |
+| *..\\***ReportTemplate**                    | 导出报告模板     | 预设导出报告模板                        |
+| *..\\***Utils**                             | 工具集合         | 静态工具、助手                          |
 
 ## 3.业务流程
 
@@ -54,7 +62,7 @@
 ### 3.2.解析日志文件
 
 
-​	分析工具将使用系统内实现的多个解析器按照监视规则的配置分别解析客户端日志文件、服务端日志文件、中间件日志文件，并将解析结果统一维护到解析结果池中；
+​	分析工具将使用系统内实现的多个解析器按照监视规则的配置分别解析客户端日志文件、服务端日志文件、Performance日志文件，并将解析结果统一维护到解析结果池中；
 
 ​	具体解析流程：
 
@@ -63,7 +71,6 @@ parse=>start: 解析开始
 generalRegex=>condition: 使用概要正则匹配日志
 checkTime=>condition: 验证日志时间范围
 giveUp=>operation: 放弃数据
-particularRegex=>operation: 使用详细正则匹配日志
 generalError=>subroutine: 记录未解析结果
 checkMonitor=>condition: 应用所有监视规则匹配日志内容
 monitSuccess=>subroutine: 记录所有解析结果
@@ -73,9 +80,9 @@ end=>end
 parse->readToEnd
 generalRegex(yes)->checkTime
 generalRegex(no)->generalError(right)->readToEnd
-checkTime(yes)->particularRegex->checkMonitor
+checkTime(yes)->checkMonitor
 checkTime(no)->giveUp
-checkMonitor(yes)->monitSuccess(left)->readToEnd
+checkMonitor(yes)->monitSuccess->readToEnd
 checkMonitor(no)->giveUp
 readToEnd(no)->end
 readToEnd(yes)->generalRegex
@@ -94,6 +101,8 @@ readToEnd(yes)->generalRegex
 
 ## 4.主要数据实体
 
+![实体引用关系图](./Document/xQuant日志分析工具-实体关系.jpg)
+
 ### 4.1.TaskArgument
 
 
@@ -101,10 +110,10 @@ readToEnd(yes)->generalRegex
 
 ​	是一次完整任务的直接体现
 
-### 4.2.LogFile
+### 4.2.TerminalLogFile、PerformanceLogFile
 
 
-​	日志文件实体，记录任务处理的日志文件信息，如：文件路径、相对路径*(相对于任务配置的日志文件目录)*、日志文件类型、文件创建时间、上次写入时间、关联的监视结果、关联的分析结果、关联的未解析结果、中间件日志结果、关联的分析结果总耗时等；
+​	日志文件实体，通过泛型继承自 LogFileBase<>。记录任务处理的日志文件信息，如：文件路径、相对路径*(相对于任务配置的日志文件目录)*、日志文件类型、文件创建时间、上次写入时间、关联的监视结果、关联的分析结果、关联的未解析结果、Performance日志结果、关联的分析结果总耗时等；
 
 ​	是任务所有延伸结果的数据源；
 
@@ -115,10 +124,9 @@ readToEnd(yes)->generalRegex
 
 ​	是监视规则树的根节点；
 
-### 4.4.MonitorItem
+### 4.4.TerminalMonitorItem、TerminalMonitorItem
 
-
-​	监视规则实体，允许使用者通过配置严谨的监视规则实现丰富的日志分析需求；
+​	监视规则实体，通过泛型继承自 MonitorItemBase<>。允许使用者通过配置严谨的监视规则实现丰富的日志分析需求，是分析工具可定制化的最大体现；
 
 ​	可定制属性：开始条件、结束条件、组分析器、定向分析器、是否监视内存消耗、结果输出表名等；
 
@@ -126,29 +134,27 @@ readToEnd(yes)->generalRegex
 
 ​	可管理数据：关联的解析结果、关联的分析结果等；
 
-​	是分析工具可定制化的最大体现；
-
 ​	详细配置教程见[监视规则配置教程](#monitorTutorial)章节；
 
-### 4.5.MonitorResult
+### 4.5.TerminalMonitorResult、PerformanceMonitorResult
 
 
-​	监视结果实体，即解析结果，日志内容经解析器和监视规则解析后的产品，表示监视规则的开始或结束条件在某行日志内容发生命中，并记录为监视结果；
+​	监视结果实体，通过泛型继承自 MonitorResultBase<>。即解析结果，日志内容经解析器和监视规则解析后的产品，表示监视规则的开始或结束条件在某行日志内容发生命中，并记录为监视结果；
 
 ​	监视结果记录与本次命中相关的监视规则、命中类型、日志文件、所在行号、日志时间、日志内容、客户名称、客户端版本号、IP地址、日志级别、日志内容等信息；
 
 ​	是“初级产品”；
 
-### 4.6.UnparsedResult
+### 4.6.TerminalUnparsedResult
 
 
-​	未解析结果实体，即未能成为“初级产品”的“次品”，这部分日志无法被解析正则表达式识别而被临时保存，等待分析器回头再次分拣；
+​	客户端和服务端未解析结果实体，即未能成为“初级产品”的“次品”，这部分日志无法被解析正则表达式识别而被临时保存，等待分析器回头再次分拣；
 
 ​	未分析结果仅记录日志内容、所在日志文件、所在文件行号等基础信息；
 
 ​	是无法被解析的日志内容；
 
-### 4.7.GroupAnalysisResultContainer
+### 4.7.AnalysisResultContainer
 
 
 ​	分析结果容器实体，提供分析结果树的建造、扫描和管理功能；
@@ -161,28 +167,20 @@ readToEnd(yes)->generalRegex
   - 分析结果树的叶子结点可以为不完整分析结果；
   - 分析结果树所有节点的开始日志时间必须包含于其父节点的开始和结束日志时间范围内；
   - 不存在父级节点的完整分析结果将会作为第一层节点直接入树；
+  - Performance日志分析结果需要IP地址和用户名相同才可以初始化入同一颗树；
 
 ​	** 为解决分析结果在监视规则树结构上出现断层而无法正确关联的问题，分析结果树初始化算法使用动态规划算法，确保树构建的每一步都是局部最优解；*
 
 ​	是分析结果树的根节点；
 
-### 4.8.GroupAnalysisResult
+### 4.8.TerminalAnalysisResult、PerformanceAnalysisResult
 
 
-​	分析结果实体，两个对应的解析结果经组分析器分别作为事件开始和结束组装为一个完整的分析结果，一个分析结果表示一个完整事件的开始和结束；
+​	分析结果实体，通过泛型继承自 AnalysisResultBase<>。两个对应的解析结果经组分析器分别作为事件开始和结束组装为一个完整的分析结果，一个分析结果表示一个完整事件的开始和结束；
 
 ​	分析结果实体记录事件相关的监视规则、开始监视结果、结束监视结果、所在日志文件、开始所在行号、开始日志时间、开始日志内容、客户名称、客户端版本号、父级分析结果、子级监视结果、事件耗时等信息；
 
 ​	最终结果，是分析工具的目标产品；
-
-### 4.9.MiddlewareResult
-
-
-​	中间件结果实体，中间件日志结果比较单一且直观，不必进行分析操作，仅由中间件日志解析器解析后存储为中间件结果即可；
-
-​	存储数据：日志文件、所在行号、日志时间、客户端、用户代码、请求时间、耗时、请求地址、方法名称、流长度、消息等；
-
-​	是“初级产品”；
 
 ## 5.功能介绍
 
@@ -246,7 +244,7 @@ readToEnd(yes)->generalRegex
 
 ​	解析器作为第一级处理单元，会直接接触日志文件，而解析器的输出产品——解析结果又将作为下一级处理单元——分析器的输入原料；
 
-​	因为客户端、服务端、中间件等日志文件内日志格式的差异，而将解析器分别有针对性的实现，以下将具体介绍各种解析器；
+​	因为客户端、服务端、Performance等日志文件内日志格式的差异，而将解析器分别有针对性的实现，以下将具体介绍各种解析器；
 
 #### 5.2.1.客户端日志解析器
 
@@ -258,7 +256,7 @@ readToEnd(yes)->generalRegex
 
 ​	服务端日志解析器是针对于服务端日志实现的解析器，将针对解析日志内容的客户名称、客户端版本等数据；
 
-#### 5.2.3中间件日志解析器
+#### 5.2.3Performance日志解析器
 
 
 ​	客户端日志解析器是针对于客户端日志实现的解析器，将针对解析日志内容的客户端、用户代码、请求时间、耗时、请求地址、方法名称、流长度、消息等数据；
@@ -308,6 +306,10 @@ analysis->prepareGroup->executeGroup->prepareDirected->excuteDirected->sortResul
 
 ​	通用同步组分析器是同步组分析器的经典实现，是分析工具最常用的组分析器；
 
+​	通用组分析器分为两类：Terminal 和 Performan，分别处理[客户端和服务端]和[Performance]日志解析结果；
+
+​	Performance额外需要IP地址和用户代码一致才允许将监视结果匹配成分析结果；
+
 - 通用同步组分析器分析流程：
 
 ```flow
@@ -336,7 +338,7 @@ readToEnd(yes)->groupType
   - 相同客户名称；
   - 开始结果日志时间不晚于结束结果日志时间；
 
-##### 5.3.2.1.2.通用自封闭组分析器
+##### 5.3.2.1.3.通用自封闭组分析器
 
 ​	存在某些监视规则天生只存在开始条件，而不存在结束条件，如“内存消耗”监视规则，对于这类监视规则无需使用开始结果和结束结果匹配为完整分析结果，只需使用单一的监视结果构建为一个完整的分析结果；
 
@@ -492,32 +494,35 @@ readToEnd(yes)->groupType
 
 ### 6.1.监视规则文件结构
 
-​	监视规则XML节点分为两类：
+​	监视规则XML节点分为三类：
 - 第一类为监视规则容器节点：
   - 节点名称为：**MonitorRoot**；
   - 可以拥有Name属性以指定监视规则容器对象的名称（可省略）；
   - 每个XML配置文件必须以监视规则容器节点为**根级**节点；
+  - 所有监视规则节点必须**包含**在根级监视规则容器节点内（可以嵌套包含）;
   - 每个XML配置文件仅允许包含**一个**监视规则容器节点；
-- 第二类为监视规则节点：
-  - 节点名称为：**MonitorItem**
+- 第二类为客户端和服务端监视规则节点：
+  - 节点名称为：**Item**
   - 监视规则拥有丰富的属性供使用者配置，以实现复杂的日志文件解析逻辑；
-  - 所有监视规则节点必须**包含**在根级监视规则容器节点内（可以嵌套包含）；
-  - 每个XML配置文件可以包含**多个**监视规则节点；
-  - 每个监视规则节点可以**嵌套**子级监视规则节点（每个节点的子级节点不超过9999个）；
+  - 每个监视规则节点可以 **嵌套** **多个** **同类** 子级监视规则节点（每个节点的直接子级节点不超过9999个）；
+- 第三类为Performan监视规则节点：
+  - 节点名称为：**Perf**
+  - 此类监视规则可配置项较**Item**规则更少，不允许分表导出、内存监视、指定组分析器和定向分析器等；
+  - 每个监视规则节点可以 **嵌套** **多个** **同类** 子级监视规则节点（每个节点的直接子级节点不超过9999个）；
 
 ### 6.2.监视规则可配置属性
 
 - 监视规则可配置属性：
 
-  | 属性名称           | 说明         | 类型                        |
-  | ------------------ | ------------ | --------------------------- |
-  | Name               | 监视规则名称 | string                      |
-  | Begin              | 事件开始条件 | string                      |
-  | End                | 事件结束条件 | string                      |
-  | GroupAnalysiser    | 组分析器     | **GroupAnalysiserTypes**    |
-  | DirectedAnalysiser | 定向分析器   | **DirectedAnalysiserTypes** |
-  | Memory             | 内存分析开关 | bool                        |
-  | Sheet              | 导出表名     | string                      |
+  | 属性名称           | 说明         | 类型                                |
+  | ------------------ | ------------ | ----------------------------------- |
+  | Name               | 监视规则名称 | string                              |
+  | Begin              | 事件开始条件 | string                              |
+  | End                | 事件结束条件 | string                              |
+  | GroupAnalysiser    | 组分析器     | **TerminalGroupAnalysiserTypes**    |
+  | DirectedAnalysiser | 定向分析器   | **TerminalDirectedAnalysiserTypes** |
+  | Memory             | 内存分析开关 | bool                                |
+  | Sheet              | 导出表名     | string                              |
 
 - Name
 
@@ -539,11 +544,11 @@ readToEnd(yes)->groupType
 
 - GroupAnalysiser
 
-  - 可省略，默认为 GroupAnalysiserTypes.Common，使用通用同步组分析器；
+  - 可省略，默认为 TerminalGroupAnalysiserTypes.Common，使用通用同步组分析器；
 
   - 可以通过此字段指定此监视规则的解析结果通过何种策略匹配成组，以构建分析结果；
 
-  - 数据类型为自定义类型——GroupAnalysiserTypes；
+  - 数据类型为自定义类型——TerminalDirectedAnalysiserTypes；
 
   - 可选值：
 
@@ -557,11 +562,11 @@ readToEnd(yes)->groupType
 
 - DirectedAnalysiser
 
-  - 可省略，默认为 DirectedAnalysiserTypes.None，不使用任何定向分析器；
+  - 可省略，默认为 TerminalDirectedAnalysiserTypes.None，不使用任何定向分析器；
 
   - 可以通过此字段指定此监视规则的分析结果以何种逻辑深入提取日志内容蕴藏的深层信息；
 
-  - 数据类型为自定义类型——DirectedAnalysiserTypes；
+  - 数据类型为自定义类型——TerminalDirectedAnalysiserTypes；
 
   - 可选值：
 
