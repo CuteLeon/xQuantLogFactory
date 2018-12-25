@@ -3,9 +3,9 @@
 namespace xQuantLogFactory.Model.Fixed
 {
     /// <summary>
-    /// 定向分析器枚举
+    /// 客户端和服务端定向分析器枚举
     /// </summary>
-    public enum DirectedAnalysiserTypes
+    public enum TerminalDirectedAnalysiserTypes
     {
         /// <summary>
         /// 未指定定向分析器
@@ -34,9 +34,9 @@ namespace xQuantLogFactory.Model.Fixed
     }
 
     /// <summary>
-    /// 组分析器枚举
+    /// 客户端和服务端组分析器枚举
     /// </summary>
-    public enum GroupAnalysiserTypes
+    public enum TerminalGroupAnalysiserTypes
     {
         /// <summary>
         /// 通用同步分析器

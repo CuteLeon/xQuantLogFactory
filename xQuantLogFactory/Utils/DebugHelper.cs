@@ -11,16 +11,27 @@ namespace xQuantLogFactory.Utils
     /// </summary>
     public class DebugHelper
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DebugHelper"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
+        /// <param name="actived"></param>
         public DebugHelper(ITracer tracer, bool actived = true)
         {
             this.Tracer = tracer;
             this.Actived = actived;
 
-            this.CodeLinesCount();
+            // this.CodeLinesCount();
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether 是否激活
+        /// </summary>
         public bool Actived { get; set; } = false;
 
+        /// <summary>
+        /// Gets or sets 追踪器
+        /// </summary>
         public ITracer Tracer { get; protected set; }
 
         /// <summary>

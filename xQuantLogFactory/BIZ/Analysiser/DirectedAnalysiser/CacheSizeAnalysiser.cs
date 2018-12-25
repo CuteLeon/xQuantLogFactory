@@ -67,7 +67,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
 
             this.Tracer?.WriteLine($"执行 统计缓存定向分析器 ....");
             argument.TerminalAnalysisResults
-                .Where(result => result.MonitorItem.DirectedAnalysiser == DirectedAnalysiserTypes.CacheSize)
+                .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.CacheSize)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {

@@ -60,7 +60,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
 
             this.Tracer?.WriteLine($"执行 通用键值对定向分析器 ....");
             argument.TerminalAnalysisResults
-                .Where(result => result.MonitorItem.DirectedAnalysiser == DirectedAnalysiserTypes.KeyValuePair)
+                .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.KeyValuePair)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {

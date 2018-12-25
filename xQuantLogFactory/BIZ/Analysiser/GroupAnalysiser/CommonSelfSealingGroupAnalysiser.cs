@@ -43,7 +43,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
 
             this.Tracer?.WriteLine($"执行 通用自封闭组分析器 ....");
             argument.TerminalMonitorResults
-                .Where(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.SelfSealing)
+                .Where(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.SelfSealing)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {

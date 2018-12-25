@@ -52,7 +52,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
 
             this.Tracer?.WriteLine($"执行 通用加载定向分析器 ....");
             argument.TerminalAnalysisResults
-                .Where(result => result.MonitorItem.DirectedAnalysiser == DirectedAnalysiserTypes.Load)
+                .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.Load)
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {

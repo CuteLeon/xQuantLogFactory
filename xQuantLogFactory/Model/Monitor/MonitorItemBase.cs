@@ -89,24 +89,6 @@ namespace xQuantLogFactory.Model.Monitor
         public string CANO { get; set; }
 
         /// <summary>
-        /// Gets or sets 指定定向分析器
-        /// </summary>
-        [XmlAttribute("DirectedAnalysiser")]
-        public DirectedAnalysiserTypes DirectedAnalysiser { get; set; }
-
-        /// <summary>
-        /// Gets or sets 指定组分析器
-        /// </summary>
-        [XmlAttribute("GroupAnalysiser")]
-        public GroupAnalysiserTypes GroupAnalysiser { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether 记录内存消耗
-        /// </summary>
-        [XmlAttribute("Memory")]
-        public bool Memory { get; set; } = false;
-
-        /// <summary>
         /// Gets or sets 输出表名
         /// </summary>
         [XmlAttribute("Sheet")]
@@ -160,11 +142,11 @@ namespace xQuantLogFactory.Model.Monitor
         }
 
         /// <summary>
-        /// 绑定父级节点
+        /// 绑定父级节点配置
         /// </summary>
         /// <param name="parentMonitor">父级节点</param>
         /// <param name="createNew">是否为新建子节点，为true时将会赋值更多父级节点的配置</param>
-        public void BindParentMonitor(TMonitor parentMonitor, bool createNew = false)
+        public virtual void BindParentMonitor(TMonitor parentMonitor, bool createNew = false)
         {
             // TODO: [提醒] 需要复制父节点配置信息
             this.ParentMonitorItem = parentMonitor ?? throw new ArgumentNullException(nameof(parentMonitor));
@@ -172,30 +154,10 @@ namespace xQuantLogFactory.Model.Monitor
             // 使用父节点计算的目录编号
             this.CANO = parentMonitor.GetNextChildCANO();
 
-            // 如果子节点未设置分析器，使用父级节点相同配置
-            if (this.ParentMonitorItem.DirectedAnalysiser != DirectedAnalysiserTypes.None &&
-                this.DirectedAnalysiser == DirectedAnalysiserTypes.None)
-            {
-                this.DirectedAnalysiser = this.ParentMonitorItem.DirectedAnalysiser;
-            }
-
             // 如果子节点未设置表名，使用父级节点相同配置
             if (string.IsNullOrEmpty(this.SheetName))
             {
                 this.SheetName = this.ParentMonitorItem.SheetName;
-            }
-
-            // 如果子节点未设置内存监视，使用父级节点相同配置
-            if (!this.Memory)
-            {
-                this.Memory = this.ParentMonitorItem.Memory;
-            }
-
-            // 如果子节点未设置异步，使用父级节点相同配置
-            if (this.ParentMonitorItem.GroupAnalysiser != GroupAnalysiserTypes.Common &&
-                this.GroupAnalysiser == GroupAnalysiserTypes.Common)
-            {
-                this.GroupAnalysiser = this.ParentMonitorItem.GroupAnalysiser;
             }
 
             // 新建子节点，如果子节点无监视条件，使用父节点相同配置

@@ -103,22 +103,22 @@ namespace xQuantLogFactory.BIZ.Analysiser
             {
                 this.GroupAnalysiserProvider.Add(new CommonGroupLogAnalysiser(this.Tracer));
 
-                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.CoreServiceAsync))
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.CoreServiceAsync))
                 {
                     this.GroupAnalysiserProvider.Add(new CoreAsyncGroupAnalysiser(this.Tracer));
                 }
 
-                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.FormAsync))
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.FormAsync))
                 {
                     this.GroupAnalysiserProvider.Add(new FormAsyncGroupAnalysiser(this.Tracer));
                 }
 
-                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.ReportAsync))
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.ReportAsync))
                 {
                     this.GroupAnalysiserProvider.Add(new ReportAsyncGroupAnalysiser(this.Tracer));
                 }
 
-                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == GroupAnalysiserTypes.SelfSealing))
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.SelfSealing))
                 {
                     this.GroupAnalysiserProvider.Add(new CommonSelfSealingGroupAnalysiser(this.Tracer));
                 }
@@ -139,17 +139,17 @@ namespace xQuantLogFactory.BIZ.Analysiser
             var monitorItems = argument.MonitorContainerRoot.GetTerminalMonitorItems().ToList();
             if (monitorItems.Count > 0)
             {
-                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.Prefix))
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.Prefix))
                 {
                     this.AddDirectedAnalysiser(new CommonPrefixAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.Load))
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.Load))
                 {
                     this.AddDirectedAnalysiser(new CommonLoadAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.KeyValuePair))
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.KeyValuePair))
                 {
                     this.AddDirectedAnalysiser(new CommonKeyValuePairAnalysiser(this.Tracer));
                 }
@@ -159,7 +159,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
                     this.AddDirectedAnalysiser(new CommonMemoryAnalysiser(this.Tracer));
                 }
 
-                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == DirectedAnalysiserTypes.CacheSize))
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.CacheSize))
                 {
                     this.AddDirectedAnalysiser(new CacheSizeAnalysiser(this.Tracer));
                 }
