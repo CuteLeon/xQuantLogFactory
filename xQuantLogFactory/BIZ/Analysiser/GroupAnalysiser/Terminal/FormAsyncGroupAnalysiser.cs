@@ -84,7 +84,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                             case GroupTypes.Start:
                                 {
                                     // 组匹配类型为Start时，总是新建分析结果并记录监视结果；
-                                    analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
+                                    analysisResult = this.CreateTerminalAnalysisResult(argument, targetMonitor, monitorResult);
 
                                     analysisResult.AnalysisDatas[FixedDatas.FORM_NAME] = formName;
                                     analysisResult.AnalysisDatas[FixedDatas.MODULE_CODE] = moduleCode;
@@ -107,7 +107,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                                     else
                                     {
                                         // 不存在同服务名称且同执行序号的分析结果或分析结果不匹配时，新建分析结果
-                                        analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
+                                        analysisResult = this.CreateTerminalAnalysisResult(argument, targetMonitor, monitorResult);
 
                                         analysisResult.AnalysisDatas[FixedDatas.FORM_NAME] = formName;
                                         analysisResult.AnalysisDatas[FixedDatas.MODULE_CODE] = moduleCode;

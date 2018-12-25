@@ -35,13 +35,13 @@ namespace xQuantLogFactory.BIZ.Analysiser
         public abstract void Analysis(TaskArgument argument);
 
         /// <summary>
-        /// 创建分析结果
+        /// 创建客户端和服务端分析结果
         /// </summary>
         /// <param name="argument">任务参数</param>
         /// <param name="monitor">监视规则</param>
         /// <param name="monitorResult">监视结果</param>
         /// <returns></returns>
-        protected TerminalAnalysisResult CreateAnalysisResult(
+        protected TerminalAnalysisResult CreateTerminalAnalysisResult(
             TaskArgument argument,
             TerminalMonitorItem monitor,
             TerminalMonitorResult monitorResult)
@@ -52,6 +52,46 @@ namespace xQuantLogFactory.BIZ.Analysiser
             lock (this.lockSeed)
             {
                 argument.TerminalAnalysisResults.Add(analysisResult);
+                monitorResult.LogFile.AnalysisResults.Add(analysisResult);
+                monitor.AnalysisResults.Add(analysisResult);
+            }
+
+            switch (monitorResult.GroupType)
+            {
+                case GroupTypes.Start:
+                    {
+                        analysisResult.StartMonitorResult = monitorResult;
+                        break;
+                    }
+
+                case GroupTypes.Finish:
+                    {
+                        analysisResult.FinishMonitorResult = monitorResult;
+                        break;
+                    }
+            }
+
+            return analysisResult;
+        }
+
+        /// <summary>
+        /// 创建Performance分析结果
+        /// </summary>
+        /// <param name="argument">任务参数</param>
+        /// <param name="monitor">监视规则</param>
+        /// <param name="monitorResult">监视结果</param>
+        /// <returns></returns>
+        protected PerformanceAnalysisResult CreatePerformanceAnalysisResult(
+            TaskArgument argument,
+            PerformanceMonitorItem monitor,
+            PerformanceMonitorResult monitorResult)
+        {
+            PerformanceAnalysisResult analysisResult = new PerformanceAnalysisResult(argument, monitor, monitorResult.LogFile);
+
+            // 反向关联日志监视结果
+            lock (this.lockSeed)
+            {
+                argument.PerformanceAnalysisResults.Add(analysisResult);
                 monitorResult.LogFile.AnalysisResults.Add(analysisResult);
                 monitor.AnalysisResults.Add(analysisResult);
             }

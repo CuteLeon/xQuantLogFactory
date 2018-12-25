@@ -41,7 +41,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                 throw new ArgumentNullException(nameof(argument));
             }
 
-            this.Tracer?.WriteLine($"执行 通用组分析器 ....");
+            this.Tracer?.WriteLine($"执行 Terminal 通用组分析器 ....");
             argument.TerminalMonitorResults
                 .Where(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.Common)
                 .GroupBy(result => result.MonitorItem)
@@ -58,7 +58,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                         case GroupTypes.Start:
                             {
                                 // 组匹配类型为Start时，总是新建分析结果并记录监视结果；
-                                analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
+                                analysisResult = this.CreateTerminalAnalysisResult(argument, targetMonitor, monitorResult);
                                 break;
                             }
 
@@ -68,7 +68,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                                     !analysisResult.StartMonitorResult.CheckMatch(monitorResult))
                                 {
                                     // 组匹配类型为Finish时，若不存在未关闭的分析结果或结果不匹配，则新建分析结果并记录监视结果；
-                                    analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
+                                    analysisResult = this.CreateTerminalAnalysisResult(argument, targetMonitor, monitorResult);
                                 }
                                 else
                                 {

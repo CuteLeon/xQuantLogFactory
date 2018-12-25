@@ -18,14 +18,6 @@ using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
-// TODO: Directed\GroupAnalysiserTypes 类型分化，Terminal 和 Performance 监视规则使用不用的枚举；Memory 仅对 Terminal 监视规则
-
-/* TODO: Performance监视、分析功能实现解决方案：
-    修改Performance日志解析器，以启用PerformanceMonitorItem树；
-    增加Performance日志通用同步分析器，对Performance监视结果匹配成组；
-    Perf析结果处理完初始化树；
- */
-
 // TODO: 重写文档
 
 // 在 VS 内通过 [按键:Alt+F2] 或 [菜单:(调试|分析)>性能探查器] 打开 [性能探查器] 分析方法或对象CPU或内存的性能影响

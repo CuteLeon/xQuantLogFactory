@@ -173,7 +173,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                 childResult.LogContent = unparsedResult.LogContent;
 
                 // 创建子分析结果
-                TerminalAnalysisResult childAnalysisResult = this.CreateAnalysisResult(
+                TerminalAnalysisResult childAnalysisResult = this.CreateTerminalAnalysisResult(
                     analysisResult.TaskArgument,
                     childMonitor,
                     childResult);
@@ -204,7 +204,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                 childResult.LogContent = unparsedResult.LogContent;
 
                 // 创建子分析结果
-                TerminalAnalysisResult childAnalysisResult = this.CreateAnalysisResult(
+                TerminalAnalysisResult childAnalysisResult = this.CreateTerminalAnalysisResult(
                     analysisResult.TaskArgument,
                     childMonitor,
                     childResult);

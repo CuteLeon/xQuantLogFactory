@@ -53,7 +53,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
 
                     foreach (var monitorResult in resultGroup)
                     {
-                        TerminalAnalysisResult analysisResult = this.CreateAnalysisResult(argument, targetMonitor, monitorResult);
+                        TerminalAnalysisResult analysisResult = this.CreateTerminalAnalysisResult(argument, targetMonitor, monitorResult);
 
                         analysisResult.StartMonitorResult = analysisResult.FinishMonitorResult = monitorResult;
                     }

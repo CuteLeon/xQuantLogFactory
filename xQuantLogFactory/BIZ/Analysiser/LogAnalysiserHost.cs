@@ -5,6 +5,7 @@ using System.Linq;
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal;
 using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser;
+using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Performance;
 using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
@@ -128,7 +129,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
             if (argument.PerformanceMonitorResults.Count > 0)
             {
-                // TODO: 准备 Performance 组分析器
+                this.GroupAnalysiserProvider.Add(new CommonPerformanceLogAnalysiser(this.Tracer));
             }
         }
 
