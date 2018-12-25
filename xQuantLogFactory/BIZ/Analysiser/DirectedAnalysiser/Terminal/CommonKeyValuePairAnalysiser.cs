@@ -8,7 +8,7 @@ using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
+namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
 {
     /// <summary>
     /// 交易清算分析器

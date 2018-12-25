@@ -4,6 +4,8 @@ using System.Text.RegularExpressions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal;
+
 namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Tests
 {
     [TestClass()]

@@ -2,7 +2,7 @@
 
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
+namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
 {
     /// <summary>
     /// 异步日志组分析器

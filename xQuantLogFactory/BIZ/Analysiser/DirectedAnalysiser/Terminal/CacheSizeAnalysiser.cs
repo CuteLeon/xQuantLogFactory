@@ -9,7 +9,7 @@ using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
+namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
 {
     /// <summary>
     /// 统计缓存定向分析器

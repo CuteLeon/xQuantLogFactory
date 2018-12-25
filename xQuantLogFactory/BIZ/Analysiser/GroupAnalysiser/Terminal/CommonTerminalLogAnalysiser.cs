@@ -7,25 +7,25 @@ using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
+namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
 {
     /// <summary>
     /// 通用日志组分析器
     /// </summary>
-    public class CommonGroupLogAnalysiser : GroupLogAnalysiserBase
+    public class CommonTerminalLogAnalysiser : GroupLogAnalysiserBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommonGroupLogAnalysiser"/> class.
+        /// Initializes a new instance of the <see cref="CommonTerminalLogAnalysiser"/> class.
         /// </summary>
-        public CommonGroupLogAnalysiser()
+        public CommonTerminalLogAnalysiser()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommonGroupLogAnalysiser"/> class.
+        /// Initializes a new instance of the <see cref="CommonTerminalLogAnalysiser"/> class.
         /// </summary>
         /// <param name="tracer"></param>
-        public CommonGroupLogAnalysiser(ITracer tracer)
+        public CommonTerminalLogAnalysiser(ITracer tracer)
             : base(tracer)
         {
         }

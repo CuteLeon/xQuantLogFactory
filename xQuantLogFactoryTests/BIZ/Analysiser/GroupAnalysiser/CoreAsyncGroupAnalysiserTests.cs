@@ -1,10 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal;
 
 namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Tests
 {

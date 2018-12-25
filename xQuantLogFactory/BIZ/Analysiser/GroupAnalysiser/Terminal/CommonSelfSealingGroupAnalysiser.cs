@@ -7,7 +7,7 @@ using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser
+namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
 {
     /// <summary>
     /// 自封闭组分析器

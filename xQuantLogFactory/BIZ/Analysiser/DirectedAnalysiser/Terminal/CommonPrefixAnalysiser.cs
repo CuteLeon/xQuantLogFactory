@@ -7,7 +7,7 @@ using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils.Trace;
 
-namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser
+namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
 {
     /// <summary>
     /// 通用前缀分析器

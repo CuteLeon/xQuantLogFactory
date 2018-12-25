@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser;
+using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal;
 using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser;
+using xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils.Trace;
@@ -101,7 +103,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         {
             if (argument.TerminalMonitorResults.Count > 0)
             {
-                this.GroupAnalysiserProvider.Add(new CommonGroupLogAnalysiser(this.Tracer));
+                this.GroupAnalysiserProvider.Add(new CommonTerminalLogAnalysiser(this.Tracer));
 
                 if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.CoreServiceAsync))
                 {
