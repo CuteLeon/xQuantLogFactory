@@ -27,6 +27,10 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         public double ElapsedMillisecond { get; set; }
 
+        /// <summary>
+        /// Gets 分析数据
+        /// </summary>
+        public Dictionary<string, object> AnalysisDatas { get; } = new Dictionary<string, object>();
         #endregion
 
         #region 泛型类型

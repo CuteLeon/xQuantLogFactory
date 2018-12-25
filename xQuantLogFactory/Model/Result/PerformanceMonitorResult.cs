@@ -41,7 +41,7 @@ namespace xQuantLogFactory.Model.Result
         /// <summary>
         /// Gets or sets 开始时间
         /// </summary>
-        public string StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// Gets or sets 耗时

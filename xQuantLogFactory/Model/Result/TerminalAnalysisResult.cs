@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using xQuantLogFactory.Model.LogFile;
+﻿using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 
 namespace xQuantLogFactory.Model.Result
@@ -41,11 +39,6 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 客户端版本
         /// </summary>
         public string Version { get; set; }
-
-        /// <summary>
-        /// Gets 分析数据
-        /// </summary>
-        public Dictionary<string, object> AnalysisDatas { get; } = new Dictionary<string, object>();
         #endregion
 
         #region 业务

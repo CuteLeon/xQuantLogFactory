@@ -192,9 +192,9 @@ namespace xQuantLogFactory.BIZ.Parser
                 result.UserCode = match.Groups["UserCode"].Value;
             }
 
-            if (match.Groups["StartTime"].Success)
+            if (match.Groups["StartTime"].Success && DateTime.TryParse(match.Groups["StartTime"].Value, out DateTime startTime))
             {
-                result.StartTime = match.Groups["StartTime"].Value;
+                result.StartTime = startTime;
             }
 
             if (match.Groups["Elapsed"].Success && int.TryParse(match.Groups["Elapsed"].Value, out int elapsed))

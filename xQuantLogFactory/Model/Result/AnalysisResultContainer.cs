@@ -35,8 +35,8 @@ namespace xQuantLogFactory.Model.Result
         /// <typeparam name="TAnalysisResult"></typeparam>
         /// <typeparam name="TLogFile"></typeparam>
         /// <param name="sourceAnalysisResults">源数据</param>
-        /// <param name="targetAnalysisResults">目标列表</param>
-        public void InitAnalysisResultTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(IEnumerable<TAnalysisResult> sourceAnalysisResults, List<TAnalysisResult> targetAnalysisResults)
+        /// <returns>树根节点列表</returns>
+        public List<TAnalysisResult> InitAnalysisResultTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(IEnumerable<TAnalysisResult> sourceAnalysisResults)
             where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
             where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
             where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
@@ -44,11 +44,12 @@ namespace xQuantLogFactory.Model.Result
         {
             if (sourceAnalysisResults == null)
             {
-                throw new System.ArgumentNullException(nameof(sourceAnalysisResults));
+                throw new ArgumentNullException(nameof(sourceAnalysisResults));
             }
 
-            // 清理现有关系树
-            targetAnalysisResults.Clear();
+            List<TAnalysisResult> targetAnalysisResults = new List<TAnalysisResult>();
+
+            // 清理现有关系
             foreach (var analysisResult in sourceAnalysisResults)
             {
                 analysisResult.ParentAnalysisResult = null;
@@ -93,6 +94,8 @@ namespace xQuantLogFactory.Model.Result
                     analysisResult.ParentAnalysisResult.AnalysisResultRoots.Add(analysisResult);
                 }
             }
+
+            return targetAnalysisResults;
         }
 
         /// <summary>
@@ -101,7 +104,11 @@ namespace xQuantLogFactory.Model.Result
         /// <param name="analysisResults"></param>
         public void InitTerminalAnalysisResultTree(IEnumerable<TerminalAnalysisResult> analysisResults)
         {
-            this.InitAnalysisResultTree<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>(analysisResults, this.TerminalAnalysisResultRoots);
+            // 清理现有分析结果树根
+            this.TerminalAnalysisResultRoots.Clear();
+
+            this.TerminalAnalysisResultRoots.AddRange(
+                this.InitAnalysisResultTree<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>(analysisResults));
         }
 
         /// <summary>
@@ -110,7 +117,15 @@ namespace xQuantLogFactory.Model.Result
         /// <param name="analysisResults"></param>
         public void InitPerformanceAnalysisResultTree(List<PerformanceAnalysisResult> analysisResults)
         {
-            this.InitAnalysisResultTree<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>(analysisResults, this.PerformanceAnalysisResultRoots);
+            // 清理现有分析结果树根
+            this.PerformanceAnalysisResultRoots.Clear();
+
+            // 以IP和用户代码对分析结果分组后再构建分析结果树
+            foreach (var resultGroup in analysisResults.GroupBy(result => (result.IPAddress, result.UserCode)))
+            {
+                this.PerformanceAnalysisResultRoots.AddRange(
+                    this.InitAnalysisResultTree<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>(resultGroup));
+            }
         }
         #endregion
 

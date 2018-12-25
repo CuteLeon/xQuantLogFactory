@@ -565,7 +565,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         range[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         range[rowID, 2].Value = result.IPAddress;
                         range[rowID, 3].Value = result.UserCode;
-                        range[rowID, 4].Value = result.StartTime;
+                        range[rowID, 4].Value = result.StartTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         range[rowID, 5].Value = result.Elapsed;
                         range[rowID, 6].Value = result.RequestURI;
                         range[rowID, 7].Value = result.MethodName;
