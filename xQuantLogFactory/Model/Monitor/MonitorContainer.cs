@@ -65,12 +65,6 @@ namespace xQuantLogFactory.Model.Monitor
                         // 将父节点的子节点作为当前节点
                         currentMonitor = parentMonitor.MonitorTreeRoots[index];
 
-                        // 预设默认表名
-                        if (string.IsNullOrEmpty(currentMonitor.SheetName))
-                        {
-                            currentMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
-                        }
-
                         if (string.IsNullOrEmpty(currentMonitor.CANO))
                         {
                             currentMonitor.CANO = parentMonitor.GetNextChildCANO();
@@ -102,12 +96,6 @@ namespace xQuantLogFactory.Model.Monitor
                             // 遍历当前节点的子节点
                             currentMonitor.MonitorTreeRoots.ForEach(childMonitor =>
                             {
-                                // 复制当前节点表名给子节点
-                                if (string.IsNullOrEmpty(childMonitor.SheetName))
-                                {
-                                    childMonitor.SheetName = currentMonitor.SheetName;
-                                }
-
                                 // 复制父级节点配置
                                 childMonitor.BindParentMonitor(currentMonitor);
                             });
@@ -125,6 +113,16 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         public void InitTerminalMonitorTree()
         {
+            // 先初始化第一批根节点列表
+            foreach (var rootMonitor in this.TerminalMonitorTreeRoots)
+            {
+                // 当父节点不存在表名时，使用默认表名
+                if (string.IsNullOrEmpty(rootMonitor.SheetName))
+                {
+                    rootMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
+                }
+            }
+
             this.InitMonitorTree<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>(this.TerminalMonitorTreeRoots);
         }
 

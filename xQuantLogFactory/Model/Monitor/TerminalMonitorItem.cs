@@ -47,6 +47,12 @@ namespace xQuantLogFactory.Model.Monitor
         public bool Memory { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets 输出表名
+        /// </summary>
+        [XmlAttribute("Sheet")]
+        public string SheetName { get; set; }
+
+        /// <summary>
         /// Gets or sets 子监视规则列表
         /// </summary>
         [XmlElement(FixedDatas.TERMINAL_MONITOR_XML_ELEMENT_NAME)]
@@ -73,6 +79,12 @@ namespace xQuantLogFactory.Model.Monitor
             if (!this.Memory)
             {
                 this.Memory = parentMonitor.Memory;
+            }
+
+            // 如果子节点未设置表名，使用父级节点相同配置
+            if (string.IsNullOrEmpty(this.SheetName))
+            {
+                this.SheetName = parentMonitor.SheetName;
             }
 
             // 如果子节点未设置异步，使用父级节点相同配置

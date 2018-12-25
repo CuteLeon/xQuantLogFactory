@@ -69,8 +69,8 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             PerformanceMonitorItem reportItem = new PerformanceMonitorItem()
             {
                 StartPattern = "requestreport",
-                SheetName = "内存",
                 /*
+                SheetName = "内存",
                 Memory = true,
                  */
             };
@@ -118,9 +118,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             Assert.AreEqual(3, container.GetPerformanceMonitorItems().Count());
             /*
             Assert.IsTrue(container.PerformanceMonitorTreeRoots[1].Memory);
-             */
             Assert.AreEqual("内存", container.PerformanceMonitorTreeRoots[1].SheetName);
-            /*
             Assert.AreEqual(DirectedAnalysiserTypes.Prefix, container.PerformanceMonitorTreeRoots[0].MonitorTreeRoots[0].DirectedAnalysiser);
              */
 

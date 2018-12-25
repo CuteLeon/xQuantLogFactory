@@ -87,12 +87,6 @@ namespace xQuantLogFactory.Model.Monitor
         /// <remarks>格式如 "000.000.000"，每级编号以点分隔，数字右对齐，左边以0填充（防止C#认为"1.10小于"1.2"）</remarks>
         [XmlIgnore]
         public string CANO { get; set; }
-
-        /// <summary>
-        /// Gets or sets 输出表名
-        /// </summary>
-        [XmlAttribute("Sheet")]
-        public string SheetName { get; set; }
         #endregion
 
         #region 泛型类型
@@ -153,12 +147,6 @@ namespace xQuantLogFactory.Model.Monitor
 
             // 使用父节点计算的目录编号
             this.CANO = parentMonitor.GetNextChildCANO();
-
-            // 如果子节点未设置表名，使用父级节点相同配置
-            if (string.IsNullOrEmpty(this.SheetName))
-            {
-                this.SheetName = this.ParentMonitorItem.SheetName;
-            }
 
             // 新建子节点，如果子节点无监视条件，使用父节点相同配置
             if (createNew)
