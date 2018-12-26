@@ -390,6 +390,7 @@
             // 
             // LogLevelComboBox
             // 
+            this.LogLevelComboBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.LogLevelComboBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             this.LogLevelComboBox.BackColorState.Enabled = System.Drawing.Color.White;
             this.LogLevelComboBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -458,6 +459,7 @@
             // 
             // ReportModeComboBox
             // 
+            this.ReportModeComboBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ReportModeComboBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             this.ReportModeComboBox.BackColorState.Enabled = System.Drawing.Color.White;
             this.ReportModeComboBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -561,7 +563,7 @@
             this.ClientInfoToggle.ButtonColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.ClientInfoToggle.ButtonSize = new System.Drawing.Size(20, 20);
             this.ClientInfoToggle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClientInfoToggle.FalseTextToggle = "将会记录客户端信息";
+            this.ClientInfoToggle.FalseTextToggle = "将会记录客户端信息 ~";
             this.ClientInfoToggle.ForeColor = System.Drawing.Color.DimGray;
             this.ClientInfoToggle.Location = new System.Drawing.Point(356, 131);
             this.ClientInfoToggle.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
@@ -576,7 +578,7 @@
             this.ClientInfoToggle.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.ClientInfoToggle.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.ClientInfoToggle.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.ClientInfoToggle.TrueTextToggle = "将不会记录客户端信息";
+            this.ClientInfoToggle.TrueTextToggle = "将不会记录客户端信息 ~";
             this.ClientInfoToggle.Type = VisualPlus.Toolkit.Controls.Interactivity.VisualToggle.ToggleTypes.Custom;
             // 
             // label6
@@ -791,6 +793,7 @@
             // 
             // TimeUnitComboBox
             // 
+            this.TimeUnitComboBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.TimeUnitComboBox.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(243)))), ((int)(((byte)(243)))));
             this.TimeUnitComboBox.BackColorState.Enabled = System.Drawing.Color.White;
             this.TimeUnitComboBox.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
@@ -870,7 +873,7 @@
             this.SystemInfoToggle.ButtonColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.SystemInfoToggle.ButtonSize = new System.Drawing.Size(20, 20);
             this.SystemInfoToggle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SystemInfoToggle.FalseTextToggle = "将会记录系统信息";
+            this.SystemInfoToggle.FalseTextToggle = "将会记录系统信息 ~";
             this.SystemInfoToggle.ForeColor = System.Drawing.Color.DimGray;
             this.SystemInfoToggle.Location = new System.Drawing.Point(103, 131);
             this.SystemInfoToggle.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
@@ -885,7 +888,7 @@
             this.SystemInfoToggle.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.SystemInfoToggle.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.SystemInfoToggle.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.SystemInfoToggle.TrueTextToggle = "将不会记录系统信息";
+            this.SystemInfoToggle.TrueTextToggle = "将不会记录系统信息 ~";
             this.SystemInfoToggle.Type = VisualPlus.Toolkit.Controls.Interactivity.VisualToggle.ToggleTypes.Custom;
             // 
             // label10
@@ -924,7 +927,7 @@
             this.AutoExitToggle.ButtonColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.AutoExitToggle.ButtonSize = new System.Drawing.Size(20, 20);
             this.AutoExitToggle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AutoExitToggle.FalseTextToggle = "将会自动退出分析工具";
+            this.AutoExitToggle.FalseTextToggle = "将会自动退出分析工具 ~";
             this.AutoExitToggle.ForeColor = System.Drawing.Color.DimGray;
             this.AutoExitToggle.Location = new System.Drawing.Point(103, 163);
             this.AutoExitToggle.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
@@ -940,7 +943,7 @@
             this.AutoExitToggle.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.AutoExitToggle.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
             this.AutoExitToggle.Toggled = true;
-            this.AutoExitToggle.TrueTextToggle = "将不会自动退出分析工具";
+            this.AutoExitToggle.TrueTextToggle = "将不会自动退出分析工具 ~";
             this.AutoExitToggle.Type = VisualPlus.Toolkit.Controls.Interactivity.VisualToggle.ToggleTypes.Custom;
             // 
             // label11
@@ -979,7 +982,7 @@
             this.AutoOpenReportToggle.ButtonColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.AutoOpenReportToggle.ButtonSize = new System.Drawing.Size(20, 20);
             this.AutoOpenReportToggle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AutoOpenReportToggle.FalseTextToggle = "将会自动打开报告";
+            this.AutoOpenReportToggle.FalseTextToggle = "将会自动打开报告 ~";
             this.AutoOpenReportToggle.ForeColor = System.Drawing.Color.DimGray;
             this.AutoOpenReportToggle.Location = new System.Drawing.Point(356, 163);
             this.AutoOpenReportToggle.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
@@ -994,7 +997,7 @@
             this.AutoOpenReportToggle.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.AutoOpenReportToggle.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.AutoOpenReportToggle.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.AutoOpenReportToggle.TrueTextToggle = "将不会自动打开报告";
+            this.AutoOpenReportToggle.TrueTextToggle = "将不会自动打开报告 ~";
             this.AutoOpenReportToggle.Type = VisualPlus.Toolkit.Controls.Interactivity.VisualToggle.ToggleTypes.Custom;
             // 
             // BatchesCountPanel
