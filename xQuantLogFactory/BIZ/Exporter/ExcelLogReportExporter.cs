@@ -569,11 +569,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                         // 遍历根节点及所有子节点输出分析结果数据
                         foreach (PerformanceAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf())
                         {
-                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
-                            range[rowID, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
-                            range[rowID, 3].Value = executeID;
-                            range[rowID, 4].Value = analysisResult.IPAddress;
-                            range[rowID, 5].Value = analysisResult.UserCode;
+                            range[rowID, 1].Value = analysisResult.IPAddress;
+                            range[rowID, 2].Value = analysisResult.UserCode;
+                            range[rowID, 3].Value = analysisResult.MonitorItem.PrefixName;
+                            range[rowID, 4].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
+                            range[rowID, 5].Value = executeID;
                             range[rowID, 6].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
                             range[rowID, 7].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 8].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
