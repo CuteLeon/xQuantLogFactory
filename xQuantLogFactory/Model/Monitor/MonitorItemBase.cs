@@ -58,7 +58,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// Gets 匹配率
         /// </summary>
         [XmlIgnore]
-        public double MatchingRate
+        public virtual double MatchingRate
         {
             get
             {
