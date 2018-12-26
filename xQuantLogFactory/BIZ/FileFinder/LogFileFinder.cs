@@ -50,7 +50,12 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     continue;
                 }
 
-                if (argument.CheckLogFileTime(creationTime, lastWriteTime))
+                /* 复制或移动日志文件将会改变日志文件的创建时间、
+                 * 手动摘取日志文件将会改变日志文件的最后写入时间，
+                 * 可能造成日志文件按任务时间筛选出错，因此不使用任务时间筛选日志文件，而是处理目录内所有日志文件；
+                 */
+
+                // if (argument.CheckLogFileTime(creationTime, lastWriteTime))
                 {
                     LogFileTypes fileType = this.GetLogFileType(fileName);
                     switch (fileType)
