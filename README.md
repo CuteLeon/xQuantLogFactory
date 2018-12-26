@@ -308,7 +308,11 @@ analysis->prepareGroup->executeGroup->prepareDirected->excuteDirected->sortResul
 
 ​	通用组分析器分为两类：Terminal 和 Performan，分别处理[客户端和服务端]和[Performance]日志解析结果；
 
-​	Performance额外需要IP地址和用户代码一致才允许将监视结果匹配成分析结果；
+- Terminal通用同步组分析器：
+  - 按监视结果的监视规则、**客户名称**、**客户端版本约束**、结果类型，以同步顺序匹配为分析结果；
+- Performance通用同步组分析器：
+  - 按监视结果的监视规则、**IP地址**、**用户代码**、结果类型，以同步顺序匹配为分析结果；
+  - Performance日志可能因为系统配置而导致不输出事件的开始或完成日志，分析工具默认只处理事件开始日志；
 
 - 通用同步组分析器分析流程：
 
