@@ -261,7 +261,7 @@ namespace xQuantLogFactory.Model.Monitor
         /// </summary>
         /// <param name="log">日志</param>
         /// <returns>匹配监视规则类型</returns>
-        public virtual GroupTypes MatchLog(string log)
+        public virtual GroupTypes MatchGroupLog(string log)
         {
             // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
             if (this.StartPattern?.Length > 0 &&

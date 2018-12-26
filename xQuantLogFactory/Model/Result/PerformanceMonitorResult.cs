@@ -34,6 +34,11 @@ namespace xQuantLogFactory.Model.Result
         #region 基础属性
 
         /// <summary>
+        /// Gets or sets performance日志类型
+        /// </summary>
+        public PerformanceTypes PerformanceType { get; set; }
+
+        /// <summary>
         /// Gets or sets 用户代码
         /// </summary>
         public string UserCode { get; set; }

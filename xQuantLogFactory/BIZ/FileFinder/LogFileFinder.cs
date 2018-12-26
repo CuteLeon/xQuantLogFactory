@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
-using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Utils;

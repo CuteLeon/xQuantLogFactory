@@ -86,6 +86,27 @@ namespace xQuantLogFactory.Model.Fixed
     }
 
     /// <summary>
+    /// Performance 日志类型
+    /// </summary>
+    public enum PerformanceTypes
+    {
+        /// <summary>
+        /// 未知
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
+        /// 事件开始
+        /// </summary>
+        Start = 1,
+
+        /// <summary>
+        /// 事件完成
+        /// </summary>
+        Finish = 2,
+    }
+
+    /// <summary>
     /// 日志文件类型
     /// </summary>
     public enum LogFileTypes

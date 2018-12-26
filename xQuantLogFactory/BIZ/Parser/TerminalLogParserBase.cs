@@ -149,7 +149,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             // 匹配所有监视规则
                             foreach (TerminalMonitorItem monitor in monitorItems)
                             {
-                                GroupTypes groupType = monitor.MatchLog(logContent);
+                                GroupTypes groupType = monitor.MatchGroupLog(logContent);
                                 if (groupType == GroupTypes.Unmatch)
                                 {
                                     // 未匹配到任何监视规则，尝试下一条规则

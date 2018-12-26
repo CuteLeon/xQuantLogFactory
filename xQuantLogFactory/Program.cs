@@ -71,7 +71,7 @@ namespace xQuantLogFactory
 
             UnityTracer.WriteLine("开始反序列化匹配的监视规则对象...");
             GetMonitorItems(ConfigHelper.MonitorDirectory);
-            UnityTracer.WriteLine($"发现 {UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().Count()} 个任务相关监视规则对象：\n————————\n{string.Join("、", UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().Select(item => item.Name))}\n————————");
+            ShowMonitorItems();
 
             UnityTracer.WriteLine("开始获取任务相关日志文件...");
             GetTaskLogFiles(UnityTaskArgument.LogDirectory, UnityTaskArgument);
@@ -109,7 +109,6 @@ namespace xQuantLogFactory
 
             Exit(0);
         }
-
         #region 准备任务及相关数据
 
         /// <summary>
@@ -578,6 +577,24 @@ namespace xQuantLogFactory
                 TimeSpan duration = UnityTaskArgument.TaskFinishTime.Subtract(UnityTaskArgument.TaskStartTime);
                 Console.WriteLine($"任务耗时：{duration.Hours}时 {duration.Minutes}分 {duration.Seconds}秒 {duration.Milliseconds}毫秒");
             }
+        }
+
+        /// <summary>
+        /// 显示监视规则
+        /// </summary>
+        private static void ShowMonitorItems()
+        {
+            List<TerminalMonitorItem> terminalMonitors = UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().ToList();
+            List<PerformanceMonitorItem> performanceMonitors = UnityTaskArgument.MonitorContainerRoot.GetPerformanceMonitorItems().ToList();
+            int monitorCount = terminalMonitors.Count + performanceMonitors.Count;
+
+            if (monitorCount == 0)
+            {
+                UnityTracer.WriteLine("未发现监视规则，程序即将退出");
+                Exit(4);
+            }
+
+            UnityTracer.WriteLine($"发现 {monitorCount} 个任务相关监视规则对象：\n————————{(terminalMonitors.Count > 0 ? $"\n\tTerminal：{string.Join("、", terminalMonitors.Select(item => item.Name))}" : string.Empty)}{(performanceMonitors.Count > 0 ? $"\n\tPerformance：{string.Join("、", performanceMonitors.Select(item => item.Name))}" : string.Empty)}\n————————");
         }
 
         /// <summary>

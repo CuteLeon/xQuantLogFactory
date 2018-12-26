@@ -48,9 +48,9 @@
             Error = 3,
 
             /// <summary>
-            /// Pref
+            /// Perf
             /// </summary>
-            Pref = 4,
+            Perf = 4,
         }
 
         /// <summary>

@@ -34,11 +34,32 @@ namespace xQuantLogFactory.Model.Monitor
         public override List<PerformanceMonitorItem> MonitorTreeRoots { get; set; } = new List<PerformanceMonitorItem>();
 
         /// <summary>
+        /// 匹配日志事件类型
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public virtual PerformanceTypes MatchPerformanceType(string message)
+        {
+            if (message.Equals(FixedDatas.PERFORMANCE_START_MESSAGE, StringComparison.Ordinal))
+            {
+                return PerformanceTypes.Start;
+            }
+            else if (message.Equals(FixedDatas.PERFORMANCE_FINISH_MESSAGE, StringComparison.Ordinal))
+            {
+                return PerformanceTypes.Finish;
+            }
+            else
+            {
+                return PerformanceTypes.Unknown;
+            }
+        }
+
+        /// <summary>
         /// 匹配日志
         /// </summary>
         /// <param name="log"></param>
         /// <returns></returns>
-        public override GroupTypes MatchLog(string log)
+        public override GroupTypes MatchGroupLog(string log)
         {
             // 以下字符串判空方法会获得比 ""==string.Empty 更好的性能
             if (this.StartPattern?.Length > 0 &&

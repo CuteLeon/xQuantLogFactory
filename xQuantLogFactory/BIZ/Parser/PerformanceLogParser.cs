@@ -74,6 +74,7 @@ namespace xQuantLogFactory.BIZ.Parser
                     // 临时变量放于循环外，防止内存爆炸
                     Match match = null;
                     string logLine = string.Empty,
+                              message = string.Empty,
                               methodName = string.Empty;
                     int lineNumber = 0;
                     DateTime logTime = DateTime.MinValue;
@@ -113,8 +114,10 @@ namespace xQuantLogFactory.BIZ.Parser
                             // 匹配所有监视规则
                             foreach (PerformanceMonitorItem monitor in monitorItems)
                             {
+                                message = match.Groups["Message"].Value;
                                 methodName = match.Groups["MethodName"].Value;
-                                GroupTypes groupType = monitor.MatchLog(methodName);
+                                GroupTypes groupType = monitor.MatchGroupLog(methodName);
+                                PerformanceTypes performanceType = monitor.MatchPerformanceType(message);
 
                                 if (groupType == GroupTypes.Unmatch)
                                 {
@@ -124,9 +127,11 @@ namespace xQuantLogFactory.BIZ.Parser
 
                                 PerformanceMonitorResult result = this.CreateMonitorResult(argument, logFile, monitor);
                                 result.LogTime = logTime;
+                                result.Message = message;
                                 result.GroupType = groupType;
                                 result.LineNumber = lineNumber;
                                 result.MethodName = methodName;
+                                result.PerformanceType = performanceType;
 
                                 this.ApplyRegexMatch(match, result);
 
@@ -205,11 +210,6 @@ namespace xQuantLogFactory.BIZ.Parser
             if (match.Groups["StreamLength"].Success && int.TryParse(match.Groups["StreamLength"].Value, out int streamLength))
             {
                 result.StreamLength = streamLength;
-            }
-
-            if (match.Groups["Message"].Success)
-            {
-                result.Message = match.Groups["Message"].Value;
             }
 
             if (match.Groups["RequestURI"].Success)

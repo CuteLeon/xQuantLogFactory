@@ -18,9 +18,9 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
                 FinishPattern = "结束",
             };
 
-            Assert.AreEqual(GroupTypes.Unmatch, monitor.MatchLog("*=*"));
-            Assert.AreEqual(GroupTypes.Start, monitor.MatchLog("*开始*"));
-            Assert.AreEqual(GroupTypes.Finish, monitor.MatchLog("*结束*"));
+            Assert.AreEqual(GroupTypes.Unmatch, monitor.MatchGroupLog("*=*"));
+            Assert.AreEqual(GroupTypes.Start, monitor.MatchGroupLog("*开始*"));
+            Assert.AreEqual(GroupTypes.Finish, monitor.MatchGroupLog("*结束*"));
         }
     }
 }

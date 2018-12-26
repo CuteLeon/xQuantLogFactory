@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Perf Name="A方法" Begin="GetAStart" End="GetAFinish">
+  <Perf Name="GetSysParamTable" Begin="GetSysParamTable" End="GetAFinish">
     <Perf Name="B方法" Begin="GetBStart" End="GetBFinish"/>
     <Perf Name="C方法" Begin="GetC"/>
     <Perf Name="D方法" Begin="GetD"/>
   </Perf>
-  <Perf Name="123方法" Begin="Get123Start" End="Get123Finish"/>
+  <Perf Name="AllowLogonByJobID" Begin="AllowLogonByJobID" End="Get123Finish"/>
 </MonitorRoot>
