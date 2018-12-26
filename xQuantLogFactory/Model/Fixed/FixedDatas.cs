@@ -138,7 +138,20 @@
         public const string CACHE_SHEET_NAME = "缓存";
         #endregion
 
-        #region 实体
+        #region 业务数据常量
+
+        /// <summary>
+        /// Performance日志开始消息常量
+        /// </summary>
+        public const string PERFORMANCE_START_MESSAGE = "开始";
+
+        /// <summary>
+        /// Performance日志结束消息常量
+        /// </summary>
+        public const string PERFORMANCE_FINISH_MESSAGE = "完成";
+        #endregion
+
+        #region 实体数据常量
 
         /// <summary>
         /// 客户端和服务端监视规则XML序列化元素名称

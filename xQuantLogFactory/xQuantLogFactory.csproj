@@ -166,7 +166,7 @@
     <Content Include="Monitor\Client组合动态核算.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Monitor\PerformanceDemo.xml">
+    <Content Include="Monitor\Performance.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Monitor\Server限额刷新.xml">
