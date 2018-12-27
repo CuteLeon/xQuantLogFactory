@@ -61,6 +61,7 @@
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonKeyValuePairAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\CoreAsyncGroupAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\GroupLogAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\LogAnalysiserBaseTests.cs" />
     <Compile Include="BIZ\Parser\LogParserBaseTests.cs" />
     <Compile Include="BIZ\Parser\LogParserTests.cs" />
     <Compile Include="BIZ\Parser\PerformanceLogParserTests.cs" />

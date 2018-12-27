@@ -41,7 +41,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="monitor">监视规则</param>
         /// <param name="monitorResult">监视结果</param>
         /// <returns></returns>
-        protected TerminalAnalysisResult CreateTerminalAnalysisResult(
+        public TerminalAnalysisResult CreateTerminalAnalysisResult(
             TaskArgument argument,
             TerminalMonitorItem monitor,
             TerminalMonitorResult monitorResult)
@@ -81,7 +81,7 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="monitor">监视规则</param>
         /// <param name="monitorResult">监视结果</param>
         /// <returns></returns>
-        protected PerformanceAnalysisResult CreatePerformanceAnalysisResult(
+        public PerformanceAnalysisResult CreatePerformanceAnalysisResult(
             TaskArgument argument,
             PerformanceMonitorItem monitor,
             PerformanceMonitorResult monitorResult)
