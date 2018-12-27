@@ -119,7 +119,7 @@ namespace xQuantLogFactory.Model.Monitor
                 // 当父节点不存在表名时，使用默认表名
                 if (string.IsNullOrEmpty(rootMonitor.SheetName))
                 {
-                    rootMonitor.SheetName = ConfigHelper.ExcelSourceSheetName;
+                    rootMonitor.SheetName = FixedDatas.ExcelSourceSheetName;
                 }
             }
 

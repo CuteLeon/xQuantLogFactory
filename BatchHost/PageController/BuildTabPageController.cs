@@ -385,12 +385,12 @@ namespace BatchHost
                 batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.CLIENT_INFO}={argument.IncludeClientInfo.ToString()}");
             }
 
-            if (argument.ReportMode != ConfigHelper.DefaultReportMode)
+            if (argument.ReportMode != FixedDatas.DefaultReportMode)
             {
                 batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.REPORT_MODE}={argument.ReportMode.ToString()}");
             }
 
-            if (!string.Equals(argument.LogLevel.ToString(), ConfigHelper.LogFileLevel, StringComparison.OrdinalIgnoreCase))
+            if (argument.LogLevel != FixedDatas.DefaultLogLevel)
             {
                 batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.LOG_LEVEL}={argument.LogLevel.ToString()}");
             }

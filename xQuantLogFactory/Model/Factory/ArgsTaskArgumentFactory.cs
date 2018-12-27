@@ -251,12 +251,12 @@ namespace xQuantLogFactory.Model.Factory
 
             if (argumentDict.TryGetValue(REPORT_MODE, out argumentValue))
             {
-                taskArgument.ReportMode = Enum.TryParse(argumentValue, true, out ReportModes reportModel) ? reportModel : ConfigHelper.DefaultReportMode;
+                taskArgument.ReportMode = Enum.TryParse(argumentValue, true, out ReportModes reportModel) ? reportModel : FixedDatas.DefaultReportMode;
             }
 
             if (argumentDict.TryGetValue(LOG_LEVEL, out argumentValue))
             {
-                ConfigHelper.LogFileLevel = argumentValue;
+                taskArgument.LogLevel = Enum.TryParse(argumentValue, out LogLevels logLevel) ? logLevel : FixedDatas.DefaultLogLevel;
             }
 
             if (argumentDict.TryGetValue(AUTO_EXIT, out argumentValue))

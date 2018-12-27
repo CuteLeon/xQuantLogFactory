@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{13A1CF59-4A16-44AE-A47C-0580DAC1EA7A}</ProjectGuid>
+    <ProjectGuid>{50F0305A-B622-41F3-8F95-320C316A15B1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>xQuantLogFactoryTests</RootNamespace>
-    <AssemblyName>xQuantLogFactoryTests</AssemblyName>
+    <RootNamespace>BatchHostTests</RootNamespace>
+    <AssemblyName>BatchHostTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -26,7 +26,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,13 +34,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -56,33 +51,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonLoadAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonPrefixAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonKeyValuePairAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\GroupAnalysiser\CoreAsyncGroupAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\GroupAnalysiser\GroupLogAnalysiserTests.cs" />
-    <Compile Include="BIZ\Parser\LogParserBaseTests.cs" />
-    <Compile Include="BIZ\Parser\LogParserTests.cs" />
-    <Compile Include="BIZ\Parser\PerformanceLogParserTests.cs" />
-    <Compile Include="Model\EqualityComparer\LogResultEqualityComparerTests.cs" />
-    <Compile Include="Model\Extensions\TaskArgumentExtensionTests.cs" />
-    <Compile Include="Model\Factory\TaskArgumentFactoryTests.cs" />
-    <Compile Include="Model\Monitor\MonitorBaseTests.cs" />
-    <Compile Include="Model\Monitor\MonitorContainerTests.cs" />
-    <Compile Include="Model\Monitor\MonitorItemTests.cs" />
-    <Compile Include="Model\Result\GroupAnalysisResultContainerTests.cs" />
+    <Compile Include="Model\ExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\Extensions\DeepCloneExtensionTests.cs" />
-    <Compile Include="Utils\Extensions\XMLSerializationExtensionTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\xQuantLogFactory\xQuantLogFactory.csproj">
-      <Project>{A2D3FB8C-BF8D-478E-AC36-0C9DC1E05EDE}</Project>
-      <Name>xQuantLogFactory</Name>
+    <ProjectReference Include="..\BatchHost\BatchHost.csproj">
+      <Project>{3B6F2BE5-0372-45A7-B729-AF950AEF138A}</Project>
+      <Name>BatchHost</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

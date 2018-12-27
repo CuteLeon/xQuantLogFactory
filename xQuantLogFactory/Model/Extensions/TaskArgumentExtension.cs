@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+
+using xQuantLogFactory.Model.Fixed;
 
 namespace xQuantLogFactory.Model.Extensions
 {
@@ -16,6 +19,11 @@ namespace xQuantLogFactory.Model.Extensions
         /// <returns></returns>
         public static bool CheckLogFileTime(this TaskArgument argument, DateTime fileCreationTime, DateTime lastWriteTime)
         {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(nameof(argument));
+            }
+
             // 如果文件创建时间晚于文件最后写入时间，则此文件是被复制而来，将文件创建时间当做无限早处理
             if (fileCreationTime > lastWriteTime)
             {
@@ -35,9 +43,53 @@ namespace xQuantLogFactory.Model.Extensions
         /// <returns></returns>
         public static bool CheckLogTime(this TaskArgument argument, DateTime logTime)
         {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(nameof(argument));
+            }
+
             return
                 (argument.LogStartTime == null || argument.LogStartTime <= logTime) &&
                 (argument.LogFinishTime == null || argument.LogFinishTime >= logTime);
+        }
+
+        /// <summary>
+        /// 获取日志文件正则表达式
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        public static Regex GetLogLevelRegex(this TaskArgument argument)
+        {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(nameof(argument));
+            }
+
+            string pattern = string.Empty;
+
+            switch (argument.LogLevel)
+            {
+                case LogLevels.Debug:
+                case LogLevels.Info:
+                case LogLevels.Trace:
+                case LogLevels.Warn:
+                case LogLevels.Error:
+                    {
+                        pattern = $@"^({FixedDatas.ServerLogFileNamePrefix}|.*?{FixedDatas.ClientLogFileNamePrefix})Log_{argument.LogLevel}\.txt(|\.\d*)$";
+                        break;
+                    }
+
+                case LogLevels.Perf:
+                    {
+                        pattern = $@"^{FixedDatas.PerformanceLogFileNamePrefix}\d{{8}}\.txt$";
+                        break;
+                    }
+
+                default:
+                    throw new ArgumentException(nameof(argument.LogLevel));
+            }
+
+            return new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
         }
     }
 }

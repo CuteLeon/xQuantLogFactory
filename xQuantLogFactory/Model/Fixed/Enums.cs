@@ -128,6 +128,42 @@ namespace xQuantLogFactory.Model.Fixed
     }
 
     /// <summary>
+    /// 日志等级
+    /// </summary>
+    public enum LogLevels
+    {
+        /// <summary>
+        /// Debug
+        /// </summary>
+        Debug = 0,
+
+        /// <summary>
+        /// Info
+        /// </summary>
+        Info = 1,
+
+        /// <summary>
+        /// Trace
+        /// </summary>
+        Trace = 2,
+
+        /// <summary>
+        /// Warn
+        /// </summary>
+        Warn = 3,
+
+        /// <summary>
+        /// Error
+        /// </summary>
+        Error = 4,
+
+        /// <summary>
+        /// Perf
+        /// </summary>
+        Perf = 5,
+    }
+
+    /// <summary>
     /// 日志分析报告输出模式
     /// </summary>
     public enum ReportModes

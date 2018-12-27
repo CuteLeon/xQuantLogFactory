@@ -43,12 +43,12 @@
             this.ClientInfoCheckBox = new System.Windows.Forms.CheckBox();
             this.ReportComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.LogLevelTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.OpenReportCheckBox = new System.Windows.Forms.CheckBox();
             this.AutoExitCheckBox = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.LogLevelComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // Btn_Cancel
@@ -225,17 +225,6 @@
             this.label5.Text = "导出报告格式:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // LogLevelTextBox
-            // 
-            this.LogLevelTextBox.BackColor = System.Drawing.Color.LightGray;
-            this.LogLevelTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LogLevelTextBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.LogLevelTextBox.Location = new System.Drawing.Point(127, 225);
-            this.LogLevelTextBox.Name = "LogLevelTextBox";
-            this.LogLevelTextBox.Size = new System.Drawing.Size(292, 19);
-            this.LogLevelTextBox.TabIndex = 19;
-            this.LogLevelTextBox.Text = "DEBUG";
-            // 
             // label6
             // 
             this.label6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -290,6 +279,18 @@
             this.label8.Text = "记录信息:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // LogLevelComboBox
+            // 
+            this.LogLevelComboBox.BackColor = System.Drawing.Color.LightGray;
+            this.LogLevelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LogLevelComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LogLevelComboBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.LogLevelComboBox.FormattingEnabled = true;
+            this.LogLevelComboBox.Location = new System.Drawing.Point(127, 221);
+            this.LogLevelComboBox.Name = "LogLevelComboBox";
+            this.LogLevelComboBox.Size = new System.Drawing.Size(292, 28);
+            this.LogLevelComboBox.TabIndex = 24;
+            // 
             // CreateTaskArgumentForm
             // 
             this.AcceptButton = this.Btn_OK;
@@ -297,11 +298,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.Btn_Cancel;
             this.ClientSize = new System.Drawing.Size(452, 345);
+            this.Controls.Add(this.LogLevelComboBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.OpenReportCheckBox);
             this.Controls.Add(this.AutoExitCheckBox);
-            this.Controls.Add(this.LogLevelTextBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.ReportComboBox);
             this.Controls.Add(this.label5);
@@ -344,11 +345,11 @@
         private System.Windows.Forms.CheckBox ClientInfoCheckBox;
         private System.Windows.Forms.ComboBox ReportComboBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox LogLevelTextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox OpenReportCheckBox;
         private System.Windows.Forms.CheckBox AutoExitCheckBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox LogLevelComboBox;
     }
 }

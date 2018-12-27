@@ -59,10 +59,9 @@ namespace xQuantLogFactory.Model.Factory
         {
             this.MonitorComboBox.Items.AddRange(CreateTaskArgumentForm.GetMonitorFiles(ConfigHelper.MonitorDirectory));
 
-            foreach (var mode in Enum.GetValues(typeof(ReportModes)))
-            {
-                this.ReportComboBox.Items.Add(mode);
-            }
+            this.ReportComboBox.Items.AddRange(Enum.GetValues(typeof(ReportModes)).Cast<object>().ToArray());
+
+            this.LogLevelComboBox.Items.AddRange(Enum.GetValues(typeof(LogLevels)).Cast<object>().ToArray());
 
             this.ApplyTaskArgument(this.TargetTaskArgument);
         }
@@ -174,8 +173,6 @@ namespace xQuantLogFactory.Model.Factory
             try
             {
                 this.targetTaskArgument = this.ConvertToTaskArgument();
-
-                ConfigHelper.LogFileLevel = this.LogLevelTextBox.Text;
             }
             catch
             {
@@ -200,6 +197,7 @@ namespace xQuantLogFactory.Model.Factory
                 AutoExit = this.AutoExitCheckBox.Checked,
                 AutoOpenReport = this.OpenReportCheckBox.Checked,
                 ReportMode = (ReportModes)this.ReportComboBox.SelectedItem,
+                LogLevel = (LogLevels)this.LogLevelComboBox.SelectedItem,
             };
 
             if (this.StartTimePicker.Checked)

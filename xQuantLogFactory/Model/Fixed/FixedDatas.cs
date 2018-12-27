@@ -98,6 +98,11 @@
         #region 保留表名常量
 
         /// <summary>
+        /// Excel原始数据表名称
+        /// </summary>
+        public const string ExcelSourceSheetName = "原始";
+
+        /// <summary>
         /// 内存表名
         /// </summary>
         public const string MEMORY_SHEET_NAME = "内存";
@@ -141,6 +146,16 @@
         #region 业务数据常量
 
         /// <summary>
+        /// Gets 默认日志等级
+        /// </summary>
+        public const LogLevels DefaultLogLevel = LogLevels.Debug;
+
+        /// <summary>
+        /// 默认导出报告模式
+        /// </summary>
+        public const ReportModes DefaultReportMode = ReportModes.Excel;
+
+        /// <summary>
         /// Performance日志开始消息常量
         /// </summary>
         public const string PERFORMANCE_START_MESSAGE = "开始";
@@ -162,6 +177,29 @@
         /// Performance监视规则XML序列化元素名称
         /// </summary>
         public const string PERFORMANCE_MONITOR_XML_ELEMENT_NAME = "Perf";
+        #endregion
+
+        #region 日志文件实体
+
+        /// <summary>
+        /// 服务端日志文件名称前缀
+        /// </summary>
+        public const string ServerLogFileNamePrefix = "Srv";
+
+        /// <summary>
+        /// 客户端日志文件名称前缀
+        /// </summary>
+        public const string ClientLogFileNamePrefix = "Clt";
+
+        /// <summary>
+        /// Performance日志文件名称前缀
+        /// </summary>
+        public const string PerformanceLogFileNamePrefix = "performanceLog";
+
+        /// <summary>
+        /// Performance日志文件别名
+        /// </summary>
+        public const string PerformanceLogFileAlias = "PERF";
         #endregion
     }
 }

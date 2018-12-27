@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
-using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.BIZ.FileFinder
 {
@@ -35,7 +35,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
             }
 
             DirectoryInfo directoryInfo = new DirectoryInfo(directory);
-            Regex logRegex = new Regex(ConfigHelper.LogFileNameFormat, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline);
+            Regex logRegex = argument.GetLogLevelRegex();
 
             foreach (var (fullName, creationTime, lastWriteTime) in directoryInfo
                 .GetFiles("*.txt*", SearchOption.AllDirectories)
@@ -98,15 +98,15 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <returns></returns>
         public LogFileTypes GetLogFileType(string fileName)
         {
-            if (fileName.IndexOf($"{ConfigHelper.ClientLogFileNamePrefix}Log_", StringComparison.OrdinalIgnoreCase) > -1)
+            if (fileName.IndexOf($"{FixedDatas.ClientLogFileNamePrefix}Log_", StringComparison.OrdinalIgnoreCase) > -1)
             {
                 return LogFileTypes.Client;
             }
-            else if (fileName.StartsWith(ConfigHelper.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            else if (fileName.StartsWith(FixedDatas.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
             {
                 return LogFileTypes.Server;
             }
-            else if (fileName.StartsWith(ConfigHelper.PerformanceLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            else if (fileName.StartsWith(FixedDatas.PerformanceLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
             {
                 return LogFileTypes.Performance;
             }

@@ -6,7 +6,6 @@ using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
-using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model
 {
@@ -18,6 +17,9 @@ namespace xQuantLogFactory.Model
     [XmlInclude(typeof(TaskArgument))]
     public class TaskArgument
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaskArgument"/> class.
+        /// </summary>
         public TaskArgument()
         {
             this.TaskID = Guid.NewGuid().ToString("N");
@@ -63,6 +65,12 @@ namespace xQuantLogFactory.Model
         public DateTime TaskFinishTime { get; set; }
 
         /// <summary>
+        /// Gets or sets 日志等级
+        /// </summary>
+        [XmlElement("LogLevel")]
+        public LogLevels LogLevel { get; set; } = FixedDatas.DefaultLogLevel;
+
+        /// <summary>
         /// Gets or sets a value indicating whether 包含系统信息
         /// </summary>
         [XmlElement("IncludeSystemInfo")]
@@ -95,7 +103,7 @@ namespace xQuantLogFactory.Model
         /// Gets or sets 日志分析报告输出模式
         /// </summary>
         [XmlElement("ReportMode")]
-        public ReportModes ReportMode { get; set; } = ConfigHelper.DefaultReportMode;
+        public ReportModes ReportMode { get; set; } = FixedDatas.DefaultReportMode;
 
         /// <summary>
         /// Gets or sets 最近一次导出的日志报告路径
