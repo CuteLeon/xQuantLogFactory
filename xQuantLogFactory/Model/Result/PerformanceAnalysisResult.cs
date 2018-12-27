@@ -6,7 +6,7 @@ namespace xQuantLogFactory.Model.Result
     /// <summary>
     /// Performance分析结果
     /// </summary>
-    public class PerformanceAnalysisResult : AnalysisResultBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
+    public class PerformanceAnalysisResult : AnalysisResultRelBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PerformanceAnalysisResult"/> class.

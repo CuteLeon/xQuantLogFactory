@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 
@@ -14,32 +13,21 @@ namespace xQuantLogFactory.Model.LogFile
     /// <typeparam name="TMonitorResult"></typeparam>
     /// <typeparam name="TAnalysisResult"></typeparam>
     /// <typeparam name="TLogFile"></typeparam>
-    public abstract class LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : FileBase
-        where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+    public abstract class LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : LogFileBase
+        where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
     {
-        #region 基础属性
-
-        /// <summary>
-        /// Gets or sets 日志文件类型
-        /// </summary>
-        public LogFileTypes LogFileType { get; set; }
+        #region 泛型属性
 
         /// <summary>
         /// Gets 分析结果总耗时（单位：毫秒）
         /// </summary>
-        public double ElapsedMillisecond
+        public override double ElapsedMillisecond
         {
-            get
-            {
-                return this.AnalysisResults.Sum(result => result.ElapsedMillisecond);
-            }
+            get => this.AnalysisResults.Sum(result => result.ElapsedMillisecond);
         }
-        #endregion
-
-        #region 泛型属性
 
         /// <summary>
         /// Gets or sets 日志解析结果列表

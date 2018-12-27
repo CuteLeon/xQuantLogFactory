@@ -9,7 +9,7 @@ namespace xQuantLogFactory.Model.Result
     /// </summary>
     /// <typeparam name="TLogFile"></typeparam>
     public abstract class LogResultBase<TLogFile>
-        where TLogFile : FileBase
+        where TLogFile : LogFileBase
     {
         /// <summary>
         /// Gets or sets 任务参数

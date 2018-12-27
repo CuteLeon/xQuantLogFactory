@@ -14,25 +14,12 @@ namespace xQuantLogFactory.Model.Result
     /// <typeparam name="TMonitorResult"></typeparam>
     /// <typeparam name="TAnalysisResult"></typeparam>
     /// <typeparam name="TLogFile"></typeparam>
-    public abstract class AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : LogResultBase<TLogFile>
-        where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+    public abstract class AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : AnalysisResultBase<TLogFile>
+        where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
     {
-        #region 基础属性
-
-        /// <summary>
-        /// Gets or sets 结果耗时（单位：毫秒）
-        /// </summary>
-        public double ElapsedMillisecond { get; set; }
-
-        /// <summary>
-        /// Gets 分析数据
-        /// </summary>
-        public Dictionary<string, object> AnalysisDatas { get; } = new Dictionary<string, object>();
-        #endregion
-
         #region 泛型类型
 
         private TMonitorResult startMonitorResult;

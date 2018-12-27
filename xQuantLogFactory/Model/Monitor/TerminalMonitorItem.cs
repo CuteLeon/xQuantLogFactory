@@ -12,7 +12,7 @@ namespace xQuantLogFactory.Model.Monitor
     /// 监视规则
     /// </summary>
     [Serializable]
-    public class TerminalMonitorItem : MonitorItemBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
+    public class TerminalMonitorItem : MonitorItemRelBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TerminalMonitorItem"/> class.

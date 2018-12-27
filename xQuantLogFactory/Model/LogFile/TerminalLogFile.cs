@@ -10,7 +10,7 @@ namespace xQuantLogFactory.Model.LogFile
     /// <summary>
     /// 客户端和服务端日志文件
     /// </summary>
-    public class TerminalLogFile : LogFileBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
+    public class TerminalLogFile : LogFileRelBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TerminalLogFile"/> class.

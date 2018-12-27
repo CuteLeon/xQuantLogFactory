@@ -37,10 +37,10 @@ namespace xQuantLogFactory.Model.Result
         /// <param name="sourceAnalysisResults">源数据</param>
         /// <returns>树根节点列表</returns>
         public List<TAnalysisResult> InitAnalysisResultTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(IEnumerable<TAnalysisResult> sourceAnalysisResults)
-            where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
+            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         {
             if (sourceAnalysisResults == null)
             {
@@ -160,10 +160,10 @@ namespace xQuantLogFactory.Model.Result
         /// <returns></returns>
         /// <remarks>IEnumerable<>对象即使储存为变量，每次访问依然会进入此方法，若要减少计算量，需要将此方法返回数据 .ToList()</remarks>
         public IEnumerable<TAnalysisResult> GetAnalysisResults<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TAnalysisResult> analysisResults)
-            where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
+            where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         {
             if (analysisResults == null)
             {

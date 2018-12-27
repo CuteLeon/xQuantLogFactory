@@ -41,10 +41,10 @@ namespace xQuantLogFactory.Model.Monitor
         /// <typeparam name="TLogFile"></typeparam>
         /// <param name="monitors"></param>
         public void InitMonitorTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TMonitor> monitors)
-            where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
+            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         {
             if (monitors == null)
             {
@@ -158,10 +158,10 @@ namespace xQuantLogFactory.Model.Monitor
         /// <param name="monitors"></param>
         /// <returns></returns>
         public IEnumerable<TMonitor> GetMonitorTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TMonitor> monitors)
-            where TMonitor : MonitorItemBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TMonitorResult : MonitorResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TAnalysisResult : AnalysisResultBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TLogFile : LogFileBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
+            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
         {
             if (monitors == null)
             {

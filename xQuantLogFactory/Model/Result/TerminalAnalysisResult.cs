@@ -6,7 +6,7 @@ namespace xQuantLogFactory.Model.Result
     /// <summary>
     /// 客户端和服务端分析结果
     /// </summary>
-    public class TerminalAnalysisResult : AnalysisResultBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
+    public class TerminalAnalysisResult : AnalysisResultRelBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TerminalAnalysisResult"/> class.

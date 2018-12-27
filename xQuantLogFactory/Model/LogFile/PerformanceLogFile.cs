@@ -9,7 +9,7 @@ namespace xQuantLogFactory.Model.LogFile
     /// <summary>
     /// Performance 日志文件
     /// </summary>
-    public class PerformanceLogFile : LogFileBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
+    public class PerformanceLogFile : LogFileRelBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PerformanceLogFile"/> class.

@@ -1,11 +1,13 @@
 ﻿using System;
 
+using xQuantLogFactory.Model.Fixed;
+
 namespace xQuantLogFactory.Model.LogFile
 {
     /// <summary>
     /// 文件基类
     /// </summary>
-    public abstract class FileBase
+    public abstract class LogFileBase
     {
         #region 基础属性
 
@@ -28,6 +30,16 @@ namespace xQuantLogFactory.Model.LogFile
         /// Gets or sets 上次写入时间
         /// </summary>
         public DateTime LastWriteTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets 日志文件类型
+        /// </summary>
+        public LogFileTypes LogFileType { get; set; }
+
+        /// <summary>
+        /// Gets 分析结果总耗时（单位：毫秒）
+        /// </summary>
+        public abstract double ElapsedMillisecond { get; }
         #endregion
     }
 }

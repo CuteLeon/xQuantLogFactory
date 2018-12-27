@@ -12,7 +12,7 @@ namespace xQuantLogFactory.Model.Monitor
     /// <summary>
     /// Performance 监视规则
     /// </summary>
-    public class PerformanceMonitorItem : MonitorItemBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
+    public class PerformanceMonitorItem : MonitorItemRelBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PerformanceMonitorItem"/> class.
