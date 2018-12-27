@@ -1,4 +1,5 @@
 ﻿using System;
+
 using xQuantLogFactory.Model.LogFile;
 
 namespace xQuantLogFactory.Model.Result

@@ -1,8 +1,14 @@
-﻿using System;
+﻿using xQuantLogFactory.Utils.Extensions;
+using System;
 using System.Linq;
 using System.Reflection;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Result;
+using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.Monitor;
+using System.Collections.Generic;
 
 namespace xQuantLogFactory.Utils.Extensions.Tests
 {
@@ -117,7 +123,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 get => this.PublicInt;
                 set => this.PublicInt = value;
             }
-            
+
             private static double PrivateDoubleProperty
             {
                 get => PrivateStaticDouble;
@@ -136,7 +142,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
         }
 
         [TestMethod()]
-        public void DeepCloneTest()
+        public void DeepClonePreTest()
         {
             /* 成员 = 方法 并 属性 并 字段
              * 默认方法获取：
@@ -157,6 +163,44 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             Console.WriteLine("成员测试：");
             Console.WriteLine($"seedType.GetMembers() \t: \t{string.Join("、", seedType.GetMembers().Select(member => member.Name))}");
             Console.WriteLine($"seedType.GetMembers(*) \t: \t{string.Join("、", seedType.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).Select(member => member.Name))}");
+        }
+
+        [TestMethod()]
+        public void DeepCloneTest()
+        {
+            TaskArgument sourceArgument = new TaskArgument()
+            {
+                AutoExit = true,
+                AutoOpenReport = false,
+                IncludeClientInfo = false,
+                IncludeSystemInfo = true,
+                AnalysisResultContainerRoot = new AnalysisResultContainer(),
+                LogDirectory = "D:\\LOG",
+                LogStartTime = DateTime.MinValue,
+                LogFinishTime = DateTime.MaxValue,
+                LogLevel = LogLevels.Perf,
+                MonitorContainerRoot = new MonitorContainer(),
+                MonitorFileName = "test.xml",
+                PerformanceAnalysisResults = new List<PerformanceAnalysisResult>(),
+                PerformanceLogFiles = new List<Model.LogFile.PerformanceLogFile>(),
+                PerformanceMonitorResults = new List<PerformanceMonitorResult>(),
+                ReportMode = ReportModes.HTML,
+                TaskStartTime = DateTime.MinValue,
+                TaskFinishTime = DateTime.MaxValue,
+                TaskID = Guid.NewGuid().ToString("N"),
+                TerminalAnalysisResults = new List<TerminalAnalysisResult>(),
+                TerminalLogFiles = new List<Model.LogFile.TerminalLogFile>(),
+                TerminalMonitorResults = new List<TerminalMonitorResult>(),
+            };
+
+            TaskArgument cloneArgument = sourceArgument.DeepClone();
+
+            foreach (var property in typeof(TaskArgument)
+                .GetProperties(BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
+                .Where(property => property.GetSetMethod(true) != null))
+            {
+                Assert.AreEqual(property.GetValue(sourceArgument, null), property.GetValue(cloneArgument, null));
+            }
         }
     }
 }
