@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Result;
-using xQuantLogFactory.Utils;
 
 namespace xQuantLogFactory.Model.Monitor
 {
