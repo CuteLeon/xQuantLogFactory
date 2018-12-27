@@ -29,9 +29,9 @@ namespace BatchHost.Utils
 
         [DllImport("user32.dll")]
         public static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprc, IntPtr hrgn, uint flags);
-        [DllImportAttribute("user32.dll")]
+        [DllImport("user32.dll")]
         private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImportAttribute("user32.dll")]
+        [DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
 
         public const int HT_CAPTION = 0x2;

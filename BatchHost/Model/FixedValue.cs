@@ -11,10 +11,12 @@
             /// 天
             /// </summary>
             Day = 0,
+
             /// <summary>
             /// 小时
             /// </summary>
             Hour = 1,
+
             /// <summary>
             /// 分钟
             /// </summary>
@@ -30,19 +32,21 @@
             /// 准备状态
             /// </summary>
             Prepare = 0,
+
             /// <summary>
             /// 工作状态
             /// </summary>
             Working = 1,
+
             /// <summary>
             /// 取消状态
             /// </summary>
             Cancel = 2,
+
             /// <summary>
             /// 任务结束
             /// </summary>
             Finish = 3,
         }
-
     }
 }
