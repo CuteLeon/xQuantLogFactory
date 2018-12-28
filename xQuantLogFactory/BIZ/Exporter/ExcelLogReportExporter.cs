@@ -29,7 +29,8 @@ namespace xQuantLogFactory.BIZ.Exporter
         private static readonly string[] SpecialSheetNames = new string[]
         {
             FixedDatas.MEMORY_SHEET_NAME,
-            FixedDatas.PERFORMANCE_SHEET_NAME,
+            FixedDatas.PERFORMANCE_MONITOR_SHEET_NAME,
+            FixedDatas.PERFORMANCE_PARSE_SHEET_NAME,
             FixedDatas.TRADE_SETTLE_SHEET_NAME,
             FixedDatas.ANALYSIS_SHEET_NAME,
             FixedDatas.CORE_SERVICE_SHEET_NAME,
@@ -88,7 +89,8 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
                     this.ExportMemorySheet(excel, argument);
-                    this.ExportPerformanceSheet(excel, argument);
+                    this.ExportPerformanceMonitorSheet(excel, argument);
+                    this.ExportPerformanceParseSheet(excel, argument);
                     this.ExportTradeClearingSheet(excel, argument);
                     this.ExportCoreServiceSheet(excel, argument);
                     this.ExportFormSheet(excel, argument);
@@ -541,20 +543,20 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 导出Performance日志表
+        /// 导出Performance监视结果表
         /// </summary>
         /// <param name="excel"></param>
         /// <param name="argument"></param>
-        public void ExportPerformanceSheet(ExcelPackage excel, TaskArgument argument)
+        public void ExportPerformanceMonitorSheet(ExcelPackage excel, TaskArgument argument)
         {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.PERFORMANCE_SHEET_NAME];
+            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.PERFORMANCE_MONITOR_SHEET_NAME];
             if (sheet == null)
             {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.PERFORMANCE_SHEET_NAME} 数据表，写入失败！");
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.PERFORMANCE_MONITOR_SHEET_NAME} 数据表，写入失败！");
             }
             else
             {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_SHEET_NAME} 表数据 ...");
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_MONITOR_SHEET_NAME} 表数据 ...");
                 Rectangle rectangle = new Rectangle(1, 2, 10, argument.PerformanceAnalysisResults.Count);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
@@ -582,6 +584,65 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                             rowID++;
                         }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出Performance解析结果表
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportPerformanceParseSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet dataSheet = excel.Workbook.Worksheets[FixedDatas.PERFORMANCE_PARSE_SHEET_NAME];
+            if (dataSheet == null)
+            {
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.PERFORMANCE_PARSE_SHEET_NAME} 数据表，写入失败！");
+            }
+            else
+            {
+                /* TODO: [依赖限制] Excel 2010限制最大导出记录数量 = ExcelPackage.MaxRows = 1048576
+                 * https://github.com/JanKallman/EPPlus/blob/master/EPPlus/ExcelPackage.cs
+                 */
+                int rowCount = argument.PerformanceParseResults.Count,
+                     maxRow = ExcelPackage.MaxRows - 1;
+
+                IEnumerable<PerformanceMonitorResult> performanceParseResults = argument.PerformanceParseResults;
+
+                if (rowCount > maxRow)
+                {
+                    this.Tracer.WriteLine(
+                        "\tPerformance解析结果数量 {0} 大于支持的最大导出数量 {1} ，将对多余数据截断 ...",
+                        argument.PerformanceParseResults.Count,
+                        maxRow);
+
+                    rowCount = maxRow;
+                    performanceParseResults = performanceParseResults.Take(rowCount);
+                }
+
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_PARSE_SHEET_NAME} 表数据 ...");
+                Rectangle rectangle = new Rectangle(1, 2, 11, rowCount);
+                using (ExcelRange range = dataSheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
+                {
+                    int rowID = rectangle.Top;
+                    foreach (var result in performanceParseResults
+                        .OrderBy(result => (result.LogTime, result.LineNumber)))
+                    {
+                        range[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        range[rowID, 2].Value = result.IPAddress;
+                        range[rowID, 3].Value = result.UserCode;
+                        range[rowID, 4].Value = result.StartTime;
+                        range[rowID, 5].Value = result.Elapsed;
+                        range[rowID, 6].Value = result.RequestURI;
+                        range[rowID, 7].Value = result.MethodName;
+                        range[rowID, 8].Value = result.StreamLength;
+                        range[rowID, 9].Value = result.Message;
+                        range[rowID, 10].Value = result.LogFile.RelativePath;
+                        range[rowID, 11].Value = result.LineNumber;
+
+                        rowID++;
                     }
                 }
             }

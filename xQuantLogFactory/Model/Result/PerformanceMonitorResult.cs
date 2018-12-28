@@ -23,6 +23,17 @@ namespace xQuantLogFactory.Model.Result
         /// </summary>
         /// <param name="argument"></param>
         /// <param name="logFile"></param>
+        public PerformanceMonitorResult(TaskArgument argument, PerformanceLogFile logFile)
+        {
+            this.TaskArgument = argument;
+            this.LogFile = logFile;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerformanceMonitorResult"/> class.
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <param name="logFile"></param>
         /// <param name="monitor"></param>
         public PerformanceMonitorResult(TaskArgument argument, PerformanceLogFile logFile, PerformanceMonitorItem monitor)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
@@ -34,5 +35,10 @@ namespace xQuantLogFactory.Model.LogFile
             this.LastWriteTime = lastWriteTime;
             this.RelativePath = relativePath;
         }
+
+        /// <summary>
+        /// Gets or sets performance解析结果列表
+        /// </summary>
+        public virtual List<PerformanceMonitorResult> PerformanceParseResults { get; set; } = new List<PerformanceMonitorResult>();
     }
 }

@@ -318,8 +318,9 @@ namespace xQuantLogFactory
                 performanceLogParser.Parse(UnityTaskArgument);
 
                 UnityTracer.WriteLine(
-                    "[Performance] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个结果\n————————",
+                    "[Performance] 日志文件解析完成：\n\t在 {0} 个文件中发现 {1} 个解析结果和 {2} 个监视结果\n————————",
                     UnityTaskArgument.PerformanceLogFiles.Count(file => file.MonitorResults.Count > 0),
+                    UnityTaskArgument.PerformanceParseResults.Count,
                     UnityTaskArgument.PerformanceMonitorResults.Count);
             }
         }
@@ -633,12 +634,13 @@ namespace xQuantLogFactory
         private static void ShowParseResult()
         {
             UnityTracer.WriteLine(
-                "所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现：\n\t\t {1}\t 个监视规则的 {2}\t 个监视结果和\n\t\t {3}\t 个监视规则的 {4}\t 个Performance结果\n————————",
+                "所有日志文件解析完成：\n\t[共计] 在 {0} 个文件中发现：\n\t\t {1}\t 个监视规则的 {2}\t 个监视结果和\n\t\t {3}\t 个监视规则的 {4}\t 个Performance监视结果和\n\t\t {5}\t 个Performance解析结果\n————————",
                 UnityTaskArgument.TerminalLogFiles.Count(file => file.MonitorResults.Count > 0) + UnityTaskArgument.PerformanceLogFiles.Count(file => file.MonitorResults.Count > 0),
                 UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().Count(monitor => monitor.MonitorResults.Count > 0),
                 UnityTaskArgument.TerminalMonitorResults.Count,
                 UnityTaskArgument.MonitorContainerRoot.GetPerformanceMonitorItems().Count(monitor => monitor.MonitorResults.Count > 0),
-                UnityTaskArgument.PerformanceMonitorResults.Count());
+                UnityTaskArgument.PerformanceMonitorResults.Count,
+                UnityTaskArgument.PerformanceParseResults.Count);
         }
 
         /// <summary>

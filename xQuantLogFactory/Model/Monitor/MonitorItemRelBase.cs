@@ -78,7 +78,7 @@ namespace xQuantLogFactory.Model.Monitor
         public abstract List<TMonitor> MonitorTreeRoots { get; set; }
 
         /// <summary>
-        /// Gets or sets 监视日志解析结果表
+        /// Gets or sets 监视日志监视结果表
         /// </summary>
         [XmlIgnore]
         public virtual List<TMonitorResult> MonitorResults { get; set; } = new List<TMonitorResult>();

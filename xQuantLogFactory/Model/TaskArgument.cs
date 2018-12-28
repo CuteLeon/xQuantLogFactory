@@ -151,13 +151,19 @@ namespace xQuantLogFactory.Model
         public virtual AnalysisResultContainer AnalysisResultContainerRoot { get; set; } = new AnalysisResultContainer();
 
         /// <summary>
-        /// Gets or sets 客户端和服务端解析结果列表
+        /// Gets or sets 客户端和服务端监视结果列表
         /// </summary>
         [XmlIgnore]
         public virtual List<TerminalMonitorResult> TerminalMonitorResults { get; set; } = new List<TerminalMonitorResult>();
 
         /// <summary>
-        /// Gets or sets Performance解析结果列表
+        /// Gets or sets performance解析结果列表
+        /// </summary>
+        [XmlIgnore]
+        public virtual List<PerformanceMonitorResult> PerformanceParseResults { get; set; } = new List<PerformanceMonitorResult>();
+
+        /// <summary>
+        /// Gets or sets Performance监视结果列表
         /// </summary>
         [XmlIgnore]
         public virtual List<PerformanceMonitorResult> PerformanceMonitorResults { get; set; } = new List<PerformanceMonitorResult>();

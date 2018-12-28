@@ -30,7 +30,7 @@ namespace xQuantLogFactory.Model.LogFile
         }
 
         /// <summary>
-        /// Gets or sets 日志解析结果列表
+        /// Gets or sets 日志监视结果列表
         /// </summary>
         public virtual List<TMonitorResult> MonitorResults { get; set; } = new List<TMonitorResult>();
 

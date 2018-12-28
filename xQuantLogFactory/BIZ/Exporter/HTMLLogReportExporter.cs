@@ -411,7 +411,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>平均耗时</th>
 </thead>
 <tbody>");
-            foreach (var resultGroup in argument.PerformanceMonitorResults
+            foreach (var resultGroup in argument.PerformanceParseResults
                 .GroupBy(result => (result.RequestURI, result.MethodName))
                 .OrderBy(result => (result.Key.RequestURI, result.Key.MethodName)))
             {
@@ -444,7 +444,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>平均耗时</th>
 </thead>
 <tbody>");
-            foreach (var resultGroup in argument.PerformanceMonitorResults
+            foreach (var resultGroup in argument.PerformanceParseResults
                 .GroupBy(result => (result.RequestURI, result.MethodName))
                 .OrderByDescending(results => results.Sum(result => result.Elapsed)))
             {
@@ -476,7 +476,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <th>总耗时</th>
 </thead>
 <tbody>");
-            foreach (var resultGroup in argument.PerformanceMonitorResults
+            foreach (var resultGroup in argument.PerformanceParseResults
                 .GroupBy(result => (result.IPAddress, result.RequestURI, result.MethodName))
                 .OrderByDescending(results => results.Sum(result => result.Elapsed)))
             {
@@ -629,7 +629,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         </tr>
         <tr>
             <td class=""label"">Performance日志结果数量：</td>
-            <td class=""value"">{argument.PerformanceMonitorResults.Count().ToString("N0")}</td>
+            <td class=""value"">{argument.PerformanceParseResults.Count().ToString("N0")}</td>
         </tr>
         <tr>
             <td class=""label"">监视分析结果数量：</td>

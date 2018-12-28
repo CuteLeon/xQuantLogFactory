@@ -108,9 +108,14 @@
         public const string MEMORY_SHEET_NAME = "内存";
 
         /// <summary>
-        /// Performance日志表名
+        /// Performance监视结果表名
         /// </summary>
-        public const string PERFORMANCE_SHEET_NAME = "Performance";
+        public const string PERFORMANCE_MONITOR_SHEET_NAME = "Performance监视";
+
+        /// <summary>
+        /// Performance解析结果表名
+        /// </summary>
+        public const string PERFORMANCE_PARSE_SHEET_NAME = "Performance原始";
 
         /// <summary>
         /// 分析表名
@@ -195,11 +200,6 @@
         /// Performance日志文件名称前缀
         /// </summary>
         public const string PerformanceLogFileNamePrefix = "performanceLog";
-
-        /// <summary>
-        /// Performance日志文件别名
-        /// </summary>
-        public const string PerformanceLogFileAlias = "PERF";
         #endregion
     }
 }
