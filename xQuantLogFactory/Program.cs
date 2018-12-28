@@ -339,7 +339,7 @@ namespace xQuantLogFactory
             UnityTaskArgument.TerminalLogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
             UnityTaskArgument.MonitorContainerRoot.GetTerminalMonitorItems().ToList().ForEach(monitor => monitor.AnalysisResults.Clear());
 
-            UnityTaskArgument.PerformanceLogFiles.Clear();
+            UnityTaskArgument.PerformanceAnalysisResults.Clear();
             UnityTaskArgument.PerformanceLogFiles.ForEach(logFile => logFile.AnalysisResults.Clear());
             UnityTaskArgument.MonitorContainerRoot.GetPerformanceMonitorItems().ToList().ForEach(monitor => monitor.AnalysisResults.Clear());
 
