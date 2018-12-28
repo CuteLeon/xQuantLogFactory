@@ -13,11 +13,10 @@ namespace xQuantLogFactory.Model.LogFile
     /// <typeparam name="TMonitorResult"></typeparam>
     /// <typeparam name="TAnalysisResult"></typeparam>
     /// <typeparam name="TLogFile"></typeparam>
-    public abstract class LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : LogFileBase
-        where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+    public abstract class LogFileRelBase<TMonitorResult, TAnalysisResult, TLogFile> : LogFileBase
+        where TMonitorResult : MonitorResultBase<TLogFile>
+        where TAnalysisResult : AnalysisResultBase<TLogFile>
+        where TLogFile : LogFileBase
     {
         #region 泛型属性
 

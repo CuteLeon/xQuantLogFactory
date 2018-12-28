@@ -40,7 +40,7 @@ namespace xQuantLogFactory.Model.Result
             where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
             where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
             where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileRelBase<TMonitorResult, TAnalysisResult, TLogFile>
         {
             if (sourceAnalysisResults == null)
             {
@@ -163,7 +163,7 @@ namespace xQuantLogFactory.Model.Result
             where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
             where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
             where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TLogFile : LogFileRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileRelBase<TMonitorResult, TAnalysisResult, TLogFile>
         {
             if (analysisResults == null)
             {

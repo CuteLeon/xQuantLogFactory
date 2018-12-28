@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using xQuantLogFactory.Model.Fixed;
-using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.Model.LogFile
@@ -10,7 +9,7 @@ namespace xQuantLogFactory.Model.LogFile
     /// <summary>
     /// Performance 日志文件
     /// </summary>
-    public class PerformanceLogFile : LogFileRelBase<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
+    public class PerformanceLogFile : LogFileRelBase<PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PerformanceLogFile"/> class.

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using xQuantLogFactory.Model.Fixed;
-using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.Model.LogFile
@@ -10,7 +9,7 @@ namespace xQuantLogFactory.Model.LogFile
     /// <summary>
     /// 客户端和服务端日志文件
     /// </summary>
-    public class TerminalLogFile : LogFileRelBase<TerminalMonitorItem, TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
+    public class TerminalLogFile : LogFileRelBase<TerminalMonitorResult, TerminalAnalysisResult, TerminalLogFile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TerminalLogFile"/> class.
