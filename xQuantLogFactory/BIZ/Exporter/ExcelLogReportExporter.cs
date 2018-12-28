@@ -609,7 +609,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                 int rowCount = argument.PerformanceParseResults.Count,
                      maxRow = ExcelPackage.MaxRows - 1;
 
-                IEnumerable<PerformanceMonitorResult> performanceParseResults = argument.PerformanceParseResults;
+                /* 懒加载类型
+                 * Where(PerformanceTypes.Start)：适用于统计方法调用次数
+                 * Where(PerformanceTypes.Finish)：适用于统计方法平均耗时
+                 */
+                IEnumerable<PerformanceMonitorResult> performanceParseResults = argument.PerformanceParseResults.Where(result => result.PerformanceType == PerformanceTypes.Start);
 
                 if (rowCount > maxRow)
                 {
