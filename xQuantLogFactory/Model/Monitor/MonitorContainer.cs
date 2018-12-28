@@ -42,9 +42,9 @@ namespace xQuantLogFactory.Model.Monitor
         /// <param name="monitors"></param>
         public void InitMonitorTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TMonitor> monitors)
             where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TLogFile>
             where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TLogFile : LogFileRelBase<TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileBase
         {
             if (monitors == null)
             {
@@ -159,9 +159,9 @@ namespace xQuantLogFactory.Model.Monitor
         /// <returns></returns>
         public IEnumerable<TMonitor> GetMonitorTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(List<TMonitor> monitors)
             where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TLogFile>
             where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-            where TLogFile : LogFileRelBase<TMonitorResult, TAnalysisResult, TLogFile>
+            where TLogFile : LogFileBase
         {
             if (monitors == null)
             {

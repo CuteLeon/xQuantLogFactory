@@ -17,9 +17,9 @@ namespace xQuantLogFactory.Model.Monitor
     /// <typeparam name="TLogFile"></typeparam>
     public abstract class MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile> : MonitorItemBase
         where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
+        where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TLogFile>
         where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
-        where TLogFile : LogFileRelBase<TMonitorResult, TAnalysisResult, TLogFile>
+        where TLogFile : LogFileBase
     {
         #region 基础属性
 
