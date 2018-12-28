@@ -151,6 +151,13 @@
         #region 业务数据常量
 
         /// <summary>
+        /// Performance方法名称黑名单
+        /// </summary>
+        /// <remarks>比较一个长字符串的性能优于比较多个短字符串组成的数组，方法名以 '|' 分隔</remarks>
+        /// <remarks>GetMessageList 方法调用及其频繁，加入黑名单</remarks>
+        public const string MethodNameBlackList = "GetMessageList";
+
+        /// <summary>
         /// Gets 默认日志等级
         /// </summary>
         public const LogLevels DefaultLogLevel = LogLevels.Debug;

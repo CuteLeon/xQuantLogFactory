@@ -262,6 +262,8 @@ readToEnd(yes)->generalRegex
 
 ​	此解析器会记录两类结果：Performance日志解析结果；Performance日志监视结果；
 
+​	*GetMessageList方法调用及其频繁，将此方法拉入黑名单，解析时不计入解析结果；*
+
 ### 5.3.<span id="analysiser">分析器</span>
 
 

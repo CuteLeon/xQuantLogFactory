@@ -118,6 +118,14 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
 
+                            methodName = match.Groups["MethodName"].Value;
+
+                            // 检查方法名称是否在黑名单中
+                            if (this.CheckLogInBlackList(methodName))
+                            {
+                                continue;
+                            }
+
                             ipAddress = match.Groups["IPAddress"].Value;
                             userCode = match.Groups["UserCode"].Value;
                             startTime = DateTime.TryParse(match.Groups["StartTime"].Value, out DateTime startTimeValue) ? startTimeValue : DateTime.MinValue;
@@ -125,7 +133,6 @@ namespace xQuantLogFactory.BIZ.Parser
                             streamLength = int.TryParse(match.Groups["StreamLength"].Value, out int streamLengthValue) ? streamLengthValue : 0;
                             requestURI = match.Groups["RequestURI"].Value;
                             message = match.Groups["Message"].Value;
-                            methodName = match.Groups["MethodName"].Value;
                             performanceType = this.MatchPerformanceType(message);
 
                             // 记录所有解析结果
@@ -265,5 +272,13 @@ namespace xQuantLogFactory.BIZ.Parser
                 return PerformanceTypes.Unknown;
             }
         }
+
+        /// <summary>
+        /// 检查日志是否在黑名单中而放弃
+        /// </summary>
+        /// <param name="log"></param>
+        /// <returns></returns>
+        protected virtual bool CheckLogInBlackList(string log)
+            => FixedDatas.MethodNameBlackList.IndexOf(log) > -1;
     }
 }

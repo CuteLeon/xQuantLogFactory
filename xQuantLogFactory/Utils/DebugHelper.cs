@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils.Trace;
@@ -64,6 +65,12 @@ namespace xQuantLogFactory.Utils
         /// <param name="argument"></param>
         public void CustomDebugFunction(TaskArgument argument)
         {
+            foreach (var resultGroup in argument.PerformanceParseResults
+                .GroupBy(result => result.MethodName)
+                .OrderBy(group => group.Count()))
+            {
+                Console.WriteLine($"{resultGroup.Count()}\t{(Convert.ToDouble(resultGroup.Count()) / Convert.ToDouble(argument.PerformanceParseResults.Count())).ToString("P2")}\t{resultGroup.Key}");
+            }
         }
 
         /// <summary>
