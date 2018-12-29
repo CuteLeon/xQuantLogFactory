@@ -11,7 +11,7 @@
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        TaskArgument CreateTaskArgument<T>(T source = null) 
+        TaskArgument CreateTaskArgument<T>(T source = null)
             where T : class;
     }
 }

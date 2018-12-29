@@ -38,7 +38,7 @@ namespace xQuantLogFactory.Model.Result
         /// <returns>树根节点列表</returns>
         public List<TAnalysisResult> InitAnalysisResultTree<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>(IEnumerable<TAnalysisResult> sourceAnalysisResults)
             where TMonitor : MonitorItemRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>, new()
-            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult,  TLogFile>
+            where TMonitorResult : MonitorResultRelBase<TMonitor, TMonitorResult, TLogFile>
             where TAnalysisResult : AnalysisResultRelBase<TMonitor, TMonitorResult, TAnalysisResult, TLogFile>
             where TLogFile : LogFileBase
         {
@@ -121,7 +121,9 @@ namespace xQuantLogFactory.Model.Result
             this.PerformanceAnalysisResultRoots.Clear();
 
             // 以IP和用户代码对分析结果分组后再构建分析结果树
-            foreach (var resultGroup in analysisResults.GroupBy(result => (result.IPAddress, result.UserCode)))
+            foreach (var resultGroup in analysisResults
+                .GroupBy(result => (result.IPAddress, result.UserCode))
+                .OrderBy(group => (group.Key.IPAddress, group.Key.UserCode)))
             {
                 this.PerformanceAnalysisResultRoots.AddRange(
                     this.InitAnalysisResultTree<PerformanceMonitorItem, PerformanceMonitorResult, PerformanceAnalysisResult, PerformanceLogFile>(resultGroup));

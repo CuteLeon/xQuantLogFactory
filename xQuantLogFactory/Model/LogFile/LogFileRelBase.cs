@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
 
 namespace xQuantLogFactory.Model.LogFile

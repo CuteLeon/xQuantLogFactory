@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 
-using xQuantLogFactory.Model.Fixed;
-
 namespace xQuantLogFactory.Utils
 {
     /// <summary>
