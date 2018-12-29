@@ -165,7 +165,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                                 range[rowID, 7].Value = count;
                             }
 
-                            range[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 9].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 10].Value = analysisResult.LogFile.RelativePath;
                             range[rowID, 11].Value = analysisResult.LineNumber;
@@ -227,7 +227,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                                 range[rowID, 8].Value = param;
                             }
 
-                            range[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 10].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 11].Value = analysisResult.LogFile.RelativePath;
                             range[rowID, 12].Value = analysisResult.LineNumber;
@@ -284,7 +284,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                                 range[rowID, 7].Value = name;
                             }
 
-                            range[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 9].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 10].Value = analysisResult.LogFile.RelativePath;
                             range[rowID, 11].Value = analysisResult.LineNumber;
@@ -344,7 +344,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                             }
 
                             range[rowID, 5].Value = analysisResult.ElapsedMillisecond;
-                            range[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 8].Value = analysisResult.LogFile?.RelativePath;
                             range[rowID, 9].Value = analysisResult.StartMonitorResult?.LineNumber;
@@ -410,7 +410,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         sourceRange[rowID, 3].Value = result.Version;
                         sourceRange[rowID, 4].Value = executeID;
                         sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond : 0.0;
-                        sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                         sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
                         sourceRange[rowID, 9].Value = result.LineNumber;
@@ -530,7 +530,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
                         memoryRange[rowID, 2].Value = result.Version;
                         memoryRange[rowID, 3].Value = result.Client;
-                        memoryRange[rowID, 4].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        memoryRange[rowID, 4].Value = result.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                         if (result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory))
                         {
                             memoryRange[rowID, 5].Value = memory;
@@ -577,7 +577,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                             range[rowID, 4].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
                             range[rowID, 5].Value = executeID;
                             range[rowID, 6].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
-                            range[rowID, 7].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 7].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 8].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 9].Value = analysisResult.LogFile.RelativePath;
                             range[rowID, 10].Value = analysisResult.LineNumber;
@@ -703,7 +703,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                                 range[rowID, 8].Value = wbzh;
                             }
 
-                            range[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 10].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 11].Value = analysisResult.LogFile?.RelativePath;
 
@@ -732,7 +732,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             range[rowID, 3].Value = analysisResult.Version;
             range[rowID, 4].Value = executeID;
             range[rowID, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
-            range[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
             range[rowID, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             range[rowID, 8].Value = analysisResult.LogFile.RelativePath;
             range[rowID, 9].Value = analysisResult.LineNumber;
