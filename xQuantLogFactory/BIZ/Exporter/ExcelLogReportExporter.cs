@@ -78,7 +78,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     properties.Author = $"xQuant日志分析工具 - {Application.ProductVersion}";
                     properties.Category = "xQuant日志分析报告";
                     properties.Title = $"xQuant日志分析报告-{argument.TaskID}";
-                    properties.Comments = properties.Title;
+                    properties.Comments = $"日志目录：{argument.LogDirectory}\n监视规则：{argument.MonitorFileName}";
                     properties.Company = "xQuant";
                     properties.Created = DateTime.Now;
                     properties.Manager = properties.Author;

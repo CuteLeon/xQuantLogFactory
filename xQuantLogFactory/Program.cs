@@ -482,7 +482,7 @@ namespace xQuantLogFactory
         /// <returns></returns>
         private static string GetReportFilePath(TaskArgument argument)
         {
-            return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告_{argument.MonitorContainerRoot.Name}_{argument.LogStartTime?.ToString("yyyyMMddHHmmss")}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
+            return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告_{Path.GetFileName(argument.LogDirectory)}_{argument.MonitorContainerRoot.Name}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
         #endregion
