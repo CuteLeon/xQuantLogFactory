@@ -258,7 +258,7 @@ namespace BatchHost
 
                             for (; startTime < argument.LogFinishTime;)
                             {
-                                batchName = this.GetBatchName(monitorName, startTime, finishTime);
+                                batchName = this.GetBatchName(monitorName, argument.LogDirectory, startTime, finishTime);
 
                                 // 生成批处理文件
                                 this.SaveBatchFile(batchName, argument, monitorName, startTime, finishTime);
@@ -279,7 +279,7 @@ namespace BatchHost
                         }
                         else
                         {
-                            batchName = this.GetBatchName(monitorName, argument.LogStartTime, argument.LogFinishTime);
+                            batchName = this.GetBatchName(monitorName, argument.LogDirectory, argument.LogStartTime, argument.LogFinishTime);
 
                             // 生成批处理文件
                             this.SaveBatchFile(batchName, argument, monitorName, argument.LogStartTime, argument.LogFinishTime);
@@ -319,32 +319,37 @@ namespace BatchHost
         /// 获取批处理文件名称
         /// </summary>
         /// <param name="monitorName"></param>
+        /// <param name="targetDirectory"></param>
         /// <param name="startTime"></param>
         /// <param name="finishTime"></param>
-        private string GetBatchName(string monitorName, DateTime? startTime, DateTime? finishTime)
+        private string GetBatchName(string monitorName, string targetDirectory, DateTime? startTime, DateTime? finishTime)
         {
+            string logTimeString = string.Empty;
+
             if (startTime.HasValue)
             {
                 if (finishTime.HasValue)
                 {
-                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_介于_{startTime.Value.ToString("yyyyMMddHHmmss")}_{finishTime.Value.ToString("yyyyMMddHHmmss")}.bat";
+                    logTimeString = $"介于_{startTime.Value.ToString("yyyyMMddHHmmss")}_{finishTime.Value.ToString("yyyyMMddHHmmss")}";
                 }
                 else
                 {
-                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_晚于_{startTime.Value.ToString("yyyyMMddHHmmss")}.bat";
+                    logTimeString = $"晚于_{startTime.Value.ToString("yyyyMMddHHmmss")}";
                 }
             }
             else
             {
                 if (finishTime.HasValue)
                 {
-                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_早于_{finishTime.Value.ToString("yyyyMMddHHmmss")}.bat";
+                    logTimeString = $"早于_{finishTime.Value.ToString("yyyyMMddHHmmss")}";
                 }
                 else
                 {
-                    return $"xQBatch_{Path.GetFileNameWithoutExtension(monitorName)}_不限时段.bat";
+                    logTimeString = $"不限时段";
                 }
             }
+
+            return $"xQBatch_{Path.GetFileName(targetDirectory)}_{Path.GetFileNameWithoutExtension(monitorName)}_{logTimeString}_.bat";
         }
 
         /// <summary>
