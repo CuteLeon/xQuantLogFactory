@@ -4,7 +4,7 @@
 >
 > - date: 2018/12/14
 >
-> - last-edit: 2018/12/26
+> - last-edit: 2019/1/9
 >
 > - tips: 文档内部分图形需要使用 Typora
 >
@@ -124,7 +124,7 @@ readToEnd(yes)->generalRegex
 
 ​	是监视规则树的根节点；
 
-### 4.4.TerminalMonitorItem、TerminalMonitorItem
+### 4.4.TerminalMonitorItem、PerformanceMonitorItem
 
 ​	监视规则实体，通过泛型继承自 MonitorItemBase<>。允许使用者通过配置严谨的监视规则实现丰富的日志分析需求，是分析工具可定制化的最大体现；
 
@@ -258,11 +258,9 @@ readToEnd(yes)->generalRegex
 
 #### 5.2.3Performance日志解析器
 
-​	客户端日志解析器是针对于客户端日志实现的解析器，将针对解析日志内容的客户端、用户代码、请求时间、耗时、请求地址、方法名称、流长度、消息等数据；
+​	Performance日志解析器用于解析客户端和服务端通过Remoting框架通信时产生的执行日志，将针对解析日志内容的客户端IP、用户代码、请求时间、耗时、请求地址、方法名称、流长度、消息等数据；
 
 ​	此解析器会记录两类结果：Performance日志解析结果；Performance日志监视结果；
-
-​	*GetMessageList方法调用及其频繁，将此方法拉入黑名单，解析时不计入解析结果；*
 
 ### 5.3.<span id="analysiser">分析器</span>
 
