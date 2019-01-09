@@ -609,11 +609,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 int rowCount = argument.PerformanceParseResults.Count,
                      maxRow = ExcelPackage.MaxRows - 1;
 
-                /* 懒加载类型
-                 * Where(PerformanceTypes.Start)：适用于统计方法调用次数
-                 * Where(PerformanceTypes.Finish)：适用于统计方法平均耗时
-                 */
-                IEnumerable<PerformanceMonitorResult> performanceParseResults = argument.PerformanceParseResults.Where(result => result.PerformanceType == PerformanceTypes.Start);
+                IEnumerable<PerformanceMonitorResult> performanceParseResults = argument.PerformanceParseResults.AsEnumerable();
 
                 if (rowCount > maxRow)
                 {
@@ -636,15 +632,18 @@ namespace xQuantLogFactory.BIZ.Exporter
                     {
                         range[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                         range[rowID, 2].Value = result.IPAddress;
-                        range[rowID, 3].Value = result.UserCode;
-                        range[rowID, 4].Value = result.StartTime;
-                        range[rowID, 5].Value = result.Elapsed;
-                        range[rowID, 6].Value = result.RequestURI;
-                        range[rowID, 7].Value = result.MethodName;
-                        range[rowID, 8].Value = result.StreamLength;
-                        range[rowID, 9].Value = result.Message;
-                        range[rowID, 10].Value = result.LogFile.RelativePath;
-                        range[rowID, 11].Value = result.LineNumber;
+                        range[rowID, 3].Value = result.RequestSendTime;
+                        range[rowID, 4].Value = result.RequestReceiveTime;
+                        range[rowID, 5].Value = result.ResponseSendTime;
+                        range[rowID, 6].Value = result.ResponseReceiveTime;
+                        range[rowID, 7].Value = result.Elapsed;
+                        range[rowID, 8].Value = result.RequestURI;
+                        range[rowID, 9].Value = result.MethodName;
+                        range[rowID, 10].Value = result.RequestStreamLength;
+                        range[rowID, 11].Value = result.ResponseStreamLength;
+                        range[rowID, 12].Value = result.Message;
+                        range[rowID, 13].Value = result.LogFile.RelativePath;
+                        range[rowID, 14].Value = result.LineNumber;
 
                         rowID++;
                     }

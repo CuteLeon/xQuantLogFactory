@@ -13,20 +13,20 @@ namespace xQuantLogFactory.BIZ.Parser
     /// <summary>
     /// 客户端日志解析器
     /// </summary>
-    public class ClientLogParser : TerminalLogParserBase
+    public class ClientTerminalParser : TerminalLogParserBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientLogParser"/> class.
+        /// Initializes a new instance of the <see cref="ClientTerminalParser"/> class.
         /// </summary>
-        public ClientLogParser()
+        public ClientTerminalParser()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientLogParser"/> class.
+        /// Initializes a new instance of the <see cref="ClientTerminalParser"/> class.
         /// </summary>
         /// <param name="tracer"></param>
-        public ClientLogParser(ITracer tracer)
+        public ClientTerminalParser(ITracer tracer)
             : base(tracer)
         {
         }

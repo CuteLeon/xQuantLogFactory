@@ -74,14 +74,9 @@ namespace xQuantLogFactory.Model.Extensions
                 case LogLevels.Trace:
                 case LogLevels.Warn:
                 case LogLevels.Error:
+                case LogLevels.Performance:
                     {
                         pattern = $@"^({FixedDatas.ServerLogFileNamePrefix}|.*?{FixedDatas.ClientLogFileNamePrefix})Log_{argument.LogLevel}\.txt(|\.\d*)$";
-                        break;
-                    }
-
-                case LogLevels.Perf:
-                    {
-                        pattern = $@"^{FixedDatas.PerformanceLogFileNamePrefix}\d{{8}}\.txt$";
                         break;
                     }
 

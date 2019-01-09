@@ -57,13 +57,18 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 // if (argument.CheckLogFileTime(creationTime, lastWriteTime))
                 {
                     LogFileTypes fileType = this.GetLogFileType(fileName);
-                    switch (fileType)
+                    LogLevels logLevel = this.GetLogLevel(fileName);
+                    switch (logLevel)
                     {
-                        case LogFileTypes.Client:
-                        case LogFileTypes.Server:
+                        case LogLevels.Debug:
+                        case LogLevels.Info:
+                        case LogLevels.Trace:
+                        case LogLevels.Warn:
+                        case LogLevels.Error:
                             {
                                 argument.TerminalLogFiles.Add(new TerminalLogFile(
                                     fileType,
+                                    logLevel,
                                     fullName,
                                     creationTime,
                                     lastWriteTime,
@@ -71,10 +76,11 @@ namespace xQuantLogFactory.BIZ.FileFinder
                                 break;
                             }
 
-                        case LogFileTypes.Performance:
+                        case LogLevels.Performance:
                             {
                                 argument.PerformanceLogFiles.Add(new PerformanceLogFile(
                                     fileType,
+                                    logLevel,
                                     fullName,
                                     creationTime,
                                     lastWriteTime,
@@ -106,12 +112,26 @@ namespace xQuantLogFactory.BIZ.FileFinder
             {
                 return LogFileTypes.Server;
             }
-            else if (fileName.StartsWith(FixedDatas.PerformanceLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+
+            throw new Exception($"未知的日志文件类型：{fileName}");
+        }
+
+        /// <summary>
+        /// 获取日志等级
+        /// </summary>
+        /// <param name="fileName">日志文件名称</param>
+        /// <returns></returns>
+        public LogLevels GetLogLevel(string fileName)
+        {
+            foreach (var level in Enum.GetValues(typeof(LogLevels)))
             {
-                return LogFileTypes.Performance;
+                if (fileName.IndexOf($"_{level.ToString()}.", StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    return (LogLevels)level;
+                }
             }
 
-            return default;
+            throw new Exception($"未知的日志等级：{fileName}");
         }
     }
 }

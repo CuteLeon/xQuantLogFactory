@@ -22,13 +22,15 @@ namespace xQuantLogFactory.Model.LogFile
         /// Initializes a new instance of the <see cref="PerformanceLogFile"/> class.
         /// </summary>
         /// <param name="logFileTypes"></param>
+        /// <param name="logLevel"></param>
         /// <param name="filePath"></param>
         /// <param name="createTime"></param>
         /// <param name="lastWriteTime"></param>
         /// <param name="relativePath"></param>
-        public PerformanceLogFile(LogFileTypes logFileTypes, string filePath, DateTime createTime, DateTime lastWriteTime, string relativePath)
+        public PerformanceLogFile(LogFileTypes logFileTypes, LogLevels logLevel, string filePath, DateTime createTime, DateTime lastWriteTime, string relativePath)
         {
             this.LogFileType = logFileTypes;
+            this.LogLevel = logLevel;
             this.FilePath = filePath;
             this.CreateTime = createTime;
             this.LastWriteTime = lastWriteTime;

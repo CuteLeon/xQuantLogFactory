@@ -49,8 +49,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Performance
              * 解析结果以监视规则、IP地址、用户代码对解析结果分组；
              */
             this.Tracer?.WriteLine($"执行 Performance 通用组分析器 ....");
-            argument.PerformanceMonitorResults.
-                Where(result => result.PerformanceType == PerformanceTypes.Start)
+            argument.PerformanceMonitorResults
                 .GroupBy(result => (result.MonitorItem, result.IPAddress, result.UserCode))
                 .AsParallel().ForAll(resultGroup =>
                 {

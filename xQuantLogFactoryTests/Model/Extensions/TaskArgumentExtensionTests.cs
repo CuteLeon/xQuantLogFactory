@@ -105,42 +105,20 @@ namespace xQuantLogFactory.Model.Extensions.Tests
                 "CltLog_Info.xtperformanceog20181031",
                 "CltLog_Warn.tt",
                 "CltLog_Debug.tx",
-                "performanceog20181031.xt",
-                "performanceLg20181031.txt",
-                "performanceLo20181031.tt",
-                "performanceLog0181031.txt",
-                "performanceLog2181031.tt",
-                "performanceLog2081031.tx",
-                "performnceLog2011031.txt",
-                "performanceLog2018031.txt",
-                "erformanceLog2018131.txt",
-                "prformancLog2018101.txt",
-                "peformnceLog2018103.txt",
-                "permaceLog2018031.txt",
-                "perfrmnceLog2011031.txt",
-                "perfomnceLog2011031.txt",
-                "peroranceLog2018031.txt",
-                "perfoceLog2018131.txt",
             };
-            //有效文件名
-            string[] validlogFiles_1 = new string[]
-            {
-                "pErformanceLog00000000.txt",
-                "perFormanceLog20181031.txt",
-                "perforManceLog20181031.TXT",
-                "performAnceLog20181031.tXt",
-                "performanCeLog20181031.txT",
-                "perfOrmanceLOG20181031.Txt",
-                "performanceLog20181031.txt",
-                "performanceLog20181031.txt",
-            };
-            string[] validlogFiles_0 = new string[]
+            string[] validlogFiles = new string[]
             {
                 "SrvLog_DEbug.txt",
                 "SRVLoG_DEBug.txt.1",
                 "CLTLOG_DebUg.txt",
                 "CltLog_DebUG.TXt.1",
                 "wanglu11_hp-PC_主版本号_20181127173028_CltLog_Debug.txt",
+
+                "SrvLog_Performance.txt",
+                "SRVLoG_PerforMance.txt.1",
+                "CLTLOG_PerformAnce.txt",
+                "CltLog_PerfoRmance.TXt.1",
+                "wanglu11_hp-PC_主版本号_20181127173028_CltLog_Performance.txt",
 
                 "SrVLoG_InFo.txt",
                 "SrVLog_Info.txT.625",
@@ -168,15 +146,13 @@ namespace xQuantLogFactory.Model.Extensions.Tests
             Regex regex = argument.GetLogLevelRegex();
 
             Assert.IsTrue(invalidlogFiles.All(file => !regex.IsMatch(file)));
-            Assert.IsTrue(validlogFiles_0.Take(5).All(file => regex.IsMatch(file)));
-
-            argument.LogLevel = LogLevels.Perf;
-            regex = argument.GetLogLevelRegex();
-            Assert.IsTrue(validlogFiles_1.All(file => regex.IsMatch(file)));
+            Assert.IsTrue(validlogFiles.Take(5).All(file => regex.IsMatch(file)));
 
             LogFileFinder fileFinder = new LogFileFinder();
-            Assert.IsTrue(validlogFiles_0.Take(2).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Server));
-            Assert.IsTrue(validlogFiles_0.Skip(2).Take(3).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Client));
+            Assert.IsTrue(validlogFiles.Take(2).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Server));
+            Assert.IsTrue(validlogFiles.Skip(2).Take(3).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Client));
+            Assert.IsTrue(validlogFiles.Take(5).All(name => fileFinder.GetLogLevel(name) == LogLevels.Debug));
+            Assert.IsTrue(validlogFiles.Skip(5).Take(5).All(name => fileFinder.GetLogLevel(name) == LogLevels.Performance));
         }
     }
 }

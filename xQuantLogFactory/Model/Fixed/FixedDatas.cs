@@ -166,16 +166,6 @@
         /// 默认导出报告模式
         /// </summary>
         public const ReportModes DefaultReportMode = ReportModes.Excel;
-
-        /// <summary>
-        /// Performance日志开始消息常量
-        /// </summary>
-        public const string PERFORMANCE_START_MESSAGE = "开始";
-
-        /// <summary>
-        /// Performance日志结束消息常量
-        /// </summary>
-        public const string PERFORMANCE_FINISH_MESSAGE = "完成";
         #endregion
 
         #region 实体数据常量
@@ -202,11 +192,6 @@
         /// 客户端日志文件名称前缀
         /// </summary>
         public const string ClientLogFileNamePrefix = "Clt";
-
-        /// <summary>
-        /// Performance日志文件名称前缀
-        /// </summary>
-        public const string PerformanceLogFileNamePrefix = "performanceLog";
         #endregion
     }
 }

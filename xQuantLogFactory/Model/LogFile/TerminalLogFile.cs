@@ -22,13 +22,15 @@ namespace xQuantLogFactory.Model.LogFile
         /// Initializes a new instance of the <see cref="TerminalLogFile"/> class.
         /// </summary>
         /// <param name="logFileTypes"></param>
+        /// <param name="logLevel"></param>
         /// <param name="filePath"></param>
         /// <param name="createTime"></param>
         /// <param name="lastWriteTime"></param>
         /// <param name="relativePath"></param>
-        public TerminalLogFile(LogFileTypes logFileTypes, string filePath, DateTime createTime, DateTime lastWriteTime, string relativePath)
+        public TerminalLogFile(LogFileTypes logFileTypes, LogLevels logLevel, string filePath, DateTime createTime, DateTime lastWriteTime, string relativePath)
         {
             this.LogFileType = logFileTypes;
+            this.LogLevel = logLevel;
             this.FilePath = filePath;
             this.CreateTime = createTime;
             this.LastWriteTime = lastWriteTime;

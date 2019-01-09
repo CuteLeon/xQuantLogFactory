@@ -348,8 +348,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                         string body = $@"<b>方法调用次数：{methodNameResult.Count().ToString("N0")}</b><br>
 调用客户端数：<b>{methodNameResult.Select(result => result.IPAddress).Distinct().Count().ToString("N0")}</b><br>
 调用用户数量：<b>{methodNameResult.Select(result => result.UserCode).Distinct().Count().ToString("N0")}</b><br>
-返回总流长度：<b>{methodNameResult.Sum(result => result.StreamLength)}</b><br>
-流长度平均值：<b>{methodNameResult.Average(result => result.StreamLength).ToString("0.##")}</b>";
+返回总流长度：<b>{methodNameResult.Sum(result => result.RequestStreamLength)}</b><br>
+流长度平均值：<b>{methodNameResult.Average(result => result.RequestStreamLength).ToString("0.##")}</b>";
                         this.WriteCard(
                             $"方法名称：<b>{methodNameResult.Key}</b>",
                             body);
@@ -381,7 +381,6 @@ namespace xQuantLogFactory.BIZ.Exporter
 <tbody>");
 
             IOrderedEnumerable<PerformanceLogFile> logFiles = argument.PerformanceLogFiles
-                .Where(logFile => logFile.LogFileType == LogFileTypes.Performance)
                 .OrderByDescending(logFile => logFile.MonitorResults.Count);
 
             foreach (var logFile in logFiles)
@@ -420,9 +419,9 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td><b>{resultGroup.Key.MethodName}</b></td>
     <td>{resultGroup.Count().ToString("N0")}</td>
     <td>{resultGroup.Select(result => result.IPAddress).Distinct().Count().ToString("N0")}</td>
-    <td>{resultGroup.Min(result => result.StreamLength)}</td>
-    <td>{resultGroup.Max(result => result.StreamLength)}</td>
-    <td>{resultGroup.Sum(result => result.StreamLength)}</td>
+    <td>{resultGroup.Min(result => result.RequestStreamLength)}</td>
+    <td>{resultGroup.Max(result => result.RequestStreamLength)}</td>
+    <td>{resultGroup.Sum(result => result.RequestStreamLength)}</td>
     <td>{resultGroup.Sum(result => result.Elapsed)}</td>
     <td>{resultGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
 </tr>");
@@ -453,8 +452,8 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{resultGroup.Key.MethodName}</td>
     <td>{resultGroup.Count().ToString("N0")}</td>
     <td>{resultGroup.Select(result => result.IPAddress).Distinct().Count().ToString("N0")}</td>
-    <td>{resultGroup.Min(result => result.StreamLength)}</td>
-    <td>{resultGroup.Max(result => result.StreamLength)}</td>
+    <td>{resultGroup.Min(result => result.RequestStreamLength)}</td>
+    <td>{resultGroup.Max(result => result.RequestStreamLength)}</td>
     <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
     <td>{resultGroup.Average(result => result.Elapsed).ToString("0.##")}</td>
 </tr>");
@@ -485,9 +484,9 @@ namespace xQuantLogFactory.BIZ.Exporter
     <td>{resultGroup.Key.RequestURI}</td>
     <td>{resultGroup.Key.MethodName}</td>
     <td>{resultGroup.Count().ToString("N0")}</td>
-    <td>{resultGroup.Min(result => result.StreamLength)}</td>
-    <td>{resultGroup.Max(result => result.StreamLength)}</td>
-    <td>{resultGroup.Sum(result => result.StreamLength)}</td>
+    <td>{resultGroup.Min(result => result.RequestStreamLength)}</td>
+    <td>{resultGroup.Max(result => result.RequestStreamLength)}</td>
+    <td>{resultGroup.Sum(result => result.RequestStreamLength)}</td>
     <td><b>{resultGroup.Sum(result => result.Elapsed)}</b></td>
 </tr>");
             }

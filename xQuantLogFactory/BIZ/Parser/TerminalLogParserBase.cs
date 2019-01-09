@@ -19,7 +19,7 @@ namespace xQuantLogFactory.BIZ.Parser
     /// <summary>
     /// 客户端和服务端日志解析抽象类
     /// </summary>
-    public abstract class TerminalLogParserBase : LogParserBase
+    public abstract class TerminalLogParserBase : LogParserBase<TerminalLogFile, TerminalMonitorResult>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TerminalLogParserBase"/> class.
@@ -63,7 +63,7 @@ namespace xQuantLogFactory.BIZ.Parser
             // 遍历文件
             this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
-                this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}");
+                this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}, Level：{logFile.LogLevel}");
 
                 // 检测日志文件解析耗时
                 Stopwatch stopWatch = new Stopwatch();
@@ -207,20 +207,6 @@ namespace xQuantLogFactory.BIZ.Parser
             argument.TerminalMonitorResults = argument.TerminalMonitorResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
             this.Tracer?.WriteLine("<<< 排序完成");
         }
-
-        /// <summary>
-        /// 获取过滤后文件
-        /// </summary>
-        /// <param name="argument"></param>
-        /// <returns></returns>
-        protected abstract IEnumerable<TerminalLogFile> GetFileFiltered(TaskArgument argument);
-
-        /// <summary>
-        /// 应用精准匹配数据
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="particularMatch"></param>
-        protected abstract void ApplyParticularMatch(TerminalMonitorResult result, Match particularMatch);
 
         /// <summary>
         /// 创建解析结果对象

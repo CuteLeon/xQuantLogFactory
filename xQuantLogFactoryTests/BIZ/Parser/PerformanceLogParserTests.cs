@@ -26,7 +26,8 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             argument.LogFinishTime = argument.LogStartTime?.AddSeconds(5);
             argument.PerformanceLogFiles.Add(new PerformanceLogFile()
             {
-                LogFileType = LogFileTypes.Performance,
+                LogFileType = LogFileTypes.Server,
+                LogLevel = LogLevels.Performance,
                 FilePath = filePath,
                 RelativePath = filePath.Remove(0, argument.LogDirectory.Length),
             });

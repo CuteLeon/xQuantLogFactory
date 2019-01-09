@@ -29,20 +29,6 @@ namespace xQuantLogFactory.Model.Monitor
             => this.Name = name;
 
         /// <summary>
-        /// Gets 匹配率
-        /// </summary>
-        public override double MatchingRate
-        {
-            get
-            {
-                // 仅将Performance事件开始日志计入匹配率计算
-                int monitorCount = this.MonitorResults.Count(result => result.PerformanceType == PerformanceTypes.Start);
-                return monitorCount == 0 ? 1 :
-                    1 - (this.AnalysisResults.Count(result => !result.IsIntactGroup()) / monitorCount);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets 子监视规则列表
         /// </summary>
         [XmlElement(FixedDatas.PERFORMANCE_MONITOR_XML_ELEMENT_NAME)]

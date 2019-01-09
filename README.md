@@ -206,7 +206,7 @@ readToEnd(yes)->generalRegex
 | sysinfo  | 是否记录系统信息   | **选填*  | 默认:false | true 或 false                     |
 | cltinfo  | 是否记录客户端信息 | **选填*  | 默认:false | true 或 false                     |
 | report   | 导出报告格式       | **选填*  | 默认:excel | excel 或 html 或 word             |
-| level    | 日志文件的等级     | **选填*  | 默认:debug | debug 或 trace 或 info 或 perf 等 |
+| level    | 日志文件的等级     | **选填*  | 默认:debug | debug 或 trace 或 info 或 performance 等 |
 | exit     | 自动退出           | **选填*  | 默认:false | true 或 false                     |
 | open     | 自动打开报告       | **选填*  | 默认:true  | true 或 false                     |
 
@@ -769,7 +769,7 @@ readToEnd(yes)->groupType
 
 ### 8.2.时间分组数据透视表
 
-​	以上介绍了常见的数据透视图应用场景，但是这种方式还无法满足一些更加复杂的场景，例如需要对时间进行分组...如下图，我们打开一张Perfromance解析结果Sheet，我们希望得知某个方法在某个时段被某个IP调用的次数，而精确的时间点数据如何转换为时间段数据？
+​	以上介绍了常见的数据透视图应用场景，但是这种方式还无法满足一些更加复杂的场景，例如需要对时间进行分组...如下图，我们打开一张Performance解析结果Sheet，我们希望得知某个方法在某个时段被某个IP调用的次数，而精确的时间点数据如何转换为时间段数据？
 
 ![](./Document/Image.8.2_1.png)
 

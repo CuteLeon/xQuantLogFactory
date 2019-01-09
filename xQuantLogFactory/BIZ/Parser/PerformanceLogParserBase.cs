@@ -12,37 +12,31 @@ using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
+using xQuantLogFactory.Utils.Extensions;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Parser
 {
     /// <summary>
-    /// Performance日志解析器
+    /// Performance日志解析器基类
     /// </summary>
-    public class PerformanceLogParser : LogParserBase
+    public abstract class PerformanceLogParserBase : LogParserBase<PerformanceLogFile, PerformanceMonitorResult>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PerformanceLogParser"/> class.
+        /// Initializes a new instance of the <see cref="PerformanceLogParserBase"/> class.
         /// </summary>
-        public PerformanceLogParser()
+        public PerformanceLogParserBase()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PerformanceLogParser"/> class.
+        /// Initializes a new instance of the <see cref="PerformanceLogParserBase"/> class.
         /// </summary>
         /// <param name="tracer"></param>
-        public PerformanceLogParser(ITracer tracer)
+        public PerformanceLogParserBase(ITracer tracer)
             : base(tracer)
         {
         }
-
-        /// <summary>
-        /// Gets 日志总体正则表达式
-        /// </summary>
-        public override Regex GeneralLogRegex { get; } = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<IPAddress>\d{1,3}(\.\d{1,3}){3})\s(?<UserCode>.*?)\s(?<StartTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>\/.*?)\s(?<MethodName>.*?)\s(?<StreamLength>\d*?)\s(?<Message>.+)$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
         /// 日志解析
@@ -56,9 +50,9 @@ namespace xQuantLogFactory.BIZ.Parser
             }
 
             // 遍历文件
-            argument.PerformanceLogFiles.AsParallel().ForAll(logFile =>
+            this.GetFileFiltered(argument).AsParallel().ForAll(logFile =>
             {
-                this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}");
+                this.Tracer?.WriteLine($"<<<开始解析日志文件：{logFile.RelativePath}, Type: {logFile.LogFileType}, Level：{logFile.LogLevel}");
 
                 // 检测日志文件解析耗时
                 Stopwatch stopWatch = new Stopwatch();
@@ -74,17 +68,13 @@ namespace xQuantLogFactory.BIZ.Parser
                     // 临时变量放于循环外，防止内存爆炸
                     Match match = null;
                     string logLine = string.Empty,
-                              message = string.Empty,
-                              methodName = string.Empty,
-                              ipAddress = string.Empty,
-                              userCode = string.Empty,
-                              requestURI = string.Empty;
+                              requestURI = string.Empty,
+                              methodName = string.Empty;
                     int lineNumber = 0,
-                         elapsed = 0,
-                         streamLength = 0;
+                         elapsed = 0;
                     DateTime logTime = DateTime.MinValue,
-                                    startTime = DateTime.MinValue;
-                    PerformanceTypes performanceType = PerformanceTypes.Unknown;
+                                    requestReceiveTime = DateTime.MinValue,
+                                    responseSendTime = DateTime.MinValue;
 
                     // 缓存变量，减少树扫描次数，需要 .ToList()
                     List<PerformanceMonitorItem> monitorItems = null;
@@ -120,34 +110,29 @@ namespace xQuantLogFactory.BIZ.Parser
 
                             methodName = match.Groups["MethodName"].Value;
 
-                            // 检查方法名称是否在黑名单中
+                            /* 检查方法名称是否在黑名单中
                             if (this.CheckLogInBlackList(methodName))
                             {
                                 continue;
                             }
+                             */
 
-                            ipAddress = match.Groups["IPAddress"].Value;
-                            userCode = match.Groups["UserCode"].Value;
-                            startTime = DateTime.TryParse(match.Groups["StartTime"].Value, out DateTime startTimeValue) ? startTimeValue : DateTime.MinValue;
+                            requestReceiveTime = DateTime.TryParse(match.Groups["RequestReceiveTime"].Value, out requestReceiveTime) ? requestReceiveTime : DateTime.MinValue;
+                            responseSendTime = DateTime.TryParse(match.Groups["ResponseSendTime"].Value, out responseSendTime) ? responseSendTime : DateTime.MinValue;
                             elapsed = int.TryParse(match.Groups["Elapsed"].Value, out int elapsedValue) ? elapsedValue : 0;
-                            streamLength = int.TryParse(match.Groups["StreamLength"].Value, out int streamLengthValue) ? streamLengthValue : 0;
                             requestURI = match.Groups["RequestURI"].Value;
-                            message = match.Groups["Message"].Value;
-                            performanceType = this.MatchPerformanceType(message);
 
                             // 记录所有解析结果
                             PerformanceMonitorResult parseResult = this.CreateParseResult(argument, logFile);
-                            parseResult.LogTime = logTime;
-                            parseResult.Message = message;
+                            this.ApplyParticularMatch(parseResult, match);
                             parseResult.GroupType = GroupTypes.Unmatch;
                             parseResult.LineNumber = lineNumber;
+
+                            parseResult.LogTime = logTime;
                             parseResult.MethodName = methodName;
-                            parseResult.PerformanceType = performanceType;
+                            parseResult.RequestReceiveTime = requestReceiveTime;
+                            parseResult.ResponseSendTime = responseSendTime;
                             parseResult.Elapsed = elapsed;
-                            parseResult.IPAddress = ipAddress;
-                            parseResult.UserCode = userCode;
-                            parseResult.StartTime = startTime;
-                            parseResult.StreamLength = streamLength;
                             parseResult.RequestURI = requestURI;
 
                             // 匹配所有监视规则
@@ -161,19 +146,8 @@ namespace xQuantLogFactory.BIZ.Parser
                                     continue;
                                 }
 
-                                PerformanceMonitorResult result = this.CreateMonitorResult(argument, logFile, monitor);
-                                result.LogTime = logTime;
-                                result.Message = message;
+                                PerformanceMonitorResult result = this.CreateMonitorResultFromParseResult(parseResult, monitor);
                                 result.GroupType = groupType;
-                                result.LineNumber = lineNumber;
-                                result.MethodName = methodName;
-                                result.PerformanceType = performanceType;
-                                result.Elapsed = elapsed;
-                                result.IPAddress = ipAddress;
-                                result.UserCode = userCode;
-                                result.StartTime = startTime;
-                                result.StreamLength = streamLength;
-                                result.RequestURI = requestURI;
 
                                 // this.Tracer.WriteLine($"发现监视结果：\n\t文件ID= {logFile.RelativePath} 行号= {result.LineNumber} IP地址= {result.IPAddress} 方法名称= {result.MethodName}");
                             }
@@ -211,22 +185,22 @@ namespace xQuantLogFactory.BIZ.Parser
         }
 
         /// <summary>
-        /// 创建监视结果对象
+        /// 从解析结果创建监视结果对象
         /// </summary>
-        /// <param name="argument"></param>
-        /// <param name="logFile"></param>
+        /// <param name="parseResult"></param>
         /// <param name="monitor"></param>
         /// <returns></returns>
-        protected PerformanceMonitorResult CreateMonitorResult(TaskArgument argument, PerformanceLogFile logFile, PerformanceMonitorItem monitor)
+        protected PerformanceMonitorResult CreateMonitorResultFromParseResult(PerformanceMonitorResult parseResult, PerformanceMonitorItem monitor)
         {
-            PerformanceMonitorResult monitorResult = new PerformanceMonitorResult(argument, logFile, monitor);
+            PerformanceMonitorResult monitorResult = parseResult.DeepClone();
+            monitorResult.MonitorItem = monitor;
 
             // 反向关联日志监视结果
             lock (this.lockSeed)
             {
-                argument.PerformanceMonitorResults.Add(monitorResult);
-                logFile.MonitorResults.Add(monitorResult);
-                monitor.MonitorResults.Add(monitorResult);
+                monitorResult.TaskArgument.PerformanceMonitorResults.Add(monitorResult);
+                monitorResult.LogFile.MonitorResults.Add(monitorResult);
+                monitorResult.MonitorItem.MonitorResults.Add(monitorResult);
             }
 
             return monitorResult;
@@ -253,31 +227,11 @@ namespace xQuantLogFactory.BIZ.Parser
         }
 
         /// <summary>
-        /// 匹配日志事件类型
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns></returns>
-        protected virtual PerformanceTypes MatchPerformanceType(string message)
-        {
-            if (message.Equals(FixedDatas.PERFORMANCE_START_MESSAGE, StringComparison.Ordinal))
-            {
-                return PerformanceTypes.Start;
-            }
-            else if (message.Equals(FixedDatas.PERFORMANCE_FINISH_MESSAGE, StringComparison.Ordinal))
-            {
-                return PerformanceTypes.Finish;
-            }
-            else
-            {
-                return PerformanceTypes.Unknown;
-            }
-        }
-
-        /// <summary>
         /// 检查日志是否在黑名单中而放弃
         /// </summary>
         /// <param name="log"></param>
         /// <returns></returns>
+        [Obsolete]
         protected virtual bool CheckLogInBlackList(string log)
             => FixedDatas.MethodNameBlackList.IndexOf(log) > -1;
     }

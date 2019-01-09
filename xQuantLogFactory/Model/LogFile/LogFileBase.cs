@@ -37,6 +37,11 @@ namespace xQuantLogFactory.Model.LogFile
         public LogFileTypes LogFileType { get; set; }
 
         /// <summary>
+        /// Gets or sets 日志等级
+        /// </summary>
+        public LogLevels LogLevel { get; set; }
+
+        /// <summary>
         /// Gets 分析结果总耗时（单位：毫秒）
         /// </summary>
         public abstract double ElapsedMillisecond { get; }

@@ -45,19 +45,29 @@ namespace xQuantLogFactory.Model.Result
         #region 基础属性
 
         /// <summary>
-        /// Gets or sets performance日志类型
-        /// </summary>
-        public PerformanceTypes PerformanceType { get; set; }
-
-        /// <summary>
         /// Gets or sets 用户代码
         /// </summary>
         public string UserCode { get; set; }
 
         /// <summary>
-        /// Gets or sets 开始时间
+        /// Gets or sets 请求发送时间
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public DateTime? RequestSendTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets 请求接收时间
+        /// </summary>
+        public DateTime RequestReceiveTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets 响应发送时间
+        /// </summary>
+        public DateTime ResponseSendTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets 响应接收时间
+        /// </summary>
+        public DateTime? ResponseReceiveTime { get; set; }
 
         /// <summary>
         /// Gets or sets 耗时
@@ -75,9 +85,14 @@ namespace xQuantLogFactory.Model.Result
         public string MethodName { get; set; }
 
         /// <summary>
-        /// Gets or sets 流长度
+        /// Gets or sets 请求流长度
         /// </summary>
-        public int StreamLength { get; set; }
+        public int RequestStreamLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets 响应流长度
+        /// </summary>
+        public int ResponseStreamLength { get; set; }
 
         /// <summary>
         /// Gets or sets 消息

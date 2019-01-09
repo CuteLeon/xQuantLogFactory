@@ -86,27 +86,6 @@ namespace xQuantLogFactory.Model.Fixed
     }
 
     /// <summary>
-    /// Performance 日志类型
-    /// </summary>
-    public enum PerformanceTypes
-    {
-        /// <summary>
-        /// 未知
-        /// </summary>
-        Unknown = 0,
-
-        /// <summary>
-        /// 事件开始
-        /// </summary>
-        Start = 1,
-
-        /// <summary>
-        /// 事件完成
-        /// </summary>
-        Finish = 2,
-    }
-
-    /// <summary>
     /// 日志文件类型
     /// </summary>
     public enum LogFileTypes
@@ -120,11 +99,6 @@ namespace xQuantLogFactory.Model.Fixed
         /// 服务端日志文件
         /// </summary>
         Server = 2,
-
-        /// <summary>
-        /// Performance日志
-        /// </summary>
-        Performance = 3,
     }
 
     /// <summary>
@@ -158,9 +132,9 @@ namespace xQuantLogFactory.Model.Fixed
         Error = 4,
 
         /// <summary>
-        /// Perf
+        /// Performance
         /// </summary>
-        Perf = 5,
+        Performance = 5,
     }
 
     /// <summary>
