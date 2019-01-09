@@ -109,32 +109,38 @@ namespace xQuantLogFactory.Model.Fixed
         /// <summary>
         /// Debug
         /// </summary>
+        [AmbientValue("Debug")]
         Debug = 0,
 
         /// <summary>
         /// Info
         /// </summary>
+        [AmbientValue("Info")]
         Info = 1,
 
         /// <summary>
         /// Trace
         /// </summary>
+        [AmbientValue("Trace")]
         Trace = 2,
 
         /// <summary>
         /// Warn
         /// </summary>
+        [AmbientValue("Warn")]
         Warn = 3,
 
         /// <summary>
         /// Error
         /// </summary>
+        [AmbientValue("Error")]
         Error = 4,
 
         /// <summary>
         /// Performance
         /// </summary>
-        Performance = 5,
+        [AmbientValue("Performance")]
+        Perf = 5,
     }
 
     /// <summary>

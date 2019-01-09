@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Utils.Extensions;
 
 namespace xQuantLogFactory.Model.Extensions
 {
@@ -65,25 +66,7 @@ namespace xQuantLogFactory.Model.Extensions
                 throw new ArgumentNullException(nameof(argument));
             }
 
-            string pattern = string.Empty;
-
-            switch (argument.LogLevel)
-            {
-                case LogLevels.Debug:
-                case LogLevels.Info:
-                case LogLevels.Trace:
-                case LogLevels.Warn:
-                case LogLevels.Error:
-                case LogLevels.Performance:
-                    {
-                        pattern = $@"^({FixedDatas.ServerLogFileNamePrefix}|.*?{FixedDatas.ClientLogFileNamePrefix})Log_{argument.LogLevel}\.txt(|\.\d*)$";
-                        break;
-                    }
-
-                default:
-                    throw new ArgumentException(nameof(argument.LogLevel));
-            }
-
+            string pattern = $@"^({FixedDatas.ServerLogFileNamePrefix}|.*?{FixedDatas.ClientLogFileNamePrefix})Log_{argument.LogLevel.GetAmbientValue()}\.txt(|\.\d*)$";
             return new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
         }
     }

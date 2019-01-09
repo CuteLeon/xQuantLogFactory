@@ -152,7 +152,7 @@ namespace xQuantLogFactory.Model.Extensions.Tests
             Assert.IsTrue(validlogFiles.Take(2).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Server));
             Assert.IsTrue(validlogFiles.Skip(2).Take(3).All(name => fileFinder.GetLogFileType(name) == LogFileTypes.Client));
             Assert.IsTrue(validlogFiles.Take(5).All(name => fileFinder.GetLogLevel(name) == LogLevels.Debug));
-            Assert.IsTrue(validlogFiles.Skip(5).Take(5).All(name => fileFinder.GetLogLevel(name) == LogLevels.Performance));
+            Assert.IsTrue(validlogFiles.Skip(5).Take(5).All(name => fileFinder.GetLogLevel(name) == LogLevels.Perf));
         }
     }
 }

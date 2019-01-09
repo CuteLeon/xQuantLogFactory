@@ -27,7 +27,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             argument.PerformanceLogFiles.Add(new PerformanceLogFile()
             {
                 LogFileType = LogFileTypes.Server,
-                LogLevel = LogLevels.Performance,
+                LogLevel = LogLevels.Perf,
                 FilePath = filePath,
                 RelativePath = filePath.Remove(0, argument.LogDirectory.Length),
             });

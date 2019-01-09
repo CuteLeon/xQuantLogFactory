@@ -178,7 +178,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
                 LogDirectory = "D:\\LOG",
                 LogStartTime = DateTime.MinValue,
                 LogFinishTime = DateTime.MaxValue,
-                LogLevel = LogLevels.Performance,
+                LogLevel = LogLevels.Perf,
                 MonitorContainerRoot = new MonitorContainer(),
                 MonitorFileName = "test.xml",
                 PerformanceAnalysisResults = new List<PerformanceAnalysisResult>(),

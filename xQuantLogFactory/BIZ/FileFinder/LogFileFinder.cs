@@ -7,6 +7,7 @@ using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Extensions;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.LogFile;
+using xQuantLogFactory.Utils.Extensions;
 
 namespace xQuantLogFactory.BIZ.FileFinder
 {
@@ -76,7 +77,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                                 break;
                             }
 
-                        case LogLevels.Performance:
+                        case LogLevels.Perf:
                             {
                                 argument.PerformanceLogFiles.Add(new PerformanceLogFile(
                                     fileType,
@@ -123,11 +124,11 @@ namespace xQuantLogFactory.BIZ.FileFinder
         /// <returns></returns>
         public LogLevels GetLogLevel(string fileName)
         {
-            foreach (var level in Enum.GetValues(typeof(LogLevels)))
+            foreach (LogLevels level in Enum.GetValues(typeof(LogLevels)))
             {
-                if (fileName.IndexOf($"_{level.ToString()}.", StringComparison.OrdinalIgnoreCase) > -1)
+                if (fileName.IndexOf($"_{level.GetAmbientValue()}.", StringComparison.OrdinalIgnoreCase) > -1)
                 {
-                    return (LogLevels)level;
+                    return level;
                 }
             }
 
