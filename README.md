@@ -166,10 +166,12 @@ readToEnd(yes)->generalRegex
   - 分析结果树所有分支节点必须为完整分析结果；
   - 分析结果树的叶子结点可以为不完整分析结果；
   - 分析结果树所有节点的开始日志时间必须包含于其父节点的开始和结束日志时间范围内；
-  - 不存在父级节点的完整分析结果将会作为第一层节点直接入树；
+  - 不存在父级节点的完整分析结果或监视规则不忽略残缺的分析结果将会作为第一层节点直接入树；
   - Performance日志分析结果需要IP地址和用户名相同才可以初始化入同一颗树；
 
 ​	** 为解决分析结果在监视规则树结构上出现断层而无法正确关联的问题，分析结果树初始化算法使用动态规划算法，确保树构建的每一步都是局部最优解；*
+
+​	** 构建分析结果树时默认禁止残缺的分析结果作为树的第一层节点，以防止大量错误的残缺结果污染分析结果树，但可通过监视规则配置关闭这一策略；*
 
 ​	是分析结果树的根节点；
 
@@ -521,15 +523,16 @@ readToEnd(yes)->groupType
 
 - 监视规则可配置属性：
 
-  | 属性名称           | 说明         | 类型                                |
-  | ------------------ | ------------ | ----------------------------------- |
-  | Name               | 监视规则名称 | string                              |
-  | Begin              | 事件开始条件 | string                              |
-  | End                | 事件结束条件 | string                              |
-  | GroupAnalysiser    | 组分析器     | **TerminalGroupAnalysiserTypes**    |
-  | DirectedAnalysiser | 定向分析器   | **TerminalDirectedAnalysiserTypes** |
-  | Memory             | 内存分析开关 | bool                                |
-  | Sheet              | 导出表名     | string                              |
+  | 属性名称           | 说明                 | 类型                                |
+  | ------------------ | -------------------- | ----------------------------------- |
+  | Name               | 监视规则名称         | string                              |
+  | Begin              | 事件开始条件         | string                              |
+  | End                | 事件结束条件         | string                              |
+  | GroupAnalysiser    | 组分析器             | **TerminalGroupAnalysiserTypes**    |
+  | DirectedAnalysiser | 定向分析器           | **TerminalDirectedAnalysiserTypes** |
+  | Memory             | 内存分析开关         | bool                                |
+  | IgnoreUnIntactRoot | 忽略根级残缺分析结果 | bool                                |
+  | Sheet              | 导出表名             | string                              |
 
 - Name
 
@@ -589,6 +592,12 @@ readToEnd(yes)->groupType
 
   - 可省略，默认为 false，不进行内存分析；
   - 部分日志内容包含内存消耗数据，可通过此开关配置是否对监视规则的日志结果进行内存分析；
+  - 可选值：true \ false（小写）；
+
+- IgnoreUnIntactRoot
+
+  - 可省略，默认为 true，构建分析结果树时忽略残缺的根级分析结果入树；
+  - 部分监视规则允许将残缺的分析结果入分析结果树，通过此配置控制；
   - 可选值：true \ false（小写）；
 
 - Sheet
