@@ -20,6 +20,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
 
             TerminalMonitorItem clientItem = new TerminalMonitorItem
             {
+                IgnoreUnIntactRoot = true,
                 Name = "客户端启动",
                 StartPattern = "客户端启动开始",
                 FinishPattern = "初始化第二阶段开始",
@@ -28,6 +29,7 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
             };
             TerminalMonitorItem dataItem = new TerminalMonitorItem()
             {
+                IgnoreUnIntactRoot = false,
                 Name = "数据加载",
                 StartPattern = "加载中债参数设置表",
                 FinishPattern = "加载当前登录部门",
@@ -105,6 +107,8 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
 
             Assert.IsNotNull(container);
             Assert.AreEqual("监听客户端启动方案", container.Name);
+            Assert.IsTrue(container.TerminalMonitorTreeRoots[0].IgnoreUnIntactRoot);
+            Assert.IsFalse(container.TerminalMonitorTreeRoots[0].MonitorTreeRoots[0].IgnoreUnIntactRoot);
             Assert.AreEqual(2, container.TerminalMonitorTreeRoots[0].MonitorTreeRoots.Count);
             Assert.AreEqual(5, container.GetTerminalMonitorItems().Count());
             Assert.IsTrue(container.TerminalMonitorTreeRoots[1].Memory);

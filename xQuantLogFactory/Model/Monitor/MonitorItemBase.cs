@@ -28,6 +28,13 @@ namespace xQuantLogFactory.Model.Monitor
         public string FinishPattern { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether 构建分析结果树时是否忽略根级残缺分析结果
+        /// </summary>
+        /// <remarks>默认残缺的分析结果不会成为分析结果树的根节点</remarks>
+        [XmlAttribute("IgnoreUnIntactRoot")]
+        public bool IgnoreUnIntactRoot { get; set; } = true;
+
+        /// <summary>
         /// Gets 结果总耗时（单位：毫秒）
         /// </summary>
         [XmlIgnore]

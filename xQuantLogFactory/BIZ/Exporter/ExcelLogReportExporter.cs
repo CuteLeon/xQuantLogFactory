@@ -317,8 +317,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     int rowID = rectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots
-                        .Where(root => root.IsIntactGroup()))
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
                     {
                         // 每个分析结果根节点使执行序号自增
                         executeID++;
@@ -672,8 +671,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     int rowID = rectangle.Top, executeID = 0;
 
                     // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots
-                        .Where(root => root.IsIntactGroup()))
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
                     {
                         // 每个分析结果根节点使执行序号自增
                         executeID++;

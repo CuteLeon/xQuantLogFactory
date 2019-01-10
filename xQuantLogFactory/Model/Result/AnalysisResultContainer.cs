@@ -59,7 +59,9 @@ namespace xQuantLogFactory.Model.Result
             foreach (TAnalysisResult analysisResult in sourceAnalysisResults)
             {
                 // 判断分析结果是否为完整组
-                if (analysisResult.IsIntactGroup())
+                bool isIntact = analysisResult.IsIntactGroup();
+
+                if (isIntact)
                 {
                     if (analysisResult.MonitorItem.HasChild())
                     {
@@ -77,12 +79,13 @@ namespace xQuantLogFactory.Model.Result
                                 });
                         }
                     }
+                }
 
-                    // 【不存在父级】的【完整】分析组节点记录为分析结果容器的根节点，避免大量错误的不完整组结果污染报告
-                    if (analysisResult.ParentAnalysisResult == null)
-                    {
-                        targetAnalysisResults.Add(analysisResult);
-                    }
+                // 【不存在父级 且 (完整 或 监视规则关闭忽略不完整根分析结果开关)】的分析结果记录为分析结果容器的根节点，避免大量错误的不完整组结果污染报告
+                if (analysisResult.ParentAnalysisResult == null &&
+                    (isIntact || !analysisResult.MonitorItem.IgnoreUnIntactRoot))
+                {
+                    targetAnalysisResults.Add(analysisResult);
                 }
             }
 
