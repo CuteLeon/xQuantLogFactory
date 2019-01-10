@@ -198,6 +198,9 @@
     <Content Include="Monitor\异步服务监控.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Monitor\批量审批.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Monitor\窗体与报表.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -208,9 +211,11 @@
     <None Include="Batch\中间件启动日志v064.bat" />
     <None Include="Batch\中间件启动日志v065.bat" />
     <None Include="Batch\交易清算日志.bat" />
+    <None Include="Batch\内存使用.bat" />
     <None Include="Batch\客户端启动日志v064.bat" />
     <None Include="Batch\客户端启动日志v065.bat" />
     <None Include="Batch\异步服务监控.bat" />
+    <None Include="Batch\批量审批.bat" />
     <None Include="Batch\窗体与报表日志.bat" />
     <None Include="ReportTemplet\xQuant_HTML_Templet.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
