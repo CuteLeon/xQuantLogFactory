@@ -55,8 +55,6 @@ namespace xQuantLogFactory.BIZ.Parser
         {
             result.IPAddress = particularMatch.Groups["IPAddress"].Value;
             result.UserCode = particularMatch.Groups["UserCode"].Value;
-            result.RequestStreamLength = int.TryParse(particularMatch.Groups["RequestStreamLength"].Value, out int requestStreamLength) ? requestStreamLength : 0;
-            result.ResponseStreamLength = int.TryParse(particularMatch.Groups["ResponseStreamLength"].Value, out int responseStreamLength) ? responseStreamLength : 0;
             result.Message = particularMatch.Groups["Message"].Value;
         }
     }

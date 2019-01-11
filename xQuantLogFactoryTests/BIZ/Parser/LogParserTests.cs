@@ -103,7 +103,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
         [TestMethod()]
         public void ClientPerformanceParseTest()
         {
-            string log = "2019-01-09 10:30:03.350	2019-01-09 10:30:03.171	2019-01-09 10:30:03.185	2019-01-09 10:30:03.348	2019-01-09 10:30:03.350	178	tcp://127.0.0.1:5555/LogonManager.soap	GetLogonType";
+            string log = "2019-01-09 10:30:03.350	2019-01-09 10:30:03.171	2019-01-09 10:30:03.185	2019-01-09 10:30:03.348	2019-01-09 10:30:03.350	178	tcp://127.0.0.1:5555/LogonManager.soap	GetLogonType	123	234";
 
             PerformanceLogParserBase parser = new ClientPerformanceParser();
             Match match = parser.GeneralLogRegex.Match(log);
@@ -115,6 +115,8 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             Assert.AreEqual("2019-01-09 10:30:03.348", match.Groups["ResponseSendTime"].Value);
             Assert.AreEqual("2019-01-09 10:30:03.350", match.Groups["ResponseReceiveTime"].Value);
             Assert.AreEqual("178", match.Groups["Elapsed"].Value);
+            Assert.AreEqual("123", match.Groups["RequestStreamLength"].Value);
+            Assert.AreEqual("234", match.Groups["ResponseStreamLength"].Value);
             Assert.AreEqual("tcp://127.0.0.1:5555/LogonManager.soap", match.Groups["RequestURI"].Value);
             Assert.AreEqual("GetLogonType", match.Groups["MethodName"].Value);
         }

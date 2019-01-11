@@ -71,7 +71,10 @@ namespace xQuantLogFactory.BIZ.Parser
                               requestURI = string.Empty,
                               methodName = string.Empty;
                     int lineNumber = 0,
-                         elapsed = 0;
+                         elapsed = 0,
+                         requestStreamLength = 0,
+                         responseStreamLength = 0;
+
                     DateTime logTime = DateTime.MinValue,
                                     requestReceiveTime = DateTime.MinValue,
                                     responseSendTime = DateTime.MinValue;
@@ -116,10 +119,11 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
                              */
-
                             requestReceiveTime = DateTime.TryParse(match.Groups["RequestReceiveTime"].Value, out requestReceiveTime) ? requestReceiveTime : DateTime.MinValue;
                             responseSendTime = DateTime.TryParse(match.Groups["ResponseSendTime"].Value, out responseSendTime) ? responseSendTime : DateTime.MinValue;
                             elapsed = int.TryParse(match.Groups["Elapsed"].Value, out int elapsedValue) ? elapsedValue : 0;
+                            requestStreamLength = int.TryParse(match.Groups["RequestStreamLength"].Value, out requestStreamLength) ? requestStreamLength : 0;
+                            responseStreamLength = int.TryParse(match.Groups["ResponseStreamLength"].Value, out responseStreamLength) ? responseStreamLength : 0;
                             requestURI = match.Groups["RequestURI"].Value;
 
                             // 记录所有解析结果
@@ -133,6 +137,8 @@ namespace xQuantLogFactory.BIZ.Parser
                             parseResult.RequestReceiveTime = requestReceiveTime;
                             parseResult.ResponseSendTime = responseSendTime;
                             parseResult.Elapsed = elapsed;
+                            parseResult.RequestStreamLength = requestStreamLength;
+                            parseResult.ResponseStreamLength = responseStreamLength;
                             parseResult.RequestURI = requestURI;
 
                             // 匹配所有监视规则
