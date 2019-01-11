@@ -35,6 +35,11 @@
         public const string MEMORY_CONSUMED = "内存消耗";
 
         /// <summary>
+        /// CPU消耗
+        /// </summary>
+        public const string CPU_CONSUMED = "CPU消耗";
+
+        /// <summary>
         /// Core服务名称
         /// </summary>
         public const string CORE_SERVICE_NAME = "Core服务名称";

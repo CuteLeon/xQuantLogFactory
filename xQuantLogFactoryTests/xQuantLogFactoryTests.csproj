@@ -56,9 +56,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonLoadAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonPrefixAnalysiserTests.cs" />
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\CommonKeyValuePairAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonLoadAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonPrefixAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonKeyValuePairAnalysiserTests.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonMemoryAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\CoreAsyncGroupAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\GroupLogAnalysiserTests.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserBaseTests.cs" />

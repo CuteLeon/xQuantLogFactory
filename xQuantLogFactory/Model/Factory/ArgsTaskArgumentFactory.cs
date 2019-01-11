@@ -255,7 +255,7 @@ namespace xQuantLogFactory.Model.Factory
 
             if (argumentDict.TryGetValue(LOG_LEVEL, out argumentValue))
             {
-                taskArgument.LogLevel = Enum.TryParse(argumentValue, out LogLevels logLevel) ? logLevel : FixedDatas.DefaultLogLevel;
+                taskArgument.LogLevel = Enum.TryParse(argumentValue, true, out LogLevels logLevel) ? logLevel : FixedDatas.DefaultLogLevel;
             }
 
             if (argumentDict.TryGetValue(AUTO_EXIT, out argumentValue))

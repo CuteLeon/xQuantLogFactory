@@ -3,7 +3,7 @@
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal;
 using xQuantLogFactory.Model.Monitor;
 
-namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Tests
+namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal.Tests
 {
     [TestClass()]
     public class CommonPrefixAnalysiserTests

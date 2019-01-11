@@ -530,10 +530,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                         memoryRange[rowID, 2].Value = result.Version;
                         memoryRange[rowID, 3].Value = result.Client;
                         memoryRange[rowID, 4].Value = result.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        if (result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory))
-                        {
-                            memoryRange[rowID, 5].Value = memory;
-                        }
+                        memoryRange[rowID, 5].Value = result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory) ? memory : 0.0;
+                        memoryRange[rowID, 6].Value = result.AnalysisDatas.TryGetValue(FixedDatas.CPU_CONSUMED, out object cpu) ? cpu : 0.0;
 
                         rowID++;
                     }

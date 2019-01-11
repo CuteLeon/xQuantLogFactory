@@ -35,7 +35,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
         /// Gets or sets 内存日志内容正则
         /// </summary>
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
-            @"内存消耗：.*?VirtualMem=(?<Memory>\d*\.\d*).*",
+            @"内存消耗：.*VirtualMem=(?<Memory>[\d\.]*)(.*CPU\sUsage=(?<CPU>[\d\.]*)|).*$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -81,6 +81,12 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                             analysisMatch.Groups["Memory"].Success &&
                             double.TryParse(analysisMatch.Groups["Memory"].Value, out double memory) ?
                                 memory : 0.0;
+
+                        analysisResult.AnalysisDatas[FixedDatas.CPU_CONSUMED] =
+                            analysisMatch.Success &&
+                            analysisMatch.Groups["CPU"].Success &&
+                            double.TryParse(analysisMatch.Groups["CPU"].Value, out double cpu) ?
+                                cpu : 0.0;
                     }
                 });
         }
