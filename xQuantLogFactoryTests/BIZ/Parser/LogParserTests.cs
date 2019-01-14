@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -107,7 +108,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
 
             PerformanceLogParserBase parser = new ClientPerformanceParser();
             Match match = parser.GeneralLogRegex.Match(log);
-
+            
             Assert.IsTrue(match.Success);
             Assert.AreEqual("2019-01-09 10:30:03.350", match.Groups["LogTime"].Value);
             Assert.AreEqual("2019-01-09 10:30:03.171", match.Groups["RequestSendTime"].Value);
@@ -146,6 +147,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
         [TestMethod]
         public void PerformanceStatisticalParseTest()
         {
+            // 演示日志
             string log = @"2019-01-11 17:22:29.413	最近时段内方法执行统计信息：
 方法=/LogonManager.soap>GetSysParamTable	计数=3	Max=9.9709	Min=7.9781	Avg=9.17806666666667	Sum=27.5342	Request=375	Response=99873
 方法=/InitDataManager.soap>GetMarket	计数=1	Max=7.9764	Min=7.9764	Avg=7.9764	Sum=7.9764	Request=121	Response=1965
@@ -156,12 +158,47 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
 方法=/InitDataManager.soap>GetAccSecuMapping	计数=1	Max=48.8682	Min=48.8682	Avg=48.8682	Sum=48.8682	Request=128	Response=80080
 共计 7 个方法。";
 
-            ServerPerformanceParser parser = new ServerPerformanceParser();
-            Match match = parser.StatisticalRegex.Match(log);
-            Assert.IsTrue(match.Success);
-            Assert.AreEqual("2019-01-11 17:22:29.413", match.Groups["LogTime"].Value);
-            System.Console.WriteLine(match.Groups["Statistical"].Value);
-            Assert.AreEqual("7", match.Groups["MethodName"].Value);
+            // 正则1：获取日志时间和统计方法总数
+            Regex statisticalRegex = new Regex(
+                @"(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\t最近时段内方法执行统计信息：(.\r?\n?)*共计\s(?<MethodCount>\d*?)\s个方法。",
+                RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            Match statisticalMatch = statisticalRegex.Match(log);
+
+            Assert.IsTrue(statisticalMatch.Success);
+            Assert.AreEqual("2019-01-11 17:22:29.413", statisticalMatch.Groups["LogTime"].Value);
+            Assert.AreEqual("7", statisticalMatch.Groups["MethodCount"].Value);
+
+            // 正则2：获取每个方法的统计信息
+            Regex methodRegex = new Regex(
+                @"方法=(?<RequestURI>.*?)\>(?<MethodName>.*?)\t计数\=(?<Count>\d*)\tMax\=(?<Max>[\.\d]*)\tMin\=(?<Min>[\.\d]*)\tAvg\=(?<Avg>[\.\d]*)\tSum\=(?<Sum>[\.\d]*)\tRequest\=(?<Request>\d*)\tResponse\=(?<Response>\d*)",
+                RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            MatchCollection methodMatchs = methodRegex.Matches(log);
+
+            Assert.AreEqual(7, methodMatchs.Count);
+            foreach (Match methodMatch in methodMatchs)
+            {
+                Assert.IsTrue(methodMatch.Success);
+
+                Console.WriteLine(methodMatchs[0].Groups["RequestURI"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["MethodName"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["Count"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["Max"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["Min"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["Avg"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["Sum"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["Request"].Value);
+                Console.WriteLine(methodMatchs[0].Groups["Response"].Value);
+            }
+
+            Assert.AreEqual("/LogonManager.soap", methodMatchs[0].Groups["RequestURI"].Value);
+            Assert.AreEqual("GetSysParamTable", methodMatchs[0].Groups["MethodName"].Value);
+            Assert.AreEqual("3", methodMatchs[0].Groups["Count"].Value);
+            Assert.AreEqual("9.9709", methodMatchs[0].Groups["Max"].Value);
+            Assert.AreEqual("7.9781", methodMatchs[0].Groups["Min"].Value);
+            Assert.AreEqual("9.17806666666667", methodMatchs[0].Groups["Avg"].Value);
+            Assert.AreEqual("27.5342", methodMatchs[0].Groups["Sum"].Value);
+            Assert.AreEqual("375", methodMatchs[0].Groups["Request"].Value);
+            Assert.AreEqual("99873", methodMatchs[0].Groups["Response"].Value);
         }
     }
 }
