@@ -103,6 +103,47 @@ namespace xQuantLogFactory.Model.Result
         #region 业务
 
         /// <summary>
+        /// Gets 请求延时
+        /// </summary>
+        public TimeSpan RequestDelay
+        {
+            get => this.GetTimeSpan(this.RequestSendTime, this.RequestReceiveTime);
+        }
+
+        /// <summary>
+        /// Gets 响应延时
+        /// </summary>
+        public TimeSpan ResponseDelay
+        {
+            get => this.GetTimeSpan(this.ResponseSendTime, this.ResponseReceiveTime);
+        }
+
+        /// <summary>
+        /// Gets 响应耗时
+        /// </summary>
+        public TimeSpan ResponseElapsed
+        {
+            get => this.GetTimeSpan(this.RequestReceiveTime, this.ResponseSendTime);
+        }
+
+        /// <summary>
+        /// 获取时间差值
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="finishTime"></param>
+        /// <returns></returns>
+        private TimeSpan GetTimeSpan(DateTime? startTime, DateTime? finishTime)
+        {
+            if (startTime == null || finishTime == null)
+            {
+                return TimeSpan.Zero;
+            }
+
+            TimeSpan? span = finishTime - startTime;
+            return span.HasValue ? span.Value : TimeSpan.Zero;
+        }
+
+        /// <summary>
         /// 检查两个监视结果是否匹配
         /// </summary>
         /// <param name="targetResult"></param>

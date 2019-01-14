@@ -620,7 +620,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 }
 
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_PARSE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, rowCount);
+                Rectangle rectangle = new Rectangle(1, 2, 16, rowCount);
                 using (ExcelRange range = dataSheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top;
@@ -634,13 +634,16 @@ namespace xQuantLogFactory.BIZ.Exporter
                         range[rowID, 5].Value = result.ResponseSendTime;
                         range[rowID, 6].Value = result.ResponseReceiveTime;
                         range[rowID, 7].Value = result.Elapsed;
-                        range[rowID, 8].Value = result.RequestURI;
-                        range[rowID, 9].Value = result.MethodName;
-                        range[rowID, 10].Value = result.RequestStreamLength;
-                        range[rowID, 11].Value = result.ResponseStreamLength;
-                        range[rowID, 12].Value = result.Message;
-                        range[rowID, 13].Value = result.LogFile.RelativePath;
-                        range[rowID, 14].Value = result.LineNumber;
+                        range[rowID, 8].Value = result.RequestDelay.TotalMilliseconds;
+                        range[rowID, 9].Value = result.ResponseElapsed.TotalMilliseconds;
+                        range[rowID, 10].Value = result.ResponseDelay.TotalMilliseconds;
+                        range[rowID, 11].Value = result.RequestURI;
+                        range[rowID, 12].Value = result.MethodName;
+                        range[rowID, 13].Value = result.RequestStreamLength;
+                        range[rowID, 14].Value = result.ResponseStreamLength;
+                        range[rowID, 15].Value = result.Message;
+                        range[rowID, 16].Value = result.LogFile.RelativePath;
+                        range[rowID, 17].Value = result.LineNumber;
 
                         rowID++;
                     }
