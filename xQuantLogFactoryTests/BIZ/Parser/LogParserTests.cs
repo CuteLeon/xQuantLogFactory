@@ -142,5 +142,26 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             Assert.AreEqual("552", match.Groups["ResponseStreamLength"].Value);
             Assert.AreEqual("完成", match.Groups["Message"].Value);
         }
+
+        [TestMethod]
+        public void PerformanceStatisticalParseTest()
+        {
+            string log = @"2019-01-11 17:22:29.413	最近时段内方法执行统计信息：
+方法=/LogonManager.soap>GetSysParamTable	计数=3	Max=9.9709	Min=7.9781	Avg=9.17806666666667	Sum=27.5342	Request=375	Response=99873
+方法=/InitDataManager.soap>GetMarket	计数=1	Max=7.9764	Min=7.9764	Avg=7.9764	Sum=7.9764	Request=121	Response=1965
+方法=/SimpleManagerMD.soap>Query	计数=5	Max=190.4891	Min=4.9875	Avg=55.46396	Sum=277.3198	Request=1614	Response=29056
+方法=/InitDataManager.soap>GetServerBizDict_Str_Str	计数=3	Max=19.9515	Min=2.9918	Avg=14.2963666666667	Sum=42.8891	Request=436	Response=106980
+方法=/InitDataManager.soap>GetIntSecuAccount	计数=1	Max=524.9089	Min=524.9089	Avg=524.9089	Sum=524.9089	Request=159	Response=112866
+方法=/InitDataManager.soap>GetBizLineCode	计数=1	Max=0.9973	Min=0.9973	Avg=0.9973	Sum=0.9973	Request=123	Response=341
+方法=/InitDataManager.soap>GetAccSecuMapping	计数=1	Max=48.8682	Min=48.8682	Avg=48.8682	Sum=48.8682	Request=128	Response=80080
+共计 7 个方法。";
+
+            ServerPerformanceParser parser = new ServerPerformanceParser();
+            Match match = parser.StatisticalRegex.Match(log);
+            Assert.IsTrue(match.Success);
+            Assert.AreEqual("2019-01-11 17:22:29.413", match.Groups["LogTime"].Value);
+            System.Console.WriteLine(match.Groups["Statistical"].Value);
+            Assert.AreEqual("7", match.Groups["MethodName"].Value);
+        }
     }
 }

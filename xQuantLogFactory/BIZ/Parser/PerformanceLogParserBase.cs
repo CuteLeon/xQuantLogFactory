@@ -39,6 +39,15 @@ namespace xQuantLogFactory.BIZ.Parser
         }
 
         /// <summary>
+        /// Gets 统计信息正则表达式
+        /// </summary>
+        /// @"\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3}\t最近时段内方法执行统计信息：\r?\n?(^方法=.*?\>.*?\t计数\=\d*?\tMax=[\d\.]*?\tMin=[\d\.]*?\tAvg=[\d\.]*?\tSum=[\d\.]*?\tRequest=[\d\.]*?\tResponse=[\d\.]*?\r?\n?)*共计\s\d*\s个方法。",
+        // (^方法=(?<RequestURI>.*?)\>(?<MethodName>.*?)\t计数\=(?<Count>\d*?)\t.*?$\r?\n?)*
+        public Regex StatisticalRegex { get; } = new Regex(
+            @"(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\t最近时段内方法执行统计信息：\r?\n?(?<Statistical>.*?)\r?\n?共计\s(?<MethodCount>\d*?)\s个方法。",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
+        /// <summary>
         /// 日志解析
         /// </summary>
         /// <param name="argument">任务参数</param>
