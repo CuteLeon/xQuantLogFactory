@@ -139,7 +139,7 @@ namespace xQuantLogFactory.Model.Fixed
         /// <summary>
         /// Performance
         /// </summary>
-        [AmbientValue("Performance")]
+        [AmbientValue("Perf")]
         Perf = 5,
     }
 
