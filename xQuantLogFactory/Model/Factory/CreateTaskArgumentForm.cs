@@ -190,15 +190,15 @@ namespace xQuantLogFactory.Model.Factory
         {
             TaskArgument argument = new TaskArgument()
             {
-                LogDirectory = this.DirectoryTextBox.Text,
-                MonitorFileName = this.MonitorComboBox.SelectedItem as string,
-                IncludeClientInfo = this.ClientInfoCheckBox.Checked,
-                IncludeSystemInfo = this.SystemInfoCheckBox.Checked,
-                AutoExit = this.AutoExitCheckBox.Checked,
-                AutoOpenReport = this.OpenReportCheckBox.Checked,
-                ReportMode = (ReportModes)this.ReportComboBox.SelectedItem,
-                LogLevel = (LogLevels)this.LogLevelComboBox.SelectedItem,
             };
+            argument.LogDirectory = this.DirectoryTextBox.Text;
+            argument.MonitorFileName = this.MonitorComboBox.SelectedItem as string;
+            argument.IncludeClientInfo = this.ClientInfoCheckBox.Checked;
+            argument.IncludeSystemInfo = this.SystemInfoCheckBox.Checked;
+            argument.AutoExit = this.AutoExitCheckBox.Checked;
+            argument.AutoOpenReport = this.OpenReportCheckBox.Checked;
+            argument.ReportMode = Enum.TryParse(this.ReportComboBox.SelectedText, out ReportModes reportMode) ? reportMode : FixedDatas.DefaultReportMode;
+            argument.LogLevel = Enum.TryParse(this.LogLevelComboBox.SelectedText, out LogLevels logLevel) ? logLevel : FixedDatas.DefaultLogLevel;
 
             if (this.StartTimePicker.Checked)
             {
