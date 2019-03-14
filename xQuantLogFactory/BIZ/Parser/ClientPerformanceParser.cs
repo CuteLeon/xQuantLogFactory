@@ -36,7 +36,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// Gets 日志总体正则表达式
         /// </summary>
         public override Regex GeneralLogRegex { get; } = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<RequestSendTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<RequestReceiveTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<ResponseSendTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<ResponseReceiveTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>tcp.*?)\s(?<MethodName>.*?)\s(?<RequestStreamLength>\d*?)\s(?<ResponseStreamLength>\d*?)$",
+            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<RequestReceiveTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<ResponseSendTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<ResponseReceiveTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>tcp.*?)\s(?<MethodName>.*?)\s(?<RequestStreamLength>\d*?)\s(?<ResponseStreamLength>\d*?)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -46,7 +46,8 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <param name="particularMatch"></param>
         protected override void ApplyParticularMatch(PerformanceMonitorResult result, Match particularMatch)
         {
-            result.RequestSendTime = DateTime.TryParse(particularMatch.Groups["RequestSendTime"].Value, out DateTime requestReceiveTime) ? requestReceiveTime : DateTime.MinValue;
+            result.RequestSendTime = result.LogTime;
+            result.RequestReceiveTime = DateTime.TryParse(particularMatch.Groups["RequestReceiveTime"].Value, out DateTime requestReceiveTime) ? requestReceiveTime : DateTime.MinValue;
             result.ResponseReceiveTime = DateTime.TryParse(particularMatch.Groups["ResponseReceiveTime"].Value, out DateTime responseReceiveTime) ? responseReceiveTime : DateTime.MinValue;
         }
 

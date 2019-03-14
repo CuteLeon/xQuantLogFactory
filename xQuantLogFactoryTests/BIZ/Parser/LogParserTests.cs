@@ -104,37 +104,35 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
         [TestMethod()]
         public void ClientPerformanceParseTest()
         {
-            string log = "2019-01-09 10:30:03.350	2019-01-09 10:30:03.171	2019-01-09 10:30:03.185	2019-01-09 10:30:03.348	2019-01-09 10:30:03.350	178	tcp://127.0.0.1:5555/LogonManager.soap	GetLogonType	123	234";
+            string log = "2019-03-11 17:39:35.209	2019-03-11 17:38:42.450	2019-03-11 17:38:42.450	2019-03-11 17:39:35.250	41	tcp://183.203.214.229:5622/LogonManager.soap	GetMessageList	134	290";
 
             PerformanceLogParserBase parser = new ClientPerformanceParser();
             Match match = parser.GeneralLogRegex.Match(log);
             
             Assert.IsTrue(match.Success);
-            Assert.AreEqual("2019-01-09 10:30:03.350", match.Groups["LogTime"].Value);
-            Assert.AreEqual("2019-01-09 10:30:03.171", match.Groups["RequestSendTime"].Value);
-            Assert.AreEqual("2019-01-09 10:30:03.185", match.Groups["RequestReceiveTime"].Value);
-            Assert.AreEqual("2019-01-09 10:30:03.348", match.Groups["ResponseSendTime"].Value);
-            Assert.AreEqual("2019-01-09 10:30:03.350", match.Groups["ResponseReceiveTime"].Value);
-            Assert.AreEqual("178", match.Groups["Elapsed"].Value);
-            Assert.AreEqual("123", match.Groups["RequestStreamLength"].Value);
-            Assert.AreEqual("234", match.Groups["ResponseStreamLength"].Value);
-            Assert.AreEqual("tcp://127.0.0.1:5555/LogonManager.soap", match.Groups["RequestURI"].Value);
-            Assert.AreEqual("GetLogonType", match.Groups["MethodName"].Value);
+            Assert.AreEqual("2019-03-11 17:39:35.209", match.Groups["LogTime"].Value);
+            Assert.AreEqual("2019-03-11 17:38:42.450", match.Groups["RequestReceiveTime"].Value);
+            Assert.AreEqual("2019-03-11 17:38:42.450", match.Groups["ResponseSendTime"].Value);
+            Assert.AreEqual("2019-03-11 17:39:35.250", match.Groups["ResponseReceiveTime"].Value);
+            Assert.AreEqual("41", match.Groups["Elapsed"].Value);
+            Assert.AreEqual("tcp://183.203.214.229:5622/LogonManager.soap", match.Groups["RequestURI"].Value);
+            Assert.AreEqual("GetMessageList", match.Groups["MethodName"].Value);
+            Assert.AreEqual("134", match.Groups["RequestStreamLength"].Value);
+            Assert.AreEqual("290", match.Groups["ResponseStreamLength"].Value);
         }
 
         [TestMethod()]
         public void ServerPerformanceParseTest()
         {
-            string log = "2019-01-09 10:30:03.349	127.0.0.1		2019-01-09 10:30:03.185	2019-01-09 10:30:03.348	162	/LogonManager.soap	GetLogonType	0	552	完成";
+            string log = "127.0.0.1		2019-01-09 10:30:03.185	2019-01-09 10:30:03.348	162	/LogonManager.soap	GetLogonType	0	552	完成";
 
             PerformanceLogParserBase parser = new ServerPerformanceParser();
             Match match = parser.GeneralLogRegex.Match(log);
 
             Assert.IsTrue(match.Success);
-            Assert.AreEqual("2019-01-09 10:30:03.349", match.Groups["LogTime"].Value);
+            Assert.AreEqual("2019-01-09 10:30:03.185", match.Groups["LogTime"].Value);
             Assert.AreEqual("127.0.0.1", match.Groups["IPAddress"].Value);
             Assert.AreEqual("", match.Groups["UserCode"].Value);
-            Assert.AreEqual("2019-01-09 10:30:03.185", match.Groups["RequestReceiveTime"].Value);
             Assert.AreEqual("2019-01-09 10:30:03.348", match.Groups["ResponseSendTime"].Value);
             Assert.AreEqual("162", match.Groups["Elapsed"].Value);
             Assert.AreEqual("/LogonManager.soap", match.Groups["RequestURI"].Value);

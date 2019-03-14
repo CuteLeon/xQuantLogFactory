@@ -76,7 +76,6 @@ namespace xQuantLogFactory.BIZ.Parser
                          responseStreamLength = 0;
 
                     DateTime logTime = DateTime.MinValue,
-                                    requestReceiveTime = DateTime.MinValue,
                                     responseSendTime = DateTime.MinValue;
 
                     // 缓存变量，减少树扫描次数，需要 .ToList()
@@ -119,7 +118,6 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
                              */
-                            requestReceiveTime = DateTime.TryParse(match.Groups["RequestReceiveTime"].Value, out requestReceiveTime) ? requestReceiveTime : DateTime.MinValue;
                             responseSendTime = DateTime.TryParse(match.Groups["ResponseSendTime"].Value, out responseSendTime) ? responseSendTime : DateTime.MinValue;
                             elapsed = int.TryParse(match.Groups["Elapsed"].Value, out int elapsedValue) ? elapsedValue : 0;
                             requestStreamLength = int.TryParse(match.Groups["RequestStreamLength"].Value, out requestStreamLength) ? requestStreamLength : 0;
@@ -134,7 +132,6 @@ namespace xQuantLogFactory.BIZ.Parser
 
                             parseResult.LogTime = logTime;
                             parseResult.MethodName = methodName;
-                            parseResult.RequestReceiveTime = requestReceiveTime;
                             parseResult.ResponseSendTime = responseSendTime;
                             parseResult.Elapsed = elapsed;
                             parseResult.RequestStreamLength = requestStreamLength;

@@ -102,7 +102,7 @@ namespace xQuantLogFactory.Model.Extensions.Tests
                 "CltLog_Debg.txt",
                 "CltLog_Trac.txt",
                 "CltLog_Errortxt",
-                "CltLog_Info.xtperformanceog20181031",
+                "CltLog_Info.xtperfog20181031",
                 "CltLog_Warn.tt",
                 "CltLog_Debug.tx",
             };
@@ -114,11 +114,11 @@ namespace xQuantLogFactory.Model.Extensions.Tests
                 "CltLog_DebUG.TXt.1",
                 "wanglu11_hp-PC_主版本号_20181127173028_CltLog_Debug.txt",
 
-                "SrvLog_Performance.txt",
-                "SRVLoG_PerforMance.txt.1",
-                "CLTLOG_PerformAnce.txt",
-                "CltLog_PerfoRmance.TXt.1",
-                "wanglu11_hp-PC_主版本号_20181127173028_CltLog_Performance.txt",
+                "SrvLog_Perf.txt",
+                "SRVLoG_Perf.txt.1",
+                "CLTLOG_Perf.txt",
+                "CltLog_Perf.TXt.1",
+                "wanglu11_hp-PC_主版本号_20181127173028_CltLog_Perf.txt",
 
                 "SrVLoG_InFo.txt",
                 "SrVLog_Info.txT.625",
