@@ -627,23 +627,22 @@ namespace xQuantLogFactory.BIZ.Exporter
                     foreach (var result in performanceParseResults
                         .OrderBy(result => (result.LogTime, result.LineNumber)))
                     {
-                        range[rowID, 1].Value = result.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        range[rowID, 2].Value = result.IPAddress;
-                        range[rowID, 3].Value = result.RequestSendTime;
-                        range[rowID, 4].Value = result.RequestReceiveTime;
-                        range[rowID, 5].Value = result.ResponseSendTime;
-                        range[rowID, 6].Value = result.ResponseReceiveTime;
-                        range[rowID, 7].Value = result.Elapsed;
-                        range[rowID, 8].Value = result.RequestDelay.TotalMilliseconds;
-                        range[rowID, 9].Value = result.ResponseElapsed.TotalMilliseconds;
-                        range[rowID, 10].Value = result.ResponseDelay.TotalMilliseconds;
-                        range[rowID, 11].Value = result.RequestURI;
-                        range[rowID, 12].Value = result.MethodName;
-                        range[rowID, 13].Value = result.RequestStreamLength;
-                        range[rowID, 14].Value = result.ResponseStreamLength;
-                        range[rowID, 15].Value = result.Message;
-                        range[rowID, 16].Value = result.LogFile.RelativePath;
-                        range[rowID, 17].Value = result.LineNumber;
+                        range[rowID, 1].Value = result.IPAddress;
+                        range[rowID, 2].Value = result.RequestSendTime;
+                        range[rowID, 3].Value = result.RequestReceiveTime;
+                        range[rowID, 4].Value = result.ResponseSendTime;
+                        range[rowID, 5].Value = result.ResponseReceiveTime;
+                        range[rowID, 6].Value = result.Elapsed;
+                        range[rowID, 7].Value = result.RequestDelay.TotalMilliseconds;
+                        range[rowID, 8].Value = result.ResponseElapsed.TotalMilliseconds;
+                        range[rowID, 9].Value = result.ResponseDelay.TotalMilliseconds;
+                        range[rowID, 10].Value = result.RequestURI;
+                        range[rowID, 11].Value = result.MethodName;
+                        range[rowID, 12].Value = result.RequestStreamLength;
+                        range[rowID, 13].Value = result.ResponseStreamLength;
+                        range[rowID, 14].Value = result.Message;
+                        range[rowID, 15].Value = result.LogFile.RelativePath;
+                        range[rowID, 16].Value = result.LineNumber;
 
                         rowID++;
                     }

@@ -126,10 +126,8 @@ namespace xQuantLogFactory.BIZ.Parser
 
                             // 记录所有解析结果
                             PerformanceMonitorResult parseResult = this.CreateParseResult(argument, logFile);
-                            this.ApplyParticularMatch(parseResult, match);
                             parseResult.GroupType = GroupTypes.Unmatch;
                             parseResult.LineNumber = lineNumber;
-
                             parseResult.LogTime = logTime;
                             parseResult.MethodName = methodName;
                             parseResult.ResponseSendTime = responseSendTime;
@@ -137,6 +135,8 @@ namespace xQuantLogFactory.BIZ.Parser
                             parseResult.RequestStreamLength = requestStreamLength;
                             parseResult.ResponseStreamLength = responseStreamLength;
                             parseResult.RequestURI = requestURI;
+
+                            this.ApplyParticularMatch(parseResult, match);
 
                             // 匹配所有监视规则
                             foreach (PerformanceMonitorItem monitor in monitorItems)
