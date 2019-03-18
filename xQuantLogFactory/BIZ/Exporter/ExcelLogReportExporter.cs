@@ -439,30 +439,31 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             foreach (var sheetName in argument.MonitorContainerRoot.GetTerminalMonitorItems()
                 .Where(monitor => monitor.AnalysisResults.Count > 0)
-                .Select(monitor => monitor.SheetName).Distinct())
+                .Select(monitor => monitor.SheetName).Distinct()
+                .Where(sheetName => !SpecialSheetNames.Contains(sheetName)))
             {
-                if (SpecialSheetNames.Contains(sheetName))
-                {
-                    // 保留表名不在此处处理
-                    continue;
-                }
-
                 ExcelWorksheet worksheet = excel.Workbook.Worksheets[sheetName];
                 if (worksheet == null)
                 {
-                    this.Tracer?.WriteLine($"未发现名称为 {sheetName} 的数据表，将跳过导出此表数据");
-                    continue;
+                    this.Tracer?.WriteLine($">未发现名称为 {sheetName} 的数据表，自动创建 ...");
+                    try
+                    {
+                        worksheet = this.CreateCommonResultSheet(excel, sheetName);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Tracer?.WriteLine($"<创建表 {sheetName} 失败，将跳过导出此表的分析结果：{ex.Message}");
+                        continue;
+                    }
                 }
-                else
-                {
-                    ExcelWorksheetPackage newPackage = this.CreateCommonWorksheetPackage(
-                        worksheet,
-                        argument.MonitorContainerRoot.GetTerminalMonitorItems()
-                            .Where(monitor => monitor.SheetName == sheetName)
-                            .Sum(monitor => monitor.AnalysisResults.Count));
 
-                    commonWorksheets.Add(sheetName, newPackage);
-                }
+                ExcelWorksheetPackage newPackage = this.CreateCommonWorksheetPackage(
+                    worksheet,
+                    argument.MonitorContainerRoot.GetTerminalMonitorItems()
+                        .Where(monitor => monitor.SheetName == sheetName)
+                        .Sum(monitor => monitor.AnalysisResults.Count));
+
+                commonWorksheets.Add(sheetName, newPackage);
             }
 
             // 输出监视规则树
@@ -712,6 +713,31 @@ namespace xQuantLogFactory.BIZ.Exporter
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// 创建通用数据表
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="sheetName"></param>
+        private ExcelWorksheet CreateCommonResultSheet(ExcelPackage excel, string sheetName)
+        {
+            try
+            {
+                ExcelWorksheet sourceSheet = excel.Workbook.Worksheets[FixedDatas.ExcelSourceSheetName];
+                if (sourceSheet == null)
+                {
+                    throw new Exception($"不存在 {FixedDatas.ExcelSourceSheetName} 表，无法创建通用表。");
+                }
+
+                excel.Workbook.Worksheets.Add(sheetName, sourceSheet);
+
+                return excel.Workbook.Worksheets[sheetName] ?? throw new Exception($"创建 {sheetName} 表后，返回为 null");
+            }
+            catch
+            {
+                throw;
             }
         }
 
