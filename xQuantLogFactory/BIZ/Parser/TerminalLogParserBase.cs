@@ -41,7 +41,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// Gets 日志总体正则表达式
         /// </summary>
         public override Regex GeneralLogRegex { get; } = new Regex(
-            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s(?<LogContent>.+)$",
+            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(?<LogLevel>(TRACE|DEBUG|INFO|WARN))\s\s(?<ThreadID>\d*)\s(?<LogContent>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace xQuantLogFactory.BIZ.Parser
                     fileStream = new FileStream(logFile.FilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     streamRreader = new StreamReader(fileStream, Encoding.Default);
 
-                    int lineNumber = 0;
+                    int lineNumber = 0, threadID = 0;
                     string logLine = string.Empty,
                         logLevel = string.Empty,
                         logContent = string.Empty;
@@ -131,6 +131,7 @@ namespace xQuantLogFactory.BIZ.Parser
 
                             logContent = generalMatch.Groups["LogContent"].Value;
                             logLevel = generalMatch.Groups["LogLevel"].Success ? generalMatch.Groups["LogLevel"].Value : string.Empty;
+                            threadID = generalMatch.Groups["ThreadID"].Success && int.TryParse(generalMatch.Groups["ThreadID"].Value, out threadID) ? threadID : -1;
 
                             // 精确匹配
                             if (this.ParticularRegex != null)
@@ -162,6 +163,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 result.LineNumber = lineNumber;
                                 result.LogContent = logContent;
                                 result.LogLevel = logLevel;
+                                result.ThreadID = threadID;
 
                                 // 应用精准匹配数据
                                 if (particularMatch.Success)

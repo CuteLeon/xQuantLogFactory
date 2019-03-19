@@ -175,6 +175,21 @@ namespace xQuantLogFactory.BIZ.Analysiser
         /// <param name="argument"></param>
         public virtual void FigureOutAnalysisResults(TaskArgument argument)
         {
+            this.Tracer?.WriteLine("未匹配的监视规则：");
+
+            foreach (var monitor in argument.MonitorContainerRoot.GetTerminalMonitorItems()
+                .Where(monitor => monitor.MonitorResults.Count == 0))
+            {
+                this.Tracer?.WriteLine($"监视规则：{monitor.Name}");
+            }
+
+            foreach (var monitor in argument.MonitorContainerRoot.GetPerformanceMonitorItems()
+               .Where(monitor => monitor.MonitorResults.Count == 0))
+            {
+                this.Tracer?.WriteLine($"监视规则：{monitor.Name}");
+            }
+
+            this.Tracer?.WriteLine(string.Empty);
             this.Tracer?.WriteLine("未完全匹配的监视规则：");
 
             foreach (var monitor in argument.MonitorContainerRoot.GetTerminalMonitorItems()

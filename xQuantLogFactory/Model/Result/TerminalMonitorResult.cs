@@ -47,6 +47,11 @@ namespace xQuantLogFactory.Model.Result
         public string LogLevel { get; set; }
 
         /// <summary>
+        /// Gets or sets 线程ID
+        /// </summary>
+        public int ThreadID { get; set; }
+
+        /// <summary>
         /// Gets or sets 日志内容
         /// </summary>
         public string LogContent { get; set; }

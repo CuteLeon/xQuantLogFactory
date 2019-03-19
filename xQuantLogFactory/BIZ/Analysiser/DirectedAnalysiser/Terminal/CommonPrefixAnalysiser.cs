@@ -52,6 +52,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                     TerminalMonitorResult firstResult = null;
                     string customeData = string.Empty;
                     string pattern = string.Empty;
+                    int customeDataIndex = 0;
 
                     this.Tracer?.WriteLine($">>>正在分析监视规则：{targetMonitor.Name}，结果数量：{resultGroup.Count()}");
                     foreach (var analysisResult in resultGroup)
@@ -64,9 +65,10 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
 
                         // 判断日志内容是否以监视规则的条件为开头，true：在监视规则中移除开始的条件字符串；false：直接使用日志内容作为子监视规则名称
                         pattern = firstResult.GroupType == GroupTypes.Finish ? targetMonitor.FinishPattern : targetMonitor.StartPattern;
-                        if (firstResult.LogContent.IndexOf(pattern, StringComparison.OrdinalIgnoreCase) > -1)
+                        customeDataIndex = firstResult.LogContent.IndexOf(pattern, StringComparison.OrdinalIgnoreCase);
+                        if (customeDataIndex > -1)
                         {
-                            customeData = firstResult.LogContent.Substring(pattern.Length).Trim();
+                            customeData = firstResult.LogContent.Substring(customeDataIndex + pattern.Length).Trim();
                         }
                         else
                         {

@@ -69,11 +69,13 @@ namespace xQuantLogFactory.Model.Monitor
             base.BindParentMonitor(parentMonitor, createNew);
 
             // 如果子节点未设置分析器，使用父级节点相同配置
+            /*
             if (parentMonitor.DirectedAnalysiser != TerminalDirectedAnalysiserTypes.None &&
                 this.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.None)
             {
                 this.DirectedAnalysiser = parentMonitor.DirectedAnalysiser;
             }
+            */
 
             // 如果子节点未设置内存监视，使用父级节点相同配置
             if (!this.Memory)
