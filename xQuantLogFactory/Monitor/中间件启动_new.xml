@@ -6,9 +6,7 @@
     <Item Name="从数据库注册远程服务" Begin="ServerLaunch=>开始从数据库注册远程服务..." End="ServerLaunch=>从数据库注册远程服务完成"/>
     
     <Item Name="启动服务" Begin="ServerLaunch=>开始启动服务..." End="ServerLaunch=>启动服务完成。">
-      <!-- TODO: 通用前缀分析器=>获取服务名称 -->
       <Item Name="启动单项服务" Begin="ServerLaunch=>开始启动服务：" End="ServerLaunch=>启动服务完成：" DirectedAnalysiser="Prefix">
-        <!-- TODO: 通用前缀分析器=>获取数据集合名称 -->
         <Item Name="中间件启动加载数据" Begin="开始中间件启动加载数据" End="完成中间件启动加载数据" DirectedAnalysiser="Prefix" />
         <Item Name="加载拼音简码缓存" Begin="开始加载拼音简码缓存" End="完成加载拼音简码缓存"/>
         <Item Name="加载系统参数表" Begin="开始加载系统参数表" End="完成加载系统参数表"/>
