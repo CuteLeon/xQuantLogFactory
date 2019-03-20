@@ -68,32 +68,34 @@ namespace xQuantLogFactory.Model.Monitor
             // 优先调用基类方法，以判空
             base.BindParentMonitor(parentMonitor, createNew);
 
-            // 如果子节点未设置分析器，使用父级节点相同配置
-            /*
-            if (parentMonitor.DirectedAnalysiser != TerminalDirectedAnalysiserTypes.None &&
-                this.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.None)
-            {
-                this.DirectedAnalysiser = parentMonitor.DirectedAnalysiser;
-            }
-            */
-
-            // 如果子节点未设置内存监视，使用父级节点相同配置
-            if (!this.Memory)
-            {
-                this.Memory = parentMonitor.Memory;
-            }
-
             // 如果子节点未设置表名，使用父级节点相同配置
             if (string.IsNullOrEmpty(this.SheetName))
             {
                 this.SheetName = parentMonitor.SheetName;
             }
 
-            // 如果子节点未设置异步，使用父级节点相同配置
-            if (parentMonitor.GroupAnalysiser != TerminalGroupAnalysiserTypes.Common &&
-                this.GroupAnalysiser == TerminalGroupAnalysiserTypes.Common)
+            // 仅在新建子监视规则时继承以下配置，初始化监视规则容器时并不继承
+            if (createNew)
             {
-                this.GroupAnalysiser = parentMonitor.GroupAnalysiser;
+                // 如果子节点未设置分析器，使用父级节点相同配置
+                if (parentMonitor.DirectedAnalysiser != TerminalDirectedAnalysiserTypes.None &&
+                    this.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.None)
+                {
+                    this.DirectedAnalysiser = parentMonitor.DirectedAnalysiser;
+                }
+
+                // 如果子节点未设置内存监视，使用父级节点相同配置
+                if (!this.Memory)
+                {
+                    this.Memory = parentMonitor.Memory;
+                }
+
+                // 如果子节点未设置异步，使用父级节点相同配置
+                if (parentMonitor.GroupAnalysiser != TerminalGroupAnalysiserTypes.Common &&
+                    this.GroupAnalysiser == TerminalGroupAnalysiserTypes.Common)
+                {
+                    this.GroupAnalysiser = parentMonitor.GroupAnalysiser;
+                }
             }
         }
 
