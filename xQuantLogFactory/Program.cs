@@ -88,6 +88,7 @@ namespace xQuantLogFactory
             {
                 ParseClientPerformanceLog();
                 ParseServerPerformanceLog();
+                ParseOldPerformanceLog();
 
                 ShowPerformanceParseResult();
             }
@@ -318,6 +319,20 @@ namespace xQuantLogFactory
                 UnityTracer.WriteLine("开始解析 [服务端-Performance] 日志文件...\n————————");
 
                 ILogParser performanceLogParser = new ServerPerformanceParser(UnityTracer);
+                performanceLogParser.Parse(UnityTaskArgument);
+            }
+        }
+
+        /// <summary>
+        /// 解析旧版Performance日志
+        /// </summary>
+        private static void ParseOldPerformanceLog()
+        {
+            if (UnityTaskArgument.PerformanceLogFiles.Count() > 0)
+            {
+                UnityTracer.WriteLine("开始解析 [旧版-Performance] 日志文件...\n————————");
+
+                ILogParser performanceLogParser = new OldPerformanceParser(UnityTracer);
                 performanceLogParser.Parse(UnityTaskArgument);
             }
         }

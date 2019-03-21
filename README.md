@@ -204,20 +204,26 @@ readToEnd(yes)->generalRegex
 
 **任务参数说明：**
 
-| 参数名称 | 说明               | 备注     | 格式       | 示例                              |
-| -------- | ------------------ | -------- | ---------- | --------------------------------- |
-| logdir   | 日志文件存放目录   | **必选** | 绝对路径   | C:\TEST_DIR 或 "C:\TEST DIR"      |
-| monitor  | 监视规则文件名称   | **必选** | 相对路径   | monitor.xml                       |
-| start    | 日志开始时间       | **选填*  | 24小时格式 | "2018-10-01 17:30:00"             |
-| finish   | 日志结束时间       | **选填*  | 24小时格式 | "2018-11-11 08:40:00"             |
-| sysinfo  | 是否记录系统信息   | **选填*  | 默认:false | true 或 false                     |
-| cltinfo  | 是否记录客户端信息 | **选填*  | 默认:false | true 或 false                     |
-| report   | 导出报告格式       | **选填*  | 默认:excel | excel 或 html 或 word             |
-| level    | 日志文件的等级     | **选填*  | 默认:debug | debug 或 trace 或 info 或 perf 等 |
-| exit     | 自动退出           | **选填*  | 默认:false | true 或 false                     |
-| open     | 自动打开报告       | **选填*  | 默认:true  | true 或 false                     |
+| 参数名称 | 说明               | 备注     | 格式       | 示例                                         |
+| -------- | ------------------ | -------- | ---------- | -------------------------------------------- |
+| logdir   | 日志文件存放目录   | **必选** | 绝对路径   | C:\TEST_DIR 或 "C:\TEST DIR"                 |
+| monitor  | 监视规则文件名称   | **必选** | 相对路径   | monitor.xml                                  |
+| start    | 日志开始时间       | **选填*  | 24小时格式 | "2018-10-01 17:30:00"                        |
+| finish   | 日志结束时间       | **选填*  | 24小时格式 | "2018-11-11 08:40:00"                        |
+| sysinfo  | 是否记录系统信息   | **选填*  | 默认:false | true 或 false                                |
+| cltinfo  | 是否记录客户端信息 | **选填*  | 默认:false | true 或 false                                |
+| report   | 导出报告格式       | **选填*  | 默认:excel | excel 或 html 或 word                        |
+| level    | 日志文件的等级     | **选填*  | 默认:debug | debug 或 trace 或 info 或 perf 或 perfold 等 |
+| exit     | 自动退出           | **选填*  | 默认:false | true 或 false                                |
+| open     | 自动打开报告       | **选填*  | 默认:true  | true 或 false                                |
 
-​	**注意：参数数据内存在空格时，需要在参数外加英文双引号嵌套起来；*
+> 注意：
+>
+> *参数数据内存在空格时，需要在参数外加英文双引号嵌套起来；*
+>
+> *perfold 日志等级用于兼容旧版 Performance 日志*
+
+
 
 - 命令行参数传入格式：
     - 单个参数格式：参数名称=参数数据

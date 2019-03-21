@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>xQuantLogFactory.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -92,6 +92,7 @@
     <Compile Include="BIZ\Parser\ClientPerformanceParser.cs" />
     <Compile Include="BIZ\Parser\ClientTerminalParser.cs" />
     <Compile Include="BIZ\Analysiser\ILogAnalysiser.cs" />
+    <Compile Include="BIZ\Parser\OldPerformanceParser.cs" />
     <Compile Include="BIZ\Parser\ServerPerformanceParser.cs" />
     <Compile Include="BIZ\Parser\TerminalLogParserBase.cs" />
     <Compile Include="BIZ\Parser\ILogParser.cs" />
@@ -229,6 +230,7 @@
     <None Include="ReportTemplet\xQuant_EXCEL_Templet.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="stylecop.json" />
     <None Include="xQuantLogFactory.ruleset" />
     <None Include="xQuantLogFactoryIcon.ico" />
     <Content Include="Monitor\Server.xml">

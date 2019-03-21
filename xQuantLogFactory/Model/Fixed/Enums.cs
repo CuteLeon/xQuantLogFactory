@@ -141,6 +141,12 @@ namespace xQuantLogFactory.Model.Fixed
         /// </summary>
         [AmbientValue("Perf")]
         Perf = 5,
+
+        /// <summary>
+        /// PerformanceCompatibility
+        /// </summary>
+        [AmbientValue("PerfOld")]
+        PerfOld = 6,
     }
 
     /// <summary>

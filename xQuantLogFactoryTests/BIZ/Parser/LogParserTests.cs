@@ -11,7 +11,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
         [TestMethod()]
         public void ClientTerminalParseTest()
         {
-            string log = "2018-10-29 16:51:04,457 TRACE 安信证券 1.3.0.065 192.168.7.101 初始化准备";
+            string log = "2018-10-29 16:51:04,457 TRACE  1 安信证券 1.3.0.065 192.168.7.101 初始化准备";
 
             TerminalLogParserBase parser = new ClientTerminalParser();
             Match match = parser.GeneralLogRegex.Match(log);
@@ -33,10 +33,10 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
         [TestMethod()]
         public void ServerTerminalParseTest()
         {
-            string log_0 = "2018-10-30 09:25:30,111 DEBUG 东方证券 1.3.0.064补丁1 开始排券";
-            string log_1 = "2018-11-23 09:00:46,534 DEBUG 宏源证券 063补丁4_宏源 日终清算[清算日期=2018-11-22, 清算进度=1/13,当前账户=CASH_GSLC_CJHX_TL21H,外部账户=GSLC_JJ_CASH_EXT] 开始------";
-            string log_2 = "2018-11-23 09:00:46,597 DEBUG 宏源证券 063补丁4_宏源 ....日终清算[清算日期=2018-11-22,当前账户=CASH_GSLC_CJHX_TL21H,外部账户=GSLC_JJ_CASH_EXT] 清算前准备初始化完成;";
-            string log_3 = "2018-12-11 20:28:12,140 TRACE 中间件进程启动开始, 进程号[13800], 中间件启动";
+            string log_0 = "2018-10-30 09:25:30,111 DEBUG  1 东方证券 1.3.0.064补丁1 开始排券";
+            string log_1 = "2018-11-23 09:00:46,534 DEBUG  1 宏源证券 063补丁4_宏源 日终清算[清算日期=2018-11-22, 清算进度=1/13,当前账户=CASH_GSLC_CJHX_TL21H,外部账户=GSLC_JJ_CASH_EXT] 开始------";
+            string log_2 = "2018-11-23 09:00:46,597 DEBUG  1 宏源证券 063补丁4_宏源 ....日终清算[清算日期=2018-11-22,当前账户=CASH_GSLC_CJHX_TL21H,外部账户=GSLC_JJ_CASH_EXT] 清算前准备初始化完成;";
+            string log_3 = "2018-12-11 20:28:12,140 TRACE  1 中间件进程启动开始, 进程号[13800], 中间件启动";
 
             TerminalLogParserBase serverParser = new ServerTerminalParser();
             Match generalMatch = serverParser.GeneralLogRegex.Match(log_0);

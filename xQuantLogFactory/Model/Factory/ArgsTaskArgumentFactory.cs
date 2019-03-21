@@ -100,7 +100,7 @@ namespace xQuantLogFactory.Model.Factory
                     UsageBuilder.Value.AppendLine("\t<名称>\t\t<要求>\t\t<描述>");
                     foreach (var arg in ArgumentDescriptions)
                     {
-                        UsageBuilder.Value.AppendLine($"\t{arg.Key}\t\t{arg.Value.Item1}\t\t{arg.Value.Item2}");
+                        UsageBuilder.Value.AppendLine($"\t{arg.Key}\t\t{arg.Value.option}\t\t{arg.Value.description}");
                     }
 
                     UsageBuilder.Value.AppendLine();
@@ -116,7 +116,7 @@ namespace xQuantLogFactory.Model.Factory
         /// <summary>
         /// Gets 参数描述
         /// </summary>
-        private static Dictionary<string, (string, string)> ArgumentDescriptions
+        private static Dictionary<string, (string option, string description)> ArgumentDescriptions
         {
             get
             {
@@ -129,7 +129,7 @@ namespace xQuantLogFactory.Model.Factory
                     argumentDescription.Value.Add(SYS_INFO, (" 可选", "是否记录系统信息，如：true 或 false"));
                     argumentDescription.Value.Add(CLIENT_INFO, (" 可选", "是否记录客户端信息，如：true 或 false"));
                     argumentDescription.Value.Add(REPORT_MODE, (" 可选", "导出报告格式，如：excel 或 html 或 word"));
-                    argumentDescription.Value.Add(LOG_LEVEL, (" 可选", "日志等级，如：debug 或 trace 或 info 或 perf 等"));
+                    argumentDescription.Value.Add(LOG_LEVEL, (" 可选", "日志等级，如：debug 或 trace 或 info 或 perf 或 perfold(兼容旧版) 等"));
                     argumentDescription.Value.Add(AUTO_EXIT, (" 可选", "自动退出工具，如：true 或 false"));
                     argumentDescription.Value.Add(AUTO_OPEN_REPORT, (" 可选", "自动打开报告，如：true 或 false"));
                 }

@@ -1,5 +1,8 @@
 ﻿namespace xQuantLogFactory.Model.Fixed
 {
+    /// <summary>
+    /// 固定数据
+    /// </summary>
     public static class FixedDatas
     {
         #region 分析结果数据字典Key常量
@@ -197,6 +200,11 @@
         /// 客户端日志文件名称前缀
         /// </summary>
         public const string ClientLogFileNamePrefix = "Clt";
+
+        /// <summary>
+        /// 中间件性能日志文件名称前缀
+        /// </summary>
+        public const string PerformanceFileNamePrefix = "PerformanceLog";
         #endregion
     }
 }

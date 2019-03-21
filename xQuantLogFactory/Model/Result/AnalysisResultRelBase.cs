@@ -23,6 +23,7 @@ namespace xQuantLogFactory.Model.Result
         #region 泛型类型
 
         private TMonitorResult startMonitorResult;
+
         /// <summary>
         /// Gets or sets 匹配开始结果
         /// </summary>

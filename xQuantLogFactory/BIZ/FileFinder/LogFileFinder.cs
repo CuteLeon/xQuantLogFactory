@@ -77,6 +77,7 @@ namespace xQuantLogFactory.BIZ.FileFinder
                                 break;
                             }
 
+                        case LogLevels.PerfOld:
                         case LogLevels.Perf:
                             {
                                 argument.PerformanceLogFiles.Add(new PerformanceLogFile(
@@ -109,7 +110,8 @@ namespace xQuantLogFactory.BIZ.FileFinder
             {
                 return LogFileTypes.Client;
             }
-            else if (fileName.StartsWith(FixedDatas.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase))
+            else if (fileName.StartsWith(FixedDatas.ServerLogFileNamePrefix, StringComparison.OrdinalIgnoreCase) ||
+                fileName.StartsWith(FixedDatas.PerformanceFileNamePrefix, StringComparison.OrdinalIgnoreCase))
             {
                 return LogFileTypes.Server;
             }
@@ -130,6 +132,11 @@ namespace xQuantLogFactory.BIZ.FileFinder
                 {
                     return level;
                 }
+            }
+
+            if (fileName.IndexOf("performancelog", StringComparison.OrdinalIgnoreCase) > -1)
+            {
+                return LogLevels.PerfOld;
             }
 
             throw new Exception($"未知的日志等级：{fileName}");

@@ -10,7 +10,7 @@ namespace xQuantLogFactory.Utils.Trace
         /// <summary>
         /// 输出信息
         /// </summary>
-        /// <param name="info">输出信息</param>
+        /// <param name="info"></param>
         public void WriteLine(string info)
         {
             Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss.fff")} {info}");
