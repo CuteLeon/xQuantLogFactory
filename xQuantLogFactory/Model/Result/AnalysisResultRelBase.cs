@@ -48,6 +48,7 @@ namespace xQuantLogFactory.Model.Result
         }
 
         private TMonitorResult finishMonitorResult;
+
         /// <summary>
         /// Gets or sets 匹配结束结果
         /// </summary>
