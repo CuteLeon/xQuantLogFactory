@@ -2,6 +2,8 @@
 using System.IO;
 using System.Text;
 
+using RazorEngine;
+
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Utils;
@@ -111,7 +113,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="builder"></param>
         private void RenderBody(TaskArgument argument, StringBuilder builder)
         {
-            builder.AppendLine("<input type=\"button\" class=\"btn btn-primary\"></input>");
+            
         }
 
         /// <summary>
@@ -166,8 +168,9 @@ namespace xQuantLogFactory.BIZ.Exporter
             {
                 renderBody(argument, builder);
             }
-            catch
+            catch (Exception ex)
             {
+                builder.AppendLine($@"<h3>渲染主体部分出错：{ex.Message}</h3>");
             }
 
             builder.AppendLine("    </body>");
@@ -236,7 +239,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         {
             try
             {
-                File.WriteAllText(path, content, Encoding.UTF8);
+                File.WriteAllText(path, content, System.Text.Encoding.UTF8);
             }
             catch
             {
