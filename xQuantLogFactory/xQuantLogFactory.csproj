@@ -88,6 +88,7 @@
     <Compile Include="BIZ\Analysiser\LogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\LogAnalysiserHost.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonKeyValuePairAnalysiser.cs" />
+    <Compile Include="BIZ\Exporter\ChartContainer.cs" />
     <Compile Include="BIZ\Exporter\ChartsReportExporter.cs" />
     <Compile Include="BIZ\Exporter\ExcelLogReportExporter.cs" />
     <Compile Include="BIZ\Exporter\ILogReportExporter.cs" />

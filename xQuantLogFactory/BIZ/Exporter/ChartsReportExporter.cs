@@ -36,16 +36,9 @@ namespace xQuantLogFactory.BIZ.Exporter
         };
 
         /// <summary>
-        /// 导航栏链接
+        /// 图表容器
         /// </summary>
-        private readonly IEnumerable<(string text, string target)> navLinks = new[]
-            {
-                ("内存", "memory"),
-                ("客户端启动", "clientLaunch"),
-                ("中间件启动", "serverLaunch"),
-                ("事项", "monitor"),
-                ("请求", "performance"),
-            };
+        private readonly IEnumerable<ChartContainer> chartContainers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartsReportExporter"/> class.
@@ -54,6 +47,14 @@ namespace xQuantLogFactory.BIZ.Exporter
         public ChartsReportExporter(ITracer tracer)
             : base(tracer)
         {
+            this.chartContainers = new ChartContainer[]
+            {
+                new ChartContainer("内存", "memory", this.RenderMemory),
+                new ChartContainer("客户端启动", "clientLaunch", null),
+                new ChartContainer("中间件启动", "serverLaunch", null),
+                new ChartContainer("事项", "monitor", null),
+                new ChartContainer("请求", "performance", null),
+            };
         }
 
         /// <summary>
@@ -128,10 +129,36 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void RenderBody(StringBuilder builder, TaskArgument argument)
         {
-            this.RenderHeader(
-                builder,
-                argument,
-                this.navLinks);
+            this.RenderHeader(builder, argument, this.chartContainers);
+
+            foreach (var container in this.chartContainers)
+            {
+                this.RenderContainer(builder, argument, container);
+            }
+        }
+
+        /// <summary>
+        /// 渲染容器
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        /// <param name="container"></param>
+        private void RenderContainer(
+            StringBuilder builder,
+            TaskArgument argument,
+            ChartContainer container)
+        {
+            container.Render?.Invoke(builder, argument);
+        }
+
+        /// <summary>
+        /// 渲染内存
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        private void RenderMemory(StringBuilder builder, TaskArgument argument)
+        {
+            builder.AppendLine("<h1>内存</h1>");
         }
 
         /// <summary>
@@ -139,11 +166,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="argument"></param>
-        /// <param name="links"></param>
+        /// <param name="chartContainers"></param>
         private void RenderHeader(
             StringBuilder builder,
             TaskArgument argument,
-            IEnumerable<(string text, string target)> links)
+            IEnumerable<ChartContainer> chartContainers)
         {
             string header = @"
     <header>
@@ -155,10 +182,10 @@ namespace xQuantLogFactory.BIZ.Exporter
                 </button>
                 <div class=""navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"">
                     <ul class=""navbar-nav flex-grow-1"">
-                        @foreach(var link in Model)
+                        @foreach(var container in Model)
                         {
                             <li class=""nav-item"">
-                                <a class=""nav-link text-dark"" data-target=""@link.Item2"">@link.Item1</a>
+                                <a class=""nav-link text-dark"" data-target=""@container.Target"">@container.Text</a>
                             </li>
                         }
                     </ul>
@@ -167,7 +194,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         </nav>
     </header>
     ";
-            header = Engine.Razor.RunCompile(header, "header", null, links);
+            header = Engine.Razor.RunCompile(header, "header", null, chartContainers);
             builder.Append(header);
         }
 
@@ -218,6 +245,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             builder.AppendLine("    </head>");
             builder.AppendLine("    <body>");
+            builder.AppendLine("        <div class=\"text-center\">");
 
             try
             {
@@ -228,6 +256,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 builder.AppendLine($@"<h3>渲染主体部分出错：{ex.Message}</h3>");
             }
 
+            builder.AppendLine("        </div>");
             builder.AppendLine("    </body>");
             builder.AppendLine("</html>");
 
