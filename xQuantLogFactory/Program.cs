@@ -1,4 +1,7 @@
-﻿using System;
+﻿// TODO: 开发模式开关
+#define Development
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -20,8 +23,6 @@ using xQuantLogFactory.Utils.Trace;
 
 // 在 VS 内通过 [按键:Alt+F2] 或 [菜单:(调试|分析)>性能探查器] 打开 [性能探查器] 分析方法或对象CPU或内存的性能影响
 
-// TODO: [全局任务] 移除和排除 using
-// TODO: [全局任务] 编写单元测试
 namespace xQuantLogFactory
 {
     /// <summary>
@@ -418,43 +419,80 @@ namespace xQuantLogFactory
         private static void TryToExportLogReport()
         {
             string reportPath = string.Empty;
-            bool exportSuccess = false;
+            string chartsPath = string.Empty;
+            bool reportSuccess = false;
+            bool chartsSuccess = false;
 
             // 当导出失败且用户同意重试时重复导出，并在失败时再次询问用户
             do
             {
-                reportPath = GetReportFilePath(UnityTaskArgument);
-
-                UnityTracer.WriteLine("开始导出日志报告...");
                 try
                 {
-                    ExportLogReport(reportPath);
-                    exportSuccess = true;
+#if Development
+                    reportSuccess = true;
+#else
+                    if (!reportSuccess)
+                    {
+                        reportPath = GetReportFilePath(UnityTaskArgument);
+                        UnityTracer.WriteLine("开始导出日志报告...");
+                        ExportLogReport(reportPath);
+                        reportSuccess = true;
+
+                        // 记录日志报告导出路径
+                        UnityTaskArgument.LastReportPath = reportPath;
+                        UnityTracer.WriteLine($"日志报告导出成功=> {reportPath}");
+                    }
+#endif
+
+                    if (!chartsSuccess)
+                    {
+                        chartsPath = GetChartsReportFilePath(UnityTaskArgument);
+
+                        UnityTracer.WriteLine("开始导出图表报告...");
+                        ExportChartsReport(chartsPath);
+                        chartsSuccess = true;
+                        UnityTracer.WriteLine($"图表报告导出成功=> {chartsPath}");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    exportSuccess = false;
                     UnityTracer.WriteLine($"导出日志报告失败：{ex.Message}");
                     UnityTracer.WriteLine("是否重试？(请输入： Y / N )");
                 }
             }
-            while (!exportSuccess && !UnityTaskArgument.AutoExit && Console.ReadLine().Trim().ToUpper() == "Y");
+            while (!(reportSuccess && chartsSuccess) &&
+                      !UnityTaskArgument.AutoExit &&
+                      Console.ReadLine().Trim().ToUpper() == "Y");
 
-            if (exportSuccess)
+            if (UnityTaskArgument.AutoOpenReport)
             {
-                // 记录日志报告导出路径
-                UnityTaskArgument.LastReportPath = reportPath;
-                UnityTracer.WriteLine($"日志报告导出成功=> {UnityTaskArgument.LastReportPath}");
-
-                // 自动打开报告
-                if (UnityTaskArgument.AutoOpenReport && File.Exists(reportPath))
+                if (reportSuccess && File.Exists(reportPath))
                 {
                     Process.Start(reportPath);
                 }
+
+                if (chartsSuccess && File.Exists(chartsPath))
+                {
+                    Process.Start(chartsPath);
+                }
             }
-            else
+        }
+
+        /// <summary>
+        /// 导出图表报告
+        /// </summary>
+        /// <param name="reportPath">报告路径</param>
+        private static void ExportChartsReport(string reportPath)
+        {
+            ILogReportExporter chartsExporter = new ChartsReportExporter(UnityTracer);
+
+            try
             {
-                UnityTracer.WriteLine($"放弃导出日志报告，任务结束~");
+                chartsExporter.ExportReport(reportPath, UnityTaskArgument);
+            }
+            catch
+            {
+                throw;
             }
         }
 
@@ -465,6 +503,7 @@ namespace xQuantLogFactory
         private static void ExportLogReport(string reportPath)
         {
             ILogReportExporter reportExporter = null;
+
             switch (UnityTaskArgument.ReportMode)
             {
                 case ReportModes.Excel:
@@ -510,6 +549,15 @@ namespace xQuantLogFactory
             return $@"{ConfigHelper.ReportExportDirectory}\xQuant导出报告_{Path.GetFileName(argument.LogDirectory)}_{argument.MonitorContainerRoot.Name}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.{argument.ReportMode.GetAmbientValue()}";
         }
 
+        /// <summary>
+        /// 获取图表报告文件路径
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private static string GetChartsReportFilePath(TaskArgument argument)
+        {
+            return $@"{ConfigHelper.ReportExportDirectory}\xQuant图表报告_{Path.GetFileName(argument.LogDirectory)}_{argument.MonitorContainerRoot.Name}_{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.html";
+        }
         #endregion
 
         #region 系统
