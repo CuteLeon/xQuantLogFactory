@@ -21,8 +21,25 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
             Assert.AreEqual("2018-10-29 16:51:04", match.Groups["LogTime"].Value);
             Assert.AreEqual("457", match.Groups["Millisecond"].Value);
             Assert.AreEqual("TRACE", match.Groups["LogLevel"].Value);
+            Assert.AreEqual("1", match.Groups["ThreadID"].Value);
             Assert.AreEqual("安信证券 1.3.0.065 192.168.7.101 初始化准备", match.Groups["LogContent"].Value);
             Match clientMatch = parser.ParticularRegex.Match(match.Groups["LogContent"].Value);
+            Assert.IsTrue(clientMatch.Success);
+            Assert.AreEqual("安信证券", clientMatch.Groups["Client"].Value);
+            Assert.AreEqual("1.3.0.065", clientMatch.Groups["Version"].Value);
+            Assert.AreEqual("192.168.7.101", clientMatch.Groups["IPAddress"].Value);
+            Assert.AreEqual("初始化准备", clientMatch.Groups["LogContent"].Value);
+
+            log = "2018-10-29 16:51:04,457 TRACE 安信证券 1.3.0.065 192.168.7.101 初始化准备";
+            match = parser.GeneralLogRegex.Match(log);
+
+            Assert.IsTrue(match.Success);
+            Assert.IsTrue(match.Groups["LogContent"].Success);
+            Assert.AreEqual("2018-10-29 16:51:04", match.Groups["LogTime"].Value);
+            Assert.AreEqual("457", match.Groups["Millisecond"].Value);
+            Assert.AreEqual("TRACE", match.Groups["LogLevel"].Value);
+            Assert.AreEqual("安信证券 1.3.0.065 192.168.7.101 初始化准备", match.Groups["LogContent"].Value);
+            clientMatch = parser.ParticularRegex.Match(match.Groups["LogContent"].Value);
             Assert.IsTrue(clientMatch.Success);
             Assert.AreEqual("安信证券", clientMatch.Groups["Client"].Value);
             Assert.AreEqual("1.3.0.065", clientMatch.Groups["Version"].Value);
@@ -108,7 +125,7 @@ namespace xQuantLogFactory.BIZ.Parser.Tests
 
             PerformanceLogParserBase parser = new ClientPerformanceParser();
             Match match = parser.GeneralLogRegex.Match(log);
-            
+
             Assert.IsTrue(match.Success);
             Assert.AreEqual("2019-03-11 17:39:35.209", match.Groups["LogTime"].Value);
             Assert.AreEqual("2019-03-11 17:38:42.450", match.Groups["RequestReceiveTime"].Value);
