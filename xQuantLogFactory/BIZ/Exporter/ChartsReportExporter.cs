@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 using RazorEngine;
+using RazorEngine.Templating;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
@@ -30,7 +32,20 @@ namespace xQuantLogFactory.BIZ.Exporter
             "bootstrap.bundle.min.js",
             "bootstrap.min.css",
             "echarts.min.js",
+            "report.js",
         };
+
+        /// <summary>
+        /// 导航栏链接
+        /// </summary>
+        private readonly IEnumerable<(string text, string target)> navLinks = new[]
+            {
+                ("内存", "memory"),
+                ("客户端启动", "clientLaunch"),
+                ("中间件启动", "serverLaunch"),
+                ("事项", "monitor"),
+                ("请求", "performance"),
+            };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChartsReportExporter"/> class.
@@ -90,7 +105,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     case ".css":
                         {
-                            builder.AppendLine($"<link rel=\"stylesheet\" href=\"{relationPath}\">");
+                            builder.AppendLine($"<link rel=\"stylesheet\" href=\"{relationPath}\" />");
                             break;
                         }
 
@@ -109,11 +124,51 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <summary>
         /// 渲染主体
         /// </summary>
-        /// <param name="argument"></param>
         /// <param name="builder"></param>
-        private void RenderBody(TaskArgument argument, StringBuilder builder)
+        /// <param name="argument"></param>
+        private void RenderBody(StringBuilder builder, TaskArgument argument)
         {
-            
+            this.RenderHeader(
+                builder,
+                argument,
+                this.navLinks);
+        }
+
+        /// <summary>
+        /// 渲染头部
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        /// <param name="links"></param>
+        private void RenderHeader(
+            StringBuilder builder,
+            TaskArgument argument,
+            IEnumerable<(string text, string target)> links)
+        {
+            string header = @"
+    <header>
+        <nav class=""navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"">
+            <div class=""container"">
+                <a class=""navbar-brand"">xQuant 图表报告</a>
+                <button class=""navbar-toggler"" type=""button"" data-toggle=""collapse"" data-target="".navbar-collapse"" aria-controls=""navbarSupportedContent"" aria-expanded=""false"" aria-label=""Toggle navigation"">
+                    <span class=""navbar-toggler-icon""></span>
+                </button>
+                <div class=""navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"">
+                    <ul class=""navbar-nav flex-grow-1"">
+                        @foreach(var link in Model)
+                        {
+                            <li class=""nav-item"">
+                                <a class=""nav-link text-dark"" data-target=""@link.Item2"">@link.Item1</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    ";
+            header = Engine.Razor.RunCompile(header, "header", null, links);
+            builder.Append(header);
         }
 
         /// <summary>
@@ -136,7 +191,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             TaskArgument argument,
             Func<TaskArgument, string> getTitle,
             Action<StringBuilder> renderScriptStyle,
-            Action<TaskArgument, StringBuilder> renderBody)
+            Action<StringBuilder, TaskArgument> renderBody)
         {
             if (builder == null)
             {
@@ -166,7 +221,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             try
             {
-                renderBody(argument, builder);
+                renderBody(builder, argument);
             }
             catch (Exception ex)
             {
