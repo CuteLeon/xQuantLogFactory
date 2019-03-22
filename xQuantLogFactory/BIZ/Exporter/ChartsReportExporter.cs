@@ -148,7 +148,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             TaskArgument argument,
             ChartContainer container)
         {
-            builder.AppendLine($@"<div class=""report-container container-fluid bg-light"" id=""container_{container.Target}"" >");
+            builder.AppendLine($@"<div class=""report-container container-fluid bg-light"" id=""container_{container.Target}"" style=""display: none"">");
             container.Render?.Invoke(builder, argument);
             builder.AppendLine("</div>");
         }
