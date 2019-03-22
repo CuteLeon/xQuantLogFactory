@@ -50,10 +50,10 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.chartContainers = new ChartContainer[]
             {
                 new ChartContainer("内存", "memory", this.RenderMemory),
-                new ChartContainer("客户端启动", "clientLaunch", null),
-                new ChartContainer("中间件启动", "serverLaunch", null),
-                new ChartContainer("事项", "monitor", null),
-                new ChartContainer("请求", "performance", null),
+                new ChartContainer("客户端启动", "clientLaunch", this.RenderMemory),
+                new ChartContainer("中间件启动", "serverLaunch", this.RenderMemory),
+                new ChartContainer("事项", "monitor", this.RenderMemory),
+                new ChartContainer("请求", "performance", this.RenderMemory),
             };
         }
 
@@ -148,7 +148,9 @@ namespace xQuantLogFactory.BIZ.Exporter
             TaskArgument argument,
             ChartContainer container)
         {
+            builder.AppendLine($@"<div class=""report-container container-fluid bg-light"" id=""container_{container.Target}"" >");
             container.Render?.Invoke(builder, argument);
+            builder.AppendLine("</div>");
         }
 
         /// <summary>
