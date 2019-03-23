@@ -1,4 +1,6 @@
-﻿<div id="canvas_memory" class="container-fluid rounded text-center text-muted" style="height:500px;width:800px;padding:0px"></div>
+﻿@model TaskArgument
+
+<div id="canvas_memory" class="container-fluid rounded text-center text-muted" style="height:500px;width:800px;padding:0px"></div>
 
 <script type="text/javascript">
     let memoryChart = echarts.init(document.getElementById('canvas_memory'));
@@ -16,7 +18,7 @@
                 trigger: 'axis'
             },
             legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+                data: ['@string.Join("', '", this.Model.TerminalMonitorResults.Where(r=>r.MonitorItem.Memory).Select(r=>r.IPAddress).Distinct().OrderBy(ip=>ip))']
             },
             grid: {
                 left: '3%',
