@@ -439,10 +439,90 @@ namespace xQuantLogFactory.BIZ.Exporter
         private void RenderClientLaunch(StringBuilder builder, TaskArgument argument)
         {
             var monitor = argument.MonitorContainerRoot.TerminalMonitorTreeRoots.Find(m => m.Name == "客户端启动");
-            if (monitor != null)
+            if (monitor == null)
             {
                 builder.AppendLine("不包含名称为 \"客户端启动\" 的监视规则");
+                return;
             }
+
+            var results = monitor.AnalysisResults.Where(r => r.IsIntactGroup()).ToList();
+            var groups = results.GroupBy(r => r.FinishMonitorResult.Version).OrderBy(g => g.Key);
+            foreach (var group in groups)
+            {
+                builder.Append($@"
+<div id=""canvas_clientLaunch"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
+
+<script type=""text/javascript"">
+    let clientLaunchChart = echarts.init(document.getElementById('canvas_clientLaunch'));
+    $(window).resize(function () {{
+        clientLaunchChart.resize();
+    }});
+    try {{
+        clientLaunchChart.showLoading();
+
+        option = {{
+            title: {{
+                text: '客户端启动耗时'
+            }},
+            xAxis: {{
+                data: ['{string.Join("', '", groups.Select(g => g.Key))}'],
+            }},
+            yAxis: {{
+            }},
+            series: [
+                {{
+                    type: 'bar',
+                    data: [{string.Join(", ", group.Average(r => r.ElapsedMillisecond))}]
+                }}
+            ]
+        }};
+
+        clientLaunchChart.setOption(option);
+    }} catch (err) {{
+        $('#canvas_clientLaunch').html(""加载出错，请刷新页面重试 ..."");
+    }} finally {{
+        clientLaunchChart.hideLoading();
+    }}
+</script>
+");
+
+                builder.Append($@"
+            <div class=""card"">
+              <div class=""card-header"">
+                <kbd>{group.Key}</kbd> 版本客户端启动-统计
+              </div>
+              <div class=""card-body text-left"">
+                <h5 class=""card-title"">启动次数：{group.Count()} 次</h5>
+                <div class=""card-text"">
+                    <ul>
+                        <li>平均耗时：{group.Average(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        <li>最大耗时：{group.Max(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        <li>最小耗时：{group.Min(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                    </ul>
+                </div>
+                {string.Join(
+                    string.Empty,
+                    group.Select(launch =>
+                        $@"
+                        <div class=""card-body"">
+                            <h5 class=""card-title"">耗时Top：</h5>
+                            <div class=""card-text"">
+                                {string.Join(
+                                    string.Empty,
+                                    launch.GetAnalysisResults()
+                                        .OrderByDescending(r => r.ElapsedMillisecond)
+                                        .Take(10).Select(r =>
+                                            $@"<div class=""alert alert-danger"" role=""alert"">
+                                                    {r.MonitorItem.Name} - {r.ElapsedMillisecond}
+                                            </div>"))}
+                            </div>
+                        </div>"
+                    ))}
+              </div>
+            </div>
+");
+            }
+
         }
 
         /// <summary>

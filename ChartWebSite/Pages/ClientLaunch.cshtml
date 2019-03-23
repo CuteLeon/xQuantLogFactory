@@ -1,21 +1,12 @@
 ﻿<h1>客户端启动</h1>
-<div id="canvas_clientLaunch" class="container-fluid rounded text-center text-muted" style="height:500px;width:800px;padding:0px">
+<div class="card">
+    <div class="card-header">
+        客户端启动-统计
+    </div>
+
+    <div class="card-body text-left">
+        <h5 class="card-title">启动次数：{monitor.AnalysisResults.Count(r => r.IsIntactGroup())} 次</h5>
+        <div class="card-text">
+        </div>
+    </div>
 </div>
-<script type="text/javascript">
-        let clientChart = echarts.init(document.getElementById('canvas_clientLaunch'));
-        $(window).resize(function () {
-            clientChart.resize();
-        });
-
-        try {
-            clientChart.showLoading();
-
-
-
-            clientChart.setOption(option);
-        } catch (err) {
-            $('#canvas_clientLaunch').html("加载出错，请刷新页面重试 ...");
-        } finally {
-            clientChart.hideLoading();
-        }
-</script>
