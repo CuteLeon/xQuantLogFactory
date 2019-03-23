@@ -6,6 +6,7 @@ using System.Text;
 
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
+using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Trace;
 
@@ -339,7 +340,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void RenderMemory(StringBuilder builder, TaskArgument argument)
         {
-            builder.AppendLine("<h1>内存</h1>");
+            var results = argument.TerminalAnalysisResults.Where(r => r.MonitorItem.Memory).ToList();
             string memory = $@"
 <div id=""canvas_memory"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
 
@@ -353,13 +354,13 @@ namespace xQuantLogFactory.BIZ.Exporter
 
         option = {{
             title: {{
-                text: '折线图堆叠'
+                text: '内存'
             }},
             tooltip: {{
                 trigger: 'axis'
             }},
             legend: {{
-                data: ['{string.Join("', '", argument.TerminalMonitorResults.Where(r => r.MonitorItem.Memory).Select(r => r.IPAddress).Distinct().OrderBy(ip => ip))}']
+                data: ['{string.Join("', '", results.Select(r => r.Client).Distinct().OrderBy(ip => ip))}']
             }},
             grid: {{
                 left: '3%',
@@ -390,42 +391,21 @@ namespace xQuantLogFactory.BIZ.Exporter
             xAxis: {{
                 type: 'category',
                 boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                data: ['{string.Join("', '", results.Select(r => r.LogTime))}']
             }},
             yAxis: {{
                 type: 'value'
             }},
             series: [
+                {string.Join(
+                    ",",
+                    results.GroupBy(r => r.Client).OrderBy(g => g.Key).Select(g => $@"
                 {{
-                    name: '邮件营销',
+                    name: '{g.Key ?? "空"}',
                     type: 'line',
-                    stack: '总量',
-                    data: [120, 132, 101, 134, 90, 230, 210]
-                }},
-                {{
-                    name: '联盟广告',
-                    type: 'line',
-                    stack: '总量',
-                    data: [220, 182, 191, 234, 290, 330, 310]
-                }},
-                {{
-                    name: '视频广告',
-                    type: 'line',
-                    stack: '总量',
-                    data: [150, 232, 201, 154, 190, 330, 410]
-                }},
-                {{
-                    name: '直接访问',
-                    type: 'line',
-                    stack: '总量',
-                    data: [320, 332, 301, 334, 390, 330, 320]
-                }},
-                {{
-                    name: '搜索引擎',
-                    type: 'line',
-                    stack: '总量',
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                }}
+                    stack: '内存',
+                    data: [{string.Join(", ", g.Select(r => r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0))}]
+                }}"))}
             ]
         }};
 
