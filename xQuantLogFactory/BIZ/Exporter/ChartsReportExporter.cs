@@ -404,7 +404,18 @@ namespace xQuantLogFactory.BIZ.Exporter
                     name: '{g.Key ?? "空"}',
                     type: 'line',
                     stack: '内存',
-                    data: [{string.Join(", ", g.Select(r => r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0))}]
+                    data: [{string.Join(", ", g.Select(r => r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0))}],
+                    markPoint : {{
+                        data: [
+                            {{type : 'max', name: '最大值'}},
+                            {{type: 'min', name: '最小值'}}
+                        ]
+                    }},
+                    markLine : {{
+                        data: [
+                            {{type : 'average', name: '平均值'}}
+                        ]
+                    }}
                 }}"))}
             ]
         }};
@@ -427,7 +438,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         private void RenderClientLaunch(StringBuilder builder, TaskArgument argument)
         {
-            builder.AppendLine("<h1>客户端启动</h1>");
+            var monitor = argument.MonitorContainerRoot.TerminalMonitorTreeRoots.Find(m => m.Name == "客户端启动");
+            if (monitor != null)
+            {
+                builder.AppendLine("不包含名称为 \"客户端启动\" 的监视规则");
+            }
         }
 
         /// <summary>
