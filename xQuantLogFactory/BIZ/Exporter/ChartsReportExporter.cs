@@ -415,7 +415,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                 data: [{string.Join(", ", results.Select(r => $"'{r.LogTime}'"))}]
             }},
             yAxis: {{
-                type: 'value'
+                type: 'value',
+                scale: true,
             }},
             series: [
                 {string.Join(
