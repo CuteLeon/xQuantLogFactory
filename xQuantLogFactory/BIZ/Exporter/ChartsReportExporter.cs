@@ -403,8 +403,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {{
                     name: '{$"{g.Key.Client}-{g.Key.Version}"}',
                     type: 'line',
-                    stack: '内存',
-                    data: [{string.Join(", ", g.Select(r => r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0))}],
+                    stack: '{$"{g.Key.Client}-{g.Key.Version}"}',
+                    data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {(r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0)}"))}]],
                     markPoint : {{
                         data: [
                             {{type : 'max', name: '最大值'}},
