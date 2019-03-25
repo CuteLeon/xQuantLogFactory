@@ -2,20 +2,32 @@
 @model TaskArgument
 @{
     ViewData["Title"] = "xQuant 图表报告";
+    TaskArgument argument = this.Model ?? new TaskArgument();
 }
 
+<div class="report-container container-fluid" id="container_index">
+    <p class="lead text-muted">xQuant 日志分析工具 图表报告</p>
+    <hr />
+    <div class="container-fluid justify-content-between">
+            <input type="button" class="my-nav-button btn shadow btn-outline-primary" value="内存" />
+            <input type="button" class="my-nav-button btn shadow btn-outline-primary" value="213" />
+            <input type="button" class="my-nav-button btn shadow btn-outline-primary" value="32424324" />
+            <input type="button" class="my-nav-button btn shadow btn-outline-primary" value="顺风耳" />
+            <input type="button" class="my-nav-button btn shadow btn-outline-primary" value="撒旦撒访问" />
+    </div>
+</div>
 <div class="report-container container-fluid" id="container_memory" style="display:none;height:500px">
-    @{ await Html.RenderPartialAsync("Memory", this.Model);}
+    @{ await Html.RenderPartialAsync("Memory", argument);}
 </div>
 <div class="report-container container-fluid" id="container_clientLaunch" style="display:none">
-    @{ await Html.RenderPartialAsync("ClientLaunch", this.Model);}
+    @{ await Html.RenderPartialAsync("ClientLaunch", argument);}
 </div>
 <div class="report-container container-fluid" id="container_serverLaunch" style="display:none">
-    @{ await Html.RenderPartialAsync("ServerLaunch", this.Model);}
+    @{ await Html.RenderPartialAsync("ServerLaunch", argument);}
 </div>
 <div class="report-container container-fluid" id="container_monitor" style="display:none">
-    @{ await Html.RenderPartialAsync("Monitor", this.Model);}
+    @{ await Html.RenderPartialAsync("Monitor", argument);}
 </div>
 <div class="report-container container-fluid" id="container_performance" style="display:none">
-    @{ await Html.RenderPartialAsync("Performance", this.Model);}
+    @{ await Html.RenderPartialAsync("Performance", argument);}
 </div>

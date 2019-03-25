@@ -271,6 +271,8 @@ namespace xQuantLogFactory.BIZ.Exporter
         {
             this.RenderHeader(builder, argument, this.chartContainers);
 
+            this.RenderIndex(builder, argument, this.chartContainers);
+
             foreach (var container in this.chartContainers)
             {
                 this.RenderContainer(builder, argument, container);
@@ -308,7 +310,7 @@ namespace xQuantLogFactory.BIZ.Exporter
     <header>
         <nav class=""navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"">
             <div class=""container"">
-                <a class=""navbar-brand"">xQuant 图表报告</a>
+                <a class=""my-nav-button navbar-brand"" data-target=""index"">xQuant 图表报告</a>
                 <button class=""navbar-toggler"" type=""button"" data-toggle=""collapse"" data-target="".navbar-collapse"" aria-controls=""navbarSupportedContent"" aria-expanded=""false"" aria-label=""Toggle navigation"">
                     <span class=""navbar-toggler-icon""></span>
                 </button>
@@ -318,9 +320,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                             "\n",
                             chartContainers.Select(container => $@"
                             <li class=""nav-item"">
-                                <a class=""nav-link text-dark"" data-target=""{container.Target}"">{container.Text}</a>
-                            </li>
-                        "))}
+                                <a class=""my-nav-button nav-link text-dark"" data-target=""{container.Target}"">{container.Text}</a>
+                            </li>"))}
                     </ul>
                 </div>
             </div>
@@ -328,6 +329,26 @@ namespace xQuantLogFactory.BIZ.Exporter
     </header>
     ";
             builder.Append(header);
+        }
+
+        /// <summary>
+        /// 渲染主页
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        /// <param name="chartContainers"></param>
+        private void RenderIndex(StringBuilder builder, TaskArgument argument, IEnumerable<ChartContainer> chartContainers)
+        {
+            builder.Append($@"
+            <div class=""report-container container-fluid"" id=""container_index"">
+                <p class=""lead text-muted"">xQuant 日志分析工具 图表报告</p>
+                <hr />
+                <div class=""container-fluid justify-content-between"">
+                        {string.Join("\n", chartContainers.Select(c =>
+                            $@"<input type=""button"" class=""my-nav-button btn shadow btn-outline-primary"" data-target=""{c.Target}"" style=""margin:10px"" value=""{c.Text}"" />"))}
+                </div>
+            </div>
+");
         }
         #endregion
 

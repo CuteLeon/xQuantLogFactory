@@ -1,8 +1,7 @@
 ﻿$('#document').ready(() => {
-    let lastContainer = undefined;
-    $('.report-container').hide();
+    let lastContainer = $('#container_index');
 
-    $('.nav-link').click(e => {
+    $('.my-nav-button').click(e => {
         let target = $(e.target).data('target');
         console.log(target);
 
