@@ -1,1 +1,229 @@
-﻿<h1>服务端启动</h1>
+﻿<div id="canvas_serverLaunch" class="container-fluid rounded text-center text-muted" style="height:500px;width:800px;padding:0px"></div>
+
+<script type="text/javascript">
+    let serverLaunchChart = echarts.init(document.getElementById('canvas_serverLaunch'));
+    $(window).resize(function () {
+        serverLaunchChart.resize();
+    });
+    try {
+        serverLaunchChart.showLoading();
+
+        option = {
+            title: {
+                text: '中间件启动耗时'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['1.3.0.065', '1.3.0.067']
+            },
+            xAxis: {
+                type: 'category',
+                data: ['2019/3/25 14:31:24', '2019/3/25 14:36:24', '2019/3/25 14:39:57', '2019/3/26 14:31:24', '2019/3/26 14:36:24', '2019/3/26 14:39:57'],
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+
+                    {
+                        name: '1.3.0.065',
+                        type: 'bar',
+                        stack: '1.3.0.065',
+                        data: [['2019/3/25 14:31:24', 148275], ['2019/3/25 14:36:24', 119526], ['2019/3/25 14:39:57', 136421]],
+                        markLine : {
+                            data: [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    },
+
+                    {
+                        name: '1.3.0.067',
+                        type: 'bar',
+                        stack: '1.3.0.067',
+                        data: [['2019/3/26 14:31:24', 148275], ['2019/3/26 14:36:24', 119526], ['2019/3/26 14:39:57', 136421]],
+                        markLine : {
+                            data: [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        }
+                    }
+            ]
+        };
+
+        serverLaunchChart.setOption(option);
+    } catch (err) {
+        $('#canvas_serverLaunch').html("加载出错，请刷新页面重试 ...");
+    } finally {
+        serverLaunchChart.hideLoading();
+    }
+</script>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-6">
+            <div class="card text-left">
+                <div class="card-header">
+                    <kbd class="bg-success">1.3.0.065</kbd> 版本服务端启动-统计
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">启动次数：3 次</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>平均耗时：134.74 秒</li>
+                            <li>最大耗时：148.28 秒</li>
+                            <li>最小耗时：119.53 秒</li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-warning">启动耗时Top：</span></h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>中间件启动 <span class="badge badge-success">时间：2019/3/25 14:31:24</span> <span class="badge badge-warning">耗时：148275</span></li>
+                            <li>中间件启动 <span class="badge badge-success">时间：2019/3/25 14:39:57</span> <span class="badge badge-warning">耗时：136421</span></li>
+                            <li>中间件启动 <span class="badge badge-success">时间：2019/3/25 14:36:24</span> <span class="badge badge-warning">耗时：119526</span></li>
+                        </ul>
+                    </div>
+
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-info">2019/3/25 14:31:24</span> 启动耗时Top：</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>启动服务 <span class="badge badge-danger">耗时：136694</span></li>
+                            <li>数据加载服务 <span class="badge badge-danger">耗时：76724</span></li>
+                            <li>加载后续持仓债券现金流 <span class="badge badge-danger">耗时：29062</span></li>
+                            <li>账户请求服务 <span class="badge badge-danger">耗时：24310</span></li>
+                            <li>TTRD_OTC_COUNTERPARTY <span class="badge badge-danger">耗时：15077</span></li>
+                            <li>交易对手、金融工具出入池 <span class="badge badge-danger">耗时：13767</span></li>
+                            <li>自动出入池刷新 <span class="badge badge-danger">耗时：13627</span></li>
+                            <li>TTRD_CASHLB <span class="badge badge-danger">耗时：12597</span></li>
+                            <li>金融工具自动入池 <span class="badge badge-danger">耗时：9689</span></li>
+                            <li>TTRD_OTC_TRADE <span class="badge badge-danger">耗时：7467</span></li>
+                        </ul>
+                    </div>
+
+
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-info">2019/3/25 14:36:24</span> 启动耗时Top：</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>启动服务 <span class="badge badge-danger">耗时：114400</span></li>
+                            <li>数据加载服务 <span class="badge badge-danger">耗时：64570</span></li>
+                            <li>加载后续持仓债券现金流 <span class="badge badge-danger">耗时：24282</span></li>
+                            <li>交易对手、金融工具出入池 <span class="badge badge-danger">耗时：17928</span></li>
+                            <li>自动出入池刷新 <span class="badge badge-danger">耗时：17804</span></li>
+                            <li>账户请求服务 <span class="badge badge-danger">耗时：16460</span></li>
+                            <li>金融工具自动入池 <span class="badge badge-danger">耗时：14334</span></li>
+                            <li>TTRD_OTC_COUNTERPARTY <span class="badge badge-danger">耗时：13986</span></li>
+                            <li>TTRD_CASHLB <span class="badge badge-danger">耗时：13950</span></li>
+                            <li>TTRD_OTC_TRADE <span class="badge badge-danger">耗时：5315</span></li>
+                        </ul>
+                    </div>
+
+
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-info">2019/3/25 14:39:57</span> 启动耗时Top：</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>启动服务 <span class="badge badge-danger">耗时：130179</span></li>
+                            <li>数据加载服务 <span class="badge badge-danger">耗时：65530</span></li>
+                            <li>账户请求服务 <span class="badge badge-danger">耗时：29359</span></li>
+                            <li>加载后续持仓债券现金流 <span class="badge badge-danger">耗时：27262</span></li>
+                            <li>交易对手、金融工具出入池 <span class="badge badge-danger">耗时：18048</span></li>
+                            <li>自动出入池刷新 <span class="badge badge-danger">耗时：17883</span></li>
+                            <li>TTRD_OTC_COUNTERPARTY <span class="badge badge-danger">耗时：13550</span></li>
+                            <li>金融工具自动入池 <span class="badge badge-danger">耗时：12472</span></li>
+                            <li>TTRD_CASHLB <span class="badge badge-danger">耗时：11496</span></li>
+                            <li>TTRD_OTC_TRADE <span class="badge badge-danger">耗时：8087</span></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="card text-left">
+                <div class="card-header">
+                    <kbd class="bg-success">1.3.0.067</kbd> 版本服务端启动-统计
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">启动次数：3 次</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>平均耗时：134.74 秒</li>
+                            <li>最大耗时：148.28 秒</li>
+                            <li>最小耗时：119.53 秒</li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-warning">启动耗时Top：</span></h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>中间件启动 <span class="badge badge-success">时间：2019/3/26 14:31:24</span> <span class="badge badge-warning">耗时：148275</span></li>
+                            <li>中间件启动 <span class="badge badge-success">时间：2019/3/26 14:39:57</span> <span class="badge badge-warning">耗时：136421</span></li>
+                            <li>中间件启动 <span class="badge badge-success">时间：2019/3/26 14:36:24</span> <span class="badge badge-warning">耗时：119526</span></li>
+                        </ul>
+                    </div>
+
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-info">2019/3/26 14:31:24</span> 启动耗时Top：</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>启动服务 <span class="badge badge-danger">耗时：136694</span></li>
+                            <li>数据加载服务 <span class="badge badge-danger">耗时：76724</span></li>
+                            <li>加载后续持仓债券现金流 <span class="badge badge-danger">耗时：29062</span></li>
+                            <li>账户请求服务 <span class="badge badge-danger">耗时：24310</span></li>
+                            <li>TTRD_OTC_COUNTERPARTY <span class="badge badge-danger">耗时：15077</span></li>
+                            <li>交易对手、金融工具出入池 <span class="badge badge-danger">耗时：13767</span></li>
+                            <li>自动出入池刷新 <span class="badge badge-danger">耗时：13627</span></li>
+                            <li>TTRD_CASHLB <span class="badge badge-danger">耗时：12597</span></li>
+                            <li>金融工具自动入池 <span class="badge badge-danger">耗时：9689</span></li>
+                            <li>TTRD_OTC_TRADE <span class="badge badge-danger">耗时：7467</span></li>
+                        </ul>
+                    </div>
+
+
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-info">2019/3/26 14:36:24</span> 启动耗时Top：</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>启动服务 <span class="badge badge-danger">耗时：114400</span></li>
+                            <li>数据加载服务 <span class="badge badge-danger">耗时：64570</span></li>
+                            <li>加载后续持仓债券现金流 <span class="badge badge-danger">耗时：24282</span></li>
+                            <li>交易对手、金融工具出入池 <span class="badge badge-danger">耗时：17928</span></li>
+                            <li>自动出入池刷新 <span class="badge badge-danger">耗时：17804</span></li>
+                            <li>账户请求服务 <span class="badge badge-danger">耗时：16460</span></li>
+                            <li>金融工具自动入池 <span class="badge badge-danger">耗时：14334</span></li>
+                            <li>TTRD_OTC_COUNTERPARTY <span class="badge badge-danger">耗时：13986</span></li>
+                            <li>TTRD_CASHLB <span class="badge badge-danger">耗时：13950</span></li>
+                            <li>TTRD_OTC_TRADE <span class="badge badge-danger">耗时：5315</span></li>
+                        </ul>
+                    </div>
+
+
+                    <hr />
+                    <h5 class="card-title"><span class="badge badge-info">2019/3/26 14:39:57</span> 启动耗时Top：</h5>
+                    <div class="card-text">
+                        <ul>
+                            <li>启动服务 <span class="badge badge-danger">耗时：130179</span></li>
+                            <li>数据加载服务 <span class="badge badge-danger">耗时：65530</span></li>
+                            <li>账户请求服务 <span class="badge badge-danger">耗时：29359</span></li>
+                            <li>加载后续持仓债券现金流 <span class="badge badge-danger">耗时：27262</span></li>
+                            <li>交易对手、金融工具出入池 <span class="badge badge-danger">耗时：18048</span></li>
+                            <li>自动出入池刷新 <span class="badge badge-danger">耗时：17883</span></li>
+                            <li>TTRD_OTC_COUNTERPARTY <span class="badge badge-danger">耗时：13550</span></li>
+                            <li>金融工具自动入池 <span class="badge badge-danger">耗时：12472</span></li>
+                            <li>TTRD_CASHLB <span class="badge badge-danger">耗时：11496</span></li>
+                            <li>TTRD_OTC_TRADE <span class="badge badge-danger">耗时：8087</span></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

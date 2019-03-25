@@ -97,7 +97,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// </summary>
         /// <returns></returns>
         private StringBuilder GetStringBuilder()
-            => new StringBuilder("<!-- xQuant Log Factory -->");
+            => new StringBuilder("<!-- xQuant Log Factory -->\n");
 
         /// <summary>
         /// 写入布局
