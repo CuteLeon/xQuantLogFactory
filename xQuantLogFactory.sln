@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchHost", "BatchHost\Batc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BatchHostTests", "BatchHostTests\BatchHostTests.csproj", "{50F0305A-B622-41F3-8F95-320C316A15B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChartWebSite", "ChartWebSite\ChartWebSite.csproj", "{C8D18CFB-25DF-4C16-8AA0-C9BD824BD129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChartWebSite", "ChartWebSite\ChartWebSite.csproj", "{C8D18CFB-25DF-4C16-8AA0-C9BD824BD129}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -54,6 +54,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("内存", "memory", this.RenderMemory),
                 new ChartContainer("客户端启动", "clientLaunch", this.RenderClientLaunch),
                 new ChartContainer("中间件启动", "serverLaunch", this.RenderServerLaunch),
+                new ChartContainer("缓存", "cache", this.RenderCache),
                 new ChartContainer("事项", "monitor", this.RenderMonitor),
                 new ChartContainer("请求", "performance", this.RenderPerformance),
             };
@@ -685,13 +686,241 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
+        /// 渲染缓存
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        private void RenderCache(StringBuilder builder, TaskArgument argument)
+        {
+            string[] targets = new[]
+            {
+                "xQuant.Model.XPO.XPInstrument",
+                "xQuant.Model.XPO.XPBond",
+                "xQuant.Model.XPO.OTC.XPTradeGroup",
+                "xQuant.Model.XPO.OTC.XPCounterParty",
+                "xQuant.Model.XPO.XPOtcPoolComp",
+                "xQuant.Model.XPO.OTC.XPOTCTrade",
+            };
+            var results = argument.TerminalAnalysisResults
+                .Where(r => r.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.CacheSize &&
+                                    r.AnalysisDatas.TryGetValue(FixedDatas.RESOURCE_NAME, out object name) ? targets.Contains(name as string) : false)
+                .ToList();
+
+            string cache = $@"
+<div id=""canvas_cache"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
+
+<script type=""text/javascript"">
+    let cacheChart = echarts.init(document.getElementById('canvas_cache'));
+    $(window).resize(function () {{
+        cacheChart.resize();
+    }});
+    try {{
+        cacheChart.showLoading();
+
+        option = {{
+            title: {{
+                text: '缓存'
+            }},
+            tooltip: {{
+                trigger: 'axis'
+            }},
+            legend: {{
+                data: [{string.Join(", ", results.Select(r => r.MonitorItem.Name).Distinct().OrderBy(n => n).Select(n => $"'{n}'"))}]
+            }},
+            grid: {{
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            }},
+            toolbox: {{
+                feature: {{
+                    dataZoom: {{
+                        yAxisIndex: 'none'
+                    }},
+                    restore: {{}},
+                    saveAsImage: {{}}
+                }}
+            }},
+            dataZoom: [{{
+                type: 'inside',
+            }}, {{
+                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                handleStyle: {{
+                    color: '#fff',
+                    shadowBlur: 3,
+                    shadowColor: 'rgba(0, 0, 0, 0.6)',
+                    shadowOffsetY: 2
+                }}
+            }}],
+            xAxis: {{
+                type: 'category',
+                boundaryGap: false,
+                data: [{string.Join(", ", results.Select(r => $"'{r.LogTime}'").Distinct())}]
+            }},
+            yAxis: {{
+                type: 'value'
+            }},
+            series: [
+                {string.Join(
+                    ",",
+                    results.GroupBy(r => r.MonitorItem.Name).OrderBy(g => g.Key).Select(g => $@"
+                {{
+                    name: '{$"{g.Key}"}',
+                    type: 'line',
+                    stack: '{$"{g.Key}"}',
+                    data: [{string.Join(", ", g.Select(r => $"['{r.LogTime}', {(r.AnalysisDatas.TryGetValue(FixedDatas.COUNT, out object n) ? n : 0)}]"))}],
+                    markPoint : {{
+                        data: [
+                            {{type : 'max', name: '最大值'}},
+                            {{type: 'min', name: '最小值'}}
+                        ]
+                    }},
+                    markLine : {{
+                        data: [
+                            {{type : 'average', name: '平均值'}}
+                        ]
+                    }}
+                }}"))}
+            ]
+        }};
+
+        cacheChart.setOption(option);
+    }} catch (err) {{
+        $('#canvas_cache').html(""加载出错，请刷新页面重试 ..."");
+    }} finally {{
+        cacheChart.hideLoading();
+    }}
+</script>
+";
+            builder.Append(cache);
+        }
+
+        /// <summary>
         /// 渲染监事事项
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="argument"></param>
         private void RenderMonitor(StringBuilder builder, TaskArgument argument)
         {
-            builder.AppendLine("<h1>监视</h1>");
+            string[] targets = new[]
+            {
+                "第一阶段初始化",
+                "第二阶段初始化",
+                "加载清算所债券估值",
+                "加载中证债券估值",
+                "加载股票估值",
+                "加载债券行情估值Series",
+                "加载金融工具债券估值",
+                "加载中债登债券估值",
+                "VSTK",
+                "TFND",
+                "TBND",
+                "TTRD_ACC_BALANCE_CASH",
+                "TTRD_ACC_BALANCE_SECU",
+                "TTRD_OTC_COUNTERPARTY",
+                "TTRD_OTC_POOL",
+                "TTRD_OTC_POOL_COMPONENT",
+                "TTRD_OTC_TRADE",
+                "启动服务",
+                "数据加载服务",
+                "COM初始化",
+                "加载后续持仓债券现金流",
+                "交易对手、金融工具出入池",
+                "自动出入池刷新",
+            };
+            var results = argument.TerminalAnalysisResults
+                .Where(r => targets.Contains(r.MonitorItem.Name))
+                .ToList();
+
+            string monitor = $@"
+<div id=""canvas_monitor"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
+
+<script type=""text/javascript"">
+    let monitorChart = echarts.init(document.getElementById('canvas_monitor'));
+    $(window).resize(function () {{
+        monitorChart.resize();
+    }});
+    try {{
+        monitorChart.showLoading();
+
+        option = {{
+            title: {{
+                text: '监视事项'
+            }},
+            tooltip: {{
+                trigger: 'axis'
+            }},
+            legend: {{
+                data: [{string.Join(", ", results.Select(r => r.MonitorItem.Name).Distinct().OrderBy(n => n).Select(n => $"'{n}'"))}]
+            }},
+            grid: {{
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            }},
+            toolbox: {{
+                feature: {{
+                    dataZoom: {{
+                        yAxisIndex: 'none'
+                    }},
+                    restore: {{}},
+                    saveAsImage: {{}}
+                }}
+            }},
+            dataZoom: [{{
+                type: 'inside',
+            }}, {{
+                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                handleStyle: {{
+                    color: '#fff',
+                    shadowBlur: 3,
+                    shadowColor: 'rgba(0, 0, 0, 0.6)',
+                    shadowOffsetY: 2
+                }}
+            }}],
+            xAxis: {{
+                type: 'category',
+                boundaryGap: false,
+                data: [{string.Join(", ", results.Select(r => $"'{r.LogTime}'").Distinct())}]
+            }},
+            yAxis: {{
+                type: 'value'
+            }},
+            series: [
+                {string.Join(
+                    ",",
+                    results.GroupBy(r => r.MonitorItem.Name).OrderBy(g => g.Key).Select(g => $@"
+                {{
+                    name: '{$"{g.Key}"}',
+                    type: 'line',
+                    stack: '{$"{g.Key}"}',
+                    data: [{string.Join(", ", g.Select(r => $"['{r.LogTime}', {r.ElapsedMillisecond}]"))}],
+                    markPoint : {{
+                        data: [
+                            {{type : 'max', name: '最大值'}},
+                            {{type: 'min', name: '最小值'}}
+                        ]
+                    }},
+                    markLine : {{
+                        data: [
+                            {{type : 'average', name: '平均值'}}
+                        ]
+                    }}
+                }}"))}
+            ]
+        }};
+
+        monitorChart.setOption(option);
+    }} catch (err) {{
+        $('#canvas_monitor').html(""加载出错，请刷新页面重试 ..."");
+    }} finally {{
+        monitorChart.hideLoading();
+    }}
+</script>
+";
+            builder.Append(monitor);
         }
 
         /// <summary>

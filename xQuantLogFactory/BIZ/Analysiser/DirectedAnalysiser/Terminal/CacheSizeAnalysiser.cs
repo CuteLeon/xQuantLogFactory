@@ -164,7 +164,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                 match.Groups["Count"].Success &&
                 int.TryParse(match.Groups["Count"].Value, out int count))
             {
-                string resourceName = match.Groups["Type"].Value;
+                string resourceName = match.Groups["Type"].Value ?? "<未知类型>";
                 TerminalMonitorItem childMonitor = this.TryGetOrAddChildMonitor(monitorItem, resourceName);
 
                 // 深度克隆原分析结果的开始监视结果并修改行号和日志内容，作为子分析结果的开始监视结果

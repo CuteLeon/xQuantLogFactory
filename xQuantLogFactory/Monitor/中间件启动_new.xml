@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Name="内存消耗" Begin="内存消耗" GroupAnalysiser="SelfSealing" Memory="true" Sheet="内存"/>
   <Item Name="中间件启动" Begin="ServerLaunch=>服务端启动..." End="ServerLaunch=>显示主窗口完成" Sheet="中间件启动">
+    <Item Name="内存消耗" Begin="内存消耗" GroupAnalysiser="SelfSealing" Memory="true" Sheet="内存"/>
+
     <Item Name="远程服务接口注册" Begin="ServerLaunch=>开始配置Remoting管道及接口..." End="ServerLaunch=>配置Remoting管道及接口完成"/>
     <Item Name="检查数据库和MQ连接" Begin="ServerLaunch=>开始检查数据库和MQ连接..." End="ServerLaunch=>检查数据库和MQ连接完成"/>
     <Item Name="从数据库注册远程服务" Begin="ServerLaunch=>开始从数据库注册远程服务..." End="ServerLaunch=>从数据库注册远程服务完成"/>
-    
+
     <Item Name="启动服务" Begin="ServerLaunch=>开始启动服务..." End="ServerLaunch=>启动服务完成。">
       <Item Name="启动单项服务" Begin="ServerLaunch=>开始启动服务：" End="ServerLaunch=>启动服务完成：" DirectedAnalysiser="Prefix">
         <Item Name="中间件启动加载数据" Begin="开始中间件启动加载数据" End="完成中间件启动加载数据" DirectedAnalysiser="Prefix" />
