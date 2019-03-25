@@ -468,9 +468,8 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             var results = monitor.AnalysisResults.Where(r => r.IsIntactGroup()).ToList();
             var groups = results.GroupBy(r => r.FinishMonitorResult.Version).OrderBy(g => g.Key);
-            foreach (var group in groups)
-            {
-                builder.Append($@"
+
+            builder.Append($@"
 <div id=""canvas_clientLaunch"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
 
 <script type=""text/javascript"">
@@ -485,16 +484,29 @@ namespace xQuantLogFactory.BIZ.Exporter
             title: {{
                 text: '客户端启动耗时'
             }},
+            tooltip: {{
+                trigger: 'axis'
+            }},
+            legend: {{
+                data: ['{string.Join("', '", groups.Select(g => g.Key))}']
+            }},
             xAxis: {{
-                data: ['{string.Join("', '", groups.Select(g => g.Key))}'],
+                type: 'category',
+                data: ['{string.Join("', '", results.Select(r => r.LogTime))}'],
             }},
             yAxis: {{
+                type: 'value'
             }},
             series: [
-                {{
-                    type: 'bar',
-                    data: [{string.Join(", ", group.Average(r => r.ElapsedMillisecond))}]
-                }}
+            {string.Join(
+                    ",\n",
+                    groups.Select(g => $@"
+                    {{
+                        name: '{$"{g.Key}"}',
+                        type: 'bar',
+                        stack: '{$"{g.Key}"}',
+                        data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {r.ElapsedMillisecond}"))}]]
+                    }}"))}
             ]
         }};
 
@@ -507,6 +519,8 @@ namespace xQuantLogFactory.BIZ.Exporter
 </script>
 ");
 
+            foreach (var group in groups)
+            {
                 builder.Append($@"
             <div class=""card"">
               <div class=""card-header"">
@@ -540,7 +554,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         </div>"
                     ))}
               </div>
-            </div>
+        </div>
 ");
             }
         }
