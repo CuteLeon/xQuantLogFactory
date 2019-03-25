@@ -56,7 +56,6 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("中间件启动", "serverLaunch", this.RenderServerLaunch),
                 new ChartContainer("缓存", "cache", this.RenderCache),
                 new ChartContainer("事项", "monitor", this.RenderMonitor),
-                new ChartContainer("请求", "performance", this.RenderPerformance),
             };
         }
 
@@ -922,16 +921,6 @@ namespace xQuantLogFactory.BIZ.Exporter
 </script>
 ";
             builder.Append(monitor);
-        }
-
-        /// <summary>
-        /// 渲染请求事项
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="argument"></param>
-        private void RenderPerformance(StringBuilder builder, TaskArgument argument)
-        {
-            builder.AppendLine("<h1>请求</h1>");
         }
         #endregion
     }
