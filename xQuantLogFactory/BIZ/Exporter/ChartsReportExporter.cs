@@ -505,7 +505,12 @@ namespace xQuantLogFactory.BIZ.Exporter
                         name: '{$"{g.Key}"}',
                         type: 'bar',
                         stack: '{$"{g.Key}"}',
-                        data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {r.ElapsedMillisecond}"))}]]
+                        data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {r.ElapsedMillisecond}"))}]],
+                        markLine : {{
+                            data: [
+                                {{type : 'average', name: '平均值'}}
+                            ]
+                        }}
                     }}"))}
             ]
         }};
@@ -581,9 +586,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             var results = monitor.AnalysisResults.Where(r => r.IsIntactGroup()).ToList();
             var groups = results.GroupBy(r => r.FinishMonitorResult.Version).OrderBy(g => g.Key);
 
-            foreach (var group in groups)
-            {
-                builder.Append($@"
+            builder.Append($@"
 <div id=""canvas_serverLaunch"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
 
 <script type=""text/javascript"">
@@ -612,14 +615,19 @@ namespace xQuantLogFactory.BIZ.Exporter
                 type: 'value'
             }},
             series: [
-            {string.Join(
-                        ",\n",
-                        groups.Select(g => $@"
+                {string.Join(
+                ",\n",
+                groups.Select(g => $@"
                     {{
                         name: '{$"{g.Key}"}',
                         type: 'bar',
                         stack: '{$"{g.Key}"}',
-                        data: [{string.Join(", ", g.Select(r => r.ElapsedMillisecond))}]
+                        data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {r.ElapsedMillisecond}"))}]],
+                        markLine : {{
+                            data: [
+                                {{type : 'average', name: '平均值'}}
+                            ]
+                        }}
                     }}"))}
             ]
         }};
@@ -632,15 +640,14 @@ namespace xQuantLogFactory.BIZ.Exporter
     }}
 </script>
 ");
-
-                builder.Append($@"
+            builder.Append($@"
 <div class=""container-fluid"">
     <div class=""row"">
         {string.Join("\n", groups.Select(g => $@"
         <div class=""col-sm-6"">
             <div class=""card text-left"">
                 <div class=""card-header"">
-                    <kbd class=""bg-success"">{g.Key}</kbd> 版本服务端端启动-统计
+                    <kbd class=""bg-success"">{g.Key}</kbd> 版本服务端启动-统计
                 </div>
                 <div class=""card-body"">
                     <h5 class=""card-title"">启动次数：{g.Count()} 次</h5>
@@ -676,7 +683,6 @@ namespace xQuantLogFactory.BIZ.Exporter
     </div>
 </div>
 ");
-            }
         }
 
         /// <summary>
