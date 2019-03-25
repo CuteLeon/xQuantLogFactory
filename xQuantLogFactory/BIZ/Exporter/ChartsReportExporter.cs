@@ -318,8 +318,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     <ul class=""navbar-nav flex-grow-1"">
                         {string.Join(
                             "\n",
-                            chartContainers.Select(container => $@"
-                            <li class=""nav-item"">
+                            chartContainers.Select(container => $@"<li class=""nav-item"">
                                 <a class=""my-nav-button nav-link text-dark"" data-target=""{container.Target}"">{container.Text}</a>
                             </li>"))}
                     </ul>
@@ -381,7 +380,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 trigger: 'axis'
             }},
             legend: {{
-                data: ['{string.Join("', '", results.Select(r => (r.Client, r.Version)).Distinct().Where(t => !string.IsNullOrEmpty(t.Client) && !string.IsNullOrEmpty(t.Version)).OrderBy(t => (t.Client, t.Version)).Select(t => $"{t.Client}-{t.Version}"))}']
+                data: [{string.Join(", ", results.Select(r => (r.Client, r.Version)).Distinct().Where(t => !string.IsNullOrEmpty(t.Client) && !string.IsNullOrEmpty(t.Version)).OrderBy(t => (t.Client, t.Version)).Select(t => $"'{t.Client}-{t.Version}'"))}]
             }},
             grid: {{
                 left: '3%',
@@ -412,7 +411,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             xAxis: {{
                 type: 'category',
                 boundaryGap: false,
-                data: ['{string.Join("', '", results.Select(r => r.LogTime))}']
+                data: [{string.Join(", ", results.Select(r => $"'{r.LogTime}'"))}]
             }},
             yAxis: {{
                 type: 'value'
@@ -425,7 +424,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     name: '{$"{g.Key.Client}-{g.Key.Version}"}',
                     type: 'line',
                     stack: '{$"{g.Key.Client}-{g.Key.Version}"}',
-                    data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {(r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0)}"))}]],
+                    data: [{string.Join(", ", g.Select(r => $"['{r.LogTime}', {(r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0)}]"))}],
                     markPoint : {{
                         data: [
                             {{type : 'max', name: '最大值'}},
@@ -488,11 +487,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                 trigger: 'axis'
             }},
             legend: {{
-                data: ['{string.Join("', '", groups.Select(g => g.Key))}']
+                data: [{string.Join(", ", groups.Select(g => $"'{g.Key}'"))}]
             }},
             xAxis: {{
                 type: 'category',
-                data: ['{string.Join("', '", results.Select(r => r.LogTime))}'],
+                data: [{string.Join(", ", results.Select(r => $"'{r.LogTime}'"))}],
             }},
             yAxis: {{
                 type: 'value'
@@ -505,7 +504,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         name: '{$"{g.Key}"}',
                         type: 'bar',
                         stack: '{$"{g.Key}"}',
-                        data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {r.ElapsedMillisecond}"))}]],
+                        data: [{string.Join(", ", g.Select(r => $"['{r.LogTime}', {r.ElapsedMillisecond}]"))}],
                         markLine : {{
                             data: [
                                 {{type : 'average', name: '平均值'}}
@@ -605,11 +604,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                 trigger: 'axis'
             }},
             legend: {{
-                data: ['{string.Join("', '", groups.Select(g => g.Key))}']
+                data: [{string.Join(", ", groups.Select(g => $"'{g.Key}'"))}]
             }},
             xAxis: {{
                 type: 'category',
-                data: ['{string.Join("', '", results.Select(r => r.LogTime))}'],
+                data: [{string.Join(", ", results.Select(r => $"'{r.LogTime}'"))}],
             }},
             yAxis: {{
                 type: 'value'
@@ -622,7 +621,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         name: '{$"{g.Key}"}',
                         type: 'bar',
                         stack: '{$"{g.Key}"}',
-                        data: [[{string.Join("], [", g.Select(r => $"'{r.LogTime}', {r.ElapsedMillisecond}"))}]],
+                        data: [{string.Join(", ", g.Select(r => $"['{r.LogTime}', {r.ElapsedMillisecond}]"))}],
                         markLine : {{
                             data: [
                                 {{type : 'average', name: '平均值'}}
