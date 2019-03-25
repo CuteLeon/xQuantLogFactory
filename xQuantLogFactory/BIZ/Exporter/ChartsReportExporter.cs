@@ -519,44 +519,49 @@ namespace xQuantLogFactory.BIZ.Exporter
 </script>
 ");
 
-            foreach (var group in groups)
-            {
-                builder.Append($@"
-            <div class=""card"">
-              <div class=""card-header"">
-                <kbd>{group.Key}</kbd> 版本客户端启动-统计
-              </div>
-              <div class=""card-body text-left"">
-                <h5 class=""card-title"">启动次数：{group.Count()} 次</h5>
-                <div class=""card-text"">
-                    <ul>
-                        <li>平均耗时：{group.Average(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
-                        <li>最大耗时：{group.Max(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
-                        <li>最小耗时：{group.Min(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
-                    </ul>
+            builder.Append($@"
+<div class=""container-fluid"">
+    <div class=""row"">
+        {string.Join("\n", groups.Select(g => $@"
+        <div class=""col-sm-6"">
+            <div class=""card text-left"">
+                <div class=""card-header"">
+                    <kbd class=""bg-success"">{g.Key}</kbd> 版本客户端启动-统计
                 </div>
-                {string.Join(
-                    string.Empty,
-                    group.Select(launch =>
-                        $@"
-                        <div class=""card-body"">
-                            <h5 class=""card-title"">耗时Top：</h5>
-                            <div class=""card-text"">
-                                {string.Join(
-                                    string.Empty,
-                                    launch.GetAnalysisResults()
-                                        .OrderByDescending(r => r.ElapsedMillisecond)
-                                        .Take(10).Select(r =>
-                                            $@"<div class=""alert alert-danger"" role=""alert"">
-                                                    {r.MonitorItem.Name} - {r.ElapsedMillisecond}
-                                            </div>"))}
-                            </div>
-                        </div>"
-                    ))}
-              </div>
-        </div>
+                <div class=""card-body"">
+                    <h5 class=""card-title"">启动次数：{g.Count()} 次</h5>
+                    <div class=""card-text"">
+                        <ul>
+                        <li>平均耗时：{g.Average(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        <li>最大耗时：{g.Max(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        <li>最小耗时：{g.Min(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <h5 class=""card-title""><span class=""badge badge-warning"">启动耗时Top：</span></h5>
+                    <div class=""card-text"">
+                        <ul>
+                            {string.Join("\n", g.OrderByDescending(r => r.ElapsedMillisecond).Take(10).Select(r => $@"<li>{r.MonitorItem.Name} <span class=""badge badge-success"">时间：{r.LogTime}</span> <span class=""badge badge-warning"">耗时：{r.ElapsedMillisecond}</span></li>"))}
+                        </ul>
+                    </div>
+                    {string.Join("\n", g.Select(r => $@"
+                    <hr />
+                    <h5 class=""card-title""><span class=""badge badge-info"">{r.LogTime}</span> 启动耗时Top：</h5>
+                    <div class=""card-text"">
+                        <ul>
+                            {string.Join("\n", r.GetAnalysisResults()
+                                .OrderByDescending(c => c.ElapsedMillisecond)
+                                .Take(10).Select(c =>
+                                    $@"<li>{c.MonitorItem.Name} <span class=""badge badge-danger"">耗时：{c.ElapsedMillisecond}</span></li>"))}
+                        </ul>
+                    </div>
+                    "))}
+                </div>
+            </div>
+        </div>"))}
+    </div>
+</div>
 ");
-            }
         }
 
         /// <summary>
@@ -575,6 +580,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             var results = monitor.AnalysisResults.Where(r => r.IsIntactGroup()).ToList();
             var groups = results.GroupBy(r => r.FinishMonitorResult.Version).OrderBy(g => g.Key);
+
             foreach (var group in groups)
             {
                 builder.Append($@"
@@ -590,18 +596,31 @@ namespace xQuantLogFactory.BIZ.Exporter
 
         option = {{
             title: {{
-                text: '服务端启动耗时'
+                text: '中间件启动耗时'
+            }},
+            tooltip: {{
+                trigger: 'axis'
+            }},
+            legend: {{
+                data: ['{string.Join("', '", groups.Select(g => g.Key))}']
             }},
             xAxis: {{
-                data: ['{string.Join("', '", groups.Select(g => g.Key))}'],
+                type: 'category',
+                data: ['{string.Join("', '", results.Select(r => r.LogTime))}'],
             }},
             yAxis: {{
+                type: 'value'
             }},
             series: [
-                {{
-                    type: 'bar',
-                    data: [{string.Join(", ", group.Average(r => r.ElapsedMillisecond))}]
-                }}
+            {string.Join(
+                        ",\n",
+                        groups.Select(g => $@"
+                    {{
+                        name: '{$"{g.Key}"}',
+                        type: 'bar',
+                        stack: '{$"{g.Key}"}',
+                        data: [{string.Join(", ", g.Select(r => r.ElapsedMillisecond))}]
+                    }}"))}
             ]
         }};
 
@@ -615,39 +634,47 @@ namespace xQuantLogFactory.BIZ.Exporter
 ");
 
                 builder.Append($@"
-            <div class=""card"">
-              <div class=""card-header"">
-                <kbd>{group.Key}</kbd> 版本服务端启动-统计
-              </div>
-              <div class=""card-body text-left"">
-                <h5 class=""card-title"">启动次数：{group.Count()} 次</h5>
-                <div class=""card-text"">
-                    <ul>
-                        <li>平均耗时：{group.Average(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
-                        <li>最大耗时：{group.Max(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
-                        <li>最小耗时：{group.Min(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
-                    </ul>
+<div class=""container-fluid"">
+    <div class=""row"">
+        {string.Join("\n", groups.Select(g => $@"
+        <div class=""col-sm-6"">
+            <div class=""card text-left"">
+                <div class=""card-header"">
+                    <kbd class=""bg-success"">{g.Key}</kbd> 版本服务端端启动-统计
                 </div>
-                {string.Join(
-                    string.Empty,
-                    group.Select(launch =>
-                        $@"
-                        <div class=""card-body"">
-                            <h5 class=""card-title"">耗时Top：</h5>
-                            <div class=""card-text"">
-                                {string.Join(
-                                    string.Empty,
-                                    launch.GetAnalysisResults()
-                                        .OrderByDescending(r => r.ElapsedMillisecond)
-                                        .Take(10).Select(r =>
-                                            $@"<div class=""alert alert-danger"" role=""alert"">
-                                                    {r.MonitorItem.Name} - {r.ElapsedMillisecond}
-                                            </div>"))}
-                            </div>
-                        </div>"
-                    ))}
-              </div>
+                <div class=""card-body"">
+                    <h5 class=""card-title"">启动次数：{g.Count()} 次</h5>
+                    <div class=""card-text"">
+                        <ul>
+                        <li>平均耗时：{g.Average(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        <li>最大耗时：{g.Max(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        <li>最小耗时：{g.Min(r => r.ElapsedMillisecond / 1000).ToString("N2")} 秒</li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <h5 class=""card-title""><span class=""badge badge-warning"">启动耗时Top：</span></h5>
+                    <div class=""card-text"">
+                        <ul>
+                            {string.Join("\n", g.OrderByDescending(r => r.ElapsedMillisecond).Take(10).Select(r => $@"<li>{r.MonitorItem.Name} <span class=""badge badge-success"">时间：{r.LogTime}</span> <span class=""badge badge-warning"">耗时：{r.ElapsedMillisecond}</span></li>"))}
+                        </ul>
+                    </div>
+                    {string.Join("\n", g.Select(r => $@"
+                    <hr />
+                    <h5 class=""card-title""><span class=""badge badge-info"">{r.LogTime}</span> 启动耗时Top：</h5>
+                    <div class=""card-text"">
+                        <ul>
+                            {string.Join("\n", r.GetAnalysisResults()
+                                .OrderByDescending(c => c.ElapsedMillisecond)
+                                .Take(10).Select(c =>
+                                    $@"<li>{c.MonitorItem.Name} <span class=""badge badge-danger"">耗时：{c.ElapsedMillisecond}</span></li>"))}
+                        </ul>
+                    </div>
+                    "))}
+                </div>
             </div>
+        </div>"))}
+    </div>
+</div>
 ");
             }
         }
