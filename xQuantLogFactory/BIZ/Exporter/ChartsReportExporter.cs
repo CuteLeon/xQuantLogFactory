@@ -360,7 +360,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 trigger: 'axis'
             }},
             legend: {{
-                data: ['{string.Join("', '", results.Select(r => r.Client).Distinct().OrderBy(ip => ip))}']
+                data: ['{string.Join("', '", results.Select(r => (r.Client, r.Version)).Distinct().Where(t => !string.IsNullOrEmpty(t.Client) && !string.IsNullOrEmpty(t.Version)).OrderBy(t => (t.Client, t.Version)).Select(t => $"{t.Client}-{t.Version}"))}']
             }},
             grid: {{
                 left: '3%',
@@ -399,9 +399,9 @@ namespace xQuantLogFactory.BIZ.Exporter
             series: [
                 {string.Join(
                     ",",
-                    results.GroupBy(r => r.Client).OrderBy(g => g.Key).Select(g => $@"
+                    results.GroupBy(r => (r.Client, r.Version)).Where(g => !string.IsNullOrEmpty(g.Key.Client) && !string.IsNullOrEmpty(g.Key.Version)).OrderBy(g => (g.Key.Client, g.Key.Version)).Select(g => $@"
                 {{
-                    name: '{g.Key ?? "空"}',
+                    name: '{$"{g.Key.Client}-{g.Key.Version}"}',
                     type: 'line',
                     stack: '内存',
                     data: [{string.Join(", ", g.Select(r => r.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object m) ? m : 0.0))}],

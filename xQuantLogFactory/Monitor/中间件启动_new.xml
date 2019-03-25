@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Item Name="内存消耗" Begin="内存消耗" GroupAnalysiser="SelfSealing" Memory="true" Sheet="内存"/>
   <Item Name="中间件启动" Begin="ServerLaunch=>服务端启动..." End="ServerLaunch=>显示主窗口完成" Sheet="中间件启动">
     <Item Name="远程服务接口注册" Begin="ServerLaunch=>开始配置Remoting管道及接口..." End="ServerLaunch=>配置Remoting管道及接口完成"/>
     <Item Name="检查数据库和MQ连接" Begin="ServerLaunch=>开始检查数据库和MQ连接..." End="ServerLaunch=>检查数据库和MQ连接完成"/>
