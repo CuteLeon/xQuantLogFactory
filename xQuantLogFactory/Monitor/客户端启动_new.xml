@@ -11,11 +11,12 @@
       <Item Name="注册单项远程服务" Begin="ClientLaunch=>注册远程服务：" End="" GroupAnalysiser="SelfSealing" DirectedAnalysiser="Prefix" />
     </Item>
 
+    <Item Name="下载数据表" Begin="ClientLaunch=>开始下载数据表：" End="ClientLaunch=>下载数据表完成：" DirectedAnalysiser="Prefix" />
+
     <Item Name="第一阶段初始化" Begin="ClientLaunch=>开始第一阶段初始化..." End="ClientLaunch=>第一阶段初始化完成">
       <Item Name="初始化XPOSchema" Begin="ClientLaunch=>开始初始化XPOSchema..." End="ClientLaunch=>初始化XPOSchema完成"/>
       <Item Name="从服务端加载第一阶段缓存" Begin="ClientLaunch=>开始从服务端加载第一阶段缓存..." End="ClientLaunch=>从服务端加载第一阶段缓存完成。">
-        <Item Name="下载数据表" Begin="ClientLaunch=>开始下载数据表：" End="ClientLaunch=>下载数据表完成：" DirectedAnalysiser="Prefix" />
-
+        <!-- <Item Name="下载数据表" Begin="ClientLaunch=>开始下载数据表：" End="ClientLaunch=>下载数据表完成：" DirectedAnalysiser="Prefix" /> -->
         <Item Name="加载中债参数设置表" Begin="接口类实例化、加载开关..." End="加载中债参数设置表"/>
         <Item Name="加载外汇交易中心上行参数设置表" Begin="" End="加载外汇交易中心上行参数设置表"/>
         <Item Name="加载对手--中债登" Begin="加载对手--本方" End="加载对手--中债登"/>
@@ -53,7 +54,7 @@
     <Item Name="加载客户端主窗口" Begin="ClientLaunch=>开始加载客户端主窗口..." End="ClientLaunch=>加载客户端主窗口完成">
       <Item Name="初始化交易字典" Begin="ClientLaunch=>开始初始化交易字典..." End="ClientLaunch=>初始化交易字典完成"/>
       <Item Name="第二阶段初始化" Begin="ClientLaunch=>开始第二阶段初始化..." End="ClientLaunch=>第二阶段初始化完成">
-        <Item Name="下载数据表" Begin="ClientLaunch=>开始下载数据表：" End="ClientLaunch=>下载数据表完成：" DirectedAnalysiser="Prefix" />
+        <!-- <Item Name="下载数据表" Begin="ClientLaunch=>开始下载数据表：" End="ClientLaunch=>下载数据表完成：" DirectedAnalysiser="Prefix" /> -->
         <Item Name="初始化表格助手" Begin="ClientLaunch=>开始初始化表格助手..." End="ClientLaunch=>初始化表格助手完成"/>
       </Item>
     </Item>
