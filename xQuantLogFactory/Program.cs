@@ -1,5 +1,5 @@
 ﻿// TODO: 开发模式开关
-#define Development
+#undef Development
 
 using System;
 using System.Collections.Generic;
@@ -428,9 +428,6 @@ namespace xQuantLogFactory
             {
                 try
                 {
-#if Development
-                    reportSuccess = true;
-#else
                     if (!reportSuccess)
                     {
                         reportPath = GetReportFilePath(UnityTaskArgument);
@@ -442,7 +439,6 @@ namespace xQuantLogFactory
                         UnityTaskArgument.LastReportPath = reportPath;
                         UnityTracer.WriteLine($"日志报告导出成功=> {reportPath}");
                     }
-#endif
 
                     if (!chartsSuccess)
                     {
