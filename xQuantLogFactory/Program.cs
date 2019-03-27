@@ -1,4 +1,4 @@
-﻿#undef Development
+﻿#define Development
 
 using System;
 using System.Collections.Generic;
@@ -421,6 +421,10 @@ namespace xQuantLogFactory
             string chartsPath = string.Empty;
             bool reportSuccess = false;
             bool chartsSuccess = false;
+
+#if Development
+            chartsSuccess = true;
+#endif
 
             // 当导出失败且用户同意重试时重复导出，并在失败时再次询问用户
             do

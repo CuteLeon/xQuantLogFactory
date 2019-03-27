@@ -62,6 +62,11 @@ namespace xQuantLogFactory.Model.Fixed
         /// 报表异步组分析器
         /// </summary>
         ReportAsync = 4,
+
+        /// <summary>
+        /// 限额检查异步组分析器
+        /// </summary>
+        LimitCheckAsync = 5,
     }
 
     /// <summary>

@@ -125,6 +125,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 {
                     this.GroupAnalysiserProvider.Add(new CommonSelfSealingGroupAnalysiser(this.Tracer));
                 }
+
+                if (argument.TerminalMonitorResults.Any(result => result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.LimitCheckAsync))
+                {
+                    this.GroupAnalysiserProvider.Add(new LimitCheckAsyncGroupAnalysiser(this.Tracer));
+                }
             }
 
             if (argument.PerformanceMonitorResults.Count > 0)

@@ -69,7 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CacheSizeAnalysiser.cs" />
-    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\LimitCheckAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Performance\CommonPerformanceLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\AsyncGroupLogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonLoadAnalysiser.cs" />
@@ -78,6 +77,7 @@
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonPrefixAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\CommonTerminalLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\CommonSelfSealingGroupAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\LimitCheckAsyncGroupAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\ReportAsyncGroupAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\FormAsyncGroupAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\CoreAsyncGroupAnalysiser.cs" />
@@ -218,6 +218,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Monitor\窗体与报表.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\限额检查.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Monitor\限额刷新.xml">
