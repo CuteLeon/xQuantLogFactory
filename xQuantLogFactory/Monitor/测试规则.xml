@@ -5,123 +5,15 @@
   <!-- 客户端或服务端的两种启动监视规则中每种仅允许存在一个，因为即使不同版本的监视规则依然存在大量相同的子监视规则，会造成监视结果大量重复 -->
   <!-- 新版客户端启动 -->
   <Item Name="客户端启动" Begin="ClientLaunch=>客户端启动..." End="ClientLaunch=>显示主窗口完成" Sheet="客户端启动">
-    <Item Name="内存消耗" Begin="内存消耗" GroupAnalysiser="SelfSealing" Memory="true" Sheet="内存"/>
-    <Item Name="统计缓存" Begin="统计耗时：" DirectedAnalysiser="CacheSize" GroupAnalysiser="SelfSealing" Sheet="缓存"/>
-    <Item Name="初始化远程服务通道" Begin="ClientLaunch=>开始初始化远程服务通道..." End="ClientLaunch=>初始化远程服务通道完成"/>
-    <Item Name="版本升级" Begin="ClientLaunch=>开始检查版本更新..." End="ClientLaunch=>检查版本更新完成"/>
-
-    <Item Name="注册远程服务" Begin="ClientLaunch=>开始注册远程服务..." End="ClientLaunch=>注册远程服务完成。">
-      <Item Name="注册单项远程服务" Begin="ClientLaunch=>注册远程服务：" End="" GroupAnalysiser="SelfSealing" DirectedAnalysiser="Prefix" />
-    </Item>
-
-    <Item Name="下载数据表" Begin="ClientLaunch=>开始下载数据表：" End="ClientLaunch=>下载数据表完成：" DirectedAnalysiser="Prefix" />
-
-    <Item Name="第一阶段初始化" Begin="ClientLaunch=>开始第一阶段初始化..." End="ClientLaunch=>第一阶段初始化完成">
-      <Item Name="初始化XPOSchema" Begin="ClientLaunch=>开始初始化XPOSchema..." End="ClientLaunch=>初始化XPOSchema完成"/>
-      <Item Name="从服务端加载第一阶段缓存" Begin="ClientLaunch=>开始从服务端加载第一阶段缓存..." End="ClientLaunch=>从服务端加载第一阶段缓存完成。">
-        <Item Name="加载中债参数设置表" Begin="接口类实例化、加载开关..." End="加载中债参数设置表"/>
-        <Item Name="加载外汇交易中心上行参数设置表" Begin="" End="加载外汇交易中心上行参数设置表"/>
-        <Item Name="加载对手--中债登" Begin="加载对手--本方" End="加载对手--中债登"/>
-        <Item Name="加载XPRefresh" Begin="" End="加载XPRefresh"/>
-        <Item Name="加载XSWAP报价合约品种单位基准" Begin="" End="加载XSWAP报价合约品种单位基准 内存消耗"/>
-        <Item Name="加载业务字典名称转换表" Begin="" End="加载业务字典名称转换表 内存消耗"/>
-        <Item Name="加载占资利率表" Begin="" End="加载占资利率表 内存消耗"/>
-        <Item Name="加载交易所标准券折价率表" Begin="" End="加载交易所标准券折价率表 内存消耗"/>
-        <Item Name="加载评级字典表" Begin="" End="加载评级字典表 内存消耗"/>
-        <Item Name="加载评级展望字典表" Begin="" End="加载评级展望字典表 内存消耗"/>
-        <Item Name="加载交易所金融工具业务规则表" Begin="" End="加载交易所金融工具业务规则表 内存消耗"/>
-        <Item Name="加载结算方式设置表" Begin="" End="加载结算方式设置表 内存消耗"/>
-        <Item Name="加载净额结算参数设置表" Begin="" End="加载净额结算参数设置表 内存消耗"/>
-        <Item Name="加载指令详情描述" Begin="" End="加载指令详情描述 内存消耗"/>
-        <Item Name="加载交易所还本减数量债券" Begin="" End="加载交易所还本减数量债券 内存消耗"/>
-        <Item Name="加载动态限额指标" Begin="" End="加载动态限额指标 内存消耗"/>
-        <Item Name="加载清算所债券估值" Begin="" End="加载清算所债券估值 内存消耗"/>
-        <Item Name="加载中证债券估值" Begin="" End="加载中证债券估值 内存消耗"/>
-        <Item Name="加载股票估值" Begin="" End="加载股票估值 内存消耗"/>
-        <Item Name="加载债券行情估值Series" Begin="" End="加载债券行情估值Series 内存消耗"/>
-        <Item Name="加载金融工具债券估值" Begin="" End="加载金融工具债券估值 内存消耗"/>
-        <Item Name="加载中债登债券估值" Begin="" End="加载中债登债券估值完成"/>
-        <Item Name="加载风控交易对手" Begin="" End="载风控交易对手 内存消耗"/>
-        <Item Name="加载其他要素类型字典表" Begin="" End="加载其他要素类型字典表 内存消耗"/>
-        <Item Name="加载导入任务类型字典表" Begin="" End="加载导入任务类型字典表 内存消耗"/>
-        <Item Name="加载债券通账户列表" Begin="" End="加载债券通账户列表 内存消耗"/>
-        <Item Name="加载交易最小单位配置" Begin="" End="加载交易最小单位配置 内存消耗"/>
-        <Item Name="加载当前登录部门" Begin="" End="加载当前登录部门 内存消耗"/>
-        <Item Name="加载交易终止配置" Begin="" End="加载交易终止配置 内存消耗"/>
-      </Item>
-      <Item Name="初始化MQ消息订阅" Begin="ClientLaunch=>开始初始化MQ消息订阅..." End="ClientLaunch=>初始化MQ消息订阅完成"/>
-    </Item>
-    <Item Name="加载客户端主窗口" Begin="ClientLaunch=>开始加载客户端主窗口..." End="ClientLaunch=>加载客户端主窗口完成">
-      <Item Name="初始化交易字典" Begin="ClientLaunch=>开始初始化交易字典..." End="ClientLaunch=>初始化交易字典完成"/>
-      <Item Name="第二阶段初始化" Begin="ClientLaunch=>开始第二阶段初始化..." End="ClientLaunch=>第二阶段初始化完成">
-        <Item Name="初始化表格助手" Begin="ClientLaunch=>开始初始化表格助手..." End="ClientLaunch=>初始化表格助手完成"/>
-      </Item>
-    </Item>
+    <Item Name="第一阶段初始化" Begin="ClientLaunch=>开始第一阶段初始化..." End="ClientLaunch=>第一阶段初始化完成"/>
+    <Item Name="第二阶段初始化" Begin="ClientLaunch=>开始第二阶段初始化..." End="ClientLaunch=>第二阶段初始化完成"/>
   </Item>
   <!-- 新版服务端启动 -->
-  <Item Name="中间件启动" Begin="ServerLaunch=>服务端启动..." End="ServerLaunch=>显示主窗口完成" Sheet="中间件启动">
-    <Item Name="远程服务接口注册" Begin="ServerLaunch=>开始配置Remoting管道及接口..." End="ServerLaunch=>配置Remoting管道及接口完成"/>
-    <Item Name="检查数据库和MQ连接" Begin="ServerLaunch=>开始检查数据库和MQ连接..." End="ServerLaunch=>检查数据库和MQ连接完成"/>
-    <Item Name="从数据库注册远程服务" Begin="ServerLaunch=>开始从数据库注册远程服务..." End="ServerLaunch=>从数据库注册远程服务完成"/>
-    <Item Name="启动服务" Begin="ServerLaunch=>开始启动服务..." End="ServerLaunch=>启动服务完成。">
-      <Item Name="启动单项服务" Begin="ServerLaunch=>开始启动服务：" End="ServerLaunch=>启动服务完成：" DirectedAnalysiser="Prefix">
-        <Item Name="中间件启动加载数据" Begin="开始中间件启动加载数据" End="完成中间件启动加载数据" DirectedAnalysiser="Prefix" />
-        <Item Name="加载拼音简码缓存" Begin="开始加载拼音简码缓存" End="完成加载拼音简码缓存"/>
-        <Item Name="加载系统参数表" Begin="开始加载系统参数表" End="完成加载系统参数表"/>
-        <Item Name="加载中债参数设置表" Begin="" End="加载中债参数设置表："/>
-        <Item Name="加载模块参数设置表" Begin="" End="加载模块参数设置表："/>
-        <Item Name="加载动态限额指标" Begin="" End="加载动态限额指标："/>
-        <Item Name="加载指标缓存字典" Begin="" End="加载指标缓存字典："/>
-        <Item Name="加载内部资金指标值" Begin="" End="加载内部资金指标值："/>
-        <Item Name="初始化数据访问接口" Begin="开始初始化数据访问接口" End="完成初始化数据访问接口"/>
-        <Item Name="交易所标准券折价率表" Begin="业务字典名称转换表：" End="交易所标准券折价率表："/>
-        <Item Name="OTC利率表" Begin="" End="OTC利率表："/>
-        <Item Name="评级字典表" Begin="" End="评级字典表："/>
-        <Item Name="评级展望字典表" Begin="" End="评级展望字典表："/>
-        <Item Name="债券通账户列表" Begin="" End="债券通账户列表："/>
-        <Item Name="资产策略配置" Begin="" End="资产策略配置："/>
-        <Item Name="交易所金融工具业务规则表" Begin="" End="交易所金融工具业务规则表："/>
-        <Item Name="结算方式设置表" Begin="" End="结算方式设置表："/>
-        <Item Name="净额结算参数设置表" Begin="" End="净额结算参数设置表："/>
-        <Item Name="清算所债券估值" Begin="" End="清算所债券估值："/>
-        <Item Name="股票估值" Begin="" End="股票估值："/>
-        <Item Name="债券行情估值SERIES" Begin="" End="债券行情估值SERIES："/>
-        <Item Name="指令详情描述" Begin="" End="指令详情描述："/>
-        <Item Name="XSWAP报价合约品种单位基准" Begin="" End="XSWAP报价合约品种单位基准："/>
-        <Item Name="金融工具曲线" Begin="" End="金融工具曲线："/>
-        <Item Name="保证金率表" Begin="" End="保证金率表："/>
-        <Item Name="外汇交易中心上行参数设置表" Begin="" End="外汇交易中心上行参数设置表："/>
-        <Item Name="是否自动审批通过指令表配置" Begin="" End="是否自动审批通过指令表配置："/>
-        <Item Name="交易终止类型配置" Begin="" End="交易终止类型配置："/>
-        <Item Name="地域树构建和缓存" Begin="" End="地域树构建和缓存："/>
-        <Item Name="初始化席位号通道号字典" Begin="" End="初始化席位号通道号字典："/>
-        <Item Name="金融工具债券估值" Begin="" End="金融工具债券估值："/>
-        <Item Name="中债登债券估值" Begin="" End="中债登债券估值："/>
-        <Item Name="交易所还本减数量债券" Begin="" End="交易所还本减数量债券："/>
-        <Item Name="资金指令收付摘要规则配置" Begin="" End="资金指令收付摘要规则配置："/>
-        <Item Name="导入任务类型字典" Begin="" End="导入任务类型字典："/>
-        <Item Name="导入发行机构字典表" Begin="" End="导入发行机构字典表："/>
-        <Item Name="交易最小单位配置" Begin="" End="交易最小单位配置："/>
-        <Item Name="复核表相关缓存" Begin="" End="复核表相关缓存TTRD_APPROVE_RULE_REVIEW："/>
-        <Item Name="虚拟资本金系数字典" Begin="" End="虚拟资本金系数字典："/>
-        <Item Name="债券违约序列字典" Begin="" End="债券违约序列字典："/>
-        <Item Name="主体实际控制人字典" Begin="" End="主体实际控制人字典："/>
-        <Item Name="现券经纪业务多核心通道" Begin="" End="现券经纪业务多核心通道："/>
-        <Item Name="交易所交收代码段配置表" Begin="" End="交易所交收代码段配置表："/>
-        <Item Name="系统配置说明字典" Begin="" End="系统配置说明字典"/>
-        <Item Name="加载后续交易对手拼音简码" Begin="数据加载服务 加载后续数据开始" End="数据加载服务 加载后续交易对手拼音简码完成"/>
-        <Item Name="加载后续持仓债券现金流" Begin="" End="加载后续持仓债券现金流完成"/>
-        <Item Name="代缴款组合交易的券敞口提醒" Begin="" End="代缴款组合交易的券敞口提醒结束"/>
-        <Item Name="自动出入池刷新" Begin="自动入池刷新开始：池类型='全部',操作人='系统自动'" End="自动入池刷新结束：池类型='全部',操作人='系统自动'">
-          <Item Name="金融工具自动入池" Begin="系统自动 自动入池刷新：金融工具自动入池开始" End="系统自动 自动入池刷新：金融工具自动入池结束"/>
-          <Item Name="交易对手自动入池" Begin="系统自动 自动入池刷新：交易对手自动入池开始" End="系统自动 自动入池刷新：交易对手自动入池结束"/>
-        </Item>
-      </Item>
-    </Item>
-    <Item Name="显示主窗口" Begin="ServerLaunch=>开始显示主窗口..." End="ServerLaunch=>显示主窗口完成"/>
-  </Item>
+  <Item Name="中间件启动" Begin="ServerLaunch=>服务端启动..." End="ServerLaunch=>显示主窗口完成" Sheet="中间件启动"/>
   <!-- 注销 -->
   <Item Name="用户注销" Begin="注销时销毁菜单" End="注销时注销服务端登录状态" />
   <!-- 限额刷新 -->
-  <Item Name ="限额刷新" Begin ="限额服务刷新开始" End ="限额服务初始化结束" />
+  <Item Name ="限额刷新" Begin ="限额服务刷新开始" End ="限额服务初始化结束" Sheet="限额刷新"/>
+  <!-- 交易查询 -->
+  <Item Name ="交易查询界面打开后查询" Begin ="开始交易查询" End ="完成交易查询" />
 </MonitorRoot>
