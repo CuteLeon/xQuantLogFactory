@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CacheSizeAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\LimitCheckAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Performance\CommonPerformanceLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\AsyncGroupLogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonLoadAnalysiser.cs" />
