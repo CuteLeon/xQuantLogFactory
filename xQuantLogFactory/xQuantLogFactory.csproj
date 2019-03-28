@@ -130,6 +130,7 @@
     <Compile Include="Model\Report\ExcelWorksheetPackage.cs" />
     <Compile Include="Model\Result\AnalysisResultBase.cs" />
     <Compile Include="Model\Result\AnalysisResultRelBase.cs" />
+    <Compile Include="Model\Result\IAnalysisResult.cs" />
     <Compile Include="Model\Result\MonitorResultBase.cs" />
     <Compile Include="Model\Result\MonitorResultRelBase.cs" />
     <Compile Include="Model\Result\PerformanceAnalysisResult.cs" />
@@ -142,6 +143,8 @@
     <Compile Include="Model\Monitor\TerminalMonitorItem.cs" />
     <Compile Include="Model\Result\TerminalMonitorResult.cs" />
     <Compile Include="Model\Result\TerminalUnparsedResult.cs" />
+    <Compile Include="Model\Result\Transition\IAnalysisResultable.cs" />
+    <Compile Include="Model\Result\Transition\LimitCheckTransition.cs" />
     <Compile Include="Model\SystemInfo.cs" />
     <Compile Include="Model\TaskArgument.cs" />
     <Compile Include="Program.cs" />

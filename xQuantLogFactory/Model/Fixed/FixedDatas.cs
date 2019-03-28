@@ -101,6 +101,36 @@
         /// 计数
         /// </summary>
         public const string COUNT = "计数";
+
+        /// <summary>
+        /// 用户代码
+        /// </summary>
+        public const string USER_CODE = "用户代码";
+
+        /// <summary>
+        /// 会话ID
+        /// </summary>
+        public const string SESSION_ID = "会话ID";
+
+        /// <summary>
+        /// 预先计数
+        /// </summary>
+        public const string PRE_COUNT = "预先计数";
+
+        /// <summary>
+        /// 事后计数
+        /// </summary>
+        public const string PRO_COUNT = "事后计数";
+
+        /// <summary>
+        /// 结果总数
+        /// </summary>
+        public const string RESULT_COUNT = "结果总数";
+
+        /// <summary>
+        /// 条件总数
+        /// </summary>
+        public const string ROLE_COUNT = "条件总数";
         #endregion
 
         #region 保留表名常量

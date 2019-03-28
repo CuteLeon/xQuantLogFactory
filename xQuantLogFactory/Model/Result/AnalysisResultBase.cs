@@ -4,7 +4,7 @@ using xQuantLogFactory.Model.LogFile;
 
 namespace xQuantLogFactory.Model.Result
 {
-    public class AnalysisResultBase<TLogFile> : LogResultBase<TLogFile>
+    public class AnalysisResultBase<TLogFile> : LogResultBase<TLogFile>, IAnalysisResult
         where TLogFile : LogFileBase
     {
         #region 基础属性
