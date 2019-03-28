@@ -12,7 +12,7 @@ namespace xQuantLogFactory.Model.Result.Transition
         /// </summary>
         /// <param name="usercode"></param>
         /// <param name="sessionId"></param>
-        public LimitCheckTransition(string usercode, string sessionId)
+        public LimitCheckTransition(string usercode, int sessionId)
         {
             this.UserCode = usercode;
             this.SessionID = sessionId;
@@ -26,32 +26,32 @@ namespace xQuantLogFactory.Model.Result.Transition
         /// <summary>
         /// Gets or sets 会话ID
         /// </summary>
-        public string SessionID { get; set; }
+        public int SessionID { get; set; }
 
         /// <summary>
         /// Gets or sets 开始前交易数量
         /// </summary>
-        public string PreCount { get; set; }
+        public int PreCount { get; set; }
 
         /// <summary>
         /// Gets or sets 完成后交易数量
         /// </summary>
-        public string ProCount { get; set; }
+        public int ProCount { get; set; }
 
         /// <summary>
         /// Gets or sets 条件匹配数量
         /// </summary>
-        public string RoleCount { get; set; }
+        public int RoleCount { get; set; }
 
         /// <summary>
         /// Gets or sets 结果数量
         /// </summary>
-        public string ResultCount { get; set; }
+        public int ResultCount { get; set; }
 
         /// <summary>
         /// Gets or sets 总耗时
         /// </summary>
-        public string TotalElapsed { get; set; }
+        public double TotalElapsed { get; set; } = double.NaN;
 
         /// <summary>
         /// Gets or sets 开始监视结果
@@ -79,7 +79,7 @@ namespace xQuantLogFactory.Model.Result.Transition
 
             analysisResult.StartMonitorResult = this.StartMonitorResult;
             analysisResult.FinishMonitorResult = this.FinishMonitorResult;
-            analysisResult.ElapsedMillisecond = double.TryParse(this.TotalElapsed, out double elapsed) ? elapsed : (this.FinishMonitorResult.LogTime - this.StartMonitorResult.LogTime).TotalMilliseconds;
+            analysisResult.ElapsedMillisecond = double.IsNaN(this.TotalElapsed) ? (this.FinishMonitorResult.LogTime - this.StartMonitorResult.LogTime).TotalMilliseconds : this.TotalElapsed;
 
             return analysisResult;
         }

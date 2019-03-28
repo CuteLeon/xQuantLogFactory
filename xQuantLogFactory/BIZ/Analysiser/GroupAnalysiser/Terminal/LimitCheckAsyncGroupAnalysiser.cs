@@ -44,7 +44,6 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
         /// <param name="argument"></param>
         public override void Analysis(TaskArgument argument)
         {
-            // TODO: Excel 模板增加限额检查 Sheet
             if (argument == null)
             {
                 throw new ArgumentNullException(nameof(argument));
@@ -61,7 +60,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                 .GroupBy(result => result.MonitorItem)
                 .AsParallel().ForAll(resultGroup =>
                 {
-                    var limitChecks = new ConcurrentDictionary<(string userCode, string sessionId), LimitCheckTransition>();
+                    var limitChecks = new ConcurrentDictionary<(string userCode, int sessionId), LimitCheckTransition>();
                     var targetMonitor = resultGroup.Key;
 
                     this.Tracer?.WriteLine($">>>开始分析，监视结果数量：{resultGroup.Count()}\t监视规则：{targetMonitor.Name}");
@@ -70,12 +69,12 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                     foreach (var monitorResult in resultGroup)
                     {
                         var limitCheckKey = this.GetLimitCheckKey(monitorResult.LogContent);
-                        if (string.IsNullOrEmpty(limitCheckKey.sessionId))
+                        if (limitCheckKey.sessionId == null)
                         {
                             continue;
                         }
 
-                        limitCheck = limitChecks.GetOrAdd(limitCheckKey, (key) =>
+                        limitCheck = limitChecks.GetOrAdd((limitCheckKey.userCode, limitCheckKey.sessionId.Value), (key) =>
                             new LimitCheckTransition(key.userCode, key.sessionId)
                             {
                                 StartMonitorResult = monitorResult,
@@ -98,29 +97,29 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
                         Match match = tradeCountRegex.Match(logcontent);
                         if (match.Success)
                         {
-                            limitcheck.PreCount = match.Groups["PreCount"].Success ? match.Groups["PreCount"].Value : string.Empty;
-                            limitcheck.ProCount = match.Groups["ProCount"].Success ? match.Groups["ProCount"].Value : string.Empty;
+                            limitcheck.PreCount = match.Groups["PreCount"].Success && int.TryParse(match.Groups["PreCount"].Value, out int precount) ? precount : 0;
+                            limitcheck.ProCount = match.Groups["ProCount"].Success && int.TryParse(match.Groups["ProCount"].Value, out int procount) ? procount : 0;
                             return;
                         }
 
                         match = roleRegex.Match(logcontent);
                         if (match.Success)
                         {
-                            limitcheck.RoleCount = match.Groups["RoleCount"].Success ? match.Groups["RoleCount"].Value : string.Empty;
+                            limitcheck.RoleCount = match.Groups["RoleCount"].Success && int.TryParse(match.Groups["RoleCount"].Value, out int rolecount) ? rolecount : 0;
                             return;
                         }
 
                         match = resultCountRegex.Match(logcontent);
                         if (match.Success)
                         {
-                            limitcheck.ResultCount = match.Groups["ResultCount"].Success ? match.Groups["ResultCount"].Value : string.Empty;
+                            limitcheck.ResultCount = match.Groups["ResultCount"].Success && int.TryParse(match.Groups["ResultCount"].Value, out int resultcount) ? resultcount : 0;
                             return;
                         }
 
                         match = totalElapsedRegex.Match(logcontent);
                         if (match.Success)
                         {
-                            limitcheck.TotalElapsed = match.Groups["TotalElapsed"].Success ? match.Groups["TotalElapsed"].Value : string.Empty;
+                            limitcheck.TotalElapsed = match.Groups["TotalElapsed"].Success && double.TryParse(match.Groups["TotalElapsed"].Value, out double elapsed) ? elapsed : 0;
                             return;
                         }
                     }
@@ -132,11 +131,12 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
         /// </summary>
         /// <param name="logContent"></param>
         /// <returns></returns>
-        protected (string userCode, string sessionId) GetLimitCheckKey(string logContent)
+        protected (string userCode, int? sessionId) GetLimitCheckKey(string logContent)
         {
             Match match = this.AnalysisRegex.Match(logContent);
-            return (match.Success && match.Groups["UserCode"].Success ? match.Groups["UserCode"].Value : null,
-                match.Success && match.Groups["SessionID"].Success ? match.Groups["SessionID"].Value : null);
+            string userCode = match.Success && match.Groups["UserCode"].Success ? match.Groups["UserCode"].Value : null;
+            int? sessionId = match.Success && match.Groups["SessionID"].Success && int.TryParse(match.Groups["SessionID"].Value, out int id) ? id : default(int?);
+            return (userCode, sessionId);
         }
     }
 }

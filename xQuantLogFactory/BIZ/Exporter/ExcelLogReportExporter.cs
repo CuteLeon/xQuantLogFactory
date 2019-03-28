@@ -37,6 +37,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.FORM_SHEET_NAME,
             FixedDatas.REPORT_SHEET_NAME,
             FixedDatas.CACHE_SHEET_NAME,
+            FixedDatas.LIMIT_CHECK_SHEET_NAME,
         };
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportFormSheet(excel, argument);
                     this.ExportReportSheet(excel, argument);
                     this.ExportCacheSheet(excel, argument);
+                    this.ExportLimitCheck(excel, argument);
 
                     /* 更新数据透视表
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
@@ -116,6 +118,85 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     excel.Save();
                     this.Tracer?.WriteLine("Excel 报告文档关闭");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出限额检查结果
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportLimitCheck(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.LIMIT_CHECK_SHEET_NAME];
+            if (sheet == null)
+            {
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.LIMIT_CHECK_SHEET_NAME} 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.LIMIT_CHECK_SHEET_NAME} 表数据 ...");
+                Rectangle rectangle = new Rectangle(1, 2, 12, argument.TerminalMonitorResults.Count);
+                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
+                {
+                    int rowID = rectangle.Top, executeID = 0;
+                    object analysisData = null;
+
+                    // 输出监视规则树
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+                    {
+                        // 每个分析结果根节点使执行序号自增
+                        executeID++;
+
+                        // 遍历根节点及所有子节点输出分析结果数据
+                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
+                            .Where(result =>
+                                result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.LimitCheckAsync ||
+                                result.MonitorItem.SheetName == FixedDatas.LIMIT_CHECK_SHEET_NAME))
+                        {
+                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
+                            range[rowID, 2].Value = analysisResult.Version;
+                            range[rowID, 3].Value = executeID;
+                            range[rowID, 4].Value = analysisResult.ElapsedMillisecond;
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.SESSION_ID, out analysisData))
+                            {
+                                range[rowID, 5].Value = analysisData;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.USER_CODE, out analysisData))
+                            {
+                                range[rowID, 6].Value = analysisData;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.RESULT_COUNT, out analysisData))
+                            {
+                                range[rowID, 7].Value = analysisData;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.ROLE_COUNT, out analysisData))
+                            {
+                                range[rowID, 8].Value = analysisData;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.PRE_COUNT, out analysisData))
+                            {
+                                range[rowID, 9].Value = analysisData;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.PRO_COUNT, out analysisData))
+                            {
+                                range[rowID, 10].Value = analysisData;
+                            }
+
+                            range[rowID, 11].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 12].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 13].Value = analysisResult.LogFile.RelativePath;
+                            range[rowID, 14].Value = analysisResult.LineNumber;
+
+                            rowID++;
+                        }
+                    }
                 }
             }
         }

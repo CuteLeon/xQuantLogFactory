@@ -184,6 +184,11 @@
         /// 缓存表名
         /// </summary>
         public const string CACHE_SHEET_NAME = "缓存";
+
+        /// <summary>
+        /// 限额检查
+        /// </summary>
+        public const string LIMIT_CHECK_SHEET_NAME = "限额检查";
         #endregion
 
         #region 业务数据常量
