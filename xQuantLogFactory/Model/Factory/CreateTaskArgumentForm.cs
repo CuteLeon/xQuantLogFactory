@@ -146,6 +146,11 @@ namespace xQuantLogFactory.Model.Factory
                 return false;
             }
 
+            if (!this.CheckInput(this.LogLevelComboBox.SelectedIndex != -1, "请选择日志文件等级！", this.LogLevelComboBox))
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -197,8 +202,8 @@ namespace xQuantLogFactory.Model.Factory
             argument.IncludeSystemInfo = this.SystemInfoCheckBox.Checked;
             argument.AutoExit = this.AutoExitCheckBox.Checked;
             argument.AutoOpenReport = this.OpenReportCheckBox.Checked;
-            argument.ReportMode = Enum.TryParse(this.ReportComboBox.SelectedText, out ReportModes reportMode) ? reportMode : FixedDatas.DefaultReportMode;
-            argument.LogLevel = Enum.TryParse(this.LogLevelComboBox.SelectedText, out LogLevels logLevel) ? logLevel : FixedDatas.DefaultLogLevel;
+            argument.ReportMode = Enum.TryParse(this.ReportComboBox.Text, out ReportModes reportMode) ? reportMode : FixedDatas.DefaultReportMode;
+            argument.LogLevel = Enum.TryParse(this.LogLevelComboBox.Text, out LogLevels logLevel) ? logLevel : FixedDatas.DefaultLogLevel;
 
             if (this.StartTimePicker.Checked)
             {
