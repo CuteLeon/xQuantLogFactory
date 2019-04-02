@@ -937,22 +937,68 @@ namespace xQuantLogFactory.BIZ.Exporter
                 .GroupBy(r => (r.RequestURI, r.MethodName))
                 .ToArray();
 
-            var topElapsedSumGroups = groups.OrderByDescending(g => g.Sum(r => r.Elapsed)).Take(20).ToArray();
-            var topElapsedAvgGroups = groups.OrderByDescending(g => g.Average(r => r.Elapsed)).Take(20).ToArray();
-            var topElapsedMaxGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
+            builder.AppendLine(@"<div class=""container-fluid"">");
+            builder.AppendLine(@"    <div class=""row"">");
 
-            var topCountSumGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
+            var topGroups = groups.OrderByDescending(g => g.Sum(r => r.Elapsed)).Take(20).ToArray();
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.Elapsed));
+            topGroups = groups.OrderByDescending(g => g.Average(r => r.Elapsed)).Take(20).ToArray();
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.Elapsed));
+            topGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
+            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.Elapsed));
 
-            var topRequestStreamSumGroups = groups.OrderByDescending(g => g.Sum(r => r.RequestStreamLength)).Take(20).ToArray();
-            var topRequestStreamAvgGroups = groups.OrderByDescending(g => g.Average(r => r.RequestStreamLength)).Take(20).ToArray();
-            var topRequestStreamMaxGroups = groups.OrderByDescending(g => g.Max(r => r.RequestStreamLength)).Take(20).ToArray();
+            topGroups = groups.OrderByDescending(g => g.Sum(r => r.RequestStreamLength)).Take(20).ToArray();
+            this.RenderRankingList(builder, "总请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.RequestStreamLength));
+            topGroups = groups.OrderByDescending(g => g.Average(r => r.RequestStreamLength)).Take(20).ToArray();
+            this.RenderRankingList(builder, "平均请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.RequestStreamLength));
+            topGroups = groups.OrderByDescending(g => g.Max(r => r.RequestStreamLength)).Take(20).ToArray();
+            this.RenderRankingList(builder, "最大请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.RequestStreamLength));
 
-            var topResponseStreamSumGroups = groups.OrderByDescending(g => g.Sum(r => r.ResponseStreamLength)).Take(20).ToArray();
-            var topResponseStreamAvgGroups = groups.OrderByDescending(g => g.Average(r => r.ResponseStreamLength)).Take(20).ToArray();
-            var topResponseStreamMaxGroups = groups.OrderByDescending(g => g.Max(r => r.ResponseStreamLength)).Take(20).ToArray();
+            topGroups = groups.OrderByDescending(g => g.Sum(r => r.ResponseStreamLength)).Take(20).ToArray();
+            this.RenderRankingList(builder, "总响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.ResponseStreamLength));
+            topGroups = groups.OrderByDescending(g => g.Average(r => r.ResponseStreamLength)).Take(20).ToArray();
+            this.RenderRankingList(builder, "平均响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.ResponseStreamLength));
+            topGroups = groups.OrderByDescending(g => g.Max(r => r.ResponseStreamLength)).Take(20).ToArray();
+            this.RenderRankingList(builder, "最大响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.ResponseStreamLength));
 
-            string monitor = $@"Performance";
-            builder.Append(monitor);
+            topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
+            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key.MethodName, g => g.Count());
+
+            builder.AppendLine(@"    </div>");
+            builder.AppendLine(@"</div>");
+        }
+
+        /// <summary>
+        /// 渲染排行榜
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="title"></param>
+        /// <param name="sources"></param>
+        /// <param name="keySelector"></param>
+        /// <param name="valueSelector"></param>
+        private void RenderRankingList<TSource, TKey, TValue>(
+            StringBuilder builder,
+            string title,
+            IEnumerable<TSource> sources,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TValue> valueSelector)
+        {
+            builder.Append($@"
+        <div class=""col-sm-4"" style=""margin-bottom:10px"">
+            <div class=""card text-left font-weight-bold"">
+                <div class=""card-header"">
+                    {title}
+                </div>
+                <div class=""card-body"">
+                    <div class=""card-text"">
+                        <ul>
+                            {string.Join("\n", sources.Select(element => $@"<li>{keySelector(element)} <span class=""badge badge-danger"">{valueSelector(element)}</span></li>"))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+");
         }
         #endregion
     }
