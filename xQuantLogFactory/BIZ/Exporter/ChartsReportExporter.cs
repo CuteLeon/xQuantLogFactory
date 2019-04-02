@@ -805,6 +805,8 @@ namespace xQuantLogFactory.BIZ.Exporter
         {
             string[] targets = new[]
             {
+                "客户端启动",
+                "中间件启动",
                 "第一阶段初始化",
                 "第二阶段初始化",
                 "加载清算所债券估值",
@@ -832,6 +834,112 @@ namespace xQuantLogFactory.BIZ.Exporter
             var results = argument.TerminalAnalysisResults
                 .Where(r => targets.Contains(r.MonitorItem.Name))
                 .ToList();
+
+            string monitor = $@"
+<div id=""canvas_monitor"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
+
+<script type=""text/javascript"">
+    let monitorChart = echarts.init(document.getElementById('canvas_monitor'));
+    $(window).resize(function () {{
+        monitorChart.resize();
+    }});
+    try {{
+        monitorChart.showLoading();
+
+        option = {{
+            title: {{
+                text: '监视事项'
+            }},
+            tooltip: {{
+                trigger: 'axis'
+            }},
+            legend: {{
+                data: [{string.Join(", ", results.Select(r => r.MonitorItem.Name).Distinct().OrderBy(n => n).Select(n => $"'{n}'"))}]
+            }},
+            grid: {{
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            }},
+            toolbox: {{
+                feature: {{
+                    dataZoom: {{
+                        yAxisIndex: 'none'
+                    }},
+                    restore: {{}},
+                    saveAsImage: {{}}
+                }}
+            }},
+            dataZoom: [{{
+                type: 'inside',
+            }}, {{
+                handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                handleStyle: {{
+                    color: '#fff',
+                    shadowBlur: 3,
+                    shadowColor: 'rgba(0, 0, 0, 0.6)',
+                    shadowOffsetY: 2
+                }}
+            }}],
+            xAxis: {{
+                type: 'category',
+                boundaryGap: false,
+                data: [{string.Join(", ", results.Select(r => $"'{r.LogTime}'").Distinct())}]
+            }},
+            yAxis: {{
+                type: 'value'
+            }},
+            series: [
+                {string.Join(
+                    ",",
+                    results.GroupBy(r => r.MonitorItem.Name).OrderBy(g => g.Key).Select(g => $@"
+                {{
+                    name: '{$"{g.Key}"}',
+                    type: 'line',
+                    stack: '{$"{g.Key}"}',
+                    data: [{string.Join(", ", g.Select(r => $"['{r.LogTime}', {r.ElapsedMillisecond}]"))}],
+                    markPoint : {{
+                        data: [
+                            {{type : 'max', name: '最大值'}},
+                            {{type: 'min', name: '最小值'}}
+                        ]
+                    }},
+                    markLine : {{
+                        data: [
+                            {{type : 'average', name: '平均值'}}
+                        ]
+                    }}
+                }}"))}
+            ]
+        }};
+
+        monitorChart.setOption(option);
+    }} catch (err) {{
+        $('#canvas_monitor').html(""加载出错，请刷新页面重试 ..."");
+    }} finally {{
+        monitorChart.hideLoading();
+    }}
+</script>
+";
+            builder.Append(monitor);
+        }
+
+        /// <summary>
+        /// 渲染请求
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        private void RenderPerformance(StringBuilder builder, TaskArgument argument)
+        {
+            var groups = argument.PerformanceParseResults
+                .GroupBy(r => (r.RequestURI, r.MethodName))
+                .ToArray();
+
+            var topElapsedGroups = groups.OrderByDescending(g => g.Sum(r => r.Elapsed)).Take(20).ToArray();
+            topElapsedGroups = groups.OrderByDescending(g => g.Average(r => r.Elapsed)).Take(20).ToArray();
+            topElapsedGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
+            topElapsedGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
 
             string monitor = $@"
 <div id=""canvas_monitor"" class=""container-fluid rounded text-center text-muted"" style=""height:500px;width:800px;padding:0px""></div>
