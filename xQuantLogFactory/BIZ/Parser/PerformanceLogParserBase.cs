@@ -76,6 +76,7 @@ namespace xQuantLogFactory.BIZ.Parser
                          responseStreamLength = 0;
 
                     DateTime logTime = DateTime.MinValue,
+                                    requestReceiveTime = DateTime.MinValue,
                                     responseSendTime = DateTime.MinValue;
 
                     // 缓存变量，减少树扫描次数，需要 .ToList()
@@ -99,8 +100,14 @@ namespace xQuantLogFactory.BIZ.Parser
                         if (match.Success)
                         {
                             // 跳过日志时间在任务时间范围外的日志行
-                            if (!match.Groups["LogTime"].Success ||
-                                !DateTime.TryParse(match.Groups["LogTime"].Value, out logTime))
+                            if (match.Groups["LogTime"].Success &&
+                                DateTime.TryParse(match.Groups["LogTime"].Value, out logTime) &&
+                                match.Groups["Millisecond"].Success &&
+                                double.TryParse(match.Groups["Millisecond"].Value, out double millisecond))
+                            {
+                                logTime = logTime.AddMilliseconds(millisecond);
+                            }
+                            else
                             {
                                 continue;
                             }
@@ -118,6 +125,7 @@ namespace xQuantLogFactory.BIZ.Parser
                                 continue;
                             }
                              */
+                            requestReceiveTime = DateTime.TryParse(match.Groups["RequestReceiveTime"].Value, out requestReceiveTime) ? requestReceiveTime : DateTime.MinValue;
                             responseSendTime = DateTime.TryParse(match.Groups["ResponseSendTime"].Value, out responseSendTime) ? responseSendTime : DateTime.MinValue;
                             elapsed = int.TryParse(match.Groups["Elapsed"].Value, out int elapsedValue) ? elapsedValue : 0;
                             requestStreamLength = int.TryParse(match.Groups["RequestStreamLength"].Value, out requestStreamLength) ? requestStreamLength : 0;
@@ -130,6 +138,7 @@ namespace xQuantLogFactory.BIZ.Parser
                             parseResult.LineNumber = lineNumber;
                             parseResult.LogTime = logTime;
                             parseResult.MethodName = methodName;
+                            parseResult.RequestReceiveTime = requestReceiveTime;
                             parseResult.ResponseSendTime = responseSendTime;
                             parseResult.Elapsed = elapsed;
                             parseResult.RequestStreamLength = requestStreamLength;

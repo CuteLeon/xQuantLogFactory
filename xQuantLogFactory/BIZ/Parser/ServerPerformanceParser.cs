@@ -35,7 +35,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// Gets 日志总体正则表达式
         /// </summary>
         public override Regex GeneralLogRegex { get; } = new Regex(
-            @"^(?<IPAddress>\d{1,3}(\.\d{1,3}){3})\s(?<UserCode>.*?)\s(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<ResponseSendTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>\/.*?)\s(?<MethodName>.*?)\s(?<RequestStreamLength>\d*?)\s(?<ResponseStreamLength>\d*?)\s(?<Message>.+)$",
+            @"^(?<LogTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}),(?<Millisecond>\d{0,3})\s(\s(?<ThreadID>\d*)\s)?(?<IPAddress>\d{1,3}(\.\d{1,3}){3})\s(?<UserCode>.*?)\s(?<RequestReceiveTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<ResponseSendTime>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{3})\s(?<Elapsed>\d*?)\s(?<RequestURI>\/.*?)\s(?<MethodName>.*?)\s(?<RequestStreamLength>\d*?)\s(?<ResponseStreamLength>\d*?)\s(?<Message>.+)$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>
@@ -53,7 +53,6 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <param name="particularMatch"></param>
         protected override void ApplyParticularMatch(PerformanceMonitorResult result, Match particularMatch)
         {
-            result.RequestReceiveTime = result.LogTime;
             result.IPAddress = particularMatch.Groups["IPAddress"].Value;
             result.UserCode = particularMatch.Groups["UserCode"].Value;
             result.Message = particularMatch.Groups["Message"].Value;
