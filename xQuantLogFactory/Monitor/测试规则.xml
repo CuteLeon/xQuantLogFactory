@@ -12,6 +12,8 @@
   <Item Name="中间件启动" Begin="ServerLaunch=>服务端启动..." End="ServerLaunch=>显示主窗口完成" Sheet="中间件启动"/>
   <!-- 注销 -->
   <Item Name="用户注销" Begin="注销时销毁菜单" End="注销时注销服务端登录状态" />
+  <!-- 限额检查 -->
+  <Item Name ="限额检查" Begin ="限额检查        " GroupAnalysiser="LimitCheckAsync" Sheet="限额检查" />
   <!-- 限额刷新 -->
   <Item Name ="限额刷新" Begin ="限额服务刷新开始" End ="限额服务初始化结束" Sheet="限额刷新"/>
   <!-- 交易查询 -->
