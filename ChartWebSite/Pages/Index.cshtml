@@ -14,6 +14,7 @@
         <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="serverLaunch" style="margin:10px" value="中间件启动" />
         <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="cache" style="margin:10px" value="缓存" />
         <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="monitor" style="margin:10px" value="事项" />
+        <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="performance" style="margin:10px" value="请求" />
     </div>
 </div>
 <div class="report-container container-fluid" id="container_memory" style="display:none;height:500px">
@@ -30,4 +31,7 @@
 </div>
 <div class="report-container container-fluid" id="container_monitor" style="display:none">
     @{ await Html.RenderPartialAsync("Monitor", argument);}
+</div>
+<div class="report-container container-fluid" id="container_performance" style="display:none">
+    @{ await Html.RenderPartialAsync("Performance", argument);}
 </div>
