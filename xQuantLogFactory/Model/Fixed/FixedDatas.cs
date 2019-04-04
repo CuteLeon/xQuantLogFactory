@@ -131,6 +131,16 @@
         /// 条件总数
         /// </summary>
         public const string ROLE_COUNT = "条件总数";
+
+        /// <summary>
+        /// 消息编码
+        /// </summary>
+        public const string MESSAGE_CODE = "消息编码";
+
+        /// <summary>
+        /// 消息条件
+        /// </summary>
+        public const string MESSAGE_TABLE = "消息条件";
         #endregion
 
         #region 保留表名常量
@@ -189,6 +199,11 @@
         /// 限额检查
         /// </summary>
         public const string LIMIT_CHECK_SHEET_NAME = "限额检查";
+
+        /// <summary>
+        /// 客户端消息
+        /// </summary>
+        public const string CLIENT_MESSAGE_SHEET_NAME = "客户端消息";
         #endregion
 
         #region 业务数据常量

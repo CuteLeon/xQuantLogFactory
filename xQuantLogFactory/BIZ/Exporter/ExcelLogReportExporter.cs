@@ -38,6 +38,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.REPORT_SHEET_NAME,
             FixedDatas.CACHE_SHEET_NAME,
             FixedDatas.LIMIT_CHECK_SHEET_NAME,
+            FixedDatas.CLIENT_MESSAGE_SHEET_NAME,
         };
 
         /// <summary>
@@ -98,6 +99,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportReportSheet(excel, argument);
                     this.ExportCacheSheet(excel, argument);
                     this.ExportLimitCheck(excel, argument);
+                    this.ExportClientMessageSheet(excel, argument);
 
                     /* 更新数据透视表
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
@@ -614,6 +616,49 @@ namespace xQuantLogFactory.BIZ.Exporter
                         memoryRange[rowID, 4].Value = result.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
                         memoryRange[rowID, 5].Value = result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory) ? memory : 0.0;
                         memoryRange[rowID, 6].Value = result.AnalysisDatas.TryGetValue(FixedDatas.CPU_CONSUMED, out object cpu) ? cpu : 0.0;
+
+                        rowID++;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出客户端消息数据表
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportClientMessageSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets[FixedDatas.CLIENT_MESSAGE_SHEET_NAME];
+            if (memoryDataSheet == null)
+            {
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.CLIENT_MESSAGE_SHEET_NAME} 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.CLIENT_MESSAGE_SHEET_NAME} 表数据 ...");
+                Rectangle rectangle = new Rectangle(1, 2, 5, argument.TerminalMonitorResults.Count);
+                using (ExcelRange range = memoryDataSheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
+                {
+                    int rowID = rectangle.Top;
+                    foreach (var analysisResult in argument.TerminalAnalysisResults.Where(result => result.MonitorItem.SheetName == FixedDatas.CLIENT_MESSAGE_SHEET_NAME))
+                    {
+                        range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
+                        range[rowID, 2].Value = analysisResult.Version;
+                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.MESSAGE_CODE, out object code))
+                        {
+                            range[rowID, 3].Value = code;
+                        }
+
+                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.MESSAGE_TABLE, out object table))
+                        {
+                            range[rowID, 4].Value = table;
+                        }
+
+                        range[rowID, 5].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        range[rowID, 6].Value = analysisResult.LogFile.RelativePath;
+                        range[rowID, 7].Value = analysisResult.LineNumber;
 
                         rowID++;
                     }
