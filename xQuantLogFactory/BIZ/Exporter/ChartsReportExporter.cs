@@ -989,15 +989,18 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => $@"<span class=""badge badge-success font-weight-bold"">{g.Key.Database}</span> {g.Key.SQLHash}", g => g.Sum(r => r.ElapsedMillisecond));
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Sum(r => r.ElapsedMillisecond));
 
             topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => $@"<span class=""badge badge-success font-weight-bold"">{g.Key.Database}</span> {g.Key.SQLHash}", g => g.Average(r => r.ElapsedMillisecond));
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Average(r => r.ElapsedMillisecond));
 
             topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => $@"<span class=""badge badge-success font-weight-bold"">{g.Key.Database}</span> {g.Key.SQLHash}", g => g.Count());
+            this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Count());
+
+            string CreateSQLHashLink(string database, string sqlhash)
+                => $@"<a class=""link-sqlhash text-primary"" data-sqlhash=""{sqlhash}""><span class=""badge badge-success font-weight-bold"">{database}</span> {sqlhash}</a>";
 
             builder.AppendLine(@"    </div>");
             builder.Append($@"<div class=""row"">
@@ -1019,7 +1022,19 @@ namespace xQuantLogFactory.BIZ.Exporter
                 </div>
             </div>
         </div>
-    </div>");
+    </div>
+    <script type=""text/javascript"">
+        (function () {{
+            $("".link-sqlhash"").click((e) => {{
+                let target = $(e.target);
+                let sqlhash = target.data('sqlhash');
+                let sqlelementid = `#sqlhash_${{sqlhash}}`;
+                let sqlelement = $(sqlelementid);
+                sqlelement.collapse('show');
+                location.href = sqlelementid;
+            }});
+        }})();
+    </script>");
             builder.AppendLine(@"</div>");
         }
 
