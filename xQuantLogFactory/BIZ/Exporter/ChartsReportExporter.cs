@@ -155,6 +155,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             }
 
             builder.AppendLine("        </div>");
+            builder.AppendLine(@"<a class=""btn btn-sm btn-outline-primary"" z-index="" - 1"" style =""position:fixed;right:20px;bottom:20px"" href=""#header"">返回顶部</a>");
             builder.AppendLine("    </body>");
             builder.AppendLine("</html>");
 
@@ -311,7 +312,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             IEnumerable<ChartContainer> chartContainers)
         {
             string header = $@"
-    <header>
+    <header id=""header"">
         <nav class=""navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"">
             <div class=""container"">
                 <a class=""my-nav-button navbar-brand"" data-target=""index"">xQuant 图表报告</a>
