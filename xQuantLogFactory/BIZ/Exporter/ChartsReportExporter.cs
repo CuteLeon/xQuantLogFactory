@@ -4,9 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal;
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
+using xQuantLogFactory.Model.Result;
 using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Trace;
 
@@ -57,6 +59,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("缓存", "cache", this.RenderCache),
                 new ChartContainer("事项", "monitor", this.RenderMonitor),
                 new ChartContainer("请求", "performance", this.RenderPerformance),
+                new ChartContainer("SQL", "sql", this.RenderSQL),
             };
         }
 
@@ -965,6 +968,58 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key.MethodName, g => g.Count());
 
             builder.AppendLine(@"    </div>");
+            builder.AppendLine(@"</div>");
+        }
+
+        /// <summary>
+        /// 渲染SQL
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        private void RenderSQL(StringBuilder builder, TaskArgument argument)
+        {
+            var groups = argument.TerminalAnalysisResults
+                .Where(r => r.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.SQL)
+                .GroupBy<TerminalAnalysisResult, (string Database, string SQLHash)>(r => (r.AnalysisDatas[FixedDatas.DATABASE] as string, r.AnalysisDatas[FixedDatas.HASH] as string))
+                .ToArray();
+            List<string> sqlHashs = new List<string>();
+
+            builder.AppendLine(@"<div class=""container-fluid"">");
+            builder.AppendLine(@"    <div class=""row"">");
+
+            var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(20).ToArray();
+            sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => $@"<span class=""badge badge-success font-weight-bold"">{g.Key.Database}</span> {g.Key.SQLHash}", g => g.Sum(r => r.ElapsedMillisecond));
+
+            topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(20).ToArray();
+            sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => $@"<span class=""badge badge-success font-weight-bold"">{g.Key.Database}</span> {g.Key.SQLHash}", g => g.Average(r => r.ElapsedMillisecond));
+
+            topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
+            sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
+            this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => $@"<span class=""badge badge-success font-weight-bold"">{g.Key.Database}</span> {g.Key.SQLHash}", g => g.Count());
+
+            builder.AppendLine(@"    </div>");
+            builder.Append($@"<div class=""row"">
+        <div class=""col"" style=""margin-bottom:10px"">
+            <div class=""card text-left font-weight-bold"">
+                <div class=""card-header"">
+                    SQL-Hash 对应关系
+                </div>
+                <div class=""card-body"">
+                    <div class=""card-text"">
+                        {string.Join("\n", sqlHashs.Select(sqlhash => $@"
+                        <div class=""alert alert-success"" data-toggle=""collapse"" data-target=""#sqlhash_{sqlhash}"" role=""alert"">
+                            {sqlhash}
+                            <div class=""collapse font-weight-normal"" id=""sqlhash_{sqlhash}"">
+                                {(SQLAnalysiser.SQLHashs.TryGetValue(sqlhash, out string sql) ? sql : "<未找到 Hash 对应的 SQL 命令！>")}
+                            </div>
+                        </div>"))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>");
             builder.AppendLine(@"</div>");
         }
 

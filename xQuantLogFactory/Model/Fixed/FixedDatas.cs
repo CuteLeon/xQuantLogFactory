@@ -244,6 +244,11 @@
         /// 默认导出报告模式
         /// </summary>
         public const ReportModes DefaultReportMode = ReportModes.Excel;
+
+        /// <summary>
+        /// SQL哈希文件名称
+        /// </summary>
+        public const string SQLHashFileName = "SQLHash.csv";
         #endregion
 
         #region 实体数据常量

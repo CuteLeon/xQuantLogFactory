@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
+using System.Collections.Concurrent;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
@@ -15,6 +17,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
     /// </summary>
     public class SQLAnalysiser : DirectedLogAnalysiserBase
     {
+        /// <summary>
+        /// SQL-Hash 对应字典
+        /// </summary>
+        public static ConcurrentDictionary<string, string> SQLHashs = new ConcurrentDictionary<string, string>();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLAnalysiser"/> class.
         /// </summary>
@@ -84,6 +91,57 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                         }
                     }
                 });
+
+            string[] sqlHashFiles = argument.TerminalLogFiles
+                .Where(file => file.LogFileType == LogFileTypes.Server && file.LogLevel == LogLevels.SQL)
+                .Select(file => Path.Combine(Path.GetDirectoryName(file.FilePath), FixedDatas.SQLHashFileName))
+                .Distinct().ToArray();
+
+            if (sqlHashFiles.Length > 0)
+            {
+                this.Tracer?.WriteLine($"查找 SQL-Hash 对应关系 ....");
+                sqlHashFiles.AsParallel().ForAll(sqlHashFile =>
+                    {
+                        if (File.Exists(sqlHashFile))
+                        {
+                            this.Tracer?.WriteLine($"解析 SQL-Hash ：{sqlHashFile}");
+
+                            try
+                            {
+                                using (FileStream fileStream = new FileStream(sqlHashFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                {
+                                    using (StreamReader streamReader = new StreamReader(fileStream))
+                                    {
+                                        CsvParser csvParser = new CsvParser(streamReader);
+                                        string[] csvRow = null;
+
+                                        while (true)
+                                        {
+                                            csvRow = csvParser.Read();
+                                            if (csvRow == null)
+                                            {
+                                                break;
+                                            }
+
+                                            if (csvRow.Length >= 2)
+                                            {
+                                                SQLHashs[csvRow[0]] = csvRow[1];
+                                            }
+                                        }
+
+                                        streamReader.Close();
+                                    }
+
+                                    fileStream.Close();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                this.Tracer?.WriteLine($"解析 SQL-Hash 时遇到异常：{ex.Message}");
+                            }
+                        }
+                    });
+            }
         }
     }
 }
