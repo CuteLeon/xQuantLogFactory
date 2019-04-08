@@ -61,22 +61,6 @@ namespace xQuantLogFactory.BIZ.FileFinder
                     LogLevels logLevel = this.GetLogLevel(fileName);
                     switch (logLevel)
                     {
-                        case LogLevels.Debug:
-                        case LogLevels.Info:
-                        case LogLevels.Trace:
-                        case LogLevels.Warn:
-                        case LogLevels.Error:
-                            {
-                                argument.TerminalLogFiles.Add(new TerminalLogFile(
-                                    fileType,
-                                    logLevel,
-                                    fullName,
-                                    creationTime,
-                                    lastWriteTime,
-                                    fullName.Remove(0, argument.LogDirectory.Length)));
-                                break;
-                            }
-
                         case LogLevels.PerfOld:
                         case LogLevels.Perf:
                             {
@@ -90,8 +74,22 @@ namespace xQuantLogFactory.BIZ.FileFinder
                                 break;
                             }
 
+                        case LogLevels.Debug:
+                        case LogLevels.Info:
+                        case LogLevels.Trace:
+                        case LogLevels.Warn:
+                        case LogLevels.Error:
                         default:
-                            break;
+                            {
+                                argument.TerminalLogFiles.Add(new TerminalLogFile(
+                                    fileType,
+                                    logLevel,
+                                    fullName,
+                                    creationTime,
+                                    lastWriteTime,
+                                    fullName.Remove(0, argument.LogDirectory.Length)));
+                                break;
+                            }
                     }
                 }
             }

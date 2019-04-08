@@ -69,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CacheSizeAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\SQLAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Performance\CommonPerformanceLogAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\AsyncGroupLogAnalysiserBase.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonLoadAnalysiser.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="BIZ\Parser\ClientTerminalParser.cs" />
     <Compile Include="BIZ\Analysiser\ILogAnalysiser.cs" />
     <Compile Include="BIZ\Parser\OldPerformanceParser.cs" />
+    <Compile Include="BIZ\Parser\ServerSQLTerminalParser.cs" />
     <Compile Include="BIZ\Parser\ServerPerformanceParser.cs" />
     <Compile Include="BIZ\Parser\TerminalLogParserBase.cs" />
     <Compile Include="BIZ\Parser\ILogParser.cs" />
@@ -182,6 +184,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Monitor\Performance.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\SQL.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Monitor\中间件启动v064.xml">

@@ -141,6 +141,21 @@
         /// 消息条件
         /// </summary>
         public const string MESSAGE_TABLE = "消息条件";
+
+        /// <summary>
+        /// 数据库
+        /// </summary>
+        public const string DATABASE = "数据库";
+
+        /// <summary>
+        /// 哈希
+        /// </summary>
+        public const string HASH = "Hash";
+
+        /// <summary>
+        /// 参数
+        /// </summary>
+        public const string PARAMS = "参数";
         #endregion
 
         #region 保留表名常量
@@ -204,6 +219,11 @@
         /// 客户端消息
         /// </summary>
         public const string CLIENT_MESSAGE_SHEET_NAME = "客户端消息";
+
+        /// <summary>
+        /// SQL
+        /// </summary>
+        public const string SQL_SHEET_NAME = "SQL";
         #endregion
 
         #region 业务数据常量

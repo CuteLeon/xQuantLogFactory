@@ -82,6 +82,7 @@ namespace xQuantLogFactory
             {
                 ParseClientTerminalLog();
                 ParseServerTerminalLog();
+                ParseSQLLog();
             }
 
             if (UnityTaskArgument.MonitorContainerRoot.GetPerformanceMonitorItems().Count() > 0)
@@ -320,6 +321,20 @@ namespace xQuantLogFactory
 
                 ILogParser performanceLogParser = new ServerPerformanceParser(UnityTracer);
                 performanceLogParser.Parse(UnityTaskArgument);
+            }
+        }
+
+        /// <summary>
+        /// 解析SQL日志
+        /// </summary>
+        private static void ParseSQLLog()
+        {
+            if (UnityTaskArgument.TerminalLogFiles.Count(file => file.LogFileType == LogFileTypes.Server && file.LogLevel == LogLevels.SQL) > 0)
+            {
+                UnityTracer.WriteLine("开始解析 [SQL] 日志文件...\n————————");
+
+                ILogParser sqlParser = new ServerSQLTerminalParser(UnityTracer);
+                sqlParser.Parse(UnityTaskArgument);
             }
         }
 

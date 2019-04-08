@@ -45,7 +45,7 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <param name="argument"></param>
         /// <returns></returns>
         protected override IEnumerable<TerminalLogFile> GetFileFiltered(TaskArgument argument)
-            => argument?.TerminalLogFiles.Where(file => file.LogFileType == LogFileTypes.Server);
+            => argument?.TerminalLogFiles.Where(file => file.LogFileType == LogFileTypes.Server && file.LogLevel != LogLevels.SQL);
 
         /// <summary>
         /// 应用精准匹配数据

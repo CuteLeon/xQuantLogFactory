@@ -59,5 +59,13 @@ namespace xQuantLogFactory.BIZ.Parser
         /// <param name="result"></param>
         /// <param name="particularMatch"></param>
         protected abstract void ApplyParticularMatch(TMonitorResult result, Match particularMatch);
+
+        /// <summary>
+        /// 预处理日志内容
+        /// </summary>
+        /// <param name="logContent"></param>
+        /// <returns></returns>
+        protected virtual string PreprocessingLogContent(string logContent)
+            => logContent;
     }
 }

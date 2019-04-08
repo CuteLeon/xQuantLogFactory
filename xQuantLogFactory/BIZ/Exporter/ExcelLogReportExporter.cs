@@ -39,6 +39,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.CACHE_SHEET_NAME,
             FixedDatas.LIMIT_CHECK_SHEET_NAME,
             FixedDatas.CLIENT_MESSAGE_SHEET_NAME,
+            FixedDatas.SQL_SHEET_NAME,
         };
 
         /// <summary>
@@ -100,6 +101,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportCacheSheet(excel, argument);
                     this.ExportLimitCheck(excel, argument);
                     this.ExportClientMessageSheet(excel, argument);
+                    this.ExportSQLSheet(excel, argument);
 
                     /* 更新数据透视表
                     ExcelWorksheet analysisSheet = excel.Workbook.Worksheets["分析"];
@@ -195,6 +197,67 @@ namespace xQuantLogFactory.BIZ.Exporter
                             range[rowID, 12].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
                             range[rowID, 13].Value = analysisResult.LogFile.RelativePath;
                             range[rowID, 14].Value = analysisResult.LineNumber;
+
+                            rowID++;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 导出SQL执行信息
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="argument"></param>
+        public void ExportSQLSheet(ExcelPackage excel, TaskArgument argument)
+        {
+            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.SQL_SHEET_NAME];
+            if (sheet == null)
+            {
+                this.Tracer?.WriteLine($"未发现 {FixedDatas.SQL_SHEET_NAME} 数据表，写入失败！");
+            }
+            else
+            {
+                this.Tracer?.WriteLine($"正在写入 {FixedDatas.SQL_SHEET_NAME} 表数据 ...");
+                Rectangle rectangle = new Rectangle(1, 2, 12, argument.TerminalMonitorResults.Count);
+                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
+                {
+                    int rowID = rectangle.Top;
+
+                    // 输出监视规则树
+                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+                    {
+                        // 遍历根节点及所有子节点输出分析结果数据
+                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
+                            .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.SQL || result.MonitorItem.SheetName == FixedDatas.SQL_SHEET_NAME))
+                        {
+                            range[rowID, 1].Value = analysisResult.MonitorItem.Name;
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.DATABASE, out object database))
+                            {
+                                range[rowID, 2].Value = database;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.HASH, out object hash))
+                            {
+                                range[rowID, 3].Value = hash;
+                            }
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.RESULT_COUNT, out object count))
+                            {
+                                range[rowID, 4].Value = count;
+                            }
+
+                            range[rowID, 5].Value = analysisResult.ElapsedMillisecond;
+                            range[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            range[rowID, 8].Value = analysisResult.LogFile.RelativePath;
+                            range[rowID, 9].Value = analysisResult.LineNumber;
+
+                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.PARAMS, out object param))
+                            {
+                                range[rowID, 10].Value = param;
+                            }
 
                             rowID++;
                         }

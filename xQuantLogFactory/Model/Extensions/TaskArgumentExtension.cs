@@ -69,25 +69,24 @@ namespace xQuantLogFactory.Model.Extensions
             string pattern = string.Empty;
             switch (argument.LogLevel)
             {
-                case LogLevels.Debug:
-                case LogLevels.Info:
-                case LogLevels.Trace:
-                case LogLevels.Warn:
-                case LogLevels.Error:
-                case LogLevels.Perf:
-                    {
-                        pattern = $@"^({FixedDatas.ServerLogFileNamePrefix}|.*?{FixedDatas.ClientLogFileNamePrefix})Log_{argument.LogLevel.GetAmbientValue()}\.txt(|\.\d*)$";
-                        break;
-                    }
-
                 case LogLevels.PerfOld:
                     {
                         pattern = $@"^{FixedDatas.PerformanceFileNamePrefix}\d{{8}}.txt$";
                         break;
                     }
 
+                case LogLevels.Debug:
+                case LogLevels.Info:
+                case LogLevels.Trace:
+                case LogLevels.Warn:
+                case LogLevels.Error:
+                case LogLevels.Perf:
+                case LogLevels.SQL:
                 default:
-                    break;
+                    {
+                        pattern = $@"^({FixedDatas.ServerLogFileNamePrefix}|.*?{FixedDatas.ClientLogFileNamePrefix})Log_{argument.LogLevel.GetAmbientValue()}\.txt(|\.\d*)$";
+                        break;
+                    }
             }
 
             return new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);

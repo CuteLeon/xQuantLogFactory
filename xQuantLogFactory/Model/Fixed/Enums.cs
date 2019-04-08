@@ -31,6 +31,11 @@ namespace xQuantLogFactory.Model.Fixed
         /// 统计缓存定向分析器
         /// </summary>
         CacheSize = 4,
+
+        /// <summary>
+        /// SQL定向分析器
+        /// </summary>
+        SQL = 5,
     }
 
     /// <summary>
@@ -152,6 +157,12 @@ namespace xQuantLogFactory.Model.Fixed
         /// </summary>
         [AmbientValue("PerfOld")]
         PerfOld = 6,
+
+        /// <summary>
+        /// SQL
+        /// </summary>
+        [AmbientValue("SQL")]
+        SQL = 7,
     }
 
     /// <summary>
