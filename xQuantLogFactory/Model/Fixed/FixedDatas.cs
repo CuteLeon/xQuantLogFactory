@@ -1,4 +1,6 @@
-﻿namespace xQuantLogFactory.Model.Fixed
+﻿using OfficeOpenXml;
+
+namespace xQuantLogFactory.Model.Fixed
 {
     /// <summary>
     /// 固定数据
@@ -161,6 +163,15 @@
         #region 保留表名常量
 
         /// <summary>
+        /// Excel单张表最大数据行数
+        /// </summary>
+        /// <remarks>
+        /// [依赖限制] Excel 2010限制最大导出记录数量 = ExcelPackage.MaxRows = 1048576
+        /// https://github.com/JanKallman/EPPlus/blob/master/EPPlus/ExcelPackage.cs
+        /// </remarks>
+        public const int ExcelMaxRowCount = ExcelPackage.MaxRows - 1;
+
+        /// <summary>
         /// Excel原始数据表名称
         /// </summary>
         public const string ExcelSourceSheetName = "原始";
@@ -173,7 +184,7 @@
         /// <summary>
         /// Performance监视结果表名
         /// </summary>
-        public const string PERFORMANCE_MONITOR_SHEET_NAME = "Performance监视";
+        public const string PERFORMANCE_Analysiser_SHEET_NAME = "Performance监视";
 
         /// <summary>
         /// Performance解析结果表名

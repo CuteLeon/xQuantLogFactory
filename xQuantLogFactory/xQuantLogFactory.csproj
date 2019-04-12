@@ -136,6 +136,7 @@
     <Compile Include="Model\Result\AnalysisResultBase.cs" />
     <Compile Include="Model\Result\AnalysisResultRelBase.cs" />
     <Compile Include="Model\Result\IAnalysisResult.cs" />
+    <Compile Include="Model\Result\IMonitorResult.cs" />
     <Compile Include="Model\Result\MonitorResultBase.cs" />
     <Compile Include="Model\Result\MonitorResultRelBase.cs" />
     <Compile Include="Model\Result\PerformanceAnalysisResult.cs" />

@@ -3,7 +3,7 @@ using xQuantLogFactory.Model.LogFile;
 
 namespace xQuantLogFactory.Model.Result
 {
-    public class MonitorResultBase<TLogFile> : LogResultBase<TLogFile>
+    public class MonitorResultBase<TLogFile> : LogResultBase<TLogFile>, IMonitorResult
         where TLogFile : LogFileBase
     {
         #region 基础属性
