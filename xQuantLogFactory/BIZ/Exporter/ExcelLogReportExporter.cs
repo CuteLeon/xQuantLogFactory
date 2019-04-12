@@ -24,6 +24,24 @@ namespace xQuantLogFactory.BIZ.Exporter
     public class ExcelLogReportExporter : LogProcesserBase, ILogReportExporter
     {
         /// <summary>
+        /// 获取分析结果委托
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private delegate List<(int ExecuteID, TResult Result)> GetAnalysisResultsDelegate<TResult>(TaskArgument argument)
+            where TResult : IAnalysisResult;
+
+        /// <summary>
+        /// 获取解析结果委托
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private delegate List<TResult> GetMonitorResultsDelegate<TResult>(TaskArgument argument)
+            where TResult : IMonitorResult;
+
+        /// <summary>
         /// 导出分析结果委托
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
@@ -31,7 +49,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="rowId"></param>
         /// <param name="executeId"></param>
         /// <param name="result"></param>
-        private delegate void ExportAnalysisResultsDelegate<TResult>(ExcelRange range, int rowId, int executeId, TResult result)
+        private delegate void ExportAnalysisResultDelegate<TResult>(ExcelRange range, int rowId, int executeId, TResult result)
             where TResult : IAnalysisResult;
 
         /// <summary>
@@ -42,25 +60,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="rowId"></param>
         /// <param name="executeId"></param>
         /// <param name="result"></param>
-        private delegate void ExportMonitorResultsDelegate<TResult>(ExcelRange range, int rowId, TResult result)
-            where TResult : IMonitorResult;
-
-        /// <summary>
-        /// 获取分析结果委托
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="argument"></param>
-        /// <returns></returns>
-        private delegate IGrouping<int, List<TResult>> GetAnalysisResultsDelegate<TResult>(TaskArgument argument)
-            where TResult : IAnalysisResult;
-
-        /// <summary>
-        /// 获取解析结果委托
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="argument"></param>
-        /// <returns></returns>
-        private delegate List<TResult> GetMonitorResultsDelegate<TResult>(TaskArgument argument)
+        private delegate void ExportMonitorResultDelegate<TResult>(ExcelRange range, int rowId, TResult result)
             where TResult : IMonitorResult;
 
         /// <summary>
@@ -131,9 +131,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportTerminalCommonSheetEx(excel, argument);
 
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
+                    this.ExportSheet(excel, FixedDatas.PERFORMANCE_PARSE_SHEET_NAME, argument, this.GetPerformanceMonitorResults, this.ExportPerformanceMonitorResult);
+                    this.ExportSheet(excel, FixedDatas.SQL_SHEET_NAME, argument, this.GetSQLAnalysisResults, this.ExportSQLAnalysiserResult);
+
                     this.ExportMemorySheet(excel, argument);
                     this.ExportPerformanceAnalysiserSheet(excel, argument);
-                    this.ExportSheet(excel, FixedDatas.PERFORMANCE_PARSE_SHEET_NAME, argument, this.GetPerformanceMonitorResults, this.ExportPerformanceMonitorResult);
                     this.ExportTradeClearingSheet(excel, argument);
                     this.ExportCoreServiceSheet(excel, argument);
                     this.ExportFormSheet(excel, argument);
@@ -141,7 +143,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportCacheSheet(excel, argument);
                     this.ExportLimitCheck(excel, argument);
                     this.ExportClientMessageSheet(excel, argument);
-                    this.ExportSQLSheet(excel, argument);
+
+                    this.Tracer?.WriteLine("正在保存数据到 Excel 文件，请稍等...");
                 }
                 catch
                 {
@@ -171,7 +174,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             string sheetName,
             TaskArgument argument,
             GetMonitorResultsDelegate<TResult> getMonitorResultsAction,
-            ExportMonitorResultsDelegate<TResult> exportMonitorResultsAction)
+            ExportMonitorResultDelegate<TResult> exportMonitorResultsAction)
             where TResult : IMonitorResult
         {
             var results = getMonitorResultsAction?.Invoke(argument);
@@ -185,12 +188,12 @@ namespace xQuantLogFactory.BIZ.Exporter
                 ExcelWorksheet sheet = this.GetSheet(excel, sheetName, sheetIndex);
                 if (sheet == null)
                 {
-                    this.Tracer?.WriteLine($"未发现 {FixedDatas.PERFORMANCE_PARSE_SHEET_NAME} 数据表，写入失败！");
+                    this.Tracer?.WriteLine($"未发现 {sheet.Name} 数据表，写入失败！");
                     return;
                 }
                 else
                 {
-                    this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_PARSE_SHEET_NAME} 数据表 ...");
+                    this.Tracer?.WriteLine($"正在写入 {sheet.Name} 数据表 ...");
                 }
 
                 this.CloneSheet(excel, sheet, sheetName, ++sheetIndex);
@@ -202,6 +205,61 @@ namespace xQuantLogFactory.BIZ.Exporter
                     foreach (var result in results.Skip(resultIndex).Take(FixedDatas.ExcelMaxRowCount))
                     {
                         exportMonitorResultsAction(range, rowId, result);
+                        rowId++;
+                        resultIndex++;
+                    }
+                }
+            }
+
+            // 移除最后创建的纯净表
+            this.RmoveSheet(excel, sheetName, sheetIndex);
+        }
+
+        /// <summary>
+        /// 导出分析结果表
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="excel"></param>
+        /// <param name="sheetName"></param>
+        /// <param name="argument"></param>
+        /// <param name="getAnalysisResultsAction"></param>
+        /// <param name="exportAnalysisResultsAction"></param>
+        private void ExportSheet<TResult>(
+            ExcelPackage excel,
+            string sheetName,
+            TaskArgument argument,
+            GetAnalysisResultsDelegate<TResult> getAnalysisResultsAction,
+            ExportAnalysisResultDelegate<TResult> exportAnalysisResultsAction)
+            where TResult : IAnalysisResult
+        {
+            var results = getAnalysisResultsAction?.Invoke(argument);
+
+            int resultIndex = 0;
+            int sheetIndex = 0;
+
+            while (resultIndex < results.Count)
+            {
+                // 获取并克隆新表，防止写入数据到Sheet之后再克隆会因为写入的数据而耗时
+                ExcelWorksheet sheet = this.GetSheet(excel, sheetName, sheetIndex);
+                if (sheet == null)
+                {
+                    this.Tracer?.WriteLine($"未发现 {sheet.Name} 数据表，写入失败！");
+                    return;
+                }
+                else
+                {
+                    this.Tracer?.WriteLine($"正在写入 {sheet.Name} 数据表 ...");
+                }
+
+                this.CloneSheet(excel, sheet, sheetName, ++sheetIndex);
+
+                Rectangle rectangle = new Rectangle(1, 2, 32, FixedDatas.ExcelMaxRowCount);
+                int rowId = rectangle.Top;
+                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
+                {
+                    foreach (var (executeID, result) in results.Skip(resultIndex).Take(FixedDatas.ExcelMaxRowCount))
+                    {
+                        exportAnalysisResultsAction(range, rowId, executeID, result);
                         rowId++;
                         resultIndex++;
                     }
@@ -240,25 +298,6 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <returns></returns>
         private ExcelWorksheet GetSheet(ExcelPackage excel, string sheetName, int index)
             => excel.Workbook.Worksheets[index == 0 ? sheetName : $"{sheetName}_{index}"];
-
-        /// <summary>
-        /// 导出分析结果表
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="excel"></param>
-        /// <param name="sheetName"></param>
-        /// <param name="argument"></param>
-        /// <param name="getAnalysisResultsAction"></param>
-        /// <param name="exportAnalysisResultsAction"></param>
-        private void ExportSheet<TResult>(
-            ExcelPackage excel,
-            string sheetName,
-            TaskArgument argument,
-            GetAnalysisResultsDelegate<TResult> getAnalysisResultsAction,
-            ExportAnalysisResultsDelegate<TResult> exportAnalysisResultsAction)
-            where TResult : IAnalysisResult
-        {
-        }
         #endregion
 
         #region New
@@ -284,6 +323,42 @@ namespace xQuantLogFactory.BIZ.Exporter
             range[rowId, 14].Value = result.Message;
             range[rowId, 15].Value = result.LogFile.RelativePath;
             range[rowId, 16].Value = result.LineNumber;
+        }
+
+        private List<(int ExecuteID, TerminalAnalysisResult Result)> GetSQLAnalysisResults(TaskArgument argument)
+            => argument.TerminalAnalysisResults
+                .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.SQL || result.MonitorItem.SheetName == FixedDatas.SQL_SHEET_NAME)
+                .Select(result => (1, result))
+                .ToList();
+
+        private void ExportSQLAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem.Name;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.DATABASE, out object database))
+            {
+                range[rowId, 2].Value = database;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.HASH, out object hash))
+            {
+                range[rowId, 3].Value = hash;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.RESULT_COUNT, out object count))
+            {
+                range[rowId, 4].Value = count;
+            }
+
+            range[rowId, 5].Value = result.ElapsedMillisecond;
+            range[rowId, 6].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 8].Value = result.LogFile.RelativePath;
+            range[rowId, 9].Value = result.LineNumber;
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.PARAMS, out object param))
+            {
+                range[rowId, 10].Value = param;
+            }
         }
         #endregion
 
@@ -318,7 +393,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 this.Tracer?.WriteLine($"正在写入 {monitorGroup.Key} 表数据 ...");
 
                 // 通用表列头格式需保持与原始数据表一致
-                Rectangle sheetRectangle = new Rectangle(1, 2, 9, monitorGroup.Sum(monitor => monitor.AnalysisResults.Count));
+                Rectangle sheetRectangle = new Rectangle(1, 2, 9, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
                 {
                     int rowID = sheetRectangle.Top, executeID = 0;
@@ -520,7 +595,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.LIMIT_CHECK_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 12, argument.TerminalAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 12, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
@@ -585,62 +660,6 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 导出SQL执行信息
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportSQLSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.SQL_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.SQL_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.SQL_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 12, argument.TerminalAnalysisResults.Count);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top;
-                    foreach (var analysisResult in argument.TerminalAnalysisResults
-                        .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.SQL || result.MonitorItem.SheetName == FixedDatas.SQL_SHEET_NAME)
-                        .Take(FixedDatas.ExcelMaxRowCount))
-                    {
-                        range[rowID, 1].Value = analysisResult.MonitorItem.Name;
-                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.DATABASE, out object database))
-                        {
-                            range[rowID, 2].Value = database;
-                        }
-
-                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.HASH, out object hash))
-                        {
-                            range[rowID, 3].Value = hash;
-                        }
-
-                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.RESULT_COUNT, out object count))
-                        {
-                            range[rowID, 4].Value = count;
-                        }
-
-                        range[rowID, 5].Value = analysisResult.ElapsedMillisecond;
-                        range[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        range[rowID, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        range[rowID, 8].Value = analysisResult.LogFile.RelativePath;
-                        range[rowID, 9].Value = analysisResult.LineNumber;
-
-                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.PARAMS, out object param))
-                        {
-                            range[rowID, 10].Value = param;
-                        }
-
-                        rowID++;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// 导出缓存统计数据
         /// </summary>
         /// <param name="excel"></param>
@@ -655,7 +674,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.CACHE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 12, argument.TerminalAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 12, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
@@ -712,7 +731,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.REPORT_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, argument.TerminalAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 11, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
@@ -774,7 +793,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.FORM_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, argument.TerminalAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 11, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
@@ -831,7 +850,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.CORE_SERVICE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, argument.TerminalAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 11, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
@@ -891,7 +910,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.MEMORY_SHEET_NAME} 表数据 ...");
-                Rectangle memoryRectangle = new Rectangle(1, 2, 5, argument.TerminalAnalysisResults.Count);
+                Rectangle memoryRectangle = new Rectangle(1, 2, 5, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
                 {
                     int rowID = memoryRectangle.Top;
@@ -927,7 +946,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.CLIENT_MESSAGE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 5, argument.TerminalAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 5, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = memoryDataSheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top;
@@ -970,7 +989,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 10, argument.PerformanceAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 10, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
@@ -1017,7 +1036,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             else
             {
                 this.Tracer?.WriteLine($"正在写入 {FixedDatas.TRADE_SETTLE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 13, argument.TerminalAnalysisResults.Count);
+                Rectangle rectangle = new Rectangle(1, 2, 13, FixedDatas.ExcelMaxRowCount);
                 using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
                 {
                     int rowID = rectangle.Top, executeID = 0;
