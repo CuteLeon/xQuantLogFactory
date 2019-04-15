@@ -71,7 +71,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.MEMORY_SHEET_NAME,
             FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME,
             FixedDatas.PERFORMANCE_PARSE_SHEET_NAME,
-            FixedDatas.TRADE_SETTLE_SHEET_NAME,
+            FixedDatas.TRADE_CLEARING_SHEET_NAME,
             FixedDatas.ANALYSIS_SHEET_NAME,
             FixedDatas.CORE_SERVICE_SHEET_NAME,
             FixedDatas.FORM_SHEET_NAME,
@@ -133,16 +133,15 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.Tracer?.WriteLine("开始导出保留表数据 ...");
                     this.ExportSheet(excel, FixedDatas.PERFORMANCE_PARSE_SHEET_NAME, argument, this.GetPerformanceMonitorResults, this.ExportPerformanceMonitorResult);
                     this.ExportSheet(excel, FixedDatas.SQL_SHEET_NAME, argument, this.GetSQLAnalysisResults, this.ExportSQLAnalysiserResult);
-
-                    this.ExportMemorySheet(excel, argument);
-                    this.ExportPerformanceAnalysiserSheet(excel, argument);
-                    this.ExportTradeClearingSheet(excel, argument);
-                    this.ExportCoreServiceSheet(excel, argument);
-                    this.ExportFormSheet(excel, argument);
-                    this.ExportReportSheet(excel, argument);
-                    this.ExportCacheSheet(excel, argument);
-                    this.ExportLimitCheck(excel, argument);
-                    this.ExportClientMessageSheet(excel, argument);
+                    this.ExportSheet(excel, FixedDatas.LIMIT_CHECK_SHEET_NAME, argument, this.GetLimitCheckAnalysisResults, this.ExportLimitCheckAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.CACHE_SHEET_NAME, argument, this.GetCacheAnalysisResults, this.ExportCacheAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.REPORT_SHEET_NAME, argument, this.GetReportAnalysisResults, this.ExportReportAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.FORM_SHEET_NAME, argument, this.GetFormAnalysisResults, this.ExportFormAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.CORE_SERVICE_SHEET_NAME, argument, this.GetCoreServiceAnalysisResults, this.ExportCoreServiceAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.MEMORY_SHEET_NAME, argument, this.GetMemoryAnalysisResults, this.ExportMemoryAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.CLIENT_MESSAGE_SHEET_NAME, argument, this.GetClientMessageAnalysisResults, this.ExportClientMessageAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME, argument, this.GetPerformanceAnalysisResults, this.ExportPerformanceAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.TRADE_CLEARING_SHEET_NAME, argument, this.GetTradeClearingAnalysisResults, this.ExportTradeClearingAnalysiserResult);
 
                     this.Tracer?.WriteLine("正在保存数据到 Excel 文件，请稍等...");
                 }
@@ -315,10 +314,22 @@ namespace xQuantLogFactory.BIZ.Exporter
         #endregion
 
         #region New
+        #region Performance 解析结果
 
+        /// <summary>
+        /// 筛选Performance解析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
         private List<PerformanceMonitorResult> GetPerformanceMonitorResults(TaskArgument argument)
             => argument.PerformanceParseResults.OrderBy(result => (result.LogTime, result.LineNumber)).ToList();
 
+        /// <summary>
+        /// 导出Performance解析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="result"></param>
         private void ExportPerformanceMonitorResult(ExcelRange range, int rowId, PerformanceMonitorResult result)
         {
             range[rowId, 1].Value = result.IPAddress;
@@ -338,13 +349,28 @@ namespace xQuantLogFactory.BIZ.Exporter
             range[rowId, 15].Value = result.LogFile.RelativePath;
             range[rowId, 16].Value = result.LineNumber;
         }
+        #endregion
 
+        #region SQL分析结果
+
+        /// <summary>
+        /// 筛选SQL分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult Result)> GetSQLAnalysisResults(TaskArgument argument)
             => argument.TerminalAnalysisResults
                 .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.SQL || result.MonitorItem.SheetName == FixedDatas.SQL_SHEET_NAME)
                 .Select(result => (1, result))
                 .ToList();
 
+        /// <summary>
+        /// 导出SQL分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
         private void ExportSQLAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
         {
             range[rowId, 1].Value = result.MonitorItem.Name;
@@ -376,71 +402,484 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
         #endregion
 
-        #region 导出通用表
+        #region 限额检查分析结果
 
         /// <summary>
-        /// 导出客户端和服务端通用表数据
+        /// 过滤限额检查分析结果
         /// </summary>
-        /// <param name="excel">excel文档</param>
-        /// <param name="argument">任务</param>
-        [Obsolete]
-        public void ExportTerminalCommonSheet(ExcelPackage excel, TaskArgument argument)
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetLimitCheckAnalysisResults(TaskArgument argument)
         {
-            this.Tracer?.WriteLine("开始导出通用表数据 ...");
-            foreach (var monitorGroup in argument.MonitorContainerRoot.GetTerminalMonitorItems()
-                .GroupBy(monitor => monitor.SheetName))
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
             {
-                // 特殊表名单独处理
-                if (SpecialSheetNames.Contains(monitorGroup.Key))
-                {
-                    this.Tracer?.WriteLine($"表名 [{monitorGroup.Key}] 为保留表名，延迟导出 ...");
-                    continue;
-                }
+                executeID++;
 
-                ExcelWorksheet worksheet = excel.Workbook.Worksheets[monitorGroup.Key];
-                if (worksheet == null)
-                {
-                    this.Tracer?.WriteLine($"未发现名称为 {monitorGroup.Key} 的数据表，跳过导出 ...");
-                    continue;
-                }
-
-                this.Tracer?.WriteLine($"正在写入 {monitorGroup.Key} 表数据 ...");
-
-                // 通用表列头格式需保持与原始数据表一致
-                Rectangle sheetRectangle = new Rectangle(1, 2, 9, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange sourceRange = worksheet.Cells[sheetRectangle.Top, sheetRectangle.Left, sheetRectangle.Bottom - 1, sheetRectangle.Right - 1])
-                {
-                    int rowID = sheetRectangle.Top, executeID = 0;
-
-                    // 合并所有分析结果数据
-                    var analysiserResults = new List<TerminalAnalysisResult>();
-                    monitorGroup.Select(monitor => monitor.AnalysisResults).ToList()
-                        .ForEach(resultList => analysiserResults.AddRange(resultList));
-
-                    foreach (var result in analysiserResults
-                        .OrderBy(result => (result.LogFile?.RelativePath, result.LineNumber)))
-                    {
-                        // 遇到分析结果根节点，执行序号自增
-                        if (result.ParentAnalysisResult == null)
-                        {
-                            executeID++;
-                        }
-
-                        sourceRange[rowID, 1].Value = result.MonitorItem.PrefixName;
-                        sourceRange[rowID, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
-                        sourceRange[rowID, 3].Value = result.Version;
-                        sourceRange[rowID, 4].Value = executeID;
-                        sourceRange[rowID, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond : 0.0;
-                        sourceRange[rowID, 6].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        sourceRange[rowID, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        sourceRange[rowID, 8].Value = result.LogFile.RelativePath;
-                        sourceRange[rowID, 9].Value = result.LineNumber;
-
-                        rowID++;
-                    }
-                }
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result =>
+                        result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.LimitCheckAsync ||
+                        result.MonitorItem.SheetName == FixedDatas.LIMIT_CHECK_SHEET_NAME)
+                    .Select(result => (executeID, result)));
             }
+
+            return results;
         }
+
+        /// <summary>
+        /// 导出限额检查分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportLimitCheckAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem.PrefixName;
+            range[rowId, 2].Value = result.Version;
+            range[rowId, 3].Value = executeId;
+            range[rowId, 4].Value = result.ElapsedMillisecond;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.SESSION_ID, out object analysisData))
+            {
+                range[rowId, 5].Value = analysisData;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.USER_CODE, out analysisData))
+            {
+                range[rowId, 6].Value = analysisData;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.RESULT_COUNT, out analysisData))
+            {
+                range[rowId, 7].Value = analysisData;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.ROLE_COUNT, out analysisData))
+            {
+                range[rowId, 8].Value = analysisData;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.PRE_COUNT, out analysisData))
+            {
+                range[rowId, 9].Value = analysisData;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.PRO_COUNT, out analysisData))
+            {
+                range[rowId, 10].Value = analysisData;
+            }
+
+            range[rowId, 11].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 12].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 13].Value = result.LogFile.RelativePath;
+            range[rowId, 14].Value = result.LineNumber;
+        }
+        #endregion
+
+        #region 缓存统计分析结果
+
+        /// <summary>
+        /// 过滤缓存统计分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetCacheAnalysisResults(TaskArgument argument)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result => result.MonitorItem.SheetName == FixedDatas.CACHE_SHEET_NAME)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 导出缓存统计分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportCacheAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem.PrefixName;
+            range[rowId, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+            range[rowId, 3].Value = result.Version;
+            range[rowId, 4].Value = executeId;
+            range[rowId, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond : 0.0;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.RESOURCE_NAME, out object name))
+            {
+                range[rowId, 6].Value = name;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.COUNT, out object count))
+            {
+                range[rowId, 7].Value = count;
+            }
+
+            range[rowId, 8].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 9].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 10].Value = result.LogFile.RelativePath;
+            range[rowId, 11].Value = result.LineNumber;
+        }
+        #endregion
+
+        #region 报表分析结果
+
+        /// <summary>
+        /// 过滤报表分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetReportAnalysisResults(TaskArgument argument)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result => result.MonitorItem.SheetName == FixedDatas.REPORT_SHEET_NAME)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 导出报表分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportReportAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem.PrefixName;
+            range[rowId, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+            range[rowId, 3].Value = result.Version;
+            range[rowId, 4].Value = executeId;
+            range[rowId, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond : 0.0;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.REPORT_CODE, out object code))
+            {
+                range[rowId, 6].Value = code;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.REPORT_NAME, out object name))
+            {
+                range[rowId, 7].Value = name;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.QUERY_PARAM, out object param))
+            {
+                range[rowId, 8].Value = param;
+            }
+
+            range[rowId, 9].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 10].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 11].Value = result.LogFile.RelativePath;
+            range[rowId, 12].Value = result.LineNumber;
+        }
+        #endregion
+
+        #region 窗体分析结果
+
+        /// <summary>
+        /// 过滤窗体分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetFormAnalysisResults(TaskArgument argument)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result => result.MonitorItem.SheetName == FixedDatas.FORM_SHEET_NAME)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 导出窗体分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportFormAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem.PrefixName;
+            range[rowId, 2].Value = result.MonitorItem.ParentMonitorItem?.Name;
+            range[rowId, 3].Value = result.Version;
+            range[rowId, 4].Value = executeId;
+            range[rowId, 5].Value = result.IsIntactGroup() ? result.ElapsedMillisecond : 0.0;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.MODULE_CODE, out object code))
+            {
+                range[rowId, 6].Value = code;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.FORM_NAME, out object name))
+            {
+                range[rowId, 7].Value = name;
+            }
+
+            range[rowId, 8].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 9].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 10].Value = result.LogFile.RelativePath;
+            range[rowId, 11].Value = result.LineNumber;
+        }
+        #endregion
+
+        #region Core服务分析结果
+
+        /// <summary>
+        /// 过滤Core服务分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetCoreServiceAnalysisResults(TaskArgument argument)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result => result.MonitorItem.SheetName == FixedDatas.CORE_SERVICE_SHEET_NAME)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 导出Core服务分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportCoreServiceAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.Version;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.CORE_SERVICE_NAME, out object service))
+            {
+                range[rowId, 2].Value = service;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.EXECUTE_INDEX, out object index))
+            {
+                range[rowId, 3].Value = index;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.TRIGGER, out object trigger))
+            {
+                range[rowId, 4].Value = trigger;
+            }
+
+            range[rowId, 5].Value = result.ElapsedMillisecond;
+            range[rowId, 6].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 7].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 8].Value = result.LogFile?.RelativePath;
+            range[rowId, 9].Value = result.StartMonitorResult?.LineNumber;
+            range[rowId, 10].Value = result.FinishMonitorResult?.LineNumber;
+        }
+        #endregion
+
+        #region 内存分析结果
+
+        /// <summary>
+        /// 过滤内存分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetMemoryAnalysisResults(TaskArgument argument)
+            => argument.TerminalAnalysisResults
+                    .Where(result => result.MonitorItem.Memory)
+                    .Distinct(new TerminalAnalysisResultEqualityComparer<TerminalAnalysisResult>())
+                    .Select(result => (1, result))
+                    .ToList();
+
+        /// <summary>
+        /// 导出内存分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportMemoryAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem?.Name;
+            range[rowId, 2].Value = result.Version;
+            range[rowId, 3].Value = result.Client;
+            range[rowId, 4].Value = result.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 5].Value = result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory) ? memory : 0.0;
+            range[rowId, 6].Value = result.AnalysisDatas.TryGetValue(FixedDatas.CPU_CONSUMED, out object cpu) ? cpu : 0.0;
+        }
+        #endregion
+
+        #region 客户端消息分析结果
+
+        /// <summary>
+        /// 过滤客户端消息分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetClientMessageAnalysisResults(TaskArgument argument)
+            => argument.TerminalAnalysisResults
+                    .Where(result => result.MonitorItem.SheetName == FixedDatas.CLIENT_MESSAGE_SHEET_NAME)
+                    .Select(result => (1, result))
+                    .ToList();
+
+        /// <summary>
+        /// 导出客户端消息分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportClientMessageAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem.PrefixName;
+            range[rowId, 2].Value = result.Version;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.MESSAGE_CODE, out object code))
+            {
+                range[rowId, 3].Value = code;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.MESSAGE_TABLE, out object table))
+            {
+                range[rowId, 4].Value = table;
+            }
+
+            range[rowId, 5].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 6].Value = result.LogFile.RelativePath;
+            range[rowId, 7].Value = result.LineNumber;
+        }
+        #endregion
+
+        #region Performance分析结果
+
+        /// <summary>
+        /// 过滤Performance分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, PerformanceAnalysisResult result)> GetPerformanceAnalysisResults(TaskArgument argument)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, PerformanceAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.PerformanceAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 导出Performance分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportPerformanceAnalysiserResult(ExcelRange range, int rowId, int executeId, PerformanceAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.IPAddress;
+            range[rowId, 2].Value = result.UserCode;
+            range[rowId, 3].Value = result.MonitorItem.PrefixName;
+            range[rowId, 4].Value = result.MonitorItem.ParentMonitorItem?.Name;
+            range[rowId, 5].Value = executeId;
+            range[rowId, 6].Value = result.IsIntactGroup() ? result.ElapsedMillisecond : 0.0;
+            range[rowId, 7].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 8].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 9].Value = result.LogFile.RelativePath;
+            range[rowId, 10].Value = result.LineNumber;
+        }
+        #endregion
+
+        #region 交易清算分析结果
+
+        /// <summary>
+        /// 过滤交易清算分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int ExecuteID, TerminalAnalysisResult result)> GetTradeClearingAnalysisResults(TaskArgument argument)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result => result.MonitorItem.SheetName == FixedDatas.TRADE_CLEARING_SHEET_NAME)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// 导出交易清算分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportTradeClearingAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem?.PrefixName;
+            range[rowId, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
+            range[rowId, 3].Value = result.Version;
+            range[rowId, 4].Value = executeId;
+            range[rowId, 5].Value = result.ElapsedMillisecond;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.QSRQ, out object qsrq))
+            {
+                range[rowId, 6].Value = qsrq;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.DQZH, out object dqzh))
+            {
+                range[rowId, 7].Value = dqzh;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.WBZH, out object wbzh))
+            {
+                range[rowId, 8].Value = wbzh;
+            }
+
+            range[rowId, 9].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 10].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 11].Value = result.LogFile?.RelativePath;
+
+            range[rowId, 12].Value = result.StartMonitorResult?.LineNumber;
+            range[rowId, 13].Value = result.FinishMonitorResult?.LineNumber;
+        }
+        #endregion
+        #endregion
+
+        #region 导出通用表
 
         /// <summary>
         /// 导出客户端和服务端通用表格式数据
@@ -452,7 +891,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             /* 按分析结果树分表导出问题：
              * 1. 需要在一个方法内同时维护所有通用数据表对象，若数据总量较大，会产生比原算法更严重的内存压力
              * 2. 分析结果表名若存在跨级，如 分析结果1导出到A表，1的子结果2需要导出到B表，但2的子结果3又需要导出到A表，3也属于1的子结果；
-             * 思路：同初始化分析结果树算法，遍历分析结果容器的根节点（仅在容器根节点遍历时更新执行序号），对每个跟节点当做树根遍历，将所有子节点分表导出
+             * 思路：同初始化分析结果树算法，遍历分析结果容器的根节点（仅在容器根节点遍历时更新执行序号），对每个根节点当做树根遍历，将所有子节点分表导出
              */
             this.Tracer?.WriteLine("开始导出通用表数据 ...");
 
@@ -589,515 +1028,6 @@ namespace xQuantLogFactory.BIZ.Exporter
             ExcelWorksheetPackage package = new ExcelWorksheetPackage(worksheet, sheetRectangle.Top, sheetRange);
 
             return package;
-        }
-        #endregion
-
-        #region 导出保留表
-
-        /// <summary>
-        /// 导出限额检查结果
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportLimitCheck(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.LIMIT_CHECK_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.LIMIT_CHECK_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.LIMIT_CHECK_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 12, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top, executeID = 0;
-                    object analysisData = null;
-
-                    // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-                    {
-                        // 每个分析结果根节点使执行序号自增
-                        executeID++;
-
-                        // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
-                            .Where(result =>
-                                result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.LimitCheckAsync ||
-                                result.MonitorItem.SheetName == FixedDatas.LIMIT_CHECK_SHEET_NAME))
-                        {
-                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
-                            range[rowID, 2].Value = analysisResult.Version;
-                            range[rowID, 3].Value = executeID;
-                            range[rowID, 4].Value = analysisResult.ElapsedMillisecond;
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.SESSION_ID, out analysisData))
-                            {
-                                range[rowID, 5].Value = analysisData;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.USER_CODE, out analysisData))
-                            {
-                                range[rowID, 6].Value = analysisData;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.RESULT_COUNT, out analysisData))
-                            {
-                                range[rowID, 7].Value = analysisData;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.ROLE_COUNT, out analysisData))
-                            {
-                                range[rowID, 8].Value = analysisData;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.PRE_COUNT, out analysisData))
-                            {
-                                range[rowID, 9].Value = analysisData;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.PRO_COUNT, out analysisData))
-                            {
-                                range[rowID, 10].Value = analysisData;
-                            }
-
-                            range[rowID, 11].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 12].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 13].Value = analysisResult.LogFile.RelativePath;
-                            range[rowID, 14].Value = analysisResult.LineNumber;
-
-                            rowID++;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出缓存统计数据
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportCacheSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.CACHE_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.CACHE_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.CACHE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 12, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top, executeID = 0;
-
-                    // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-                    {
-                        // 每个分析结果根节点使执行序号自增
-                        executeID++;
-
-                        // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
-                            .Where(result => result.MonitorItem.SheetName == FixedDatas.CACHE_SHEET_NAME))
-                        {
-                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
-                            range[rowID, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
-                            range[rowID, 3].Value = analysisResult.Version;
-                            range[rowID, 4].Value = executeID;
-                            range[rowID, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.RESOURCE_NAME, out object name))
-                            {
-                                range[rowID, 6].Value = name;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.COUNT, out object count))
-                            {
-                                range[rowID, 7].Value = count;
-                            }
-
-                            range[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 9].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 10].Value = analysisResult.LogFile.RelativePath;
-                            range[rowID, 11].Value = analysisResult.LineNumber;
-
-                            rowID++;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出报表日志
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportReportSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.REPORT_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.REPORT_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.REPORT_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top, executeID = 0;
-
-                    // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-                    {
-                        // 每个分析结果根节点使执行序号自增
-                        executeID++;
-
-                        // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
-                            .Where(result => result.MonitorItem.SheetName == FixedDatas.REPORT_SHEET_NAME))
-                        {
-                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
-                            range[rowID, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
-                            range[rowID, 3].Value = analysisResult.Version;
-                            range[rowID, 4].Value = executeID;
-                            range[rowID, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.REPORT_CODE, out object code))
-                            {
-                                range[rowID, 6].Value = code;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.REPORT_NAME, out object name))
-                            {
-                                range[rowID, 7].Value = name;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.QUERY_PARAM, out object param))
-                            {
-                                range[rowID, 8].Value = param;
-                            }
-
-                            range[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 10].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 11].Value = analysisResult.LogFile.RelativePath;
-                            range[rowID, 12].Value = analysisResult.LineNumber;
-
-                            rowID++;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出窗体日志
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportFormSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.FORM_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.FORM_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.FORM_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top, executeID = 0;
-
-                    // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-                    {
-                        // 每个分析结果根节点使执行序号自增
-                        executeID++;
-
-                        // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
-                            .Where(result => result.MonitorItem.SheetName == FixedDatas.FORM_SHEET_NAME))
-                        {
-                            range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
-                            range[rowID, 2].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
-                            range[rowID, 3].Value = analysisResult.Version;
-                            range[rowID, 4].Value = executeID;
-                            range[rowID, 5].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.MODULE_CODE, out object code))
-                            {
-                                range[rowID, 6].Value = code;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.FORM_NAME, out object name))
-                            {
-                                range[rowID, 7].Value = name;
-                            }
-
-                            range[rowID, 8].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 9].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 10].Value = analysisResult.LogFile.RelativePath;
-                            range[rowID, 11].Value = analysisResult.LineNumber;
-
-                            rowID++;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出Core服务日志
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportCoreServiceSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.CORE_SERVICE_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.CORE_SERVICE_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.CORE_SERVICE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 11, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top, executeID = 0;
-
-                    // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-                    {
-                        // 每个分析结果根节点使执行序号自增
-                        executeID++;
-
-                        // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
-                            .Where(result => result.MonitorItem.SheetName == FixedDatas.CORE_SERVICE_SHEET_NAME))
-                        {
-                            range[rowID, 1].Value = analysisResult.Version;
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.CORE_SERVICE_NAME, out object service))
-                            {
-                                range[rowID, 2].Value = service;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.EXECUTE_INDEX, out object index))
-                            {
-                                range[rowID, 3].Value = index;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.TRIGGER, out object trigger))
-                            {
-                                range[rowID, 4].Value = trigger;
-                            }
-
-                            range[rowID, 5].Value = analysisResult.ElapsedMillisecond;
-                            range[rowID, 6].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 7].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 8].Value = analysisResult.LogFile?.RelativePath;
-                            range[rowID, 9].Value = analysisResult.StartMonitorResult?.LineNumber;
-                            range[rowID, 10].Value = analysisResult.FinishMonitorResult?.LineNumber;
-
-                            rowID++;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出内存数据表
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportMemorySheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets[FixedDatas.MEMORY_SHEET_NAME];
-            if (memoryDataSheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.MEMORY_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.MEMORY_SHEET_NAME} 表数据 ...");
-                Rectangle memoryRectangle = new Rectangle(1, 2, 5, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange memoryRange = memoryDataSheet.Cells[memoryRectangle.Top, memoryRectangle.Left, memoryRectangle.Bottom - 1, memoryRectangle.Right - 1])
-                {
-                    int rowID = memoryRectangle.Top;
-                    foreach (var result in argument.TerminalAnalysisResults
-                        .Where(result => result.MonitorItem.Memory)
-                        .Distinct(new TerminalAnalysisResultEqualityComparer<TerminalAnalysisResult>()))
-                    {
-                        memoryRange[rowID, 1].Value = result.MonitorItem?.Name;
-                        memoryRange[rowID, 2].Value = result.Version;
-                        memoryRange[rowID, 3].Value = result.Client;
-                        memoryRange[rowID, 4].Value = result.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        memoryRange[rowID, 5].Value = result.AnalysisDatas.TryGetValue(FixedDatas.MEMORY_CONSUMED, out object memory) ? memory : 0.0;
-                        memoryRange[rowID, 6].Value = result.AnalysisDatas.TryGetValue(FixedDatas.CPU_CONSUMED, out object cpu) ? cpu : 0.0;
-
-                        rowID++;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出客户端消息数据表
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportClientMessageSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet memoryDataSheet = excel.Workbook.Worksheets[FixedDatas.CLIENT_MESSAGE_SHEET_NAME];
-            if (memoryDataSheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.CLIENT_MESSAGE_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.CLIENT_MESSAGE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 5, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = memoryDataSheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top;
-                    foreach (var analysisResult in argument.TerminalAnalysisResults.Where(result => result.MonitorItem.SheetName == FixedDatas.CLIENT_MESSAGE_SHEET_NAME))
-                    {
-                        range[rowID, 1].Value = analysisResult.MonitorItem.PrefixName;
-                        range[rowID, 2].Value = analysisResult.Version;
-                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.MESSAGE_CODE, out object code))
-                        {
-                            range[rowID, 3].Value = code;
-                        }
-
-                        if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.MESSAGE_TABLE, out object table))
-                        {
-                            range[rowID, 4].Value = table;
-                        }
-
-                        range[rowID, 5].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                        range[rowID, 6].Value = analysisResult.LogFile.RelativePath;
-                        range[rowID, 7].Value = analysisResult.LineNumber;
-
-                        rowID++;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出Performance监视结果表
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportPerformanceAnalysiserSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 10, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top, executeID = 0;
-
-                    // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.PerformanceAnalysisResultRoots)
-                    {
-                        // 每个分析结果根节点使执行序号自增
-                        executeID++;
-
-                        // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (PerformanceAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf())
-                        {
-                            range[rowID, 1].Value = analysisResult.IPAddress;
-                            range[rowID, 2].Value = analysisResult.UserCode;
-                            range[rowID, 3].Value = analysisResult.MonitorItem.PrefixName;
-                            range[rowID, 4].Value = analysisResult.MonitorItem.ParentMonitorItem?.Name;
-                            range[rowID, 5].Value = executeID;
-                            range[rowID, 6].Value = analysisResult.IsIntactGroup() ? analysisResult.ElapsedMillisecond : 0.0;
-                            range[rowID, 7].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 8].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 9].Value = analysisResult.LogFile.RelativePath;
-                            range[rowID, 10].Value = analysisResult.LineNumber;
-
-                            rowID++;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 导出交易清算表
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="argument"></param>
-        public void ExportTradeClearingSheet(ExcelPackage excel, TaskArgument argument)
-        {
-            ExcelWorksheet sheet = excel.Workbook.Worksheets[FixedDatas.TRADE_SETTLE_SHEET_NAME];
-            if (sheet == null)
-            {
-                this.Tracer?.WriteLine($"未发现 {FixedDatas.TRADE_SETTLE_SHEET_NAME} 数据表，写入失败！");
-            }
-            else
-            {
-                this.Tracer?.WriteLine($"正在写入 {FixedDatas.TRADE_SETTLE_SHEET_NAME} 表数据 ...");
-                Rectangle rectangle = new Rectangle(1, 2, 13, FixedDatas.ExcelMaxRowCount);
-                using (ExcelRange range = sheet.Cells[rectangle.Top, rectangle.Left, rectangle.Bottom - 1, rectangle.Right - 1])
-                {
-                    int rowID = rectangle.Top, executeID = 0;
-
-                    // 输出监视规则树
-                    foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-                    {
-                        // 每个分析结果根节点使执行序号自增
-                        executeID++;
-
-                        // 遍历根节点及所有子节点输出分析结果数据
-                        foreach (TerminalAnalysisResult analysisResult in resultRoot.GetAnalysisResultWithSelf()
-                            .Where(result => result.MonitorItem.SheetName == FixedDatas.TRADE_SETTLE_SHEET_NAME))
-                        {
-                            range[rowID, 1].Value = analysisResult.MonitorItem?.PrefixName;
-                            range[rowID, 2].Value = analysisResult.MonitorItem?.ParentMonitorItem?.Name;
-                            range[rowID, 3].Value = analysisResult.Version;
-                            range[rowID, 4].Value = executeID;
-                            range[rowID, 5].Value = analysisResult.ElapsedMillisecond;
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.QSRQ, out object qsrq))
-                            {
-                                range[rowID, 6].Value = qsrq;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.DQZH, out object dqzh))
-                            {
-                                range[rowID, 7].Value = dqzh;
-                            }
-
-                            if (analysisResult.AnalysisDatas.TryGetValue(FixedDatas.WBZH, out object wbzh))
-                            {
-                                range[rowID, 8].Value = wbzh;
-                            }
-
-                            range[rowID, 9].Value = analysisResult.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 10].Value = analysisResult.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-                            range[rowID, 11].Value = analysisResult.LogFile?.RelativePath;
-
-                            // tradeSettleRange[rowID, 12].Value = analysisResult.LineNumber;
-                            range[rowID, 12].Value = analysisResult.StartMonitorResult?.LineNumber;
-                            range[rowID, 13].Value = analysisResult.FinishMonitorResult?.LineNumber;
-
-                            rowID++;
-                        }
-                    }
-                }
-            }
         }
         #endregion
     }

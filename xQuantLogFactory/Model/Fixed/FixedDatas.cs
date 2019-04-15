@@ -199,7 +199,7 @@ namespace xQuantLogFactory.Model.Fixed
         /// <summary>
         /// 交易清算表名
         /// </summary>
-        public const string TRADE_SETTLE_SHEET_NAME = "清算";
+        public const string TRADE_CLEARING_SHEET_NAME = "清算";
 
         /// <summary>
         /// Core服务表名
