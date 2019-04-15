@@ -184,7 +184,7 @@ namespace xQuantLogFactory.Model.Fixed
         /// <summary>
         /// Performance监视结果表名
         /// </summary>
-        public const string PERFORMANCE_Analysiser_SHEET_NAME = "Performance监视";
+        public const string PERFORMANCE_ANALYSISER_SHEET_NAME = "Performance监视";
 
         /// <summary>
         /// Performance解析结果表名

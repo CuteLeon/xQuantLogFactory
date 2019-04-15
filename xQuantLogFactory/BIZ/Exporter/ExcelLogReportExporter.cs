@@ -69,7 +69,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         private static readonly string[] SpecialSheetNames = new string[]
         {
             FixedDatas.MEMORY_SHEET_NAME,
-            FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME,
+            FixedDatas.PERFORMANCE_ANALYSISER_SHEET_NAME,
             FixedDatas.PERFORMANCE_PARSE_SHEET_NAME,
             FixedDatas.TRADE_CLEARING_SHEET_NAME,
             FixedDatas.ANALYSIS_SHEET_NAME,
@@ -140,7 +140,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportSheet(excel, FixedDatas.CORE_SERVICE_SHEET_NAME, argument, this.GetCoreServiceAnalysisResults, this.ExportCoreServiceAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.MEMORY_SHEET_NAME, argument, this.GetMemoryAnalysisResults, this.ExportMemoryAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.CLIENT_MESSAGE_SHEET_NAME, argument, this.GetClientMessageAnalysisResults, this.ExportClientMessageAnalysiserResult);
-                    this.ExportSheet(excel, FixedDatas.PERFORMANCE_Analysiser_SHEET_NAME, argument, this.GetPerformanceAnalysisResults, this.ExportPerformanceAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.PERFORMANCE_ANALYSISER_SHEET_NAME, argument, this.GetPerformanceAnalysisResults, this.ExportPerformanceAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.TRADE_CLEARING_SHEET_NAME, argument, this.GetTradeClearingAnalysisResults, this.ExportTradeClearingAnalysiserResult);
 
                     this.Tracer?.WriteLine("正在保存数据到 Excel 文件，请稍等...");
