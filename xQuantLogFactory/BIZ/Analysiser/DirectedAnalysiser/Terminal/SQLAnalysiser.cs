@@ -1,9 +1,10 @@
-﻿using CsvHelper;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.VisualBasic.FileIO;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
@@ -105,34 +106,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                         if (File.Exists(sqlHashFile))
                         {
                             this.Tracer?.WriteLine($"解析 SQL-Hash ：{sqlHashFile}");
-
                             try
                             {
-                                using (FileStream fileStream = new FileStream(sqlHashFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                foreach (var (hash, sql) in ParseSQLHashCSV(sqlHashFile))
                                 {
-                                    using (StreamReader streamReader = new StreamReader(fileStream))
-                                    {
-                                        CsvParser csvParser = new CsvParser(streamReader);
-                                        string[] csvRow = null;
-
-                                        while (true)
-                                        {
-                                            csvRow = csvParser.Read();
-                                            if (csvRow == null)
-                                            {
-                                                break;
-                                            }
-
-                                            if (csvRow.Length >= 2)
-                                            {
-                                                SQLHashs[csvRow[0]] = csvRow[1];
-                                            }
-                                        }
-
-                                        streamReader.Close();
-                                    }
-
-                                    fileStream.Close();
+                                    SQLHashs[hash] = sql;
                                 }
                             }
                             catch (Exception ex)
@@ -141,6 +119,26 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                             }
                         }
                     });
+            }
+
+            IEnumerable<(string hash, string sql)> ParseSQLHashCSV(string csvPath)
+            {
+                using TextFieldParser parser = new TextFieldParser(csvPath)
+                {
+                    Delimiters = new[] { "," },
+                    TextFieldType = FieldType.Delimited,
+                    HasFieldsEnclosedInQuotes = true,
+                };
+
+                string[] values = null;
+                while (!parser.EndOfData)
+                {
+                    values = parser.ReadFields();
+                    if (values.Length >= 2)
+                    {
+                        yield return (values[0], values[1]);
+                    }
+                }
             }
         }
     }
