@@ -290,7 +290,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="originalExcel"></param>
         /// <param name="sheetName"></param>
         /// <param name="newIndex"></param>
-        private void CloneSheet(ExcelPackage excel, ExcelWorksheet originalExcel, string sheetName, int newIndex)
+        private void CloneSheet(ExcelPackage excel, ExcelWorksheet originalExcel, string sheetName, int newIndex = 0)
             => excel.Workbook.Worksheets.Add(newIndex == 0 ? sheetName : $"{sheetName}_{newIndex}", originalExcel);
 
         /// <summary>
@@ -314,6 +314,56 @@ namespace xQuantLogFactory.BIZ.Exporter
         #endregion
 
         #region New
+
+        private List<(int ExecuteID, TerminalAnalysisResult Result)> GetTerminalAnalysiserResults(TaskArgument argument, string sheetName)
+            => argument.TerminalAnalysisResults
+                .Where(result => result.MonitorItem.SheetName == sheetName)
+                .Select(result => (1, result))
+                .ToList();
+
+        private List<(int ExecuteID, TerminalAnalysisResult Result)> GetTerminalAnalysiserResults(TaskArgument argument, TerminalDirectedAnalysiserTypes directedAnalysiserType, string sheetName)
+            => argument.TerminalAnalysisResults
+                .Where(result =>
+                    result.MonitorItem.DirectedAnalysiser == directedAnalysiserType ||
+                    result.MonitorItem.SheetName == sheetName)
+                .Select(result => (1, result))
+                .ToList();
+
+        private List<(int ExecuteID, TerminalAnalysisResult Result)> GetTerminalAnalysiserResultsWithExecuteID(TaskArgument argument, string sheetName)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result =>
+                        result.MonitorItem.SheetName == sheetName)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
+        private List<(int ExecuteID, TerminalAnalysisResult Result)> GetTerminalAnalysiserResultsWithExecuteID(TaskArgument argument, TerminalGroupAnalysiserTypes groupAnalysiserType, string sheetName)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result =>
+                        result.MonitorItem.GroupAnalysiser == groupAnalysiserType ||
+                        result.MonitorItem.SheetName == sheetName)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+
         #region Performance 解析结果
 
         /// <summary>
@@ -359,10 +409,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult Result)> GetSQLAnalysisResults(TaskArgument argument)
-            => argument.TerminalAnalysisResults
-                .Where(result => result.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.SQL || result.MonitorItem.SheetName == FixedDatas.SQL_SHEET_NAME)
-                .Select(result => (1, result))
-                .ToList();
+            => this.GetTerminalAnalysiserResults(argument, TerminalDirectedAnalysiserTypes.SQL, FixedDatas.SQL_SHEET_NAME);
 
         /// <summary>
         /// 导出SQL分析结果
@@ -410,22 +457,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult result)> GetLimitCheckAnalysisResults(TaskArgument argument)
-        {
-            int executeID = 0;
-            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
-            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-            {
-                executeID++;
-
-                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
-                    .Where(result =>
-                        result.MonitorItem.GroupAnalysiser == TerminalGroupAnalysiserTypes.LimitCheckAsync ||
-                        result.MonitorItem.SheetName == FixedDatas.LIMIT_CHECK_SHEET_NAME)
-                    .Select(result => (executeID, result)));
-            }
-
-            return results;
-        }
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, TerminalGroupAnalysiserTypes.LimitCheckAsync, FixedDatas.LIMIT_CHECK_SHEET_NAME);
 
         /// <summary>
         /// 导出限额检查分析结果
@@ -485,20 +517,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult result)> GetCacheAnalysisResults(TaskArgument argument)
-        {
-            int executeID = 0;
-            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
-            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-            {
-                executeID++;
-
-                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
-                    .Where(result => result.MonitorItem.SheetName == FixedDatas.CACHE_SHEET_NAME)
-                    .Select(result => (executeID, result)));
-            }
-
-            return results;
-        }
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, FixedDatas.CACHE_SHEET_NAME);
 
         /// <summary>
         /// 导出缓存统计分析结果
@@ -539,20 +558,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult result)> GetReportAnalysisResults(TaskArgument argument)
-        {
-            int executeID = 0;
-            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
-            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-            {
-                executeID++;
-
-                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
-                    .Where(result => result.MonitorItem.SheetName == FixedDatas.REPORT_SHEET_NAME)
-                    .Select(result => (executeID, result)));
-            }
-
-            return results;
-        }
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, FixedDatas.REPORT_SHEET_NAME);
 
         /// <summary>
         /// 导出报表分析结果
@@ -598,20 +604,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult result)> GetFormAnalysisResults(TaskArgument argument)
-        {
-            int executeID = 0;
-            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
-            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-            {
-                executeID++;
-
-                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
-                    .Where(result => result.MonitorItem.SheetName == FixedDatas.FORM_SHEET_NAME)
-                    .Select(result => (executeID, result)));
-            }
-
-            return results;
-        }
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, FixedDatas.FORM_SHEET_NAME);
 
         /// <summary>
         /// 导出窗体分析结果
@@ -652,20 +645,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult result)> GetCoreServiceAnalysisResults(TaskArgument argument)
-        {
-            int executeID = 0;
-            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
-            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-            {
-                executeID++;
-
-                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
-                    .Where(result => result.MonitorItem.SheetName == FixedDatas.CORE_SERVICE_SHEET_NAME)
-                    .Select(result => (executeID, result)));
-            }
-
-            return results;
-        }
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, FixedDatas.CORE_SERVICE_SHEET_NAME);
 
         /// <summary>
         /// 导出Core服务分析结果
@@ -741,10 +721,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult result)> GetClientMessageAnalysisResults(TaskArgument argument)
-            => argument.TerminalAnalysisResults
-                    .Where(result => result.MonitorItem.SheetName == FixedDatas.CLIENT_MESSAGE_SHEET_NAME)
-                    .Select(result => (1, result))
-                    .ToList();
+            => this.GetTerminalAnalysiserResults(argument, FixedDatas.CLIENT_MESSAGE_SHEET_NAME);
 
         /// <summary>
         /// 导出客户端消息分析结果
@@ -825,20 +802,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="argument"></param>
         /// <returns></returns>
         private List<(int ExecuteID, TerminalAnalysisResult result)> GetTradeClearingAnalysisResults(TaskArgument argument)
-        {
-            int executeID = 0;
-            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
-            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
-            {
-                executeID++;
-
-                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
-                    .Where(result => result.MonitorItem.SheetName == FixedDatas.TRADE_CLEARING_SHEET_NAME)
-                    .Select(result => (executeID, result)));
-            }
-
-            return results;
-        }
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, FixedDatas.TRADE_CLEARING_SHEET_NAME);
 
         /// <summary>
         /// 导出交易清算分析结果
@@ -898,6 +862,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.Tracer?.WriteLine("开始准备通用数据表字典");
             Dictionary<string, ExcelWorksheetPackage> commonWorksheets = new Dictionary<string, ExcelWorksheetPackage>();
 
+            ExcelWorksheet originalSheet = excel.Workbook.Worksheets[FixedDatas.ExcelSourceSheetName];
             foreach (var sheetName in argument.MonitorContainerRoot.GetTerminalMonitorItems()
                 .Where(monitor => monitor.AnalysisResults.Count > 0)
                 .Select(monitor => monitor.SheetName).Distinct()
@@ -909,7 +874,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.Tracer?.WriteLine($">未发现名称为 {sheetName} 的数据表，自动创建 ...");
                     try
                     {
-                        worksheet = this.CreateCommonResultSheet(excel, sheetName);
+                        this.CloneSheet(excel, originalSheet, sheetName);
+                        worksheet = excel.Workbook.Worksheets[sheetName] ?? throw new ArgumentNullException("workSheet");
                     }
                     catch (Exception ex)
                     {
@@ -963,31 +929,6 @@ namespace xQuantLogFactory.BIZ.Exporter
             // 清理垃圾
             commonWorksheets.Values.ToList().ForEach(package => package.Dispose());
             commonWorksheets.Clear();
-        }
-
-        /// <summary>
-        /// 创建通用数据表
-        /// </summary>
-        /// <param name="excel"></param>
-        /// <param name="sheetName"></param>
-        private ExcelWorksheet CreateCommonResultSheet(ExcelPackage excel, string sheetName)
-        {
-            try
-            {
-                ExcelWorksheet sourceSheet = excel.Workbook.Worksheets[FixedDatas.ExcelSourceSheetName];
-                if (sourceSheet == null)
-                {
-                    throw new Exception($"不存在 {FixedDatas.ExcelSourceSheetName} 表，无法创建通用表。");
-                }
-
-                excel.Workbook.Worksheets.Add(sheetName, sourceSheet);
-
-                return excel.Workbook.Worksheets[sheetName] ?? throw new Exception($"创建 {sheetName} 表后，返回为 null");
-            }
-            catch
-            {
-                throw;
-            }
         }
 
         /// <summary>
