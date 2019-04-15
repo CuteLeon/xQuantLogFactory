@@ -994,7 +994,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Average(r => r.ElapsedMillisecond));
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Average(r => r.ElapsedMillisecond).ToString("N2"));
 
             topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
