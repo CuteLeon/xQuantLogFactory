@@ -1016,7 +1016,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         <div class=""alert alert-success"" data-toggle=""collapse"" data-target=""#sqlhash_{sqlhash}"" role=""alert"">
                             {sqlhash}
                             <div class=""collapse font-weight-normal"" id=""sqlhash_{sqlhash}"">
-                                {(SQLAnalysiser.SQLHashs.TryGetValue(sqlhash, out string sql) ? sql : "<未找到 Hash 对应的 SQL 命令！>")}
+                                <xmp>{(SQLAnalysiser.SQLHashs.TryGetValue(sqlhash, out string sql) ? sql : "<未找到 Hash 对应的 SQL 命令！>")}</xmp>
                             </div>
                         </div>"))}
                     </div>
