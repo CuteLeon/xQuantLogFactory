@@ -178,6 +178,10 @@ namespace xQuantLogFactory.BIZ.Exporter
             where TResult : IMonitorResult
         {
             var results = getMonitorResultsAction?.Invoke(argument);
+            if (results.Count == 0)
+            {
+                return;
+            }
 
             int resultIndex = 0;
             int sheetIndex = 0;
@@ -211,8 +215,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                 }
             }
 
-            // 移除最后创建的纯净表
-            this.RmoveSheet(excel, sheetName, sheetIndex);
+            if (sheetIndex > 0)
+            {
+                // 移除最后创建的纯净表
+                this.RmoveSheet(excel, sheetName, sheetIndex);
+            }
         }
 
         /// <summary>
@@ -233,6 +240,10 @@ namespace xQuantLogFactory.BIZ.Exporter
             where TResult : IAnalysisResult
         {
             var results = getAnalysisResultsAction?.Invoke(argument);
+            if (results.Count == 0)
+            {
+                return;
+            }
 
             int resultIndex = 0;
             int sheetIndex = 0;
@@ -266,8 +277,11 @@ namespace xQuantLogFactory.BIZ.Exporter
                 }
             }
 
-            // 移除最后创建的纯净表
-            this.RmoveSheet(excel, sheetName, sheetIndex);
+            if (sheetIndex > 0)
+            {
+                // 移除最后创建的纯净表
+                this.RmoveSheet(excel, sheetName, sheetIndex);
+            }
         }
 
         /// <summary>

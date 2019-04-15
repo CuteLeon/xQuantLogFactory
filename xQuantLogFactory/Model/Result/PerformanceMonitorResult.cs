@@ -72,7 +72,7 @@ namespace xQuantLogFactory.Model.Result
         /// <summary>
         /// Gets or sets 耗时
         /// </summary>
-        public int Elapsed { get; set; }
+        public double Elapsed { get; set; }
 
         /// <summary>
         /// Gets or sets 请求路径
@@ -87,12 +87,12 @@ namespace xQuantLogFactory.Model.Result
         /// <summary>
         /// Gets or sets 请求流长度
         /// </summary>
-        public int RequestStreamLength { get; set; }
+        public double RequestStreamLength { get; set; }
 
         /// <summary>
         /// Gets or sets 响应流长度
         /// </summary>
-        public int ResponseStreamLength { get; set; }
+        public double ResponseStreamLength { get; set; }
 
         /// <summary>
         /// Gets or sets 消息
@@ -140,7 +140,7 @@ namespace xQuantLogFactory.Model.Result
             }
 
             TimeSpan? span = finishTime - startTime;
-            return span.HasValue ? span.Value : TimeSpan.Zero;
+            return span ?? TimeSpan.Zero;
         }
 
         /// <summary>

@@ -70,10 +70,10 @@ namespace xQuantLogFactory.BIZ.Parser
                     string logLine = string.Empty,
                               requestURI = string.Empty,
                               methodName = string.Empty;
-                    int lineNumber = 0,
-                         elapsed = 0,
-                         requestStreamLength = 0,
-                         responseStreamLength = 0;
+                    double elapsed = 0.0,
+                         requestStreamLength = 0.0,
+                         responseStreamLength = 0.0;
+                    int lineNumber = 0;
 
                     DateTime logTime = DateTime.MinValue,
                                     requestReceiveTime = DateTime.MinValue,
@@ -127,9 +127,9 @@ namespace xQuantLogFactory.BIZ.Parser
                              */
                             requestReceiveTime = DateTime.TryParse(match.Groups["RequestReceiveTime"].Value, out requestReceiveTime) ? requestReceiveTime : DateTime.MinValue;
                             responseSendTime = DateTime.TryParse(match.Groups["ResponseSendTime"].Value, out responseSendTime) ? responseSendTime : DateTime.MinValue;
-                            elapsed = int.TryParse(match.Groups["Elapsed"].Value, out int elapsedValue) ? elapsedValue : 0;
-                            requestStreamLength = int.TryParse(match.Groups["RequestStreamLength"].Value, out requestStreamLength) ? requestStreamLength : 0;
-                            responseStreamLength = int.TryParse(match.Groups["ResponseStreamLength"].Value, out responseStreamLength) ? responseStreamLength : 0;
+                            elapsed = double.TryParse(match.Groups["Elapsed"].Value, out double elapsedValue) ? elapsedValue : 0.0;
+                            requestStreamLength = double.TryParse(match.Groups["RequestStreamLength"].Value, out requestStreamLength) ? requestStreamLength : 0.0;
+                            responseStreamLength = double.TryParse(match.Groups["ResponseStreamLength"].Value, out responseStreamLength) ? responseStreamLength : 0.0;
                             requestURI = match.Groups["RequestURI"].Value;
 
                             // 记录所有解析结果

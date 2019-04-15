@@ -945,28 +945,28 @@ namespace xQuantLogFactory.BIZ.Exporter
             builder.AppendLine(@"    <div class=""row"">");
 
             var topGroups = groups.OrderByDescending(g => g.Sum(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.Elapsed));
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.Elapsed).ToString("N"));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.Elapsed));
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.Elapsed).ToString("N2"));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.Elapsed));
+            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.Elapsed).ToString("N"));
 
             topGroups = groups.OrderByDescending(g => g.Sum(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.RequestStreamLength));
+            this.RenderRankingList(builder, "总请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.RequestStreamLength).ToString("N"));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.RequestStreamLength));
+            this.RenderRankingList(builder, "平均请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.RequestStreamLength).ToString("N2"));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.RequestStreamLength));
+            this.RenderRankingList(builder, "最大请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.RequestStreamLength).ToString("N"));
 
             topGroups = groups.OrderByDescending(g => g.Sum(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.ResponseStreamLength));
+            this.RenderRankingList(builder, "总响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.ResponseStreamLength).ToString("N"));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.ResponseStreamLength));
+            this.RenderRankingList(builder, "平均响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.ResponseStreamLength).ToString("N2"));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.ResponseStreamLength));
+            this.RenderRankingList(builder, "最大响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.ResponseStreamLength).ToString("N"));
 
             topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
-            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key.MethodName, g => g.Count());
+            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key.MethodName, g => g.Count().ToString("N"));
 
             builder.AppendLine(@"    </div>");
             builder.AppendLine(@"</div>");
@@ -990,7 +990,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Sum(r => r.ElapsedMillisecond));
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Sum(r => r.ElapsedMillisecond).ToString("N"));
 
             topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
@@ -998,7 +998,7 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Count());
+            this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Count().ToString("N"));
 
             string CreateSQLHashLink(string database, string sqlhash)
                 => $@"<a class=""link-sqlhash text-primary"" data-sqlhash=""{sqlhash}""><span class=""badge badge-success font-weight-bold"">{database}</span> {sqlhash}</a>";
