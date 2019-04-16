@@ -34,7 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.2</LangVersion>
+    <LangVersion>8.0</LangVersion>
     <CodeAnalysisRuleSet>xQuantLogFactory.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
