@@ -988,15 +988,15 @@ namespace xQuantLogFactory.BIZ.Exporter
             builder.AppendLine(@"<div class=""container-fluid"">");
             builder.AppendLine(@"    <div class=""row"">");
 
-            var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(20).ToArray();
+            var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(100).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
             this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Sum(r => r.ElapsedMillisecond).ToString("N"));
 
-            topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(20).ToArray();
+            topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(100).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
             this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Average(r => r.ElapsedMillisecond).ToString("N2"));
 
-            topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
+            topGroups = groups.OrderByDescending(g => g.Count()).Take(100).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
             this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Count().ToString("N"));
 
