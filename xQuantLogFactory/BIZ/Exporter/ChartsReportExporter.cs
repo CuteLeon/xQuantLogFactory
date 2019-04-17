@@ -84,7 +84,8 @@ namespace xQuantLogFactory.BIZ.Exporter
                     argument,
                     this.GetTitle,
                     this.RenderScriptStyle,
-                    this.RenderBody);
+                    this.RenderBody,
+                    this.RenderScript);
 
                 this.SaveReportFile(
                     reportPath,
@@ -109,14 +110,17 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="builder"></param>
         /// <param name="argument"></param>
         /// <param name="getTitle"></param>
+        /// <param name="renderScriptStyle"></param>
         /// <param name="renderBody"></param>
+        /// <param name="renderScript"></param>
         /// <returns></returns>
         private StringBuilder RenderLayout(
             StringBuilder builder,
             TaskArgument argument,
             Func<TaskArgument, string> getTitle,
             Action<StringBuilder> renderScriptStyle,
-            Action<StringBuilder, TaskArgument> renderBody)
+            Action<StringBuilder, TaskArgument> renderBody,
+            Action<StringBuilder> renderScript)
         {
             if (builder == null)
             {
@@ -156,6 +160,16 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             builder.AppendLine("        </div>");
             builder.AppendLine(@"<a class=""btn btn-sm btn-outline-primary"" z-index="" - 1"" style =""position:fixed;right:20px;bottom:20px"" href=""#header"">返回顶部</a>");
+
+            try
+            {
+                renderScript(builder);
+            }
+            catch (Exception ex)
+            {
+                builder.AppendLine($"<h4>渲染脚本部分出错：{ex.Message}</h4>");
+            }
+
             builder.AppendLine("    </body>");
             builder.AppendLine("</html>");
 
@@ -265,6 +279,19 @@ namespace xQuantLogFactory.BIZ.Exporter
                         break;
                 }
             }
+        }
+
+        /// <summary>
+        /// 渲染脚本
+        /// </summary>
+        /// <param name="builder"></param>
+        private void RenderScript(StringBuilder builder)
+        {
+            builder.AppendLine(@"<script type=""text/javascript"">
+    $(function () {{
+        $('[data-toggle=""popover""]').popover()
+    }});
+</script>");
         }
 
         /// <summary>
@@ -947,28 +974,28 @@ namespace xQuantLogFactory.BIZ.Exporter
             builder.AppendLine(@"    <div class=""row"">");
 
             var topGroups = groups.OrderByDescending(g => g.Sum(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Sum(r => r.Elapsed).ToString("N0")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Sum(r => r.Elapsed).ToString("N0")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Max(r => r.Elapsed).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Max(r => r.Elapsed).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Sum(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Sum(r => r.RequestStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "总请求流长度-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Sum(r => r.RequestStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Average(r => r.RequestStreamLength).ToString("N2")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "平均请求流长度-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Average(r => r.RequestStreamLength).ToString("N2")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Max(r => r.RequestStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "最大请求流长度-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Max(r => r.RequestStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Sum(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Sum(r => r.ResponseStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "总响应流长度-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Sum(r => r.ResponseStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Average(r => r.ResponseStreamLength).ToString("N2")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "平均响应流长度-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Average(r => r.ResponseStreamLength).ToString("N2")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Max(r => r.ResponseStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            this.RenderRankingList(builder, "最大响应流长度-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("danger", g.Max(r => r.ResponseStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
-            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("info", g.Count().ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")));
+            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => this.RenderPopover(g.Key.MethodName, "方法详情", g.Key.RequestURI), g => this.RenderValue("info", g.Count().ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")));
 
             builder.AppendLine(@"    </div>");
             builder.AppendLine(@"</div>");
@@ -1092,6 +1119,17 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <returns></returns>
         private string RenderValue<TValue>(string style, TValue value)
             => $@"<span class=""badge badge-{style}"">{value}</span>";
+
+        /// <summary>
+        /// 渲染提示框
+        /// </summary>
+        /// <typeparam name="TLabel"></typeparam>
+        /// <param name="label"></param>
+        /// <param name="title"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        private string RenderPopover<TLabel>(TLabel label, string title, string content)
+            => $@"<nobr data-toggle=""popover"" title=""{title}"" data-content=""{content}"">{label}</nobr>";
         #endregion
     }
 }
