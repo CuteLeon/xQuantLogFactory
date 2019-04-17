@@ -942,31 +942,33 @@ namespace xQuantLogFactory.BIZ.Exporter
                 .ToArray();
 
             builder.AppendLine(@"<div class=""container-fluid"">");
+            builder.AppendLine($@"  <div class=""row align-content-center"">{this.RenderValue("danger", "排行榜排序字段")} {this.RenderValue("warning", "平均耗时")} {this.RenderValue("info", "方法调用次数")}</div>");
+            builder.AppendLine(@"   <hr />");
             builder.AppendLine(@"    <div class=""row"">");
 
             var topGroups = groups.OrderByDescending(g => g.Sum(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("", g.Sum(r => r.Elapsed).ToString("N")), g => g.Count().ToString("N"));
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Sum(r => r.Elapsed).ToString("N0")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.Elapsed).ToString("N2"));
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.Elapsed).ToString("N"));
+            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Max(r => r.Elapsed).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Sum(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.RequestStreamLength).ToString("N"));
+            this.RenderRankingList(builder, "总请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Sum(r => r.RequestStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.RequestStreamLength).ToString("N2"));
+            this.RenderRankingList(builder, "平均请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Average(r => r.RequestStreamLength).ToString("N2")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.RequestStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.RequestStreamLength).ToString("N"));
+            this.RenderRankingList(builder, "最大请求流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Max(r => r.RequestStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Sum(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.ResponseStreamLength).ToString("N"));
+            this.RenderRankingList(builder, "总响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Sum(r => r.ResponseStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.ResponseStreamLength).ToString("N2"));
+            this.RenderRankingList(builder, "平均响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Average(r => r.ResponseStreamLength).ToString("N2")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.ResponseStreamLength)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => g.Max(r => r.ResponseStreamLength).ToString("N"));
+            this.RenderRankingList(builder, "最大响应流长度-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("danger", g.Max(r => r.ResponseStreamLength).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
-            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key.MethodName, g => g.Count().ToString("N"));
+            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("info", g.Count().ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.Elapsed).ToString("N2")));
 
             builder.AppendLine(@"    </div>");
             builder.AppendLine(@"</div>");
