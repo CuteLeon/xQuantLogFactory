@@ -1008,12 +1008,12 @@ namespace xQuantLogFactory.BIZ.Exporter
         <div class=""col"" style=""margin-bottom:10px"">
             <div class=""card text-left font-weight-bold"">
                 <div class=""card-header"">
-                    SQL-Hash 对应关系
+                    SQL-Hash 对应关系 (双击展开或折叠SQL卡片)
                 </div>
                 <div class=""card-body"">
                     <div class=""card-text"">
                         {string.Join("\n", sqlHashs.Select(sqlhash => $@"
-                        <div class=""alert alert-success"" data-toggle=""collapse"" data-target=""#sqlhash_{sqlhash}"" role=""alert"">
+                        <div class=""sqlcard alert alert-success"" data-target=""#sqlhash_{sqlhash}"" role=""alert"">
                             {sqlhash}
                             <div class=""collapse font-weight-normal"" id=""sqlhash_{sqlhash}"">
                                 <xmp>{(SQLAnalysiser.SQLHashs.TryGetValue(sqlhash, out string sql) ? sql : "<未找到 Hash 对应的 SQL 命令！>")}</xmp>
@@ -1033,6 +1033,13 @@ namespace xQuantLogFactory.BIZ.Exporter
                 let sqlelement = $(sqlelementid);
                 sqlelement.collapse('show');
                 location.href = sqlelementid;
+            }});
+            $("".sqlcard"").dblclick((e) => {{
+                let target = $(e.target).data('target');
+                if (target !== undefined)
+                {{
+                    $(target).collapse('toggle');
+                }}
             }});
         }})();
     </script>");
