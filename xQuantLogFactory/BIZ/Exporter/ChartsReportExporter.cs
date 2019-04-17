@@ -945,7 +945,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             builder.AppendLine(@"    <div class=""row"">");
 
             var topGroups = groups.OrderByDescending(g => g.Sum(r => r.Elapsed)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Sum(r => r.Elapsed).ToString("N"));
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key.MethodName, g => this.RenderValue("", g.Sum(r => r.Elapsed).ToString("N")), g => g.Count().ToString("N"));
             topGroups = groups.OrderByDescending(g => g.Average(r => r.Elapsed)).Take(20).ToArray();
             this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key.MethodName, g => g.Average(r => r.Elapsed).ToString("N2"));
             topGroups = groups.OrderByDescending(g => g.Max(r => r.Elapsed)).Take(20).ToArray();
@@ -986,19 +986,21 @@ namespace xQuantLogFactory.BIZ.Exporter
             List<string> sqlHashs = new List<string>();
 
             builder.AppendLine(@"<div class=""container-fluid"">");
+            builder.AppendLine($@"  <div class=""row align-content-center"">{this.RenderValue("danger", "SQL总耗时")} {this.RenderValue("warning", "SQL平均耗时")} {this.RenderValue("info", "调用次数")}</div>");
+            builder.AppendLine(@"   <hr />");
             builder.AppendLine(@"    <div class=""row"">");
 
             var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(100).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Sum(r => r.ElapsedMillisecond).ToString("N"));
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => this.RenderValue("danger", g.Sum(r => r.ElapsedMillisecond).ToString("N0")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(100).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Average(r => r.ElapsedMillisecond).ToString("N2"));
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
 
             topGroups = groups.OrderByDescending(g => g.Count()).Take(100).ToArray();
             sqlHashs = sqlHashs.Union(topGroups.Select(r => r.Key.SQLHash)).ToList();
-            this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => g.Count().ToString("N"));
+            this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => this.RenderValue("info", g.Count().ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N")));
 
             string CreateSQLHashLink(string database, string sqlhash)
                 => $@"<a class=""link-sqlhash text-primary"" data-sqlhash=""{sqlhash}""><span class=""badge badge-success font-weight-bold"">{database}</span> {sqlhash}</a>";
@@ -1053,13 +1055,13 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="title"></param>
         /// <param name="sources"></param>
         /// <param name="keySelector"></param>
-        /// <param name="valueSelector"></param>
+        /// <param name="valueSelectors"></param>
         private void RenderRankingList<TSource, TKey, TValue>(
             StringBuilder builder,
             string title,
             IEnumerable<TSource> sources,
             Func<TSource, TKey> keySelector,
-            Func<TSource, TValue> valueSelector)
+            params Func<TSource, TValue>[] valueSelectors)
         {
             builder.Append($@"
         <div class=""col-sm-4"" style=""margin-bottom:10px"">
@@ -1070,7 +1072,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 <div class=""card-body"">
                     <div class=""card-text"">
                         <ul>
-                            {string.Join("\n", sources.Select(element => $@"<li>{keySelector(element)} <span class=""badge badge-danger"">{valueSelector(element)}</span></li>"))}
+                            {string.Join("\n", sources.Select(element => $@"<li>{keySelector(element)} {string.Join(" ", valueSelectors.Select(vselector => vselector(element)))}</li>"))}
                         </ul>
                     </div>
                 </div>
@@ -1078,6 +1080,16 @@ namespace xQuantLogFactory.BIZ.Exporter
         </div>
 ");
         }
+
+        /// <summary>
+        /// 渲染值
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="style"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private string RenderValue<TValue>(string style, TValue value)
+            => $@"<span class=""badge badge-{style}"">{value}</span>";
         #endregion
     }
 }

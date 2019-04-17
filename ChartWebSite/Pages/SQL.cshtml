@@ -1,4 +1,6 @@
 ﻿<div class="container-fluid">
+    <div class="row align-content-center"><span class="badge badge-danger">SQL总耗时</span> <span class="badge badge-warning">SQL平均耗时</span> <span class="badge badge-info">调用次数</span></div>
+    <hr />
     <div class="row">
 
         <div class="col-sm-4" style="margin-bottom:10px">
@@ -9,26 +11,106 @@
                 <div class="card-body">
                     <div class="card-text">
                         <ul>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A04F541D"><span class="badge badge-success font-weight-bold">xir_trd</span> A04F541D</a> <span class="badge badge-danger">27489</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="74F94F74"><span class="badge badge-success font-weight-bold">xir_trd</span> 74F94F74</a> <span class="badge badge-danger">23199</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="3A06ACBD"><span class="badge badge-success font-weight-bold">xir_trd</span> 3A06ACBD</a> <span class="badge badge-danger">20964</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="60E38F7F"><span class="badge badge-success font-weight-bold">xir_trd</span> 60E38F7F</a> <span class="badge badge-danger">20087</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A98A0D49"><span class="badge badge-success font-weight-bold">xir_trd</span> A98A0D49</a> <span class="badge badge-danger">11835</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="64B13C0A"><span class="badge badge-success font-weight-bold">xir_trd</span> 64B13C0A</a> <span class="badge badge-danger">10293</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="8458A15"><span class="badge badge-success font-weight-bold">xir_md</span> 8458A15</a> <span class="badge badge-danger">9921</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A6F7CE"><span class="badge badge-success font-weight-bold">xir_trd</span> 50A6F7CE</a> <span class="badge badge-danger">7678</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="CF806706"><span class="badge badge-success font-weight-bold">xir_trd</span> CF806706</a> <span class="badge badge-danger">5139</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="165F3811"><span class="badge badge-success font-weight-bold">xir_trd</span> 165F3811</a> <span class="badge badge-danger">5039</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="7CF92B4D"><span class="badge badge-success font-weight-bold">xir_trd</span> 7CF92B4D</a> <span class="badge badge-danger">4914</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="6195CBB7"><span class="badge badge-success font-weight-bold">xir_trd</span> 6195CBB7</a> <span class="badge badge-danger">4305</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="4F3FC4B6"><span class="badge badge-success font-weight-bold">xir_trd</span> 4F3FC4B6</a> <span class="badge badge-danger">3157</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A992B8B"><span class="badge badge-success font-weight-bold">xir_trd</span> A992B8B</a> <span class="badge badge-danger">2929</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="E289C963"><span class="badge badge-success font-weight-bold">xir_trd</span> E289C963</a> <span class="badge badge-danger">2605</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A0B676"><span class="badge badge-success font-weight-bold">xir_app</span> 50A0B676</a> <span class="badge badge-danger">2471</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="2ED9C0"><span class="badge badge-success font-weight-bold">xir_md</span> 2ED9C0</a> <span class="badge badge-danger">2466</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="B021ED06"><span class="badge badge-success font-weight-bold">xir_md</span> B021ED06</a> <span class="badge badge-danger">2419</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="2AECAFAA"><span class="badge badge-success font-weight-bold">xir_trd</span> 2AECAFAA</a> <span class="badge badge-danger">2380</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="C3F30DAE"><span class="badge badge-success font-weight-bold">xir_trd</span> C3F30DAE</a> <span class="badge badge-danger">2285</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E47CE3B9"><span class="badge badge-success font-weight-bold">xir_trd</span> E47CE3B9</a> <span class="badge badge-danger">61,597</span> <span class="badge badge-info">120</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2A2510CF"><span class="badge badge-success font-weight-bold">xir_trd</span> 2A2510CF</a> <span class="badge badge-danger">22,314</span> <span class="badge badge-info">3,587</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="74F94F74"><span class="badge badge-success font-weight-bold">xir_trd</span> 74F94F74</a> <span class="badge badge-danger">14,867</span> <span class="badge badge-info">7,096</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A04F541D"><span class="badge badge-success font-weight-bold">xir_trd</span> A04F541D</a> <span class="badge badge-danger">9,536</span> <span class="badge badge-info">7,611</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A684373F"><span class="badge badge-success font-weight-bold">xir_trd</span> A684373F</a> <span class="badge badge-danger">8,126</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EC76FA25"><span class="badge badge-success font-weight-bold">xir_trd</span> EC76FA25</a> <span class="badge badge-danger">5,728</span> <span class="badge badge-info">3,546</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4F45975C"><span class="badge badge-success font-weight-bold">xir_md</span> 4F45975C</a> <span class="badge badge-danger">4,729</span> <span class="badge badge-info">120</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2AECAFAA"><span class="badge badge-success font-weight-bold">xir_trd</span> 2AECAFAA</a> <span class="badge badge-danger">4,599</span> <span class="badge badge-info">2,208</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="488C0C6D"><span class="badge badge-success font-weight-bold">xir_trd</span> 488C0C6D</a> <span class="badge badge-danger">3,797</span> <span class="badge badge-info">2</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="AACAF8E3"><span class="badge badge-success font-weight-bold">xir_trd</span> AACAF8E3</a> <span class="badge badge-danger">3,712</span> <span class="badge badge-info">1,788</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FD4AE996"><span class="badge badge-success font-weight-bold">xir_trd</span> FD4AE996</a> <span class="badge badge-danger">3,407</span> <span class="badge badge-info">3,546</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="64B13C0A"><span class="badge badge-success font-weight-bold">xir_trd</span> 64B13C0A</a> <span class="badge badge-danger">3,312</span> <span class="badge badge-info">7,535</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4F3FC4B6"><span class="badge badge-success font-weight-bold">xir_trd</span> 4F3FC4B6</a> <span class="badge badge-danger">2,592</span> <span class="badge badge-info">11,003</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A89B656F"><span class="badge badge-success font-weight-bold">xir_trd</span> A89B656F</a> <span class="badge badge-danger">2,269</span> <span class="badge badge-info">550</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A992B8B"><span class="badge badge-success font-weight-bold">xir_trd</span> A992B8B</a> <span class="badge badge-danger">2,094</span> <span class="badge badge-info">3,546</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F9C4AB1C"><span class="badge badge-success font-weight-bold">xir_trd</span> F9C4AB1C</a> <span class="badge badge-danger">1,969</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="81E9AFA8"><span class="badge badge-success font-weight-bold">xir_trd</span> 81E9AFA8</a> <span class="badge badge-danger">1,920</span> <span class="badge badge-info">582</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="7E10985C"><span class="badge badge-success font-weight-bold">xir_trd</span> 7E10985C</a> <span class="badge badge-danger">1,563</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="47EFCF9D"><span class="badge badge-success font-weight-bold">xir_trd</span> 47EFCF9D</a> <span class="badge badge-danger">1,516</span> <span class="badge badge-info">121</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A8953DE0"><span class="badge badge-success font-weight-bold">xir_trd</span> A8953DE0</a> <span class="badge badge-danger">1,458</span> <span class="badge badge-info">60</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="49BA83A4"><span class="badge badge-success font-weight-bold">xir_trd</span> 49BA83A4</a> <span class="badge badge-danger">1,424</span> <span class="badge badge-info">2,104</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E289C963"><span class="badge badge-success font-weight-bold">xir_trd</span> E289C963</a> <span class="badge badge-danger">1,422</span> <span class="badge badge-info">14,257</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C3F30DAE"><span class="badge badge-success font-weight-bold">xir_trd</span> C3F30DAE</a> <span class="badge badge-danger">1,296</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="1C413CFE"><span class="badge badge-success font-weight-bold">xir_trd</span> 1C413CFE</a> <span class="badge badge-danger">1,200</span> <span class="badge badge-info">232</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B949F9C4"><span class="badge badge-success font-weight-bold">xir_md</span> B949F9C4</a> <span class="badge badge-danger">1,168</span> <span class="badge badge-info">5,443</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="78F73A06"><span class="badge badge-success font-weight-bold">xir_trd</span> 78F73A06</a> <span class="badge badge-danger">1,163</span> <span class="badge badge-info">114</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EA10CC29"><span class="badge badge-success font-weight-bold">xir_md</span> EA10CC29</a> <span class="badge badge-danger">1,103</span> <span class="badge badge-info">1,045</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="36AEAFD7"><span class="badge badge-success font-weight-bold">xir_trd</span> 36AEAFD7</a> <span class="badge badge-danger">846</span> <span class="badge badge-info">582</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="CAE05C5D"><span class="badge badge-success font-weight-bold">xir_trd</span> CAE05C5D</a> <span class="badge badge-danger">812</span> <span class="badge badge-info">54</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A0B676"><span class="badge badge-success font-weight-bold">xir_app</span> 50A0B676</a> <span class="badge badge-danger">784</span> <span class="badge badge-info">586</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="219FA8A2"><span class="badge badge-success font-weight-bold">xir_md</span> 219FA8A2</a> <span class="badge badge-danger">784</span> <span class="badge badge-info">730</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="66537C0"><span class="badge badge-success font-weight-bold">xir_app</span> 66537C0</a> <span class="badge badge-danger">672</span> <span class="badge badge-info">14</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="86D23ACF"><span class="badge badge-success font-weight-bold">xir_trd</span> 86D23ACF</a> <span class="badge badge-danger">671</span> <span class="badge badge-info">1,797</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="79543980"><span class="badge badge-success font-weight-bold">xir_trd</span> 79543980</a> <span class="badge badge-danger">656</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D5D1F33E"><span class="badge badge-success font-weight-bold">xir_md</span> D5D1F33E</a> <span class="badge badge-danger">608</span> <span class="badge badge-info">2,100</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="14ACBBDF"><span class="badge badge-success font-weight-bold">xir_trd</span> 14ACBBDF</a> <span class="badge badge-danger">608</span> <span class="badge badge-info">518</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C7BE3215"><span class="badge badge-success font-weight-bold">xir_trd</span> C7BE3215</a> <span class="badge badge-danger">592</span> <span class="badge badge-info">1,797</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="5C56B37A"><span class="badge badge-success font-weight-bold">xir_trd</span> 5C56B37A</a> <span class="badge badge-danger">576</span> <span class="badge badge-info">2,247</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BC886365"><span class="badge badge-success font-weight-bold">xir_app</span> BC886365</a> <span class="badge badge-danger">541</span> <span class="badge badge-info">120</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E67EE274"><span class="badge badge-success font-weight-bold">xir_trd</span> E67EE274</a> <span class="badge badge-danger">531</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="1E71CB41"><span class="badge badge-success font-weight-bold">xir_trd</span> 1E71CB41</a> <span class="badge badge-danger">512</span> <span class="badge badge-info">3,586</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2F2E780E"><span class="badge badge-success font-weight-bold">xir_trd</span> 2F2E780E</a> <span class="badge badge-danger">496</span> <span class="badge badge-info">582</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F3E080F4"><span class="badge badge-success font-weight-bold">xir_trd</span> F3E080F4</a> <span class="badge badge-danger">464</span> <span class="badge badge-info">1,804</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B0D99BF1"><span class="badge badge-success font-weight-bold">xir_trd</span> B0D99BF1</a> <span class="badge badge-danger">432</span> <span class="badge badge-info">232</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D1668E07"><span class="badge badge-success font-weight-bold">xir_trd</span> D1668E07</a> <span class="badge badge-danger">422</span> <span class="badge badge-info">2</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D5A4E24F"><span class="badge badge-success font-weight-bold">xir_trd</span> D5A4E24F</a> <span class="badge badge-danger">400</span> <span class="badge badge-info">7,189</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="7BE30873"><span class="badge badge-success font-weight-bold">xir_trd</span> 7BE30873</a> <span class="badge badge-danger">400</span> <span class="badge badge-info">699</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="398457EA"><span class="badge badge-success font-weight-bold">xir_trd</span> 398457EA</a> <span class="badge badge-danger">391</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="481C9410"><span class="badge badge-success font-weight-bold">xir_trd</span> 481C9410</a> <span class="badge badge-danger">383</span> <span class="badge badge-info">120</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="339671DF"><span class="badge badge-success font-weight-bold">xir_trd</span> 339671DF</a> <span class="badge badge-danger">377</span> <span class="badge badge-info">6</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="DF1BAE1C"><span class="badge badge-success font-weight-bold">xir_trd</span> DF1BAE1C</a> <span class="badge badge-danger">368</span> <span class="badge badge-info">592</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8458A15"><span class="badge badge-success font-weight-bold">xir_md</span> 8458A15</a> <span class="badge badge-danger">368</span> <span class="badge badge-info">177</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="25BEA651"><span class="badge badge-success font-weight-bold">xir_trd</span> 25BEA651</a> <span class="badge badge-danger">359</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2861CEAB"><span class="badge badge-success font-weight-bold">xir_trd</span> 2861CEAB</a> <span class="badge badge-danger">344</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C6B6EEB9"><span class="badge badge-success font-weight-bold">xir_trd</span> C6B6EEB9</a> <span class="badge badge-danger">320</span> <span class="badge badge-info">232</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="98D375A9"><span class="badge badge-success font-weight-bold">xir_trd</span> 98D375A9</a> <span class="badge badge-danger">320</span> <span class="badge badge-info">253</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3A071BBC"><span class="badge badge-success font-weight-bold">xir_trd</span> 3A071BBC</a> <span class="badge badge-danger">320</span> <span class="badge badge-info">116</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="990BAFC1"><span class="badge badge-success font-weight-bold">xir_trd</span> 990BAFC1</a> <span class="badge badge-danger">313</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2C2C0CDE"><span class="badge badge-success font-weight-bold">xir_trd</span> 2C2C0CDE</a> <span class="badge badge-danger">304</span> <span class="badge badge-info">121</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="56225808"><span class="badge badge-success font-weight-bold">xir_trd</span> 56225808</a> <span class="badge badge-danger">297</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="6195CBB7"><span class="badge badge-success font-weight-bold">xir_trd</span> 6195CBB7</a> <span class="badge badge-danger">297</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8D27DE38"><span class="badge badge-success font-weight-bold">xir_trd</span> 8D27DE38</a> <span class="badge badge-danger">288</span> <span class="badge badge-info">233</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E1CE80D"><span class="badge badge-success font-weight-bold">xir_trd</span> E1CE80D</a> <span class="badge badge-danger">288</span> <span class="badge badge-info">114</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3CB009D2"><span class="badge badge-success font-weight-bold">xir_trd</span> 3CB009D2</a> <span class="badge badge-danger">282</span> <span class="badge badge-info">2</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A1457214"><span class="badge badge-success font-weight-bold">xir_trd</span> A1457214</a> <span class="badge badge-danger">281</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3C2D3B95"><span class="badge badge-success font-weight-bold">xir_md</span> 3C2D3B95</a> <span class="badge badge-danger">281</span> <span class="badge badge-info">2</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A6F7CE"><span class="badge badge-success font-weight-bold">xir_trd</span> 50A6F7CE</a> <span class="badge badge-danger">272</span> <span class="badge badge-info">281</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="165F3811"><span class="badge badge-success font-weight-bold">xir_trd</span> 165F3811</a> <span class="badge badge-danger">272</span> <span class="badge badge-info">259</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="693594CB"><span class="badge badge-success font-weight-bold">xir_trd</span> 693594CB</a> <span class="badge badge-danger">266</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A68F9469"><span class="badge badge-success font-weight-bold">xir_trd</span> A68F9469</a> <span class="badge badge-danger">266</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="54A3AD3C"><span class="badge badge-success font-weight-bold">xir_trd</span> 54A3AD3C</a> <span class="badge badge-danger">256</span> <span class="badge badge-info">1,805</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B4D11888"><span class="badge badge-success font-weight-bold">xir_trd</span> B4D11888</a> <span class="badge badge-danger">250</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="66DD86A2"><span class="badge badge-success font-weight-bold">xir_app</span> 66DD86A2</a> <span class="badge badge-danger">240</span> <span class="badge badge-info">120</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B4AC7EBA"><span class="badge badge-success font-weight-bold">xir_trd</span> B4AC7EBA</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BDAFB247"><span class="badge badge-success font-weight-bold">xir_trd</span> BDAFB247</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BCBC17AC"><span class="badge badge-success font-weight-bold">xir_trd</span> BCBC17AC</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="73229EB2"><span class="badge badge-success font-weight-bold">xir_trd</span> 73229EB2</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4E314D96"><span class="badge badge-success font-weight-bold">xir_trd</span> 4E314D96</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="36024328"><span class="badge badge-success font-weight-bold">xir_trd</span> 36024328</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="77912EF3"><span class="badge badge-success font-weight-bold">xir_trd</span> 77912EF3</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2B53A60E"><span class="badge badge-success font-weight-bold">xir_trd</span> 2B53A60E</a> <span class="badge badge-danger">234</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FD4B27C"><span class="badge badge-success font-weight-bold">xir_trd</span> FD4B27C</a> <span class="badge badge-danger">220</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BB4152BA"><span class="badge badge-success font-weight-bold">xir_trd</span> BB4152BA</a> <span class="badge badge-danger">220</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EF0D9416"><span class="badge badge-success font-weight-bold">xir_trd</span> EF0D9416</a> <span class="badge badge-danger">220</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="69938674"><span class="badge badge-success font-weight-bold">xir_trd</span> 69938674</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E534E29"><span class="badge badge-success font-weight-bold">xir_trd</span> E534E29</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="1B288341"><span class="badge badge-success font-weight-bold">xir_trd</span> 1B288341</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2D809D5C"><span class="badge badge-success font-weight-bold">xir_trd</span> 2D809D5C</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8AC2C936"><span class="badge badge-success font-weight-bold">xir_trd</span> 8AC2C936</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="360B66A9"><span class="badge badge-success font-weight-bold">xir_trd</span> 360B66A9</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="9EE9ABA4"><span class="badge badge-success font-weight-bold">xir_trd</span> 9EE9ABA4</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="420B7A4B"><span class="badge badge-success font-weight-bold">xir_trd</span> 420B7A4B</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A428476D"><span class="badge badge-success font-weight-bold">xir_trd</span> A428476D</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4D8926CB"><span class="badge badge-success font-weight-bold">xir_trd</span> 4D8926CB</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3D246747"><span class="badge badge-success font-weight-bold">xir_trd</span> 3D246747</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F3F9A22D"><span class="badge badge-success font-weight-bold">xir_trd</span> F3F9A22D</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="DE4C8128"><span class="badge badge-success font-weight-bold">xir_trd</span> DE4C8128</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8DA0CC6B"><span class="badge badge-success font-weight-bold">xir_trd</span> 8DA0CC6B</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4D9F9631"><span class="badge badge-success font-weight-bold">xir_trd</span> 4D9F9631</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FB50C31A"><span class="badge badge-success font-weight-bold">xir_trd</span> FB50C31A</a> <span class="badge badge-danger">219</span> <span class="badge badge-info">1</span></li>
                         </ul>
                     </div>
                 </div>
@@ -43,26 +125,106 @@
                 <div class="card-body">
                     <div class="card-text">
                         <ul>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="60E38F7F"><span class="badge badge-success font-weight-bold">xir_trd</span> 60E38F7F</a> <span class="badge badge-danger">20087</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A98A0D49"><span class="badge badge-success font-weight-bold">xir_trd</span> A98A0D49</a> <span class="badge badge-danger">5917.5</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="7CF92B4D"><span class="badge badge-success font-weight-bold">xir_trd</span> 7CF92B4D</a> <span class="badge badge-danger">4914</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="6195CBB7"><span class="badge badge-success font-weight-bold">xir_trd</span> 6195CBB7</a> <span class="badge badge-danger">4305</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A992B8B"><span class="badge badge-success font-weight-bold">xir_trd</span> A992B8B</a> <span class="badge badge-danger">2929</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="2ED9C0"><span class="badge badge-success font-weight-bold">xir_md</span> 2ED9C0</a> <span class="badge badge-danger">2466</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="C3F30DAE"><span class="badge badge-success font-weight-bold">xir_trd</span> C3F30DAE</a> <span class="badge badge-danger">2285</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A175A910"><span class="badge badge-success font-weight-bold">xir_trd</span> A175A910</a> <span class="badge badge-danger">1119</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="BB4152BA"><span class="badge badge-success font-weight-bold">xir_trd</span> BB4152BA</a> <span class="badge badge-danger">653</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="35682D3E"><span class="badge badge-success font-weight-bold">xir_trd</span> 35682D3E</a> <span class="badge badge-danger">610</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="2593CD91"><span class="badge badge-success font-weight-bold">xir_trd</span> 2593CD91</a> <span class="badge badge-danger">567</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="E9843472"><span class="badge badge-success font-weight-bold">xir_trd</span> E9843472</a> <span class="badge badge-danger">499</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="37E7E3CD"><span class="badge badge-success font-weight-bold">xir_trd</span> 37E7E3CD</a> <span class="badge badge-danger">497</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="2AC61EBD"><span class="badge badge-success font-weight-bold">xir_trd</span> 2AC61EBD</a> <span class="badge badge-danger">489</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="7CAF565C"><span class="badge badge-success font-weight-bold">xir_trd</span> 7CAF565C</a> <span class="badge badge-danger">442</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="CB443CA9"><span class="badge badge-success font-weight-bold">xir_trd</span> CB443CA9</a> <span class="badge badge-danger">371</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="75F5EC35"><span class="badge badge-success font-weight-bold">xir_trd</span> 75F5EC35</a> <span class="badge badge-danger">359</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="9764D23E"><span class="badge badge-success font-weight-bold">xir_trd</span> 9764D23E</a> <span class="badge badge-danger">341</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="4645049F"><span class="badge badge-success font-weight-bold">xir_trd</span> 4645049F</a> <span class="badge badge-danger">326</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="345913B8"><span class="badge badge-success font-weight-bold">xir_trd</span> 345913B8</a> <span class="badge badge-danger">301</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F9C4AB1C"><span class="badge badge-success font-weight-bold">xir_trd</span> F9C4AB1C</a> <span class="badge badge-warning">1,969.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="488C0C6D"><span class="badge badge-success font-weight-bold">xir_trd</span> 488C0C6D</a> <span class="badge badge-warning">1,898.50</span> <span class="badge badge-info">2</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="7E10985C"><span class="badge badge-success font-weight-bold">xir_trd</span> 7E10985C</a> <span class="badge badge-warning">1,563.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A684373F"><span class="badge badge-success font-weight-bold">xir_trd</span> A684373F</a> <span class="badge badge-warning">1,160.86</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="79543980"><span class="badge badge-success font-weight-bold">xir_trd</span> 79543980</a> <span class="badge badge-warning">656.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E67EE274"><span class="badge badge-success font-weight-bold">xir_trd</span> E67EE274</a> <span class="badge badge-warning">531.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E47CE3B9"><span class="badge badge-success font-weight-bold">xir_trd</span> E47CE3B9</a> <span class="badge badge-warning">513.31</span> <span class="badge badge-info">120</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="398457EA"><span class="badge badge-success font-weight-bold">xir_trd</span> 398457EA</a> <span class="badge badge-warning">391.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="25BEA651"><span class="badge badge-success font-weight-bold">xir_trd</span> 25BEA651</a> <span class="badge badge-warning">359.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="56225808"><span class="badge badge-success font-weight-bold">xir_trd</span> 56225808</a> <span class="badge badge-warning">297.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="6195CBB7"><span class="badge badge-success font-weight-bold">xir_trd</span> 6195CBB7</a> <span class="badge badge-warning">297.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="693594CB"><span class="badge badge-success font-weight-bold">xir_trd</span> 693594CB</a> <span class="badge badge-warning">266.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A68F9469"><span class="badge badge-success font-weight-bold">xir_trd</span> A68F9469</a> <span class="badge badge-warning">266.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B4D11888"><span class="badge badge-success font-weight-bold">xir_trd</span> B4D11888</a> <span class="badge badge-warning">250.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B4AC7EBA"><span class="badge badge-success font-weight-bold">xir_trd</span> B4AC7EBA</a> <span class="badge badge-warning">234.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BDAFB247"><span class="badge badge-success font-weight-bold">xir_trd</span> BDAFB247</a> <span class="badge badge-warning">234.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BCBC17AC"><span class="badge badge-success font-weight-bold">xir_trd</span> BCBC17AC</a> <span class="badge badge-warning">234.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4E314D96"><span class="badge badge-success font-weight-bold">xir_trd</span> 4E314D96</a> <span class="badge badge-warning">234.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="36024328"><span class="badge badge-success font-weight-bold">xir_trd</span> 36024328</a> <span class="badge badge-warning">234.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="77912EF3"><span class="badge badge-success font-weight-bold">xir_trd</span> 77912EF3</a> <span class="badge badge-warning">234.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2B53A60E"><span class="badge badge-success font-weight-bold">xir_trd</span> 2B53A60E</a> <span class="badge badge-warning">234.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="69938674"><span class="badge badge-success font-weight-bold">xir_trd</span> 69938674</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E534E29"><span class="badge badge-success font-weight-bold">xir_trd</span> E534E29</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="1B288341"><span class="badge badge-success font-weight-bold">xir_trd</span> 1B288341</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2D809D5C"><span class="badge badge-success font-weight-bold">xir_trd</span> 2D809D5C</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8AC2C936"><span class="badge badge-success font-weight-bold">xir_trd</span> 8AC2C936</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="360B66A9"><span class="badge badge-success font-weight-bold">xir_trd</span> 360B66A9</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="9EE9ABA4"><span class="badge badge-success font-weight-bold">xir_trd</span> 9EE9ABA4</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="420B7A4B"><span class="badge badge-success font-weight-bold">xir_trd</span> 420B7A4B</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A428476D"><span class="badge badge-success font-weight-bold">xir_trd</span> A428476D</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4D8926CB"><span class="badge badge-success font-weight-bold">xir_trd</span> 4D8926CB</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3D246747"><span class="badge badge-success font-weight-bold">xir_trd</span> 3D246747</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F3F9A22D"><span class="badge badge-success font-weight-bold">xir_trd</span> F3F9A22D</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="DE4C8128"><span class="badge badge-success font-weight-bold">xir_trd</span> DE4C8128</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8DA0CC6B"><span class="badge badge-success font-weight-bold">xir_trd</span> 8DA0CC6B</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4D9F9631"><span class="badge badge-success font-weight-bold">xir_trd</span> 4D9F9631</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FB50C31A"><span class="badge badge-success font-weight-bold">xir_trd</span> FB50C31A</a> <span class="badge badge-warning">219.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D1668E07"><span class="badge badge-success font-weight-bold">xir_trd</span> D1668E07</a> <span class="badge badge-warning">211.00</span> <span class="badge badge-info">2</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="AECCA2D3"><span class="badge badge-success font-weight-bold">xir_trd</span> AECCA2D3</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="538C6A88"><span class="badge badge-success font-weight-bold">xir_trd</span> 538C6A88</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="21F98D07"><span class="badge badge-success font-weight-bold">xir_trd</span> 21F98D07</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="59C1D866"><span class="badge badge-success font-weight-bold">xir_trd</span> 59C1D866</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="86DFFE3E"><span class="badge badge-success font-weight-bold">xir_trd</span> 86DFFE3E</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8701B6F4"><span class="badge badge-success font-weight-bold">xir_trd</span> 8701B6F4</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2C07B8D5"><span class="badge badge-success font-weight-bold">xir_trd</span> 2C07B8D5</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="31E5F7EE"><span class="badge badge-success font-weight-bold">xir_trd</span> 31E5F7EE</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BD0ECAE0"><span class="badge badge-success font-weight-bold">xir_trd</span> BD0ECAE0</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F4161B8D"><span class="badge badge-success font-weight-bold">xir_trd</span> F4161B8D</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="90D3434B"><span class="badge badge-success font-weight-bold">xir_trd</span> 90D3434B</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F9E3A9C3"><span class="badge badge-success font-weight-bold">xir_trd</span> F9E3A9C3</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4D8FA352"><span class="badge badge-success font-weight-bold">xir_trd</span> 4D8FA352</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="231FB378"><span class="badge badge-success font-weight-bold">xir_trd</span> 231FB378</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="500F310B"><span class="badge badge-success font-weight-bold">xir_trd</span> 500F310B</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D94651A4"><span class="badge badge-success font-weight-bold">xir_trd</span> D94651A4</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="592AEE03"><span class="badge badge-success font-weight-bold">xir_trd</span> 592AEE03</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="69524966"><span class="badge badge-success font-weight-bold">xir_trd</span> 69524966</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C22065C5"><span class="badge badge-success font-weight-bold">xir_trd</span> C22065C5</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="83649947"><span class="badge badge-success font-weight-bold">xir_trd</span> 83649947</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="239F6F41"><span class="badge badge-success font-weight-bold">xir_trd</span> 239F6F41</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="7FCC7244"><span class="badge badge-success font-weight-bold">xir_trd</span> 7FCC7244</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EDCCFDBF"><span class="badge badge-success font-weight-bold">xir_trd</span> EDCCFDBF</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C21FBEDD"><span class="badge badge-success font-weight-bold">xir_trd</span> C21FBEDD</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2DB399CC"><span class="badge badge-success font-weight-bold">xir_trd</span> 2DB399CC</a> <span class="badge badge-warning">203.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E694EE32"><span class="badge badge-success font-weight-bold">xir_trd</span> E694EE32</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E1CE72DF"><span class="badge badge-success font-weight-bold">xir_trd</span> E1CE72DF</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EF09BE59"><span class="badge badge-success font-weight-bold">xir_trd</span> EF09BE59</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BE3A021F"><span class="badge badge-success font-weight-bold">xir_trd</span> BE3A021F</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F626997B"><span class="badge badge-success font-weight-bold">xir_trd</span> F626997B</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FD10011A"><span class="badge badge-success font-weight-bold">xir_trd</span> FD10011A</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="85B4C6FF"><span class="badge badge-success font-weight-bold">xir_trd</span> 85B4C6FF</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="AECF46EE"><span class="badge badge-success font-weight-bold">xir_trd</span> AECF46EE</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EBAB88B4"><span class="badge badge-success font-weight-bold">xir_trd</span> EBAB88B4</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="19780930"><span class="badge badge-success font-weight-bold">xir_trd</span> 19780930</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="278E7189"><span class="badge badge-success font-weight-bold">xir_trd</span> 278E7189</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="18FC3BAF"><span class="badge badge-success font-weight-bold">xir_trd</span> 18FC3BAF</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="10B3618C"><span class="badge badge-success font-weight-bold">xir_trd</span> 10B3618C</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D322886E"><span class="badge badge-success font-weight-bold">xir_trd</span> D322886E</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="487C3766"><span class="badge badge-success font-weight-bold">xir_trd</span> 487C3766</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A4DCBACC"><span class="badge badge-success font-weight-bold">xir_trd</span> A4DCBACC</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="AE44866D"><span class="badge badge-success font-weight-bold">xir_trd</span> AE44866D</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="DD951E8D"><span class="badge badge-success font-weight-bold">xir_trd</span> DD951E8D</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="DAC67063"><span class="badge badge-success font-weight-bold">xir_trd</span> DAC67063</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="78F97C11"><span class="badge badge-success font-weight-bold">xir_trd</span> 78F97C11</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F0E3A4AD"><span class="badge badge-success font-weight-bold">xir_trd</span> F0E3A4AD</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E89ACA8A"><span class="badge badge-success font-weight-bold">xir_trd</span> E89ACA8A</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="36560484"><span class="badge badge-success font-weight-bold">xir_trd</span> 36560484</a> <span class="badge badge-warning">188.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="27078F3E"><span class="badge badge-success font-weight-bold">xir_trd</span> 27078F3E</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="DCC070A8"><span class="badge badge-success font-weight-bold">xir_trd</span> DCC070A8</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3E5440CC"><span class="badge badge-success font-weight-bold">xir_trd</span> 3E5440CC</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F2B75DE9"><span class="badge badge-success font-weight-bold">xir_trd</span> F2B75DE9</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="7B5C23CE"><span class="badge badge-success font-weight-bold">xir_trd</span> 7B5C23CE</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E719B949"><span class="badge badge-success font-weight-bold">xir_trd</span> E719B949</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F74114AC"><span class="badge badge-success font-weight-bold">xir_trd</span> F74114AC</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A16F498B"><span class="badge badge-success font-weight-bold">xir_trd</span> A16F498B</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="5C236248"><span class="badge badge-success font-weight-bold">xir_trd</span> 5C236248</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EC456B60"><span class="badge badge-success font-weight-bold">xir_trd</span> EC456B60</a> <span class="badge badge-warning">187.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C3F30DAE"><span class="badge badge-success font-weight-bold">xir_trd</span> C3F30DAE</a> <span class="badge badge-warning">185.14</span> <span class="badge badge-info">7</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FA8BF40D"><span class="badge badge-success font-weight-bold">xir_trd</span> FA8BF40D</a> <span class="badge badge-warning">172.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="53D548CF"><span class="badge badge-success font-weight-bold">xir_trd</span> 53D548CF</a> <span class="badge badge-warning">172.00</span> <span class="badge badge-info">1</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="72E7A86F"><span class="badge badge-success font-weight-bold">xir_trd</span> 72E7A86F</a> <span class="badge badge-warning">172.00</span> <span class="badge badge-info">1</span></li>
                         </ul>
                     </div>
                 </div>
@@ -77,33 +239,112 @@
                 <div class="card-body">
                     <div class="card-text">
                         <ul>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="3A06ACBD"><span class="badge badge-success font-weight-bold">xir_trd</span> 3A06ACBD</a> <span class="badge badge-danger">9939</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A04F541D"><span class="badge badge-success font-weight-bold">xir_trd</span> A04F541D</a> <span class="badge badge-danger">9734</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="8458A15"><span class="badge badge-success font-weight-bold">xir_md</span> 8458A15</a> <span class="badge badge-danger">3535</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="64B13C0A"><span class="badge badge-success font-weight-bold">xir_trd</span> 64B13C0A</a> <span class="badge badge-danger">3452</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="74F94F74"><span class="badge badge-success font-weight-bold">xir_trd</span> 74F94F74</a> <span class="badge badge-danger">3257</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A6F7CE"><span class="badge badge-success font-weight-bold">xir_trd</span> 50A6F7CE</a> <span class="badge badge-danger">2284</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="CF806706"><span class="badge badge-success font-weight-bold">xir_trd</span> CF806706</a> <span class="badge badge-danger">1460</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="165F3811"><span class="badge badge-success font-weight-bold">xir_trd</span> 165F3811</a> <span class="badge badge-danger">1460</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="19AC6F54"><span class="badge badge-success font-weight-bold">xir_trd</span> 19AC6F54</a> <span class="badge badge-danger">790</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="4F3FC4B6"><span class="badge badge-success font-weight-bold">xir_trd</span> 4F3FC4B6</a> <span class="badge badge-danger">555</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="B021ED06"><span class="badge badge-success font-weight-bold">xir_md</span> B021ED06</a> <span class="badge badge-danger">485</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A0B676"><span class="badge badge-success font-weight-bold">xir_app</span> 50A0B676</a> <span class="badge badge-danger">356</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="13A9AE89"><span class="badge badge-success font-weight-bold">xir_md</span> 13A9AE89</a> <span class="badge badge-danger">277</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="E289C963"><span class="badge badge-success font-weight-bold">xir_trd</span> E289C963</a> <span class="badge badge-danger">247</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="A2709E0C"><span class="badge badge-success font-weight-bold">xir_trd</span> A2709E0C</a> <span class="badge badge-danger">206</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="406637BB"><span class="badge badge-success font-weight-bold">xir_trd</span> 406637BB</a> <span class="badge badge-danger">154</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="4A53E50E"><span class="badge badge-success font-weight-bold">xir_trd</span> 4A53E50E</a> <span class="badge badge-danger">71</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="63F4A26A"><span class="badge badge-success font-weight-bold">xir_trd</span> 63F4A26A</a> <span class="badge badge-danger">71</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="4D028BDC"><span class="badge badge-success font-weight-bold">xir_trd</span> 4D028BDC</a> <span class="badge badge-danger">65</span></li>
-                            <li><a class="link-sqlhash text-primary" data-sqlhash="F5753838"><span class="badge badge-success font-weight-bold">xir_trd</span> F5753838</a> <span class="badge badge-danger">54</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E289C963"><span class="badge badge-success font-weight-bold">xir_trd</span> E289C963</a> <span class="badge badge-info">14,257</span> <span class="badge badge-warning">0.10</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4F3FC4B6"><span class="badge badge-success font-weight-bold">xir_trd</span> 4F3FC4B6</a> <span class="badge badge-info">11,003</span> <span class="badge badge-warning">0.24</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A04F541D"><span class="badge badge-success font-weight-bold">xir_trd</span> A04F541D</a> <span class="badge badge-info">7,611</span> <span class="badge badge-warning">1.25</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="64B13C0A"><span class="badge badge-success font-weight-bold">xir_trd</span> 64B13C0A</a> <span class="badge badge-info">7,535</span> <span class="badge badge-warning">0.44</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D5A4E24F"><span class="badge badge-success font-weight-bold">xir_trd</span> D5A4E24F</a> <span class="badge badge-info">7,189</span> <span class="badge badge-warning">0.06</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="74F94F74"><span class="badge badge-success font-weight-bold">xir_trd</span> 74F94F74</a> <span class="badge badge-info">7,096</span> <span class="badge badge-warning">2.10</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B949F9C4"><span class="badge badge-success font-weight-bold">xir_md</span> B949F9C4</a> <span class="badge badge-info">5,443</span> <span class="badge badge-warning">0.21</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2A2510CF"><span class="badge badge-success font-weight-bold">xir_trd</span> 2A2510CF</a> <span class="badge badge-info">3,587</span> <span class="badge badge-warning">6.22</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="1E71CB41"><span class="badge badge-success font-weight-bold">xir_trd</span> 1E71CB41</a> <span class="badge badge-info">3,586</span> <span class="badge badge-warning">0.14</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A992B8B"><span class="badge badge-success font-weight-bold">xir_trd</span> A992B8B</a> <span class="badge badge-info">3,546</span> <span class="badge badge-warning">0.59</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EC76FA25"><span class="badge badge-success font-weight-bold">xir_trd</span> EC76FA25</a> <span class="badge badge-info">3,546</span> <span class="badge badge-warning">1.62</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FD4AE996"><span class="badge badge-success font-weight-bold">xir_trd</span> FD4AE996</a> <span class="badge badge-info">3,546</span> <span class="badge badge-warning">0.96</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="5C56B37A"><span class="badge badge-success font-weight-bold">xir_trd</span> 5C56B37A</a> <span class="badge badge-info">2,247</span> <span class="badge badge-warning">0.26</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F5753838"><span class="badge badge-success font-weight-bold">xir_trd</span> F5753838</a> <span class="badge badge-info">2,208</span> <span class="badge badge-warning">0.03</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2AECAFAA"><span class="badge badge-success font-weight-bold">xir_trd</span> 2AECAFAA</a> <span class="badge badge-info">2,208</span> <span class="badge badge-warning">2.08</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="49BA83A4"><span class="badge badge-success font-weight-bold">xir_trd</span> 49BA83A4</a> <span class="badge badge-info">2,104</span> <span class="badge badge-warning">0.68</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D5D1F33E"><span class="badge badge-success font-weight-bold">xir_md</span> D5D1F33E</a> <span class="badge badge-info">2,100</span> <span class="badge badge-warning">0.29</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="54A3AD3C"><span class="badge badge-success font-weight-bold">xir_trd</span> 54A3AD3C</a> <span class="badge badge-info">1,805</span> <span class="badge badge-warning">0.14</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="30191156"><span class="badge badge-success font-weight-bold">xir_trd</span> 30191156</a> <span class="badge badge-info">1,804</span> <span class="badge badge-warning">0.09</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F3E080F4"><span class="badge badge-success font-weight-bold">xir_trd</span> F3E080F4</a> <span class="badge badge-info">1,804</span> <span class="badge badge-warning">0.26</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="86D23ACF"><span class="badge badge-success font-weight-bold">xir_trd</span> 86D23ACF</a> <span class="badge badge-info">1,797</span> <span class="badge badge-warning">0.37</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C7BE3215"><span class="badge badge-success font-weight-bold">xir_trd</span> C7BE3215</a> <span class="badge badge-info">1,797</span> <span class="badge badge-warning">0.33</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="AACAF8E3"><span class="badge badge-success font-weight-bold">xir_trd</span> AACAF8E3</a> <span class="badge badge-info">1,788</span> <span class="badge badge-warning">2.08</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D1284086"><span class="badge badge-success font-weight-bold">xir_trd</span> D1284086</a> <span class="badge badge-info">1,212</span> <span class="badge badge-warning">0.04</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="66A6002F"><span class="badge badge-success font-weight-bold">xir_trd</span> 66A6002F</a> <span class="badge badge-info">1,205</span> <span class="badge badge-warning">0.11</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="EA10CC29"><span class="badge badge-success font-weight-bold">xir_md</span> EA10CC29</a> <span class="badge badge-info">1,045</span> <span class="badge badge-warning">1.06</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C95D89E2"><span class="badge badge-success font-weight-bold">xir_trd</span> C95D89E2</a> <span class="badge badge-info">733</span> <span class="badge badge-warning">0.09</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="219FA8A2"><span class="badge badge-success font-weight-bold">xir_md</span> 219FA8A2</a> <span class="badge badge-info">730</span> <span class="badge badge-warning">1.07</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4FCBB875"><span class="badge badge-success font-weight-bold">xir_trd</span> 4FCBB875</a> <span class="badge badge-info">699</span> <span class="badge badge-warning">0.21</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="7BE30873"><span class="badge badge-success font-weight-bold">xir_trd</span> 7BE30873</a> <span class="badge badge-info">699</span> <span class="badge badge-warning">0.57</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="DF1BAE1C"><span class="badge badge-success font-weight-bold">xir_trd</span> DF1BAE1C</a> <span class="badge badge-info">592</span> <span class="badge badge-warning">0.62</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A0B676"><span class="badge badge-success font-weight-bold">xir_app</span> 50A0B676</a> <span class="badge badge-info">586</span> <span class="badge badge-warning">1.34</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="36AEAFD7"><span class="badge badge-success font-weight-bold">xir_trd</span> 36AEAFD7</a> <span class="badge badge-info">582</span> <span class="badge badge-warning">1.45</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2F2E780E"><span class="badge badge-success font-weight-bold">xir_trd</span> 2F2E780E</a> <span class="badge badge-info">582</span> <span class="badge badge-warning">0.85</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="81E9AFA8"><span class="badge badge-success font-weight-bold">xir_trd</span> 81E9AFA8</a> <span class="badge badge-info">582</span> <span class="badge badge-warning">3.30</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A89B656F"><span class="badge badge-success font-weight-bold">xir_trd</span> A89B656F</a> <span class="badge badge-info">550</span> <span class="badge badge-warning">4.13</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="14ACBBDF"><span class="badge badge-success font-weight-bold">xir_trd</span> 14ACBBDF</a> <span class="badge badge-info">518</span> <span class="badge badge-warning">1.17</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="68EEEE6E"><span class="badge badge-success font-weight-bold">xir_trd</span> 68EEEE6E</a> <span class="badge badge-info">464</span> <span class="badge badge-warning">0.31</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="50A6F7CE"><span class="badge badge-success font-weight-bold">xir_trd</span> 50A6F7CE</a> <span class="badge badge-info">281</span> <span class="badge badge-warning">0.97</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="CF806706"><span class="badge badge-success font-weight-bold">xir_trd</span> CF806706</a> <span class="badge badge-info">259</span> <span class="badge badge-warning">0.68</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="165F3811"><span class="badge badge-success font-weight-bold">xir_trd</span> 165F3811</a> <span class="badge badge-info">259</span> <span class="badge badge-warning">1.05</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="98D375A9"><span class="badge badge-success font-weight-bold">xir_trd</span> 98D375A9</a> <span class="badge badge-info">253</span> <span class="badge badge-warning">1.26</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4E780FC8"><span class="badge badge-success font-weight-bold">xir_trd</span> 4E780FC8</a> <span class="badge badge-info">242</span> <span class="badge badge-warning">0.53</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="79369084"><span class="badge badge-success font-weight-bold">xir_trd</span> 79369084</a> <span class="badge badge-info">240</span> <span class="badge badge-warning">0.07</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8D27DE38"><span class="badge badge-success font-weight-bold">xir_trd</span> 8D27DE38</a> <span class="badge badge-info">233</span> <span class="badge badge-warning">1.24</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="9494B0C1"><span class="badge badge-success font-weight-bold">xir_trd</span> 9494B0C1</a> <span class="badge badge-info">232</span> <span class="badge badge-warning">0.07</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="5E544E00"><span class="badge badge-success font-weight-bold">xir_trd</span> 5E544E00</a> <span class="badge badge-info">232</span> <span class="badge badge-warning">0.28</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="CBDBDAD3"><span class="badge badge-success font-weight-bold">xir_trd</span> CBDBDAD3</a> <span class="badge badge-info">232</span> <span class="badge badge-warning">0.21</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="B0D99BF1"><span class="badge badge-success font-weight-bold">xir_trd</span> B0D99BF1</a> <span class="badge badge-info">232</span> <span class="badge badge-warning">1.86</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C6B6EEB9"><span class="badge badge-success font-weight-bold">xir_trd</span> C6B6EEB9</a> <span class="badge badge-info">232</span> <span class="badge badge-warning">1.38</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4F87A481"><span class="badge badge-success font-weight-bold">xir_trd</span> 4F87A481</a> <span class="badge badge-info">232</span> <span class="badge badge-warning">0.83</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="1C413CFE"><span class="badge badge-success font-weight-bold">xir_trd</span> 1C413CFE</a> <span class="badge badge-info">232</span> <span class="badge badge-warning">5.17</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8458A15"><span class="badge badge-success font-weight-bold">xir_md</span> 8458A15</a> <span class="badge badge-info">177</span> <span class="badge badge-warning">2.08</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="47EFCF9D"><span class="badge badge-success font-weight-bold">xir_trd</span> 47EFCF9D</a> <span class="badge badge-info">121</span> <span class="badge badge-warning">12.53</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="2C2C0CDE"><span class="badge badge-success font-weight-bold">xir_trd</span> 2C2C0CDE</a> <span class="badge badge-info">121</span> <span class="badge badge-warning">2.51</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="4F45975C"><span class="badge badge-success font-weight-bold">xir_md</span> 4F45975C</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">39.41</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FDD0E663"><span class="badge badge-success font-weight-bold">xir_trd</span> FDD0E663</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">0.93</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="6AEC0201"><span class="badge badge-success font-weight-bold">xir_trd</span> 6AEC0201</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">1.47</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="6EBCE583"><span class="badge badge-success font-weight-bold">xir_trd</span> 6EBCE583</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">0.53</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="481C9410"><span class="badge badge-success font-weight-bold">xir_trd</span> 481C9410</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">3.19</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="AFE1996A"><span class="badge badge-success font-weight-bold">xir_trd</span> AFE1996A</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">1.47</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BE1BA886"><span class="badge badge-success font-weight-bold">xir_app</span> BE1BA886</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">0.53</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BC886365"><span class="badge badge-success font-weight-bold">xir_app</span> BC886365</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">4.51</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D2865F10"><span class="badge badge-success font-weight-bold">xir_app</span> D2865F10</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">1.07</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="66DD86A2"><span class="badge badge-success font-weight-bold">xir_app</span> 66DD86A2</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">2.00</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A7119508"><span class="badge badge-success font-weight-bold">xir_app</span> A7119508</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">0.13</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E47CE3B9"><span class="badge badge-success font-weight-bold">xir_trd</span> E47CE3B9</a> <span class="badge badge-info">120</span> <span class="badge badge-warning">513.31</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="CCF465F"><span class="badge badge-success font-weight-bold">xir_trd</span> CCF465F</a> <span class="badge badge-info">116</span> <span class="badge badge-warning">0.55</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3F5AB33D"><span class="badge badge-success font-weight-bold">xir_trd</span> 3F5AB33D</a> <span class="badge badge-info">116</span> <span class="badge badge-warning">1.38</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="3A071BBC"><span class="badge badge-success font-weight-bold">xir_trd</span> 3A071BBC</a> <span class="badge badge-info">116</span> <span class="badge badge-warning">2.76</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D772CD15"><span class="badge badge-success font-weight-bold">xir_md</span> D772CD15</a> <span class="badge badge-info">116</span> <span class="badge badge-warning">0.83</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8D139478"><span class="badge badge-success font-weight-bold">xir_trd</span> 8D139478</a> <span class="badge badge-info">116</span> <span class="badge badge-warning">1.52</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F746CB77"><span class="badge badge-success font-weight-bold">xir_trd</span> F746CB77</a> <span class="badge badge-info">114</span> <span class="badge badge-warning">1.12</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="78F73A06"><span class="badge badge-success font-weight-bold">xir_trd</span> 78F73A06</a> <span class="badge badge-info">114</span> <span class="badge badge-warning">10.20</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="E1CE80D"><span class="badge badge-success font-weight-bold">xir_trd</span> E1CE80D</a> <span class="badge badge-info">114</span> <span class="badge badge-warning">2.53</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="6AF3FE94"><span class="badge badge-success font-weight-bold">xir_trd</span> 6AF3FE94</a> <span class="badge badge-info">114</span> <span class="badge badge-warning">0.84</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="19AC6F54"><span class="badge badge-success font-weight-bold">xir_trd</span> 19AC6F54</a> <span class="badge badge-info">80</span> <span class="badge badge-warning">0.60</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="86148339"><span class="badge badge-success font-weight-bold">xir_md</span> 86148339</a> <span class="badge badge-info">68</span> <span class="badge badge-warning">1.41</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="490DBB71"><span class="badge badge-success font-weight-bold">xir_app</span> 490DBB71</a> <span class="badge badge-info">66</span> <span class="badge badge-warning">1.21</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A8953DE0"><span class="badge badge-success font-weight-bold">xir_trd</span> A8953DE0</a> <span class="badge badge-info">60</span> <span class="badge badge-warning">24.30</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F80272B0"><span class="badge badge-success font-weight-bold">xir_app</span> F80272B0</a> <span class="badge badge-info">57</span> <span class="badge badge-warning">1.68</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8E2C9E43"><span class="badge badge-success font-weight-bold">xir_app</span> 8E2C9E43</a> <span class="badge badge-info">54</span> <span class="badge badge-warning">0.89</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="CAE05C5D"><span class="badge badge-success font-weight-bold">xir_trd</span> CAE05C5D</a> <span class="badge badge-info">54</span> <span class="badge badge-warning">15.04</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="295DFAF9"><span class="badge badge-success font-weight-bold">xir_app</span> 295DFAF9</a> <span class="badge badge-info">50</span> <span class="badge badge-warning">1.92</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C0C3E08F"><span class="badge badge-success font-weight-bold">xir_app</span> C0C3E08F</a> <span class="badge badge-info">44</span> <span class="badge badge-warning">1.09</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="13A9AE89"><span class="badge badge-success font-weight-bold">xir_md</span> 13A9AE89</a> <span class="badge badge-info">40</span> <span class="badge badge-warning">0.40</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="96469632"><span class="badge badge-success font-weight-bold">xir_trd</span> 96469632</a> <span class="badge badge-info">34</span> <span class="badge badge-warning">0.47</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F0371FE6"><span class="badge badge-success font-weight-bold">xir_app</span> F0371FE6</a> <span class="badge badge-info">26</span> <span class="badge badge-warning">1.23</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="BA30263F"><span class="badge badge-success font-weight-bold">xir_app</span> BA30263F</a> <span class="badge badge-info">24</span> <span class="badge badge-warning">5.33</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A2709E0C"><span class="badge badge-success font-weight-bold">xir_trd</span> A2709E0C</a> <span class="badge badge-info">22</span> <span class="badge badge-warning">0.00</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="5E76F5E6"><span class="badge badge-success font-weight-bold">xir_app</span> 5E76F5E6</a> <span class="badge badge-info">20</span> <span class="badge badge-warning">0.00</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="8A522ED6"><span class="badge badge-success font-weight-bold">xir_app</span> 8A522ED6</a> <span class="badge badge-info">20</span> <span class="badge badge-warning">3.15</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="C20543A4"><span class="badge badge-success font-weight-bold">xir_trd</span> C20543A4</a> <span class="badge badge-info">19</span> <span class="badge badge-warning">2.53</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="9145EEDD"><span class="badge badge-success font-weight-bold">xir_app</span> 9145EEDD</a> <span class="badge badge-info">18</span> <span class="badge badge-warning">0.89</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="D5C57188"><span class="badge badge-success font-weight-bold">xir_trd</span> D5C57188</a> <span class="badge badge-info">18</span> <span class="badge badge-warning">1.78</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A2C299CA"><span class="badge badge-success font-weight-bold">xir_trd</span> A2C299CA</a> <span class="badge badge-info">17</span> <span class="badge badge-warning">1.88</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="F763E70F"><span class="badge badge-success font-weight-bold">xir_trd</span> F763E70F</a> <span class="badge badge-info">17</span> <span class="badge badge-warning">0.94</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="84E12649"><span class="badge badge-success font-weight-bold">xir_app</span> 84E12649</a> <span class="badge badge-info">16</span> <span class="badge badge-warning">2.00</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="FE6062DE"><span class="badge badge-success font-weight-bold">xir_md</span> FE6062DE</a> <span class="badge badge-info">16</span> <span class="badge badge-warning">0.00</span></li>
+                            <li><a class="link-sqlhash text-primary" data-sqlhash="A5941AE9"><span class="badge badge-success font-weight-bold">xir_app</span> A5941AE9</a> <span class="badge badge-info">15</span> <span class="badge badge-warning">3.13</span></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col" style="margin-bottom:10px">
             <div class="card text-left font-weight-bold">
@@ -113,310 +354,1473 @@
                 <div class="card-body">
                     <div class="card-text">
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_74F94F74" role="alert"
-                             aria-expanded="true">
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E47CE3B9" role="alert">
+                            E47CE3B9
+                            <div class="collapse font-weight-normal" id="sqlhash_E47CE3B9">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2A2510CF" role="alert">
+                            2A2510CF
+                            <div class="collapse font-weight-normal" id="sqlhash_2A2510CF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_74F94F74" role="alert">
                             74F94F74
-                            <div class="font-weight-normal collapse show" id="sqlhash_74F94F74" style="">
-                                UPDATE TTRD_SEND_TRADE SET STATUS = :STATUS WHERE REF_TRADE = :REF_TRADE AND UPDATE_TIME =
-                                :UPDATE_TIME
+                            <div class="collapse font-weight-normal" id="sqlhash_74F94F74">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_3A06ACBD" role="alert"
-                             aria-expanded="true">
-                            3A06ACBD
-                            <div class="font-weight-normal collapse show" id="sqlhash_3A06ACBD" style="">
-                                SELECT S_AOTOINC_OTC_UPDATE_LOG_ID.NEXTVAL FROM DUAL
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A04F541D" role="alert">
+                            A04F541D
+                            <div class="collapse font-weight-normal" id="sqlhash_A04F541D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A98A0D49"
-                             role="alert">
-                            A98A0D49
-                            <div class="collapse font-weight-normal" id="sqlhash_A98A0D49">
-                                INSERT INTO TTRD_OTC_POOL_COMPONENT (
-                                OTCPOOLID,COMPONENT,COMPONENTTYPE,SORT,ROLES,SOURCE,BEGDATE,OPERATOR,OUTPOOLDATE,REMARK,SYSORDID,SELF_GRADE)
-                                VALUES(:OTCPOOLID,:COMPONENT,:COMPONENTTYPE,:SORT,:ROLES,:SOURCE,:BEGDATE,:OPERATOR,:OUTPOOLDATE,:REMARK,:SYSORDID,:SELF_GRADE)
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A684373F" role="alert">
+                            A684373F
+                            <div class="collapse font-weight-normal" id="sqlhash_A684373F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8458A15" role="alert">
-                            8458A15
-                            <div class="collapse font-weight-normal" id="sqlhash_8458A15">
-                                SELECT MIN(CAL_DAY) FROM TCALENDAR_DATES WHERE CAL_CODE=:CAL_CODE AND CAL_DAY&gt;:CAL_DAY
-                                AND CAL_FLAG=1
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_EC76FA25" role="alert">
+                            EC76FA25
+                            <div class="collapse font-weight-normal" id="sqlhash_EC76FA25">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_50A6F7CE"
-                             role="alert">
-                            50A6F7CE
-                            <div class="collapse font-weight-normal" id="sqlhash_50A6F7CE">
-                                SELECT A.*,B.I_NAME,B.TRDTYPE,B.PARTYID FROM XIR_TRD.TTRD_OTC_FWDBOND A
-                                INNER JOIN XIR_TRD.TTRD_OTC_TRADE B ON A.I_CODE = B.INTORDID
-                                WHERE A.I_CODE=:I_CODE AND A.A_TYPE=:A_TYPE AND A.M_TYPE=:M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4F45975C" role="alert">
+                            4F45975C
+                            <div class="collapse font-weight-normal" id="sqlhash_4F45975C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_CF806706"
-                             role="alert">
-                            CF806706
-                            <div class="collapse font-weight-normal" id="sqlhash_CF806706">
-                                SELECT S.* FROM TTRD_OTC_OUTRIGHT_IR S WHERE H_I_CODE=:H_I_CODE AND H_A_TYPE=:H_A_TYPE AND
-                                H_M_TYPE=:H_M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2AECAFAA" role="alert">
+                            2AECAFAA
+                            <div class="collapse font-weight-normal" id="sqlhash_2AECAFAA">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_165F3811"
-                             role="alert">
-                            165F3811
-                            <div class="collapse font-weight-normal" id="sqlhash_165F3811">
-                                SELECT A.*,B.I_NAME,B.TRDTYPE,B.PARTYID,COALESCE(C.RT_L_AMOUNT*100,PARVALUE) AS
-                                PARVALUE_REMAIN
-                                FROM XIR_TRD.TTRD_OTC_OUTRIGHT A
-                                INNER JOIN XIR_TRD.TTRD_OTC_TRADE B
-                                ON A.I_CODE = B.I_CODE AND A.A_TYPE = B.A_TYPE AND A.M_TYPE = B.M_TYPE
-                                LEFT JOIN TTRD_ACC_BALANCE_SECU C
-                                ON A.I_CODE = C.I_CODE AND A.A_TYPE = C.A_TYPE AND A.M_TYPE = C.M_TYPE
-                                WHERE A.I_CODE=:I_CODE AND
-                                A.A_TYPE=:A_TYPE AND
-                                A.M_TYPE=:M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_488C0C6D" role="alert">
+                            488C0C6D
+                            <div class="collapse font-weight-normal" id="sqlhash_488C0C6D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4F3FC4B6"
-                             role="alert">
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_AACAF8E3" role="alert">
+                            AACAF8E3
+                            <div class="collapse font-weight-normal" id="sqlhash_AACAF8E3">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_FD4AE996" role="alert">
+                            FD4AE996
+                            <div class="collapse font-weight-normal" id="sqlhash_FD4AE996">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_64B13C0A" role="alert">
+                            64B13C0A
+                            <div class="collapse font-weight-normal" id="sqlhash_64B13C0A">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4F3FC4B6" role="alert">
                             4F3FC4B6
                             <div class="collapse font-weight-normal" id="sqlhash_4F3FC4B6">
-                                SELECT TO_CHAR(SYSDATE,'YYYY-MM-DD') FROM DUAL
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A89B656F" role="alert">
+                            A89B656F
+                            <div class="collapse font-weight-normal" id="sqlhash_A89B656F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
                         <div class="sqlcard alert alert-success" data-target="#sqlhash_A992B8B" role="alert">
                             A992B8B
                             <div class="collapse font-weight-normal" id="sqlhash_A992B8B">
-                                SELECT
-                                T2.REF_TRADE,
-                                T2.UPDATE_TIME,
-                                T2.STATUS,
-                                T2.TRDTYPE,
-                                T2.REF_SYSORDID
-                                FROM TTRD_SEND_TRADE T2
-                                WHERE T2.STATUS &lt;&gt; 1
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E289C963"
-                             role="alert">
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F9C4AB1C" role="alert">
+                            F9C4AB1C
+                            <div class="collapse font-weight-normal" id="sqlhash_F9C4AB1C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_81E9AFA8" role="alert">
+                            81E9AFA8
+                            <div class="collapse font-weight-normal" id="sqlhash_81E9AFA8">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_7E10985C" role="alert">
+                            7E10985C
+                            <div class="collapse font-weight-normal" id="sqlhash_7E10985C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_47EFCF9D" role="alert">
+                            47EFCF9D
+                            <div class="collapse font-weight-normal" id="sqlhash_47EFCF9D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A8953DE0" role="alert">
+                            A8953DE0
+                            <div class="collapse font-weight-normal" id="sqlhash_A8953DE0">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_49BA83A4" role="alert">
+                            49BA83A4
+                            <div class="collapse font-weight-normal" id="sqlhash_49BA83A4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E289C963" role="alert">
                             E289C963
                             <div class="collapse font-weight-normal" id="sqlhash_E289C963">
-                                SELECT SYSDATE FROM DUAL
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_50A0B676"
-                             role="alert">
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C3F30DAE" role="alert">
+                            C3F30DAE
+                            <div class="collapse font-weight-normal" id="sqlhash_C3F30DAE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_1C413CFE" role="alert">
+                            1C413CFE
+                            <div class="collapse font-weight-normal" id="sqlhash_1C413CFE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_B949F9C4" role="alert">
+                            B949F9C4
+                            <div class="collapse font-weight-normal" id="sqlhash_B949F9C4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_78F73A06" role="alert">
+                            78F73A06
+                            <div class="collapse font-weight-normal" id="sqlhash_78F73A06">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_EA10CC29" role="alert">
+                            EA10CC29
+                            <div class="collapse font-weight-normal" id="sqlhash_EA10CC29">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_36AEAFD7" role="alert">
+                            36AEAFD7
+                            <div class="collapse font-weight-normal" id="sqlhash_36AEAFD7">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_CAE05C5D" role="alert">
+                            CAE05C5D
+                            <div class="collapse font-weight-normal" id="sqlhash_CAE05C5D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_50A0B676" role="alert">
                             50A0B676
                             <div class="collapse font-weight-normal" id="sqlhash_50A0B676">
-                                SELECT * FROM TSYS_USER WHERE U_ID = ''
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2ED9C0" role="alert">
-                            2ED9C0
-                            <div class="collapse font-weight-normal" id="sqlhash_2ED9C0">
-                                SELECT * FROM TIRSWAP T
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_219FA8A2" role="alert">
+                            219FA8A2
+                            <div class="collapse font-weight-normal" id="sqlhash_219FA8A2">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2AECAFAA"
-                             role="alert">
-                            2AECAFAA
-                            <div class="collapse font-weight-normal" id="sqlhash_2AECAFAA">
-                                SELECT BB.*, '' AS TEXTREAL, '' AS REAL_USER FROM VTRD_FIX_ENDCONFIRM BB WHERE BB.UPDATETIME
-                                &gt; TO_CHAR(SYSDATE,'YYYY-MM-DD') AND BB.QUOTEDATE = TO_CHAR(SYSDATE,'YYYY-MM-DD')
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_66537C0" role="alert">
+                            66537C0
+                            <div class="collapse font-weight-normal" id="sqlhash_66537C0">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BB4152BA"
-                             role="alert">
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_86D23ACF" role="alert">
+                            86D23ACF
+                            <div class="collapse font-weight-normal" id="sqlhash_86D23ACF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_79543980" role="alert">
+                            79543980
+                            <div class="collapse font-weight-normal" id="sqlhash_79543980">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D5D1F33E" role="alert">
+                            D5D1F33E
+                            <div class="collapse font-weight-normal" id="sqlhash_D5D1F33E">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_14ACBBDF" role="alert">
+                            14ACBBDF
+                            <div class="collapse font-weight-normal" id="sqlhash_14ACBBDF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C7BE3215" role="alert">
+                            C7BE3215
+                            <div class="collapse font-weight-normal" id="sqlhash_C7BE3215">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_5C56B37A" role="alert">
+                            5C56B37A
+                            <div class="collapse font-weight-normal" id="sqlhash_5C56B37A">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BC886365" role="alert">
+                            BC886365
+                            <div class="collapse font-weight-normal" id="sqlhash_BC886365">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E67EE274" role="alert">
+                            E67EE274
+                            <div class="collapse font-weight-normal" id="sqlhash_E67EE274">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_1E71CB41" role="alert">
+                            1E71CB41
+                            <div class="collapse font-weight-normal" id="sqlhash_1E71CB41">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2F2E780E" role="alert">
+                            2F2E780E
+                            <div class="collapse font-weight-normal" id="sqlhash_2F2E780E">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F3E080F4" role="alert">
+                            F3E080F4
+                            <div class="collapse font-weight-normal" id="sqlhash_F3E080F4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_B0D99BF1" role="alert">
+                            B0D99BF1
+                            <div class="collapse font-weight-normal" id="sqlhash_B0D99BF1">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D1668E07" role="alert">
+                            D1668E07
+                            <div class="collapse font-weight-normal" id="sqlhash_D1668E07">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D5A4E24F" role="alert">
+                            D5A4E24F
+                            <div class="collapse font-weight-normal" id="sqlhash_D5A4E24F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_7BE30873" role="alert">
+                            7BE30873
+                            <div class="collapse font-weight-normal" id="sqlhash_7BE30873">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_398457EA" role="alert">
+                            398457EA
+                            <div class="collapse font-weight-normal" id="sqlhash_398457EA">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_481C9410" role="alert">
+                            481C9410
+                            <div class="collapse font-weight-normal" id="sqlhash_481C9410">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_339671DF" role="alert">
+                            339671DF
+                            <div class="collapse font-weight-normal" id="sqlhash_339671DF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_DF1BAE1C" role="alert">
+                            DF1BAE1C
+                            <div class="collapse font-weight-normal" id="sqlhash_DF1BAE1C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8458A15" role="alert">
+                            8458A15
+                            <div class="collapse font-weight-normal" id="sqlhash_8458A15">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_25BEA651" role="alert">
+                            25BEA651
+                            <div class="collapse font-weight-normal" id="sqlhash_25BEA651">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2861CEAB" role="alert">
+                            2861CEAB
+                            <div class="collapse font-weight-normal" id="sqlhash_2861CEAB">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C6B6EEB9" role="alert">
+                            C6B6EEB9
+                            <div class="collapse font-weight-normal" id="sqlhash_C6B6EEB9">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_98D375A9" role="alert">
+                            98D375A9
+                            <div class="collapse font-weight-normal" id="sqlhash_98D375A9">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_3A071BBC" role="alert">
+                            3A071BBC
+                            <div class="collapse font-weight-normal" id="sqlhash_3A071BBC">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_990BAFC1" role="alert">
+                            990BAFC1
+                            <div class="collapse font-weight-normal" id="sqlhash_990BAFC1">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2C2C0CDE" role="alert">
+                            2C2C0CDE
+                            <div class="collapse font-weight-normal" id="sqlhash_2C2C0CDE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_56225808" role="alert">
+                            56225808
+                            <div class="collapse font-weight-normal" id="sqlhash_56225808">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_6195CBB7" role="alert">
+                            6195CBB7
+                            <div class="collapse font-weight-normal" id="sqlhash_6195CBB7">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8D27DE38" role="alert">
+                            8D27DE38
+                            <div class="collapse font-weight-normal" id="sqlhash_8D27DE38">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E1CE80D" role="alert">
+                            E1CE80D
+                            <div class="collapse font-weight-normal" id="sqlhash_E1CE80D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_3CB009D2" role="alert">
+                            3CB009D2
+                            <div class="collapse font-weight-normal" id="sqlhash_3CB009D2">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A1457214" role="alert">
+                            A1457214
+                            <div class="collapse font-weight-normal" id="sqlhash_A1457214">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_3C2D3B95" role="alert">
+                            3C2D3B95
+                            <div class="collapse font-weight-normal" id="sqlhash_3C2D3B95">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_50A6F7CE" role="alert">
+                            50A6F7CE
+                            <div class="collapse font-weight-normal" id="sqlhash_50A6F7CE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_165F3811" role="alert">
+                            165F3811
+                            <div class="collapse font-weight-normal" id="sqlhash_165F3811">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_693594CB" role="alert">
+                            693594CB
+                            <div class="collapse font-weight-normal" id="sqlhash_693594CB">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A68F9469" role="alert">
+                            A68F9469
+                            <div class="collapse font-weight-normal" id="sqlhash_A68F9469">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_54A3AD3C" role="alert">
+                            54A3AD3C
+                            <div class="collapse font-weight-normal" id="sqlhash_54A3AD3C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_B4D11888" role="alert">
+                            B4D11888
+                            <div class="collapse font-weight-normal" id="sqlhash_B4D11888">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_66DD86A2" role="alert">
+                            66DD86A2
+                            <div class="collapse font-weight-normal" id="sqlhash_66DD86A2">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_B4AC7EBA" role="alert">
+                            B4AC7EBA
+                            <div class="collapse font-weight-normal" id="sqlhash_B4AC7EBA">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BDAFB247" role="alert">
+                            BDAFB247
+                            <div class="collapse font-weight-normal" id="sqlhash_BDAFB247">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BCBC17AC" role="alert">
+                            BCBC17AC
+                            <div class="collapse font-weight-normal" id="sqlhash_BCBC17AC">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_73229EB2" role="alert">
+                            73229EB2
+                            <div class="collapse font-weight-normal" id="sqlhash_73229EB2">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4E314D96" role="alert">
+                            4E314D96
+                            <div class="collapse font-weight-normal" id="sqlhash_4E314D96">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_36024328" role="alert">
+                            36024328
+                            <div class="collapse font-weight-normal" id="sqlhash_36024328">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_77912EF3" role="alert">
+                            77912EF3
+                            <div class="collapse font-weight-normal" id="sqlhash_77912EF3">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2B53A60E" role="alert">
+                            2B53A60E
+                            <div class="collapse font-weight-normal" id="sqlhash_2B53A60E">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_FD4B27C" role="alert">
+                            FD4B27C
+                            <div class="collapse font-weight-normal" id="sqlhash_FD4B27C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BB4152BA" role="alert">
                             BB4152BA
                             <div class="collapse font-weight-normal" id="sqlhash_BB4152BA">
-                                SELECT A.*
-                                FROM TTRD_OTC_OUTRIGHT_IR A
-                                INNER JOIN TTRD_OTC_OUTRIGHT B
-                                ON A.H_I_CODE = B.I_CODE AND A.H_A_TYPE = B.A_TYPE AND A.H_M_TYPE = B.M_TYPE
-                                INNER JOIN TTRD_OTC_TRADE C ON C.I_CODE = A.H_I_CODE AND C.A_TYPE = A.H_A_TYPE AND C.M_TYPE
-                                = A.H_M_TYPE
-                                INNER JOIN VTTRD_ACC_SECU_RIGHT D ON D.ACCID=C.SECU_ACCID AND D.USER_CODE=:USER_CODE
-                                WHERE B.ENDSETDATE&gt;=:MIN_END_DATE
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_35682D3E"
-                             role="alert">
-                            35682D3E
-                            <div class="collapse font-weight-normal" id="sqlhash_35682D3E">
-                                SELECT TF.FINANCINGID
-                                FROM TTRD_OTC_FINANCING TF
-                                WHERE TF.REF_SYSORDIDS LIKE '%431939%'
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_EF0D9416" role="alert">
+                            EF0D9416
+                            <div class="collapse font-weight-normal" id="sqlhash_EF0D9416">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2593CD91"
-                             role="alert">
-                            2593CD91
-                            <div class="collapse font-weight-normal" id="sqlhash_2593CD91">
-                                SELECT A.*,B.I_NAME,B.TRDTYPE,B.PARTYID,COALESCE(AMOUNT-D.PRE_AMOUNT,AMOUNT) AS
-                                AMOUNT_REMAIN
-                                FROM TTRD_OTC_IBLB A
-                                INNER JOIN TTRD_OTC_TRADE B
-                                ON A.I_CODE = B.I_CODE AND A.A_TYPE = B.A_TYPE AND A.M_TYPE = B.M_TYPE
-                                LEFT JOIN
-                                (SELECT I_CODE,A_TYPE,M_TYPE,SECU_ACCID,SECU_EXT_ACCID,SUM(ORDCOUNT) AS PRE_AMOUNT
-                                FROM TTRD_OTC_TRADE
-                                WHERE TRDTYPE IN ('217','218') AND　ORDSTATUS = '7'
-                                GROUP BY I_CODE,A_TYPE,M_TYPE,SECU_ACCID,SECU_EXT_ACCID) D
-                                ON B.I_CODE = D.I_CODE AND B.A_TYPE = D.A_TYPE AND B.M_TYPE = D.M_TYPE　AND B.SECU_ACCID =
-                                D.SECU_ACCID AND B.SECU_EXT_ACCID = D.SECU_EXT_ACCID
-                                INNER JOIN VTTRD_ACC_SECU_RIGHT C ON B.SECU_ACCID=C.ACCID AND C.USER_CODE=:USER_CODE
-                                WHERE B.TRDTYPE
-                                IN('42','43','96','95','41','40','52','53','323','322','325','324','327','326','352','351','354','353')
-                                AND A.ENDSETDATE&gt;='2019-03-29'
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_69938674" role="alert">
+                            69938674
+                            <div class="collapse font-weight-normal" id="sqlhash_69938674">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E9843472"
-                             role="alert">
-                            E9843472
-                            <div class="collapse font-weight-normal" id="sqlhash_E9843472">
-                                SELECT TF.FINANCINGID
-                                FROM TTRD_OTC_FINANCING TF
-                                WHERE TF.REF_SYSORDIDS LIKE '%438590%'
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E534E29" role="alert">
+                            E534E29
+                            <div class="collapse font-weight-normal" id="sqlhash_E534E29">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_7CAF565C"
-                             role="alert">
-                            7CAF565C
-                            <div class="collapse font-weight-normal" id="sqlhash_7CAF565C">
-                                SELECT A.*,B.I_NAME,B.TRDTYPE,B.PARTYID FROM TTRD_OTC_FRA A
-                                INNER JOIN TTRD_OTC_TRADE B ON A.I_CODE = B.I_CODE AND A.A_TYPE = B.A_TYPE AND A.M_TYPE =
-                                B.M_TYPE
-                                INNER JOIN VTTRD_ACC_SECU_RIGHT C ON B.SECU_ACCID=C.ACCID AND C.USER_CODE='lzc'
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_1B288341" role="alert">
+                            1B288341
+                            <div class="collapse font-weight-normal" id="sqlhash_1B288341">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_CB443CA9"
-                             role="alert">
-                            CB443CA9
-                            <div class="collapse font-weight-normal" id="sqlhash_CB443CA9">
-                                SELECT
-                                A.I_CODE,A.A_TYPE,A.M_TYPE,A.CURRENCY,A.Q_TYPE,A.P_TYPE,A.P_CLASS,A.RATE,A.OVERDUE_RATE,A.AMOUNT,A.START_DATE,
-                                A.MATER_DATE,A.TERM,A.DAYCOUNT,A.ACCRUAL_FREQ,A.VER_ID,A.CREATE_TIME,A.AUTO_REDEPO,A.CERTIFICATE_NO,A.ACC_NO,A.IMP_TIME,A.CORE_ACCNO,
-                                A.CORE_ACCNAME,A.P_SUB_CLASS, A.PRETAKEPERCENT, A.ISAUTOCONFIRMINSTRUCTION,
-                                A.DAYCONVERSION,A.MATER_DATE_DAYCONVERSION,A.FSTPAYMENTDATE, B.TRDTYPE,B.PARTYID,B.I_NAME
-                                FROM TTRD_OTC_IBDEPO_FIXEDTERM A
-                                INNER JOIN TTRD_OTC_TRADE B ON A.I_CODE = B.I_CODE AND A.A_TYPE = B.A_TYPE AND A.M_TYPE =
-                                B.M_TYPE
-                                INNER JOIN VTTRD_ACC_SECU_RIGHT C ON B.SECU_ACCID=C.ACCID AND C.USER_CODE='lzc'
-                                WHERE A.VER_ID = '0'
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2D809D5C" role="alert">
+                            2D809D5C
+                            <div class="collapse font-weight-normal" id="sqlhash_2D809D5C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_75F5EC35"
-                             role="alert">
-                            75F5EC35
-                            <div class="collapse font-weight-normal" id="sqlhash_75F5EC35">
-                                SELECT TF.FINANCINGID
-                                FROM TTRD_OTC_FINANCING TF
-                                WHERE TF.REF_SYSORDIDS LIKE '%433378%'
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8AC2C936" role="alert">
+                            8AC2C936
+                            <div class="collapse font-weight-normal" id="sqlhash_8AC2C936">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_19AC6F54"
-                             role="alert">
-                            19AC6F54
-                            <div class="collapse font-weight-normal" id="sqlhash_19AC6F54">
-                                SELECT S.* FROM TTRD_OTC_PLEDGEBOND S WHERE I_CODE=:I_CODE AND A_TYPE=:A_TYPE AND
-                                M_TYPE=:M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_360B66A9" role="alert">
+                            360B66A9
+                            <div class="collapse font-weight-normal" id="sqlhash_360B66A9">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_13A9AE89"
-                             role="alert">
-                            13A9AE89
-                            <div class="collapse font-weight-normal" id="sqlhash_13A9AE89">
-
-                                SELECT B_FPML
-                                FROM TBND
-                                WHERE I_CODE=:I_CODE AND A_TYPE=:A_TYPE AND M_TYPE=:M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_9EE9ABA4" role="alert">
+                            9EE9ABA4
+                            <div class="collapse font-weight-normal" id="sqlhash_9EE9ABA4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A2709E0C"
-                             role="alert">
-                            A2709E0C
-                            <div class="collapse font-weight-normal" id="sqlhash_A2709E0C">
-                                SELECT A.*,B.I_NAME,B.TRDTYPE,B.PARTYID FROM TTRD_OTC_IR_SWAP A
-                                INNER JOIN TTRD_OTC_TRADE B ON A.I_CODE = B.I_CODE AND A.A_TYPE = B.A_TYPE AND A.M_TYPE =
-                                B.M_TYPE
-                                WHERE
-                                A.I_CODE=:I_CODE AND A.A_TYPE=:A_TYPE AND A.M_TYPE=:M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_420B7A4B" role="alert">
+                            420B7A4B
+                            <div class="collapse font-weight-normal" id="sqlhash_420B7A4B">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_406637BB"
-                             role="alert">
-                            406637BB
-                            <div class="collapse font-weight-normal" id="sqlhash_406637BB">
-
-                                SELECT FPML
-                                FROM TTRD_OTC_IR_SWAP
-                                WHERE I_CODE=:I_CODE AND A_TYPE=:A_TYPE AND M_TYPE=:M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A428476D" role="alert">
+                            A428476D
+                            <div class="collapse font-weight-normal" id="sqlhash_A428476D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4A53E50E"
-                             role="alert">
-                            4A53E50E
-                            <div class="collapse font-weight-normal" id="sqlhash_4A53E50E">
-                                SELECT COUNT(1) FROM TTRD_OTC_POOL AA WHERE AA.BLACKWHITELISTTYPE !=0 AND AA.POOLTYPE =
-                                :POOLTYPE
-                                AND AA.OTCPOOLCODE IN (SELECT OTCPOOLID from TTRD_OTC_POOL_COMPONENT BB WHERE BB.COMPONENT =
-                                :COMPONENT) AND AA.BLACKWHITELISTTYPE = :BLACKWHITELISTTYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4D8926CB" role="alert">
+                            4D8926CB
+                            <div class="collapse font-weight-normal" id="sqlhash_4D8926CB">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_63F4A26A"
-                             role="alert">
-                            63F4A26A
-                            <div class="collapse font-weight-normal" id="sqlhash_63F4A26A">
-                                SELECT COUNT(1) FROM TTRD_OTC_POOL AA WHERE AA.BLACKWHITELISTTYPE !=0 AND AA.POOLTYPE =
-                                :POOLTYPE
-                                AND AA.OTCPOOLCODE IN (SELECT OTCPOOLID from TTRD_OTC_POOL_COMPONENT BB WHERE BB.COMPONENT =
-                                :COMPONENT)
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_3D246747" role="alert">
+                            3D246747
+                            <div class="collapse font-weight-normal" id="sqlhash_3D246747">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4D028BDC"
-                             role="alert">
-                            4D028BDC
-                            <div class="collapse font-weight-normal" id="sqlhash_4D028BDC">
-                                SELECT
-                                I_CODE,A_TYPE,M_TYPE,C_I_CODE,C_A_TYPE,C_M_TYPE,FPML,TRDTYPE,PRODUCTTYPE,OPTION_TYPE,STRIKE,FEATUREPAYMENTAMOUNT,KNOCKTYPE,KNOCKLEVEL,OBVSTARTDATE,OBVENDDATE,OBVFREQUENCY,ISSTG,KNOCKLEVEL_H,KNOCKOPPORTUNITY,STRIKE_PRICE_RATE,KNOCKLEVEL_RATE,KNOCKLEVEL_H_RATE
-                                FROM XIR_MD.TEQUITY_STRUCTURE_FPML WHERE I_CODE=:I_CODE AND A_TYPE=:A_TYPE AND
-                                M_TYPE=:M_TYPE
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F3F9A22D" role="alert">
+                            F3F9A22D
+                            <div class="collapse font-weight-normal" id="sqlhash_F3F9A22D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
 
-                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F5753838"
-                             role="alert">
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_DE4C8128" role="alert">
+                            DE4C8128
+                            <div class="collapse font-weight-normal" id="sqlhash_DE4C8128">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8DA0CC6B" role="alert">
+                            8DA0CC6B
+                            <div class="collapse font-weight-normal" id="sqlhash_8DA0CC6B">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4D9F9631" role="alert">
+                            4D9F9631
+                            <div class="collapse font-weight-normal" id="sqlhash_4D9F9631">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_FB50C31A" role="alert">
+                            FB50C31A
+                            <div class="collapse font-weight-normal" id="sqlhash_FB50C31A">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_AECCA2D3" role="alert">
+                            AECCA2D3
+                            <div class="collapse font-weight-normal" id="sqlhash_AECCA2D3">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_538C6A88" role="alert">
+                            538C6A88
+                            <div class="collapse font-weight-normal" id="sqlhash_538C6A88">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_21F98D07" role="alert">
+                            21F98D07
+                            <div class="collapse font-weight-normal" id="sqlhash_21F98D07">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_59C1D866" role="alert">
+                            59C1D866
+                            <div class="collapse font-weight-normal" id="sqlhash_59C1D866">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_86DFFE3E" role="alert">
+                            86DFFE3E
+                            <div class="collapse font-weight-normal" id="sqlhash_86DFFE3E">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8701B6F4" role="alert">
+                            8701B6F4
+                            <div class="collapse font-weight-normal" id="sqlhash_8701B6F4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2C07B8D5" role="alert">
+                            2C07B8D5
+                            <div class="collapse font-weight-normal" id="sqlhash_2C07B8D5">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_31E5F7EE" role="alert">
+                            31E5F7EE
+                            <div class="collapse font-weight-normal" id="sqlhash_31E5F7EE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BD0ECAE0" role="alert">
+                            BD0ECAE0
+                            <div class="collapse font-weight-normal" id="sqlhash_BD0ECAE0">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F4161B8D" role="alert">
+                            F4161B8D
+                            <div class="collapse font-weight-normal" id="sqlhash_F4161B8D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_90D3434B" role="alert">
+                            90D3434B
+                            <div class="collapse font-weight-normal" id="sqlhash_90D3434B">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F9E3A9C3" role="alert">
+                            F9E3A9C3
+                            <div class="collapse font-weight-normal" id="sqlhash_F9E3A9C3">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4D8FA352" role="alert">
+                            4D8FA352
+                            <div class="collapse font-weight-normal" id="sqlhash_4D8FA352">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_231FB378" role="alert">
+                            231FB378
+                            <div class="collapse font-weight-normal" id="sqlhash_231FB378">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_500F310B" role="alert">
+                            500F310B
+                            <div class="collapse font-weight-normal" id="sqlhash_500F310B">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D94651A4" role="alert">
+                            D94651A4
+                            <div class="collapse font-weight-normal" id="sqlhash_D94651A4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_592AEE03" role="alert">
+                            592AEE03
+                            <div class="collapse font-weight-normal" id="sqlhash_592AEE03">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_69524966" role="alert">
+                            69524966
+                            <div class="collapse font-weight-normal" id="sqlhash_69524966">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C22065C5" role="alert">
+                            C22065C5
+                            <div class="collapse font-weight-normal" id="sqlhash_C22065C5">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_83649947" role="alert">
+                            83649947
+                            <div class="collapse font-weight-normal" id="sqlhash_83649947">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_239F6F41" role="alert">
+                            239F6F41
+                            <div class="collapse font-weight-normal" id="sqlhash_239F6F41">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_7FCC7244" role="alert">
+                            7FCC7244
+                            <div class="collapse font-weight-normal" id="sqlhash_7FCC7244">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_EDCCFDBF" role="alert">
+                            EDCCFDBF
+                            <div class="collapse font-weight-normal" id="sqlhash_EDCCFDBF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C21FBEDD" role="alert">
+                            C21FBEDD
+                            <div class="collapse font-weight-normal" id="sqlhash_C21FBEDD">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_2DB399CC" role="alert">
+                            2DB399CC
+                            <div class="collapse font-weight-normal" id="sqlhash_2DB399CC">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E694EE32" role="alert">
+                            E694EE32
+                            <div class="collapse font-weight-normal" id="sqlhash_E694EE32">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E1CE72DF" role="alert">
+                            E1CE72DF
+                            <div class="collapse font-weight-normal" id="sqlhash_E1CE72DF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_EF09BE59" role="alert">
+                            EF09BE59
+                            <div class="collapse font-weight-normal" id="sqlhash_EF09BE59">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BE3A021F" role="alert">
+                            BE3A021F
+                            <div class="collapse font-weight-normal" id="sqlhash_BE3A021F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F626997B" role="alert">
+                            F626997B
+                            <div class="collapse font-weight-normal" id="sqlhash_F626997B">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_FD10011A" role="alert">
+                            FD10011A
+                            <div class="collapse font-weight-normal" id="sqlhash_FD10011A">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_85B4C6FF" role="alert">
+                            85B4C6FF
+                            <div class="collapse font-weight-normal" id="sqlhash_85B4C6FF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_AECF46EE" role="alert">
+                            AECF46EE
+                            <div class="collapse font-weight-normal" id="sqlhash_AECF46EE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_EBAB88B4" role="alert">
+                            EBAB88B4
+                            <div class="collapse font-weight-normal" id="sqlhash_EBAB88B4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_19780930" role="alert">
+                            19780930
+                            <div class="collapse font-weight-normal" id="sqlhash_19780930">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_278E7189" role="alert">
+                            278E7189
+                            <div class="collapse font-weight-normal" id="sqlhash_278E7189">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_18FC3BAF" role="alert">
+                            18FC3BAF
+                            <div class="collapse font-weight-normal" id="sqlhash_18FC3BAF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_10B3618C" role="alert">
+                            10B3618C
+                            <div class="collapse font-weight-normal" id="sqlhash_10B3618C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D322886E" role="alert">
+                            D322886E
+                            <div class="collapse font-weight-normal" id="sqlhash_D322886E">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_487C3766" role="alert">
+                            487C3766
+                            <div class="collapse font-weight-normal" id="sqlhash_487C3766">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A4DCBACC" role="alert">
+                            A4DCBACC
+                            <div class="collapse font-weight-normal" id="sqlhash_A4DCBACC">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_AE44866D" role="alert">
+                            AE44866D
+                            <div class="collapse font-weight-normal" id="sqlhash_AE44866D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_DD951E8D" role="alert">
+                            DD951E8D
+                            <div class="collapse font-weight-normal" id="sqlhash_DD951E8D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_DAC67063" role="alert">
+                            DAC67063
+                            <div class="collapse font-weight-normal" id="sqlhash_DAC67063">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_78F97C11" role="alert">
+                            78F97C11
+                            <div class="collapse font-weight-normal" id="sqlhash_78F97C11">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F0E3A4AD" role="alert">
+                            F0E3A4AD
+                            <div class="collapse font-weight-normal" id="sqlhash_F0E3A4AD">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E89ACA8A" role="alert">
+                            E89ACA8A
+                            <div class="collapse font-weight-normal" id="sqlhash_E89ACA8A">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_36560484" role="alert">
+                            36560484
+                            <div class="collapse font-weight-normal" id="sqlhash_36560484">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_27078F3E" role="alert">
+                            27078F3E
+                            <div class="collapse font-weight-normal" id="sqlhash_27078F3E">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_DCC070A8" role="alert">
+                            DCC070A8
+                            <div class="collapse font-weight-normal" id="sqlhash_DCC070A8">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_3E5440CC" role="alert">
+                            3E5440CC
+                            <div class="collapse font-weight-normal" id="sqlhash_3E5440CC">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F2B75DE9" role="alert">
+                            F2B75DE9
+                            <div class="collapse font-weight-normal" id="sqlhash_F2B75DE9">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_7B5C23CE" role="alert">
+                            7B5C23CE
+                            <div class="collapse font-weight-normal" id="sqlhash_7B5C23CE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_E719B949" role="alert">
+                            E719B949
+                            <div class="collapse font-weight-normal" id="sqlhash_E719B949">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F74114AC" role="alert">
+                            F74114AC
+                            <div class="collapse font-weight-normal" id="sqlhash_F74114AC">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A16F498B" role="alert">
+                            A16F498B
+                            <div class="collapse font-weight-normal" id="sqlhash_A16F498B">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_5C236248" role="alert">
+                            5C236248
+                            <div class="collapse font-weight-normal" id="sqlhash_5C236248">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_EC456B60" role="alert">
+                            EC456B60
+                            <div class="collapse font-weight-normal" id="sqlhash_EC456B60">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_FA8BF40D" role="alert">
+                            FA8BF40D
+                            <div class="collapse font-weight-normal" id="sqlhash_FA8BF40D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_53D548CF" role="alert">
+                            53D548CF
+                            <div class="collapse font-weight-normal" id="sqlhash_53D548CF">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_72E7A86F" role="alert">
+                            72E7A86F
+                            <div class="collapse font-weight-normal" id="sqlhash_72E7A86F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F5753838" role="alert">
                             F5753838
                             <div class="collapse font-weight-normal" id="sqlhash_F5753838">
-                                SELECT BB.*, '' AS TEXTREAL, '' AS REAL_USER FROM VTRD_FIX_QUOTE_BILLS BB WHERE
-                                BB.UPDATETIME &gt; TO_CHAR(SYSDATE,'YYYY-MM-DD') AND BB.QUOTEDATE =
-                                TO_CHAR(SYSDATE,'YYYY-MM-DD')
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_30191156" role="alert">
+                            30191156
+                            <div class="collapse font-weight-normal" id="sqlhash_30191156">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D1284086" role="alert">
+                            D1284086
+                            <div class="collapse font-weight-normal" id="sqlhash_D1284086">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_66A6002F" role="alert">
+                            66A6002F
+                            <div class="collapse font-weight-normal" id="sqlhash_66A6002F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C95D89E2" role="alert">
+                            C95D89E2
+                            <div class="collapse font-weight-normal" id="sqlhash_C95D89E2">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4FCBB875" role="alert">
+                            4FCBB875
+                            <div class="collapse font-weight-normal" id="sqlhash_4FCBB875">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_68EEEE6E" role="alert">
+                            68EEEE6E
+                            <div class="collapse font-weight-normal" id="sqlhash_68EEEE6E">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_CF806706" role="alert">
+                            CF806706
+                            <div class="collapse font-weight-normal" id="sqlhash_CF806706">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4E780FC8" role="alert">
+                            4E780FC8
+                            <div class="collapse font-weight-normal" id="sqlhash_4E780FC8">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_79369084" role="alert">
+                            79369084
+                            <div class="collapse font-weight-normal" id="sqlhash_79369084">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_9494B0C1" role="alert">
+                            9494B0C1
+                            <div class="collapse font-weight-normal" id="sqlhash_9494B0C1">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_5E544E00" role="alert">
+                            5E544E00
+                            <div class="collapse font-weight-normal" id="sqlhash_5E544E00">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_CBDBDAD3" role="alert">
+                            CBDBDAD3
+                            <div class="collapse font-weight-normal" id="sqlhash_CBDBDAD3">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_4F87A481" role="alert">
+                            4F87A481
+                            <div class="collapse font-weight-normal" id="sqlhash_4F87A481">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_FDD0E663" role="alert">
+                            FDD0E663
+                            <div class="collapse font-weight-normal" id="sqlhash_FDD0E663">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_6AEC0201" role="alert">
+                            6AEC0201
+                            <div class="collapse font-weight-normal" id="sqlhash_6AEC0201">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_6EBCE583" role="alert">
+                            6EBCE583
+                            <div class="collapse font-weight-normal" id="sqlhash_6EBCE583">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_AFE1996A" role="alert">
+                            AFE1996A
+                            <div class="collapse font-weight-normal" id="sqlhash_AFE1996A">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BE1BA886" role="alert">
+                            BE1BA886
+                            <div class="collapse font-weight-normal" id="sqlhash_BE1BA886">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D2865F10" role="alert">
+                            D2865F10
+                            <div class="collapse font-weight-normal" id="sqlhash_D2865F10">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A7119508" role="alert">
+                            A7119508
+                            <div class="collapse font-weight-normal" id="sqlhash_A7119508">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_CCF465F" role="alert">
+                            CCF465F
+                            <div class="collapse font-weight-normal" id="sqlhash_CCF465F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_3F5AB33D" role="alert">
+                            3F5AB33D
+                            <div class="collapse font-weight-normal" id="sqlhash_3F5AB33D">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D772CD15" role="alert">
+                            D772CD15
+                            <div class="collapse font-weight-normal" id="sqlhash_D772CD15">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8D139478" role="alert">
+                            8D139478
+                            <div class="collapse font-weight-normal" id="sqlhash_8D139478">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F746CB77" role="alert">
+                            F746CB77
+                            <div class="collapse font-weight-normal" id="sqlhash_F746CB77">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_6AF3FE94" role="alert">
+                            6AF3FE94
+                            <div class="collapse font-weight-normal" id="sqlhash_6AF3FE94">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_19AC6F54" role="alert">
+                            19AC6F54
+                            <div class="collapse font-weight-normal" id="sqlhash_19AC6F54">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_86148339" role="alert">
+                            86148339
+                            <div class="collapse font-weight-normal" id="sqlhash_86148339">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_490DBB71" role="alert">
+                            490DBB71
+                            <div class="collapse font-weight-normal" id="sqlhash_490DBB71">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F80272B0" role="alert">
+                            F80272B0
+                            <div class="collapse font-weight-normal" id="sqlhash_F80272B0">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8E2C9E43" role="alert">
+                            8E2C9E43
+                            <div class="collapse font-weight-normal" id="sqlhash_8E2C9E43">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_295DFAF9" role="alert">
+                            295DFAF9
+                            <div class="collapse font-weight-normal" id="sqlhash_295DFAF9">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C0C3E08F" role="alert">
+                            C0C3E08F
+                            <div class="collapse font-weight-normal" id="sqlhash_C0C3E08F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_13A9AE89" role="alert">
+                            13A9AE89
+                            <div class="collapse font-weight-normal" id="sqlhash_13A9AE89">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_96469632" role="alert">
+                            96469632
+                            <div class="collapse font-weight-normal" id="sqlhash_96469632">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F0371FE6" role="alert">
+                            F0371FE6
+                            <div class="collapse font-weight-normal" id="sqlhash_F0371FE6">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_BA30263F" role="alert">
+                            BA30263F
+                            <div class="collapse font-weight-normal" id="sqlhash_BA30263F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A2709E0C" role="alert">
+                            A2709E0C
+                            <div class="collapse font-weight-normal" id="sqlhash_A2709E0C">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_5E76F5E6" role="alert">
+                            5E76F5E6
+                            <div class="collapse font-weight-normal" id="sqlhash_5E76F5E6">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_8A522ED6" role="alert">
+                            8A522ED6
+                            <div class="collapse font-weight-normal" id="sqlhash_8A522ED6">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_C20543A4" role="alert">
+                            C20543A4
+                            <div class="collapse font-weight-normal" id="sqlhash_C20543A4">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_9145EEDD" role="alert">
+                            9145EEDD
+                            <div class="collapse font-weight-normal" id="sqlhash_9145EEDD">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_D5C57188" role="alert">
+                            D5C57188
+                            <div class="collapse font-weight-normal" id="sqlhash_D5C57188">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A2C299CA" role="alert">
+                            A2C299CA
+                            <div class="collapse font-weight-normal" id="sqlhash_A2C299CA">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_F763E70F" role="alert">
+                            F763E70F
+                            <div class="collapse font-weight-normal" id="sqlhash_F763E70F">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_84E12649" role="alert">
+                            84E12649
+                            <div class="collapse font-weight-normal" id="sqlhash_84E12649">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_FE6062DE" role="alert">
+                            FE6062DE
+                            <div class="collapse font-weight-normal" id="sqlhash_FE6062DE">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
+                            </div>
+                        </div>
+
+                        <div class="sqlcard alert alert-success" data-target="#sqlhash_A5941AE9" role="alert">
+                            A5941AE9
+                            <div class="collapse font-weight-normal" id="sqlhash_A5941AE9">
+                                <xmp><未找到 Hash 对应的 SQL 命令！></xmp>
                             </div>
                         </div>
                     </div>
@@ -424,23 +1828,22 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        (function () {
+            $(".link-sqlhash").click((e) => {
+                let target = $(e.target);
+                let sqlhash = target.data('sqlhash');
+                let sqlelementid = `#sqlhash_${sqlhash}`;
+                let sqlelement = $(sqlelementid);
+                sqlelement.collapse('show');
+                location.href = sqlelementid;
+            });
+            $(".sqlcard").dblclick((e) => {
+                let target = $(e.target).data('target');
+                if (target !== undefined) {
+                    $(target).collapse('toggle');
+                }
+            });
+        })();
+    </script>
 </div>
-
-<script type="text/javascript">
-    (function () {
-        $(".link-sqlhash").click((e) => {
-            let target = $(e.target);
-            let sqlhash = target.data('sqlhash');
-            let sqlelementid = `#sqlhash_${sqlhash}`;
-            let sqlelement = $(sqlelementid);
-            sqlelement.collapse('show');
-            location.href = sqlelementid;
-        });
-        $(".sqlcard").dblclick((e) => {
-            let target = $(e.target).data('target');
-            if (target !== undefined) {
-                $(target).collapse('toggle');
-            }
-        });
-    })();
-</script>
