@@ -1032,7 +1032,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             this.RenderRankingList(builder, "执行次数-排行榜", topGroups, g => CreateSQLHashLink(g.Key.Database, g.Key.SQLHash), g => this.RenderValue("info", g.Count().ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N")));
 
             string CreateSQLHashLink(string database, string sqlhash)
-                => $@"<a class=""link-sqlhash text-primary"" data-sqlhash=""{sqlhash}""><span class=""badge badge-success font-weight-bold"">{database}</span> {sqlhash}</a>";
+                => $@"<a class=""link-sqlhash text-primary"" data-sqlhash=""{sqlhash}""><span class=""badge badge-success font-weight-bold"">{database}</span> {(SQLAnalysiser.HashDescriptions.TryGetValue(sqlhash, out string description) ? description : sqlhash)}</a>";
 
             builder.AppendLine(@"    </div>");
             builder.Append($@"<div class=""row"">

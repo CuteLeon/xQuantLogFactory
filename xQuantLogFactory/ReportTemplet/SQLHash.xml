@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQLHashs>
+  <SQLHash Hash="EDBCD2D84ACA524414059750D4623D83" Description="执行存储过程_通知消息批准"/>
+  <SQLHash Hash="1B5692AB04BD4A6F6651952DBBF65B24" Description="查询所有市场所有行情数据"/>
+  <SQLHash Hash="3C122BA1011BF79CD1024702E5F9C1F3" Description="系列监视器"/>
+  <SQLHash Hash="FF45E3709407F929D5A24E9AE9EA5112" Description="查询最新的授信操作请求"/>
+  <SQLHash Hash="CA2A3426834B83B6FA22CE4A8C7A2322" Description="查找全量到期确认指令单"/>
+  <SQLHash Hash="F6DB434B6BB9FC7256FBB5D3FDCDB5C6" Description="查询待更新指令"/>
+  <SQLHash Hash="0119D89ACB3433127259B44686A22A47" Description="查询需要补单的下行成交"/>
+  <SQLHash Hash="CC379CCCB8B5E75E5043D3B55F0FFF17" Description="更新定时任务状态"/>
+  <SQLHash Hash="ED40E735422065B209527756041247BC" Description="获取逆回购到期成交编号"/>
+  <SQLHash Hash="9642852279FC7048B97CC68BAA0206CE" Description="获取数据库日期"/>
+  <SQLHash Hash="67FBBED7615D8421624215254CD969EE" Description="获取数据库日期"/>
+  <SQLHash Hash="E3580829EE4D314ED7CDC0DC1CE97F23" Description="获取终止交易对应的确认影子交易"/>
+  <SQLHash Hash="0B248B3292BA4AD32E93BDB35E4CAD5D" Description="根据登录用户查找债券"/>
+  <SQLHash Hash="A9B5E32585AEA1465DD6F234D4181C4F" Description="查询市场状态"/>
+  <SQLHash Hash="5EDF024A2669EF950E10F62EA01E3CFC" Description="查找任务"/>
+  <SQLHash Hash="CBCED333804BC9C45EE54728D06E7773" Description="插入执行日志"/>
+  <SQLHash Hash="CB5191A56D7507EDF66AAF913B6857A7" Description="执行存储过程_交易组存档"/>
+  <SQLHash Hash="2C276D37B5CA9A2BD1F71D45E4C31714" Description="查询详细行情"/>
+  <SQLHash Hash="EE45D8B4622F61C6D3BFE640BB60CEF2" Description="查找买断式回购交易"/>
+  <SQLHash Hash="43A33E357660701E22B2388E27377FF3" Description="保存消息"/>
+  <SQLHash Hash="E367939AB430A47731BE51B89ACA7D84" Description="查询与公告不关联的承分销交易的远期要素"/>
+  <SQLHash Hash="09357E75DB6F0FC23AD16456A20C429B" Description="加载限定日期的非标"/>
+  <SQLHash Hash="A3A8F35351301601C22219D2FB029791" Description="获取当前\下个清算日兑息兑付类的结算指令"/>
+</SQLHashs>

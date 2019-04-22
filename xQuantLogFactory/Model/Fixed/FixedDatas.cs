@@ -260,6 +260,11 @@ namespace xQuantLogFactory.Model.Fixed
         /// SQL哈希文件名称
         /// </summary>
         public const string SQLHashFileName = "SQLHash.csv";
+
+        /// <summary>
+        /// SQLHash描述配置文件
+        /// </summary>
+        public const string SQLHashDescriptionFileName = "SQLHash.xml";
         #endregion
 
         #region 实体数据常量

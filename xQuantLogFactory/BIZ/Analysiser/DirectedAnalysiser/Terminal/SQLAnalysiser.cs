@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml;
 using Microsoft.VisualBasic.FileIO;
 using xQuantLogFactory.Model;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Model.Monitor;
 using xQuantLogFactory.Model.Result;
+using xQuantLogFactory.Utils;
 using xQuantLogFactory.Utils.Trace;
 
 namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
@@ -22,6 +24,11 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
         /// SQL-Hash 对应字典
         /// </summary>
         public static ConcurrentDictionary<string, string> SQLHashs = new ConcurrentDictionary<string, string>();
+
+        /// <summary>
+        /// Hash-描述 对应字典
+        /// </summary>
+        public static ConcurrentDictionary<string, string> HashDescriptions = new ConcurrentDictionary<string, string>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SQLAnalysiser"/> class.
@@ -93,51 +100,109 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                     }
                 });
 
-            string[] sqlHashFiles = argument.TerminalLogFiles
+            string[] sqlHashDirs = argument.TerminalLogFiles
                 .Where(file => file.LogFileType == LogFileTypes.Server && file.LogLevel == LogLevels.SQL)
-                .Select(file => Path.Combine(Path.GetDirectoryName(file.FilePath), FixedDatas.SQLHashFileName))
+                .Select(file => Path.GetDirectoryName(file.FilePath))
                 .Distinct().ToArray();
 
-            if (sqlHashFiles.Length > 0)
+            if (sqlHashDirs.Length > 0)
             {
-                this.Tracer?.WriteLine($"查找 SQL-Hash 对应关系 ....");
-                sqlHashFiles.AsParallel().ForAll(sqlHashFile =>
-                    {
-                        if (File.Exists(sqlHashFile))
-                        {
-                            this.Tracer?.WriteLine($"解析 SQL-Hash ：{sqlHashFile}");
-                            try
-                            {
-                                foreach (var (hash, sql) in ParseSQLHashCSV(sqlHashFile))
-                                {
-                                    SQLHashs[hash] = sql;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                this.Tracer?.WriteLine($"解析 SQL-Hash 时遇到异常：{ex.Message}");
-                            }
-                        }
-                    });
+                this.ParseSQLHashCSVs(sqlHashDirs);
             }
 
-            IEnumerable<(string hash, string sql)> ParseSQLHashCSV(string csvPath)
-            {
-                using TextFieldParser parser = new TextFieldParser(csvPath)
-                {
-                    Delimiters = new[] { "," },
-                    TextFieldType = FieldType.Delimited,
-                    HasFieldsEnclosedInQuotes = true,
-                };
+            this.ParseSQLHashDescription();
+        }
 
-                string[] values = null;
-                while (!parser.EndOfData)
+        /// <summary>
+        /// 解析SQL哈希描述
+        /// </summary>
+        protected void ParseSQLHashDescription()
+        {
+            string filePath = Path.Combine(ConfigHelper.ReportTempletDirectory, FixedDatas.SQLHashDescriptionFileName);
+            if (File.Exists(filePath))
+            {
+                try
                 {
-                    values = parser.ReadFields();
-                    if (values.Length >= 2)
+                    XmlDocument document = new XmlDocument();
+                    document.Load(filePath);
+                    var sqlHashs = document.GetElementsByTagName("SQLHashs").Item(0);
+                    if (sqlHashs == null ||
+                        sqlHashs.ChildNodes.Count == 0)
                     {
-                        yield return (values[0], values[1]);
+                        return;
                     }
+
+                    string hash = string.Empty, description = string.Empty;
+                    foreach (XmlNode sqlHash in sqlHashs.ChildNodes)
+                    {
+                        if ("SQLHash".Equals(sqlHash.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            hash = sqlHash.Attributes["Hash"]?.Value;
+                            description = sqlHash.Attributes["Description"]?.Value;
+
+                            if (!string.IsNullOrEmpty(hash) &&
+                                !string.IsNullOrEmpty(description))
+                            {
+                                HashDescriptions[hash] = description;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Tracer?.WriteLine($"解析 SQLHash 描述遇到异常：{ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 解析所有 SQLHash CSV 文件
+        /// </summary>
+        /// <param name="sqlLogDirs"></param>
+        protected void ParseSQLHashCSVs(string[] sqlLogDirs)
+        {
+            this.Tracer?.WriteLine($"查找 SQL-Hash 对应关系 ....");
+            sqlLogDirs.Select(dir => Path.Combine(dir, FixedDatas.SQLHashFileName)).AsParallel().ForAll(sqlHashFile =>
+              {
+                  if (File.Exists(sqlHashFile))
+                  {
+                      this.Tracer?.WriteLine($"解析 SQL-Hash ：{sqlHashFile}");
+                      try
+                      {
+                          foreach (var (hash, sql) in this.ParseSQLHashCSV(sqlHashFile))
+                          {
+                              SQLHashs[hash] = sql;
+                          }
+                      }
+                      catch (Exception ex)
+                      {
+                          this.Tracer?.WriteLine($"解析 SQL-Hash 时遇到异常：{ex.Message}");
+                      }
+                  }
+              });
+        }
+
+        /// <summary>
+        /// 解析 SQL-Hash CSV 文件
+        /// </summary>
+        /// <param name="csvPath"></param>
+        /// <returns></returns>
+        protected IEnumerable<(string hash, string sql)> ParseSQLHashCSV(string csvPath)
+        {
+            using TextFieldParser parser = new TextFieldParser(csvPath)
+            {
+                Delimiters = new[] { "," },
+                TextFieldType = FieldType.Delimited,
+                HasFieldsEnclosedInQuotes = true,
+            };
+
+            string[] values = null;
+            while (!parser.EndOfData)
+            {
+                values = parser.ReadFields();
+                if (values.Length >= 2)
+                {
+                    yield return (values[0], values[1]);
                 }
             }
         }

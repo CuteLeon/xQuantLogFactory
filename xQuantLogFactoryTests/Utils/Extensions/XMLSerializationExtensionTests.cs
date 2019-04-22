@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using xQuantLogFactory.Model.Fixed;
@@ -13,6 +13,28 @@ namespace xQuantLogFactory.Utils.Extensions.Tests
     [TestClass()]
     public class XMLSerializationExtensionTests
     {
+        [TestMethod]
+        public void ReadXMLTest()
+        {
+            XmlDocument document = new XmlDocument();
+            document.Load(@"..\\..\\..\\xQuantLogFactory\\ReportTemplet\\SQLHash.xml");
+            var sqlHashs = document.GetElementsByTagName("SQLHashs").Item(0);
+            if (sqlHashs == null ||
+                sqlHashs.ChildNodes.Count == 0)
+            {
+                Assert.Fail();
+            }
+
+            foreach (XmlNode sqlHash in sqlHashs.ChildNodes)
+            {
+                if ("SQLHash".Equals(sqlHash.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    string hash = sqlHash.Attributes["Hash"]?.Value;
+                    string description = sqlHash.Attributes["Description"]?.Value;
+                }
+            }
+        }
+
         [TestMethod()]
         public void SerializeToXMLTest()
         {
