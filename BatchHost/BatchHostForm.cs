@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 using BatchHost.Utils;
@@ -220,7 +222,7 @@ namespace BatchHost
             }
 
             // 执行任务
-            this.ExecuteBatches();
+            this.ExecuteBatches(this.BatchesListBox.CheckedItems.Cast<string>().ToArray());
         }
 
         private void FindDirTextBox_ButtonClicked()
@@ -315,5 +317,41 @@ namespace BatchHost
             this.InitOutputTabPage();
         }
         #endregion
+
+        private void BatchesListMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            bool selectedBatch = this.BatchesListBox.SelectedItem != null;
+
+            this.ExecuteToolStripMenuItem.Enabled = selectedBatch;
+            this.DeleteToolStripMenuItem.Enabled = selectedBatch;
+        }
+
+        private void ExecuteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedBatch = this.BatchesListBox.SelectedItem as string;
+            if (!string.IsNullOrEmpty(selectedBatch))
+            {
+                this.ExecuteBatches(new[] { selectedBatch });
+            }
+        }
+
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var selectedBatch = this.BatchesListBox.SelectedItem as string;
+            if (!string.IsNullOrEmpty(selectedBatch))
+            {
+                try
+                {
+                    File.Delete(selectedBatch);
+                }
+                finally
+                {
+                    if (!File.Exists(selectedBatch))
+                    {
+                        this.BatchesListBox.Items.Remove(selectedBatch);
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -124,7 +125,8 @@ namespace BatchHost
         /// <summary>
         /// 执行批处理文件
         /// </summary>
-        private void ExecuteBatches()
+        /// <param name="batches"></param>
+        private void ExecuteBatches(string[] batches)
         {
             // 界面切换前禁用按钮，防止重复触发
             this.ExecuteButton.Enabled = false;
@@ -140,7 +142,6 @@ namespace BatchHost
 
                 try
                 {
-                    string[] batches = this.BatchesListBox.CheckedItems.Cast<string>().ToArray();
                     string batch = string.Empty;
 
                     for (int index = 0; index < batches.Length; index++)

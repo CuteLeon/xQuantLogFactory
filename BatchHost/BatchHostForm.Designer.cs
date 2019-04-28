@@ -83,6 +83,10 @@
             this.BatchPreviewGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.PreviewTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.BatchesListBox = new System.Windows.Forms.CheckedListBox();
+            this.BatchesListMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ExecuteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.DeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BatchesExecuteControlGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.BatchesExecuteControlPanel = new System.Windows.Forms.TableLayoutPanel();
             this.ExecuteCancelButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
@@ -110,6 +114,7 @@
             this.BatchesListPanel.SuspendLayout();
             this.BatchesCheckControlPanel.SuspendLayout();
             this.BatchPreviewGroupBox.SuspendLayout();
+            this.BatchesListMenuStrip.SuspendLayout();
             this.BatchesExecuteControlGroupBox.SuspendLayout();
             this.BatchesExecuteControlPanel.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -1732,6 +1737,7 @@
             this.BatchesListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.BatchesListBox.CheckOnClick = true;
             this.BatchesListPanel.SetColumnSpan(this.BatchesListBox, 2);
+            this.BatchesListBox.ContextMenuStrip = this.BatchesListMenuStrip;
             this.BatchesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BatchesListBox.FormattingEnabled = true;
             this.BatchesListBox.IntegralHeight = false;
@@ -1740,6 +1746,37 @@
             this.BatchesListBox.Size = new System.Drawing.Size(516, 220);
             this.BatchesListBox.TabIndex = 3;
             this.BatchesListBox.SelectedValueChanged += new System.EventHandler(this.BatchesListBox_SelectedValueChanged);
+            // 
+            // BatchesListMenuStrip
+            // 
+            this.BatchesListMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ExecuteToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.DeleteToolStripMenuItem});
+            this.BatchesListMenuStrip.Name = "BatchesListMenuStrip";
+            this.BatchesListMenuStrip.Size = new System.Drawing.Size(125, 54);
+            this.BatchesListMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.BatchesListMenuStrip_Opening);
+            // 
+            // ExecuteToolStripMenuItem
+            // 
+            this.ExecuteToolStripMenuItem.Enabled = false;
+            this.ExecuteToolStripMenuItem.Name = "ExecuteToolStripMenuItem";
+            this.ExecuteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ExecuteToolStripMenuItem.Text = "立即执行";
+            this.ExecuteToolStripMenuItem.Click += new System.EventHandler(this.ExecuteToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // DeleteToolStripMenuItem
+            // 
+            this.DeleteToolStripMenuItem.Enabled = false;
+            this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DeleteToolStripMenuItem.Text = "删除文件";
+            this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // BatchesExecuteControlGroupBox
             // 
@@ -2212,6 +2249,7 @@
             this.BatchesListPanel.PerformLayout();
             this.BatchesCheckControlPanel.ResumeLayout(false);
             this.BatchPreviewGroupBox.ResumeLayout(false);
+            this.BatchesListMenuStrip.ResumeLayout(false);
             this.BatchesExecuteControlGroupBox.ResumeLayout(false);
             this.BatchesExecuteControlPanel.ResumeLayout(false);
             this.OutputTabPage.ResumeLayout(false);
@@ -2289,6 +2327,10 @@
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton SendEnterButton;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton SendInputButton;
         private VisualPlus.Toolkit.Controls.Interactivity.VisualButton ConsoleClearButton;
+        private System.Windows.Forms.ContextMenuStrip BatchesListMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem ExecuteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DeleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
