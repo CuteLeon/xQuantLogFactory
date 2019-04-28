@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 using xQuantLogFactory.Model.Fixed;
@@ -140,6 +141,64 @@ namespace xQuantLogFactory.Model
         /// </summary>
         [XmlIgnore]
         public virtual List<PerformanceLogFile> PerformanceLogFiles { get; set; } = new List<PerformanceLogFile>();
+        #endregion
+
+        #region XML
+
+        /// <summary>
+        /// Gets or sets 任务耗时
+        /// </summary>
+        /// <remarks>仅用于导出XML</remarks>
+        [XmlElement("TaskElapsed")]
+        public string TaskElapsed
+        {
+            get => this.TaskStartTime != DateTime.MinValue && this.TaskFinishTime != DateTime.MinValue ? (this.TaskFinishTime - this.TaskStartTime).ToString() : TimeSpan.Zero.ToString();
+            set => _ = value;
+        }
+
+        /// <summary>
+        /// Gets or sets 文件名称
+        /// </summary>
+        /// <remarks>仅用于导出XML</remarks>
+        [XmlElement("LogFileNames")]
+        public string[] LogFileNames
+        {
+            get => this.PerformanceLogFiles.Select(file => file.RelativePath).Union(this.TerminalLogFiles.Select(file => file.RelativePath)).ToArray();
+            set => _ = value;
+        }
+
+        /// <summary>
+        /// Gets or sets 监视结果数量
+        /// </summary>
+        /// <remarks>仅用于导出XML</remarks>
+        [XmlElement("MonitorResultCount")]
+        public int MonitorResultCount
+        {
+            get => this.PerformanceMonitorResults.Count + this.TerminalMonitorResults.Count;
+            set => _ = value;
+        }
+
+        /// <summary>
+        /// Gets or sets 分析结果数量
+        /// </summary>
+        /// <remarks>仅用于导出XML</remarks>
+        [XmlElement("AnalysiserResultCount")]
+        public int AnalysiserResultCount
+        {
+            get => this.PerformanceAnalysisResults.Count + this.TerminalAnalysisResults.Count;
+            set => _ = value;
+        }
+
+        /// <summary>
+        /// Gets or sets 解析结果数量
+        /// </summary>
+        /// <remarks>仅用于导出XML</remarks>
+        [XmlElement("ParserResultCount")]
+        public int ParserResultCount
+        {
+            get => this.PerformanceParseResults.Count;
+            set => _ = value;
+        }
         #endregion
 
         #region 日志结果
