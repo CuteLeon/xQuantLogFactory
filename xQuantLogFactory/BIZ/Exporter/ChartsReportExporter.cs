@@ -1010,7 +1010,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         {
             var groups = argument.TerminalAnalysisResults
                 .Where(r => r.MonitorItem.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.SQL)
-                .GroupBy<TerminalAnalysisResult, (string Database, string SQLHash)>(r => (r.AnalysisDatas[FixedDatas.DATABASE] as string, r.AnalysisDatas[FixedDatas.HASH] as string))
+                .GroupBy<TerminalAnalysisResult, (string Database, string SQLHash)>(r => (r.AnalysisDatas.TryGetValue(FixedDatas.DATABASE, out object database) ? database as string : string.Empty, r.AnalysisDatas.TryGetValue(FixedDatas.HASH, out object hash) ? hash as string : string.Empty))
                 .ToArray();
             List<string> sqlHashs = new List<string>();
 
