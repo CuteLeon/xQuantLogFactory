@@ -163,6 +163,12 @@ namespace xQuantLogFactory.Model.Fixed
         /// </summary>
         [AmbientValue("SQL")]
         SQL = 7,
+
+        /// <summary>
+        /// Message
+        /// </summary>
+        [AmbientValue("Message")]
+        Message = 8,
     }
 
     /// <summary>
