@@ -294,6 +294,7 @@ namespace BatchHost
             this.BatchesSearchTextBox.TextBoxWidth = this.BatchesSearchTextBox.Width - 38;
             this.FindDirTextBox.TextBoxWidth = this.FindDirTextBox.Width - 38;
             this.FindDirTextBox.Text = UnityUtils.BuildDirectory;
+            this.FindBatches(this.FindDirTextBox.Text);
 
             this.ExecuteGauge.MinimumVisible = true;
             this.ExecuteGauge.MaximumVisible = true;
