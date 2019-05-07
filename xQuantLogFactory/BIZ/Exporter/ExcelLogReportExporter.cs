@@ -24,6 +24,35 @@ namespace xQuantLogFactory.BIZ.Exporter
     public class ExcelLogReportExporter : LogProcesserBase, ILogReportExporter
     {
         /// <summary>
+        /// 保留表名列表
+        /// </summary>
+        private static readonly string[] SpecialSheetNames = new string[]
+        {
+            FixedDatas.MEMORY_SHEET_NAME,
+            FixedDatas.PERFORMANCE_ANALYSISER_SHEET_NAME,
+            FixedDatas.PERFORMANCE_PARSE_SHEET_NAME,
+            FixedDatas.TRADE_CLEARING_SHEET_NAME,
+            FixedDatas.ANALYSIS_SHEET_NAME,
+            FixedDatas.CORE_SERVICE_SHEET_NAME,
+            FixedDatas.FORM_SHEET_NAME,
+            FixedDatas.REPORT_SHEET_NAME,
+            FixedDatas.CACHE_SHEET_NAME,
+            FixedDatas.LIMIT_CHECK_SHEET_NAME,
+            FixedDatas.CLIENT_MESSAGE_SHEET_NAME,
+            FixedDatas.SQL_SHEET_NAME,
+            FixedDatas.BATCH_APPROVAL_SHEET_NAME,
+        };
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExcelLogReportExporter"/> class.
+        /// </summary>
+        /// <param name="tracer"></param>
+        public ExcelLogReportExporter(ITracer tracer)
+            : base(tracer)
+        {
+        }
+
+        /// <summary>
         /// 获取分析结果委托
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
@@ -62,34 +91,6 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="result"></param>
         private delegate void ExportMonitorResultDelegate<TResult>(ExcelRange range, int rowId, TResult result)
             where TResult : IMonitorResult;
-
-        /// <summary>
-        /// 保留表名列表
-        /// </summary>
-        private static readonly string[] SpecialSheetNames = new string[]
-        {
-            FixedDatas.MEMORY_SHEET_NAME,
-            FixedDatas.PERFORMANCE_ANALYSISER_SHEET_NAME,
-            FixedDatas.PERFORMANCE_PARSE_SHEET_NAME,
-            FixedDatas.TRADE_CLEARING_SHEET_NAME,
-            FixedDatas.ANALYSIS_SHEET_NAME,
-            FixedDatas.CORE_SERVICE_SHEET_NAME,
-            FixedDatas.FORM_SHEET_NAME,
-            FixedDatas.REPORT_SHEET_NAME,
-            FixedDatas.CACHE_SHEET_NAME,
-            FixedDatas.LIMIT_CHECK_SHEET_NAME,
-            FixedDatas.CLIENT_MESSAGE_SHEET_NAME,
-            FixedDatas.SQL_SHEET_NAME,
-        };
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExcelLogReportExporter"/> class.
-        /// </summary>
-        /// <param name="tracer"></param>
-        public ExcelLogReportExporter(ITracer tracer)
-            : base(tracer)
-        {
-        }
 
         /// <summary>
         /// 导出Excel报告
@@ -142,6 +143,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportSheet(excel, FixedDatas.CLIENT_MESSAGE_SHEET_NAME, argument, this.GetClientMessageAnalysisResults, this.ExportClientMessageAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.PERFORMANCE_ANALYSISER_SHEET_NAME, argument, this.GetPerformanceAnalysisResults, this.ExportPerformanceAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.TRADE_CLEARING_SHEET_NAME, argument, this.GetTradeClearingAnalysisResults, this.ExportTradeClearingAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.BATCH_APPROVAL_SHEET_NAME, argument, this.GetBatchApprovalAnalysisResults, this.ExportBatchAppovalAnalysiserResult);
 
                     this.Tracer?.WriteLine("正在保存数据到 Excel 文件，请稍等...");
                 }
@@ -363,6 +365,59 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             return results;
         }
+
+        private List<(int ExecuteID, TerminalAnalysisResult Result)> GetTerminalAnalysiserResultsWithExecuteID(TaskArgument argument, TerminalDirectedAnalysiserTypes directedAnalysiserType, string sheetName)
+        {
+            int executeID = 0;
+            var results = new List<(int ExecuteID, TerminalAnalysisResult result)>();
+            foreach (var resultRoot in argument.AnalysisResultContainerRoot.TerminalAnalysisResultRoots)
+            {
+                executeID++;
+
+                results.AddRange(resultRoot.GetAnalysisResultWithSelf()
+                    .Where(result =>
+                        result.MonitorItem.DirectedAnalysiser == directedAnalysiserType ||
+                        result.MonitorItem.SheetName == sheetName)
+                    .Select(result => (executeID, result)));
+            }
+
+            return results;
+        }
+        #region 批量审批分析结果
+
+        /// <summary>
+        /// 筛选批量审批分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int, TerminalAnalysisResult)> GetBatchApprovalAnalysisResults(TaskArgument argument)
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, TerminalDirectedAnalysiserTypes.BatchApproval, FixedDatas.BATCH_APPROVAL_SHEET_NAME);
+
+        /// <summary>
+        /// 导出批量审批分析结果
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="result"></param>
+        private void ExportBatchAppovalAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem?.PrefixName;
+            range[rowId, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
+            range[rowId, 3].Value = result.Version;
+            range[rowId, 4].Value = executeId;
+            range[rowId, 5].Value = result.ElapsedMillisecond;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.USER_CODE, out object user))
+            {
+                range[rowId, 6].Value = user;
+            }
+
+            range[rowId, 7].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 8].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 9].Value = result.LogFile?.RelativePath;
+
+            range[rowId, 10].Value = result.StartMonitorResult?.LineNumber;
+        }
+        #endregion
 
         #region Performance 解析结果
 

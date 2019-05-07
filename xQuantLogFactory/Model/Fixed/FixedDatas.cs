@@ -235,6 +235,11 @@ namespace xQuantLogFactory.Model.Fixed
         /// SQL
         /// </summary>
         public const string SQL_SHEET_NAME = "SQL";
+
+        /// <summary>
+        /// 批量审批
+        /// </summary>
+        public const string BATCH_APPROVAL_SHEET_NAME = "批量审批";
         #endregion
 
         #region 业务数据常量

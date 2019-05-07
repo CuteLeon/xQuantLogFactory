@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Name="批量审批" Begin="批量审批数据处理开始" End="批量审批更新数据库和缓存结束" Sheet="审批">
-    <Item Name="批量审批数据处理" Begin="" End="批量审批数据处理结束"/> 
-    <Item Name ="同意继续" Begin="审批通过服务端同意继续开始" End="审批通过服务端同意继续5" />
-    <Item Name ="直接同意" Begin="审批通过服务端直接同意开始" End="审批通过服务端直接同意6" />
-    <Item Name="批量审批更新数据库和缓存" Begin="批量审批更新数据库和缓存开始" End="批量审批更新数据库和缓存结束"/>
-  </Item>
+  <Item Name="批量审批" Begin="批量审批数据处理开始" DirectedAnalysiser="BatchApproval" End="批量审批数据处理结束" Sheet="批量审批"/>
 </MonitorRoot>

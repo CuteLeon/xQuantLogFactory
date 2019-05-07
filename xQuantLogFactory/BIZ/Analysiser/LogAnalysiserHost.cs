@@ -176,6 +176,11 @@ namespace xQuantLogFactory.BIZ.Analysiser
                 {
                     this.AddDirectedAnalysiser(new SQLAnalysiser(this.Tracer));
                 }
+
+                if (monitorItems.Any(monitor => monitor.DirectedAnalysiser == TerminalDirectedAnalysiserTypes.BatchApproval))
+                {
+                    this.AddDirectedAnalysiser(new BatchApprovalAnalysiser(this.Tracer));
+                }
             }
         }
 

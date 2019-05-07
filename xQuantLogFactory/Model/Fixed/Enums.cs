@@ -36,6 +36,11 @@ namespace xQuantLogFactory.Model.Fixed
         /// SQL定向分析器
         /// </summary>
         SQL = 5,
+
+        /// <summary>
+        /// 批量审批定向分析器
+        /// </summary>
+        BatchApproval = 6,
     }
 
     /// <summary>

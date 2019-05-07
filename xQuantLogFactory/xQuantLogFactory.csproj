@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\BatchApprovalAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CacheSizeAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\SQLAnalysiser.cs" />
     <Compile Include="BIZ\Analysiser\GroupAnalysiser\Performance\CommonPerformanceLogAnalysiser.cs" />
