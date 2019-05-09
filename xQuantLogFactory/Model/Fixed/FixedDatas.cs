@@ -158,6 +158,16 @@ namespace xQuantLogFactory.Model.Fixed
         /// 参数
         /// </summary>
         public const string PARAMS = "参数";
+
+        /// <summary>
+        /// 核算任务
+        /// </summary>
+        public const string ACCOUNTING_TASK = "核算任务";
+
+        /// <summary>
+        /// 核算日期
+        /// </summary>
+        public const string ACCOUNTING_DATE = "核算日期";
         #endregion
 
         #region 保留表名常量
@@ -240,6 +250,11 @@ namespace xQuantLogFactory.Model.Fixed
         /// 批量审批
         /// </summary>
         public const string BATCH_APPROVAL_SHEET_NAME = "批量审批";
+
+        /// <summary>
+        /// 财务核算
+        /// </summary>
+        public const string FINANCIAL_ACCOUNTING_SHEET_NAME = "财务核算";
         #endregion
 
         #region 业务数据常量

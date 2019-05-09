@@ -41,6 +41,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.CLIENT_MESSAGE_SHEET_NAME,
             FixedDatas.SQL_SHEET_NAME,
             FixedDatas.BATCH_APPROVAL_SHEET_NAME,
+            FixedDatas.FINANCIAL_ACCOUNTING_SHEET_NAME,
         };
 
         /// <summary>
@@ -144,6 +145,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportSheet(excel, FixedDatas.PERFORMANCE_ANALYSISER_SHEET_NAME, argument, this.GetPerformanceAnalysisResults, this.ExportPerformanceAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.TRADE_CLEARING_SHEET_NAME, argument, this.GetTradeClearingAnalysisResults, this.ExportTradeClearingAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.BATCH_APPROVAL_SHEET_NAME, argument, this.GetBatchApprovalAnalysisResults, this.ExportBatchAppovalAnalysiserResult);
+                    this.ExportSheet(excel, FixedDatas.FINANCIAL_ACCOUNTING_SHEET_NAME, argument, this.GetFinancialAccountingAnalysiserResults, this.ExportFinancialAccountingAnalysiserResult);
 
                     this.Tracer?.WriteLine("正在保存数据到 Excel 文件，请稍等...");
                 }
@@ -383,6 +385,48 @@ namespace xQuantLogFactory.BIZ.Exporter
 
             return results;
         }
+
+        #region 财务核算
+
+        /// <summary>
+        /// 筛选财务核算分析结果
+        /// </summary>
+        /// <param name="argument"></param>
+        /// <returns></returns>
+        private List<(int, TerminalAnalysisResult)> GetFinancialAccountingAnalysiserResults(TaskArgument argument)
+            => this.GetTerminalAnalysiserResultsWithExecuteID(argument, FixedDatas.FINANCIAL_ACCOUNTING_SHEET_NAME);
+
+        /// <summary>
+        /// 导出财务核算
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="rowId"></param>
+        /// <param name="executeId"></param>
+        /// <param name="result"></param>
+        private void ExportFinancialAccountingAnalysiserResult(ExcelRange range, int rowId, int executeId, TerminalAnalysisResult result)
+        {
+            range[rowId, 1].Value = result.MonitorItem?.PrefixName;
+            range[rowId, 2].Value = result.MonitorItem?.ParentMonitorItem?.Name;
+            range[rowId, 3].Value = result.Version;
+            range[rowId, 4].Value = executeId;
+            range[rowId, 5].Value = result.ElapsedMillisecond;
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.ACCOUNTING_TASK, out object task))
+            {
+                range[rowId, 6].Value = task;
+            }
+
+            if (result.AnalysisDatas.TryGetValue(FixedDatas.ACCOUNTING_DATE, out object date))
+            {
+                range[rowId, 7].Value = date;
+            }
+
+            range[rowId, 8].Value = result.StartMonitorResult?.LogTime; // .ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 9].Value = result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            range[rowId, 10].Value = result.LogFile?.RelativePath;
+            range[rowId, 11].Value = result.StartMonitorResult?.LineNumber;
+        }
+        #endregion
+
         #region 批量审批分析结果
 
         /// <summary>

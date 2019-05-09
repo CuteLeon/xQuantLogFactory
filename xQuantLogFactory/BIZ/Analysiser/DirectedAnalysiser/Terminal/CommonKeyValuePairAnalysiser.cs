@@ -65,32 +65,43 @@ namespace xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal
                 .AsParallel().ForAll(resultGroup =>
                 {
                     TerminalMonitorItem targetMonitor = resultGroup.Key;
-                    TerminalMonitorResult firstResult = null;
                     Match analysisMatch = null;
 
                     this.Tracer?.WriteLine($">>>正在分析监视规则：{targetMonitor.Name}，结果数量：{resultGroup.Count()}");
                     foreach (var analysisResult in resultGroup)
                     {
-                        firstResult = analysisResult.FirstResultOrDefault();
-                        if (firstResult == null)
-                        {
-                            continue;
-                        }
+                        // 先分析结束监视结果，后分析开始监视结果：使用开始监视结果的键值对数据覆盖分析数据字典
+                        MatchLogContent(analysisResult.FinishMonitorResult?.LogContent);
+                        MatchLogContent(analysisResult.StartMonitorResult?.LogContent);
 
-                        lock (this.AnalysisRegex)
+                        void MatchLogContent(string logContent)
                         {
-                            analysisMatch = this.AnalysisRegex.Match(firstResult.LogContent);
-                        }
-
-                        if (analysisMatch.Success && analysisMatch.Groups["Pairs"].Success)
-                        {
-                            // 匹配日志内容中所有的中括号包含的内容
-                            foreach (Match keyValueMatch in this.KeyValuePairRegex.Matches(analysisMatch.Groups["Pairs"].Value))
+                            if (string.IsNullOrEmpty(logContent))
                             {
-                                // 在中括号内容中获取所有键值对数据并录入字典
-                                if (keyValueMatch.Groups["Key"].Success && keyValueMatch.Groups["Value"].Success)
+                                return;
+                            }
+
+                            lock (this.AnalysisRegex)
+                            {
+                                analysisMatch = this.AnalysisRegex.Match(logContent);
+                            }
+
+                            if (analysisMatch.Success && analysisMatch.Groups["Pairs"].Success)
+                            {
+                                MatchCollection matchs = null;
+                                // 匹配日志内容中所有的中括号包含的内容
+                                lock (this.KeyValuePairRegex)
                                 {
-                                    analysisResult.AnalysisDatas[keyValueMatch.Groups["Key"].Value] = keyValueMatch.Groups["Value"].Value;
+                                    matchs = this.KeyValuePairRegex.Matches(analysisMatch.Groups["Pairs"].Value);
+                                }
+
+                                foreach (Match match in matchs)
+                                {
+                                    // 在中括号内容中获取所有键值对数据并录入字典
+                                    if (match.Groups["Key"].Success && match.Groups["Value"].Success)
+                                    {
+                                        analysisResult.AnalysisDatas[match.Groups["Key"].Value] = match.Groups["Value"].Value;
+                                    }
                                 }
                             }
                         }

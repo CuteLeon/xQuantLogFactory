@@ -81,8 +81,16 @@ namespace xQuantLogFactory.BIZ.Analysiser
 
             // 分析结果匹配完成后按日志时间排序
             this.Tracer?.WriteLine(">>>————— 分析结果池排序 —————");
-            argument.TerminalAnalysisResults = argument.TerminalAnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
-            argument.PerformanceAnalysisResults = argument.PerformanceAnalysisResults.OrderBy(result => (result.LogTime, result.MonitorItem.CANO)).ToList();
+            argument.TerminalAnalysisResults = argument.TerminalAnalysisResults
+                .OrderBy(result => result.LogTime)
+                .ThenBy(result => result.LineNumber)
+                .ThenBy(result => result.MonitorItem.CANO)
+                .ToList();
+            argument.PerformanceAnalysisResults = argument.PerformanceAnalysisResults
+                .OrderBy(result => result.LogTime)
+                .ThenBy(result => result.LineNumber)
+                .ThenBy(result => result.MonitorItem.CANO)
+                .ToList();
             this.Tracer?.WriteLine("<<< 排序完成");
 
             // 初始化分析结果树
