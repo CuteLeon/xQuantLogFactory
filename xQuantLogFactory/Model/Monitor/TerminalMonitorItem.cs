@@ -53,6 +53,12 @@ namespace xQuantLogFactory.Model.Monitor
         public string SheetName { get; set; }
 
         /// <summary>
+        /// Gets or sets 性能指标
+        /// </summary>
+        [XmlAttribute("Quota")]
+        public int Quota { get; set; } = int.MinValue;
+
+        /// <summary>
         /// Gets or sets 子监视规则列表
         /// </summary>
         [XmlElement(FixedDatas.TERMINAL_MONITOR_XML_ELEMENT_NAME)]

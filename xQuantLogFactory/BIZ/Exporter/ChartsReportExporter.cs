@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using xQuantLogFactory.BIZ.Analysiser;
 using xQuantLogFactory.BIZ.Analysiser.DirectedAnalysiser.Terminal;
 using xQuantLogFactory.BIZ.Processer;
 using xQuantLogFactory.Model;
@@ -60,6 +60,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("事项", "monitor", this.RenderMonitor),
                 new ChartContainer("请求", "performance", this.RenderPerformance),
                 new ChartContainer("SQL", "sql", this.RenderSQL),
+                new ChartContainer("指标", "quota", this.RenderQuota),
             };
         }
 
@@ -1074,6 +1075,64 @@ namespace xQuantLogFactory.BIZ.Exporter
             }});
         }})();
     </script>");
+            builder.AppendLine(@"</div>");
+        }
+
+        /// <summary>
+        /// 渲染指标
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        private void RenderQuota(StringBuilder builder, TaskArgument argument)
+        {
+            var quotaAnalysiser = new QuotaAnalysiser();
+            var monitors = quotaAnalysiser.GetMonitorsWithQuote(argument).ToList();
+
+            builder.AppendLine(@"<div class=""container-fluid"">");
+
+            foreach (var monitor in monitors)
+            {
+                var results = quotaAnalysiser.GetAnalysiserResultExceedQuota(monitor).ToList();
+
+                builder.AppendLine($@"
+            <div class=""card text-left"">
+                <div class=""card-header"">
+                    <strong>{monitor.Name}</strong>
+                    <span class=""badge badge-primary"">耗时指标：{monitor.Quota}</span>
+                    <span class=""badge badge-success"">平均耗时：{monitor.AnalysisResults.Average(result => result.ElapsedMillisecond).ToString("N2")}</span>
+                    <span class=""badge badge-info"">最小耗时：{monitor.AnalysisResults.Min(result => result.ElapsedMillisecond).ToString()}</span>
+                    <span class=""badge badge-warning"">最大耗时：{monitor.AnalysisResults.Max(result => result.ElapsedMillisecond).ToString()}</span>
+                    <span class=""badge badge-danger"">超额结果占比：{results.Count}/{monitor.AnalysisResults.Count}={((double)results.Count / monitor.AnalysisResults.Count).ToString("P2")}</span>
+                </div>
+                <div class=""card-body"">
+                    <table class=""table table-sm table-hover"">
+                      <thead>
+                        <tr>
+                          <th scope=""col"">开始时间</th>
+                          <th scope=""col"">结束时间</th>
+                          <th scope=""col"">耗时</th>
+                          <th scope=""col"">超额比例</th>
+                          <th scope=""col"">开始行号</th>
+                          <th scope=""col"">结束行号</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {string.Join("", results.Select(result =>
+                        $@"<tr>
+                          <td>{result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}</td>
+                          <td>{result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}</td>
+                          <td>{result.ElapsedMillisecond}</td>
+                          <td>{((result.ElapsedMillisecond / monitor.Quota) - 1).ToString("P2")}</td>
+                          <td>{result.StartMonitorResult?.LineNumber}</td>
+                          <td>{result.FinishMonitorResult?.LineNumber}</td>
+                        </tr>"))}
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class=""w-100"" style=""margin:6px""></div>");
+            }
+
             builder.AppendLine(@"</div>");
         }
 
