@@ -1114,6 +1114,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                           <th scope=""col"">超额比例</th>
                           <th scope=""col"">开始行号</th>
                           <th scope=""col"">结束行号</th>
+                          <th scope=""col"">日志文件</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1125,6 +1126,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                           <td>{((result.ElapsedMillisecond / monitor.Quota) - 1).ToString("P2")}</td>
                           <td>{result.StartMonitorResult?.LineNumber}</td>
                           <td>{result.FinishMonitorResult?.LineNumber}</td>
+                          <td>{result.LogFile?.RelativePath}</td>
                         </tr>"))}
                       </tbody>
                     </table>
