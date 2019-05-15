@@ -24,6 +24,14 @@ namespace xQuantLogFactory.BIZ.Exporter
     public class ExcelLogReportExporter : LogProcesserBase, ILogReportExporter
     {
         /// <summary>
+        /// 有数据导出的表
+        /// </summary>
+        private static readonly HashSet<string> ExportedSheets = new HashSet<string>()
+        {
+            FixedDatas.HOME_SHEET_NAME,
+        };
+
+        /// <summary>
         /// 保留表名列表
         /// </summary>
         private static readonly string[] SpecialSheetNames = new string[]
@@ -32,7 +40,6 @@ namespace xQuantLogFactory.BIZ.Exporter
             FixedDatas.PERFORMANCE_ANALYSISER_SHEET_NAME,
             FixedDatas.PERFORMANCE_PARSE_SHEET_NAME,
             FixedDatas.TRADE_CLEARING_SHEET_NAME,
-            FixedDatas.ANALYSIS_SHEET_NAME,
             FixedDatas.CORE_SERVICE_SHEET_NAME,
             FixedDatas.FORM_SHEET_NAME,
             FixedDatas.REPORT_SHEET_NAME,
@@ -147,6 +154,9 @@ namespace xQuantLogFactory.BIZ.Exporter
                     this.ExportSheet(excel, FixedDatas.BATCH_APPROVAL_SHEET_NAME, argument, this.GetBatchApprovalAnalysisResults, this.ExportBatchAppovalAnalysiserResult);
                     this.ExportSheet(excel, FixedDatas.FINANCIAL_ACCOUNTING_SHEET_NAME, argument, this.GetFinancialAccountingAnalysiserResults, this.ExportFinancialAccountingAnalysiserResult);
 
+                    this.Tracer?.WriteLine("正在精简空表...");
+                    this.RemoveEmptySheet(excel);
+
                     this.Tracer?.WriteLine("正在保存数据到 Excel 文件，请稍等...");
                 }
                 catch
@@ -157,6 +167,51 @@ namespace xQuantLogFactory.BIZ.Exporter
                 {
                     excel.Save();
                     this.Tracer?.WriteLine("Excel 报告文档关闭");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 移除空表
+        /// </summary>
+        /// <param name="excel"></param>
+        public void RemoveEmptySheet(ExcelPackage excel)
+        {
+            if (excel == null)
+            {
+                return;
+            }
+
+            // ToArray() 防止迭代过程中修改数据集合
+            var sheetNames = excel.Workbook.Worksheets
+                .Select(s => s.Name)
+                .ToArray();
+            foreach (var sheetName in sheetNames)
+            {
+                if (!ExportedSheets.Contains(GetOriginalSheetName(sheetName)))
+                {
+                    try
+                    {
+                        this.Tracer.WriteLine($"删除空表：{sheetName}");
+                        excel.Workbook.Worksheets.Delete(sheetName);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.Tracer?.WriteLine($"删除空表失败：{ex.Message}");
+                    }
+                }
+            }
+
+            string GetOriginalSheetName(string sheetName)
+            {
+                int index = sheetName.IndexOf(FixedDatas.ANALYSIS_SHEET_SUFFIX);
+                if (index >= 0)
+                {
+                    return sheetName.Substring(0, index);
+                }
+                else
+                {
+                    return sheetName;
                 }
             }
         }
@@ -201,6 +256,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 else
                 {
                     this.Tracer?.WriteLine($"正在写入 {sheet.Name} 数据表 ...");
+                    ExportedSheets.Add(sheet.Name);
                 }
 
                 this.CloneSheet(excel, sheet, sheetName, ++sheetIndex);
@@ -263,6 +319,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 else
                 {
                     this.Tracer?.WriteLine($"正在写入 {sheet.Name} 数据表 ...");
+                    ExportedSheets.Add(sheet.Name);
                 }
 
                 this.CloneSheet(excel, sheet, sheetName, ++sheetIndex);
@@ -295,7 +352,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="sheetName"></param>
         /// <param name="newIndex"></param>
         private void CloneSheet(ExcelPackage excel, ExcelWorksheet originalExcel, string sheetName, int newIndex = 0)
-            => excel.Workbook.Worksheets.Add(newIndex == 0 ? sheetName : $"{sheetName}_{newIndex}", originalExcel);
+            => excel.Workbook.Worksheets.Add(newIndex == 0 ? sheetName : this.GetSheetName(sheetName, newIndex), originalExcel);
 
         /// <summary>
         /// 移除表
@@ -304,7 +361,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="sheetName"></param>
         /// <param name="newIndex"></param>
         private void RmoveSheet(ExcelPackage excel, string sheetName, int newIndex)
-            => excel.Workbook.Worksheets.Delete(newIndex == 0 ? sheetName : $"{sheetName}_{newIndex}");
+            => excel.Workbook.Worksheets.Delete(newIndex == 0 ? sheetName : this.GetSheetName(sheetName, newIndex));
 
         /// <summary>
         /// 获取表
@@ -314,7 +371,16 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// <param name="index"></param>
         /// <returns></returns>
         private ExcelWorksheet GetSheet(ExcelPackage excel, string sheetName, int index)
-            => excel.Workbook.Worksheets[index == 0 ? sheetName : $"{sheetName}_{index}"];
+            => excel.Workbook.Worksheets[index == 0 ? sheetName : this.GetSheetName(sheetName, index)];
+
+        /// <summary>
+        /// 获取表名
+        /// </summary>
+        /// <param name="sheetName"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        private string GetSheetName(string sheetName, int index)
+            => $"{sheetName}_{index}";
         #endregion
 
         #region New
@@ -990,6 +1056,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                         .Sum(monitor => monitor.AnalysisResults.Count));
 
                 commonWorksheets.Add(sheetName, newPackage);
+                ExportedSheets.Add(sheetName);
             }
 
             // 输出监视规则树

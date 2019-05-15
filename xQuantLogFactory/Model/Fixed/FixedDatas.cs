@@ -171,6 +171,15 @@ namespace xQuantLogFactory.Model.Fixed
         #endregion
 
         #region 保留表名常量
+        /// <summary>
+        /// 数据透视表名称后缀
+        /// </summary>
+        public const string ANALYSIS_SHEET_SUFFIX = "-分析";
+
+        /// <summary>
+        /// 主页表名
+        /// </summary>
+        public const string HOME_SHEET_NAME = "Home";
 
         /// <summary>
         /// Excel单张表最大数据行数
@@ -200,11 +209,6 @@ namespace xQuantLogFactory.Model.Fixed
         /// Performance解析结果表名
         /// </summary>
         public const string PERFORMANCE_PARSE_SHEET_NAME = "Performance原始";
-
-        /// <summary>
-        /// 分析表名
-        /// </summary>
-        public const string ANALYSIS_SHEET_NAME = "分析";
 
         /// <summary>
         /// 交易清算表名
