@@ -39,6 +39,11 @@ namespace xQuantLogFactory.Model.Result
         /// Gets or sets 客户端版本
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// Gets or sets 线程ID
+        /// </summary>
+        public int ThreadID { get; set; }
         #endregion
 
         #region 业务
@@ -55,11 +60,13 @@ namespace xQuantLogFactory.Model.Result
             {
                 this.Client = string.Empty;
                 this.Version = string.Empty;
+                this.ThreadID = -1;
             }
             else
             {
                 this.Client = monitorResult.Client;
                 this.Version = monitorResult.Version;
+                this.ThreadID = monitorResult.ThreadID;
             }
         }
 

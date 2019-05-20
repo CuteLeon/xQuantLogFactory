@@ -61,6 +61,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("请求", "performance", this.RenderPerformance),
                 new ChartContainer("SQL", "sql", this.RenderSQL),
                 new ChartContainer("指标", "quota", this.RenderQuota),
+                new ChartContainer("异常异步服务", "coreservice", this.RenderCoreService),
             };
         }
 
@@ -1087,12 +1088,17 @@ namespace xQuantLogFactory.BIZ.Exporter
         {
             var quotaAnalysiser = new QuotaAnalysiser();
             var monitors = quotaAnalysiser.GetMonitorsWithQuote(argument).ToList();
+            int exported = 0;
 
             builder.AppendLine(@"<div class=""container-fluid"">");
 
             foreach (var monitor in monitors)
             {
                 var results = quotaAnalysiser.GetAnalysiserResultExceedQuota(monitor).ToList();
+                if (results.Count > 0)
+                {
+                    exported++;
+                }
 
                 builder.AppendLine($@"
             <div class=""card text-left"">
@@ -1135,7 +1141,71 @@ namespace xQuantLogFactory.BIZ.Exporter
             <div class=""w-100"" style=""margin:6px""></div>");
             }
 
+            if (exported == 0)
+            {
+                builder.AppendLine("不存在性能指数超过指标的结果");
+            }
+
             builder.AppendLine(@"</div>");
+        }
+
+        /// <summary>
+        /// 渲染异步服务
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <param name="argument"></param>
+        private void RenderCoreService(StringBuilder builder, TaskArgument argument)
+        {
+            var monitor = argument.MonitorContainerRoot.TerminalMonitorTreeRoots.Find(m => m.Name == "Core服务");
+            if (monitor == null)
+            {
+                builder.AppendLine("不包含名称为 \"Core服务\" 的监视规则");
+                return;
+            }
+
+            var results = monitor.AnalysisResults.Where(r => !r.IsIntactGroup()).ToList();
+            if (results.Count == 0)
+            {
+                builder.AppendLine("不存在异常异步服务分析结果");
+            }
+            else
+            {
+                builder.AppendLine(@"<div class=""container-fluid"">");
+                builder.AppendLine($@"
+                    <table class=""table table-sm table-hover"">
+                      <thead>
+                        <tr>
+                          <th scope=""col"">服务名称</th>
+                          <th scope=""col"">执行序号</th>
+                          <th scope=""col"">触发</th>
+                          <th scope=""col"">线程号</th>
+                          <th scope=""col"">耗时</th>
+                          <th scope=""col"">开始时间</th>
+                          <th scope=""col"">结束时间</th>
+                          <th scope=""col"">日志文件</th>
+                          <th scope=""col"">开始行号</th>
+                          <th scope=""col"">结束行号</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {string.Join("", results.Select(result =>
+                        $@"<tr>
+                          <td>{(result.AnalysisDatas.TryGetValue(FixedDatas.CORE_SERVICE_NAME, out object service) ? service : string.Empty)}</td>
+                          <td>{(result.AnalysisDatas.TryGetValue(FixedDatas.EXECUTE_INDEX, out object index) ? index : string.Empty)}</td>
+                          <td>{(result.AnalysisDatas.TryGetValue(FixedDatas.TRIGGER, out object trigger) ? trigger : string.Empty)}</td>
+                          <td>{result.ThreadID}</td>
+                          <td>{result.ElapsedMillisecond}</td>
+                          <td>{result.StartMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}</td>
+                          <td>{result.FinishMonitorResult?.LogTime.ToString("yyyy-MM-dd HH:mm:ss.fff")}</td>
+                          <td>{result.LogFile?.RelativePath}</td>
+                          <td>{result.StartMonitorResult?.LineNumber}</td>
+                          <td>{result.FinishMonitorResult?.LineNumber}</td>
+                        </tr>"))}
+                      </tbody>
+                    </table>");
+
+                builder.AppendLine(@"</div>");
+            }
         }
 
         /// <summary>
