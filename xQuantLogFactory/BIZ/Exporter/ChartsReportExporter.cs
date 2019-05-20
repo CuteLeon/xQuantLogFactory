@@ -61,7 +61,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("请求", "performance", this.RenderPerformance),
                 new ChartContainer("SQL", "sql", this.RenderSQL),
                 new ChartContainer("指标", "quota", this.RenderQuota),
-                new ChartContainer("异常异步服务", "coreservice", this.RenderAnomalousCoreService),
+                new ChartContainer("异常异步服务", "anomalouscoreservice", this.RenderAnomalousCoreService),
             };
         }
 

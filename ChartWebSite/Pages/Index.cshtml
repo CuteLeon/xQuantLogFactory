@@ -17,7 +17,7 @@
         <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="performance" style="margin:10px" value="请求" />
         <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="sql" style="margin:10px" value="SQL" />
         <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="quota" style="margin:10px" value="指标" />
-        <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="coreservice" style="margin:10px" value="异常异步服务" />
+        <input type="button" class="my-nav-button btn shadow btn-outline-primary" data-target="anomalouscoreservice" style="margin:10px" value="异常异步服务" />
     </div>
 </div>
 <div class="report-container container-fluid" id="container_memory" style="display:none;height:500px">
@@ -44,6 +44,6 @@
 <div class="report-container container-fluid" id="container_quota" style="display:none">
     @{ await Html.RenderPartialAsync("Quota", argument);}
 </div>
-<div class="report-container container-fluid" id="container_coreservice" style="display:none">
-    @{ await Html.RenderPartialAsync("CoreService", argument);}
+<div class="report-container container-fluid" id="container_anomalouscoreservice" style="display:none">
+    @{ await Html.RenderPartialAsync("AnomalousCoreService", argument);}
 </div>
