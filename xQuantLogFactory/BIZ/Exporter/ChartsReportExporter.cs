@@ -61,7 +61,7 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("请求", "performance", this.RenderPerformance),
                 new ChartContainer("SQL", "sql", this.RenderSQL),
                 new ChartContainer("指标", "quota", this.RenderQuota),
-                new ChartContainer("异常异步服务", "coreservice", this.RenderCoreService),
+                new ChartContainer("异常异步服务", "coreservice", this.RenderAnomalousCoreService),
             };
         }
 
@@ -1154,7 +1154,7 @@ namespace xQuantLogFactory.BIZ.Exporter
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="argument"></param>
-        private void RenderCoreService(StringBuilder builder, TaskArgument argument)
+        private void RenderAnomalousCoreService(StringBuilder builder, TaskArgument argument)
         {
             var monitor = argument.MonitorContainerRoot.TerminalMonitorTreeRoots.Find(m => m.Name == "Core服务");
             if (monitor == null)
