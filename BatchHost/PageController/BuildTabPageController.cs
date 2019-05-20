@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 
 using BatchHost.Model;
 using BatchHost.Utils;
-
+using VisualPlus.Toolkit.Controls.Interactivity;
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Fixed;
 using xQuantLogFactory.Utils;
@@ -23,6 +23,17 @@ namespace BatchHost
         /// 任务参数
         /// </summary>
         public TaskArgumentDM UnityTaskArgument = new TaskArgumentDM();
+
+        /// <summary>
+        /// 预设任务
+        /// </summary>
+        public List<PresetTask> PresetsTasks = new List<PresetTask>(new[] {
+            new PresetTask("Performance", LogLevels.Perf, new []{"Performance.xml" }),
+            new PresetTask("中间件启动", LogLevels.Debug, new []{"中间件启动_new.xml" }),
+            new PresetTask("客户端启动", LogLevels.Debug, new []{"客户端启动_new.xml" }),
+            new PresetTask("SQL", LogLevels.SQL, new []{"SQL.xml" }),
+            new PresetTask("限额检查", LogLevels.Debug, new []{"限额检查.xml" }),
+        });
 
         private PageStates buildState;
         /// <summary>
@@ -111,6 +122,22 @@ namespace BatchHost
             this.MonitorGroupBox.SeparatorColor = Color.Gainsboro;
 
             this.BuildState = PageStates.Finish;
+
+            foreach (var presetTask in this.PresetsTasks)
+            {
+                var button = new VisualButton()
+                {
+                    Padding = Padding.Empty,
+                    Margin = new Padding(1),
+                    Width = 100,
+                    BackColorState = this.ExecuteButton.BackColorState,
+                    Height = 25,
+                    Text = presetTask.Name,
+                    Tag = presetTask,
+                };
+                button.Click += this.OneKeyExecuteTask;
+                this.OneKeyPanel.Controls.Add(button);
+            }
         }
 
         /// <summary>
@@ -229,90 +256,56 @@ namespace BatchHost
         /// 生成批处理脚本
         /// </summary>
         /// <param name="argument"></param>
-        private void BuildBatches(TaskArgumentDM argument)
+        private IEnumerable<string> BuildBatches(TaskArgumentDM argument)
         {
-            // 界面切换前禁用按钮，防止重复触发
-            this.BuildButton.Enabled = false;
+            double batchesCount = argument.BatchesCount;
+            int index = 0;
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback((x) =>
+            // 遍历监视规则
+            foreach (string monitorName in argument.MonitorNames)
             {
-                // 等待线程池请求返回后再切换界面
-                this.Invoke(new Action(() => { this.BuildState = PageStates.Working; }));
-
-                try
+                string batchPath;
+                if (argument.SplitTaskTime)
                 {
-                    double batchesCount = argument.BatchesCount;
+                    // 遍历划分时段
+                    int timeIntervalMinutes = argument.TimeInterval * argument.TimeIntervalUnit.GetMinutes();
+                    DateTime startTime = argument.LogStartTime.Value;
+                    DateTime finishTime = startTime.AddMinutes(timeIntervalMinutes);
 
-                    string batchName = string.Empty;
-                    int index = 0;
-
-                    // 遍历监视规则
-                    foreach (string monitorName in argument.MonitorNames)
+                    for (; startTime < argument.LogFinishTime;)
                     {
-                        if (argument.SplitTaskTime)
-                        {
-                            // 遍历划分时段
-                            int timeIntervalMinutes = argument.TimeInterval * argument.TimeIntervalUnit.GetMinutes();
-                            DateTime startTime = argument.LogStartTime.Value;
-                            DateTime finishTime = startTime.AddMinutes(timeIntervalMinutes);
+                        batchPath = Path.Combine(
+                            argument.BatchDirectory,
+                            this.GetBatchName(monitorName, argument.LogDirectory, startTime, finishTime));
 
-                            for (; startTime < argument.LogFinishTime;)
-                            {
-                                batchName = this.GetBatchName(monitorName, argument.LogDirectory, startTime, finishTime);
+                        // 生成批处理文件
+                        this.SaveBatchFile(batchPath, argument, monitorName, startTime, finishTime);
 
-                                // 生成批处理文件
-                                this.SaveBatchFile(batchName, argument, monitorName, startTime, finishTime);
+                        // 报告进度
+                        this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
+                        yield return batchPath;
 
-                                // 报告进度
-                                this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
-
-                                // 检查取消状态
-                                if (this.BuildState == PageStates.Cancel)
-                                {
-                                    return;
-                                }
-
-                                // 递进时间
-                                startTime = finishTime;
-                                finishTime = startTime.AddMinutes(timeIntervalMinutes);
-                            }
-                        }
-                        else
-                        {
-                            batchName = this.GetBatchName(monitorName, argument.LogDirectory, argument.LogStartTime, argument.LogFinishTime);
-
-                            // 生成批处理文件
-                            this.SaveBatchFile(batchName, argument, monitorName, argument.LogStartTime, argument.LogFinishTime);
-
-                            // 报告进度
-                            this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
-
-                            // 检查取消状态
-                            if (this.BuildState == PageStates.Cancel)
-                            {
-                                return;
-                            }
-                        }
+                        // 递进时间
+                        startTime = finishTime;
+                        finishTime = startTime.AddMinutes(timeIntervalMinutes);
                     }
+                }
+                else
+                {
+                    batchPath = Path.Combine(
+                                argument.BatchDirectory,
+                                this.GetBatchName(monitorName, argument.LogDirectory, argument.LogStartTime, argument.LogFinishTime));
 
-                    this.Invoke(new Action(() =>
-                    {
-                        this.ReportBuildProgress(100);
-                        MessageBox.Show(this, $"批处理文件生成完毕！\n共 {batchesCount} 个文件。", "批处理文件生成完毕", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }));
+                    // 生成批处理文件
+                    this.SaveBatchFile(batchPath, argument, monitorName, argument.LogStartTime, argument.LogFinishTime);
+
+                    // 报告进度
+                    this.ReportBuildProgress(Convert.ToInt32(Math.Round(++index / batchesCount * 100.0)));
+                    yield return batchPath;
                 }
-                catch (Exception ex)
-                {
-                    this.Invoke(new Action(() =>
-                    {
-                        MessageBox.Show(this, ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }));
-                }
-                finally
-                {
-                    this.Invoke(new Action(() => { this.BuildState = PageStates.Finish; }));
-                }
-            }));
+            }
+
+            this.ReportBuildProgress(100);
         }
 
         /// <summary>
@@ -355,14 +348,13 @@ namespace BatchHost
         /// <summary>
         /// 保存批处理文件
         /// </summary>
-        /// <param name="batchName"></param>
+        /// <param name="batchPath"></param>
         /// <param name="argument"></param>
         /// <param name="monitorName"></param>
         /// <param name="startTime"></param>
         /// <param name="finishTime"></param>
-        private void SaveBatchFile(string batchName, TaskArgumentDM argument, string monitorName, DateTime? startTime, DateTime? finishTime)
+        private void SaveBatchFile(string batchPath, TaskArgumentDM argument, string monitorName, DateTime? startTime, DateTime? finishTime)
         {
-            string batchPath = Path.Combine(argument.BatchDirectory, batchName);
             StringBuilder batchBuilder = new StringBuilder();
 
             batchBuilder.Append($"{UnityUtils.xQuantName}");
@@ -470,6 +462,7 @@ namespace BatchHost
             this.MonitorGroupBox.Show();
             this.BuildControlGroupBox.Show();
             this.BuildButton.Enabled = true;
+            this.OneKeyPanel.Enabled = true;
         }
 
         /// <summary>
@@ -482,6 +475,7 @@ namespace BatchHost
             this.ArgumentGroupBox.Hide();
             this.MonitorGroupBox.Hide();
             this.BuildControlGroupBox.Hide();
+            this.OneKeyPanel.Enabled = false;
         }
 
         /// <summary>

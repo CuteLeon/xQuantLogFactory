@@ -3,11 +3,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-
+using BatchHost.Model;
 using BatchHost.Utils;
 
 using VisualPlus.Toolkit.Controls.Editors;
-
+using VisualPlus.Toolkit.Controls.Interactivity;
 using static BatchHost.Model.FixedValue;
 
 namespace BatchHost
@@ -147,11 +147,26 @@ namespace BatchHost
                 }
             }
 
-            // 创建任务
-            this.SaveTaskArgument();
+            this.BuildButton.Enabled = false;
+            this.BuildState = PageStates.Working;
 
-            // 执行任务
-            this.BuildBatches(this.UnityTaskArgument);
+            try
+            {
+                // 创建任务
+                this.SaveTaskArgument();
+                // 执行任务
+                var batches = this.BuildBatches(this.UnityTaskArgument).ToArray();
+                MessageBox.Show(this, $"批处理文件生成完毕！\n共 {batches.Length} 个文件。", "批处理文件生成完毕", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw;
+            }
+            finally
+            {
+                this.BuildState = PageStates.Finish;
+            }
         }
 
         private void LogDirTextBox_ButtonClicked()
@@ -351,6 +366,69 @@ namespace BatchHost
                         this.BatchesListBox.Items.Remove(selectedBatch);
                     }
                 }
+            }
+        }
+
+        public void OneKeyExecuteTask(object sender, EventArgs e)
+        {
+            try
+            {
+                var presetTask = (sender is VisualButton button) ? (button.Tag is PresetTask task) ? task : throw new ArgumentException("Tag 不是预设任务") : throw new ArgumentException("sender不是按钮");
+
+                // 填充预设任务到界面
+                this.LogLevelComboBox.SelectedItem = presetTask.LogLevel;
+                var monitorNames = string.Join(":", presetTask.Monitors.Select(m => m.ToUpper()));
+                string itemName = string.Empty;
+                for (int index = 0; index < this.MonitorListBox.Items.Count; index++)
+                {
+                    itemName = this.MonitorListBox.Items[index].ToString().ToUpper();
+                    this.MonitorListBox.SetItemChecked(index, monitorNames.Contains(itemName));
+                }
+
+                // 生成脚本
+                try
+                {
+                    this.CheckBuildData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, ex.Message, "数据检查发现异常：", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                this.SaveTaskArgument();
+
+                this.BuildButton.Enabled = false;
+                this.BuildState = PageStates.Working;
+
+                string[] batches = null;
+                try
+                {
+                    // 创建任务
+                    this.SaveTaskArgument();
+                    // 执行任务
+                    batches = this.BuildBatches(this.UnityTaskArgument).ToArray();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, ex.Message, "创建脚本时发生异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                finally
+                {
+                    this.BuildState = PageStates.Finish;
+                }
+
+                if (batches.Length > 0)
+                {
+                    this.ExecuteBatches(batches);
+                }
+
+                // 转跳到输出界面
+                this.MainTabControl.SelectTab(2);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.Message, "执行预设任务遇到异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

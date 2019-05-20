@@ -100,6 +100,8 @@
             this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.InputTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
+            this.OneKeyPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.label13 = new System.Windows.Forms.Label();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -356,6 +358,7 @@
             this.ArgumentLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.ArgumentLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.ArgumentLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.ArgumentLayoutPanel.Controls.Add(this.label13, 0, 7);
             this.ArgumentLayoutPanel.Controls.Add(this.LogLevelComboBox, 3, 3);
             this.ArgumentLayoutPanel.Controls.Add(this.label9, 2, 3);
             this.ArgumentLayoutPanel.Controls.Add(this.ReportModeComboBox, 1, 3);
@@ -378,10 +381,11 @@
             this.ArgumentLayoutPanel.Controls.Add(this.AutoExitToggle, 1, 5);
             this.ArgumentLayoutPanel.Controls.Add(this.label11, 2, 5);
             this.ArgumentLayoutPanel.Controls.Add(this.AutoOpenReportToggle, 3, 5);
-            this.ArgumentLayoutPanel.Controls.Add(this.BatchesCountPanel, 0, 7);
+            this.ArgumentLayoutPanel.Controls.Add(this.BatchesCountPanel, 1, 7);
+            this.ArgumentLayoutPanel.Controls.Add(this.OneKeyPanel, 0, 8);
             this.ArgumentLayoutPanel.Location = new System.Drawing.Point(5, 31);
             this.ArgumentLayoutPanel.Name = "ArgumentLayoutPanel";
-            this.ArgumentLayoutPanel.RowCount = 8;
+            this.ArgumentLayoutPanel.RowCount = 9;
             this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
@@ -390,6 +394,8 @@
             this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.ArgumentLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.ArgumentLayoutPanel.Size = new System.Drawing.Size(507, 327);
             this.ArgumentLayoutPanel.TabIndex = 5;
             // 
@@ -1002,20 +1008,21 @@
             this.AutoOpenReportToggle.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
             this.AutoOpenReportToggle.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
             this.AutoOpenReportToggle.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.AutoOpenReportToggle.Toggled = true;
             this.AutoOpenReportToggle.TrueTextToggle = "将不会自动打开报告 ~";
             this.AutoOpenReportToggle.Type = VisualPlus.Toolkit.Controls.Interactivity.VisualToggle.ToggleTypes.Custom;
             // 
             // BatchesCountPanel
             // 
-            this.ArgumentLayoutPanel.SetColumnSpan(this.BatchesCountPanel, 4);
+            this.ArgumentLayoutPanel.SetColumnSpan(this.BatchesCountPanel, 3);
             this.BatchesCountPanel.Controls.Add(this.BatchesCountLabel);
             this.BatchesCountPanel.Controls.Add(this.label12);
             this.BatchesCountPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BatchesCountPanel.Location = new System.Drawing.Point(0, 287);
+            this.BatchesCountPanel.Location = new System.Drawing.Point(100, 227);
             this.BatchesCountPanel.Margin = new System.Windows.Forms.Padding(0);
             this.BatchesCountPanel.Name = "BatchesCountPanel";
             this.BatchesCountPanel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.BatchesCountPanel.Size = new System.Drawing.Size(507, 40);
+            this.BatchesCountPanel.Size = new System.Drawing.Size(407, 40);
             this.BatchesCountPanel.TabIndex = 32;
             // 
             // BatchesCountLabel
@@ -1025,7 +1032,7 @@
             this.BatchesCountLabel.BackColor = System.Drawing.Color.WhiteSmoke;
             this.BatchesCountLabel.Font = new System.Drawing.Font("微软雅黑", 21.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.BatchesCountLabel.ForeColor = System.Drawing.Color.LimeGreen;
-            this.BatchesCountLabel.Location = new System.Drawing.Point(462, 0);
+            this.BatchesCountLabel.Location = new System.Drawing.Point(362, 0);
             this.BatchesCountLabel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.BatchesCountLabel.Name = "BatchesCountLabel";
             this.BatchesCountLabel.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1040,7 +1047,7 @@
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label12.ForeColor = System.Drawing.Color.DarkGray;
-            this.label12.Location = new System.Drawing.Point(259, 18);
+            this.label12.Location = new System.Drawing.Point(159, 18);
             this.label12.Name = "label12";
             this.label12.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label12.Size = new System.Drawing.Size(190, 21);
@@ -1761,20 +1768,20 @@
             // 
             this.ExecuteToolStripMenuItem.Enabled = false;
             this.ExecuteToolStripMenuItem.Name = "ExecuteToolStripMenuItem";
-            this.ExecuteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ExecuteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.ExecuteToolStripMenuItem.Text = "立即执行";
             this.ExecuteToolStripMenuItem.Click += new System.EventHandler(this.ExecuteToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(121, 6);
             // 
             // DeleteToolStripMenuItem
             // 
             this.DeleteToolStripMenuItem.Enabled = false;
             this.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem";
-            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.DeleteToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.DeleteToolStripMenuItem.Text = "删除文件";
             this.DeleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
@@ -2213,6 +2220,31 @@
             this.InputTextBox.Watermark.Visible = true;
             this.InputTextBox.WordWrap = true;
             // 
+            // OneKeyPanel
+            // 
+            this.OneKeyPanel.AutoScroll = true;
+            this.OneKeyPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ArgumentLayoutPanel.SetColumnSpan(this.OneKeyPanel, 4);
+            this.OneKeyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OneKeyPanel.Location = new System.Drawing.Point(3, 270);
+            this.OneKeyPanel.Name = "OneKeyPanel";
+            this.OneKeyPanel.Size = new System.Drawing.Size(501, 54);
+            this.OneKeyPanel.TabIndex = 33;
+            // 
+            // label13
+            // 
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label13.AutoEllipsis = true;
+            this.label13.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.ForeColor = System.Drawing.Color.Black;
+            this.label13.Location = new System.Drawing.Point(3, 246);
+            this.label13.Name = "label13";
+            this.label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label13.Size = new System.Drawing.Size(94, 21);
+            this.label13.TabIndex = 34;
+            this.label13.Text = "一键操作：";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // BatchHostForm
             // 
             this.AllowDrop = true;
@@ -2224,7 +2256,7 @@
             this.DoubleBuffered = true;
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MinimumSize = new System.Drawing.Size(700, 400);
+            this.MinimumSize = new System.Drawing.Size(700, 450);
             this.Name = "BatchHostForm";
             this.Padding = new System.Windows.Forms.Padding(3);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -2331,6 +2363,8 @@
         private System.Windows.Forms.ToolStripMenuItem ExecuteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DeleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.FlowLayoutPanel OneKeyPanel;
+        private System.Windows.Forms.Label label13;
     }
 }
 
