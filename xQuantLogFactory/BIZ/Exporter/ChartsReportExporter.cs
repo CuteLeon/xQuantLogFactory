@@ -61,7 +61,6 @@ namespace xQuantLogFactory.BIZ.Exporter
                 new ChartContainer("请求", "performance", this.RenderPerformance),
                 new ChartContainer("SQL", "sql", this.RenderSQL),
                 new ChartContainer("指标", "quota", this.RenderQuota),
-                new ChartContainer("异常异步服务", "anomalouscoreservice", this.RenderAnomalousCoreService),
                 new ChartContainer("异步服务", "coreservice", this.RenderCoreService),
             };
         }
@@ -1151,11 +1150,11 @@ namespace xQuantLogFactory.BIZ.Exporter
         }
 
         /// <summary>
-        /// 渲染异常异步服务
+        /// 渲染异步服务
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="argument"></param>
-        private void RenderAnomalousCoreService(StringBuilder builder, TaskArgument argument)
+        private void RenderCoreService(StringBuilder builder, TaskArgument argument)
         {
             var monitor = argument.MonitorContainerRoot.TerminalMonitorTreeRoots.Find(m => m.Name == "Core服务");
             if (monitor == null)
@@ -1164,6 +1163,26 @@ namespace xQuantLogFactory.BIZ.Exporter
                 return;
             }
 
+            var groups = monitor.AnalysisResults.Where(r => r.IsIntactGroup())
+                            .GroupBy(r => r.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME])
+                            .ToArray();
+
+            builder.AppendLine(@"<div class=""container-fluid"">");
+            builder.AppendLine($@"  <div class=""row align-content-center"">{this.RenderValue("danger", "排行榜排序字段")} {this.RenderValue("warning", "平均耗时")} {this.RenderValue("info", "服务调用次数")}</div>");
+            builder.AppendLine(@"   <hr />");
+            builder.AppendLine(@"    <div class=""row"">");
+
+            var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(20).ToArray();
+            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key, g => this.RenderValue("danger", g.Sum(r => r.ElapsedMillisecond).ToString("N0")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(20).ToArray();
+            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key, g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+            topGroups = groups.OrderByDescending(g => g.Max(r => r.ElapsedMillisecond)).Take(20).ToArray();
+            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key, g => this.RenderValue("danger", g.Max(r => r.ElapsedMillisecond).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
+
+            builder.AppendLine(@"    </div>");
+
+            builder.AppendLine(@"<hr/>");
+            builder.AppendLine(@"<h4>异常异步服务</h4>");
             var results = monitor.AnalysisResults.Where(r => !r.IsIntactGroup()).ToList();
             if (results.Count == 0)
             {
@@ -1171,9 +1190,7 @@ namespace xQuantLogFactory.BIZ.Exporter
             }
             else
             {
-                builder.AppendLine(@"<div class=""container-fluid"">");
-                builder.AppendLine($@"
-                    <table class=""table table-sm table-hover"">
+                builder.AppendLine($@"<table class=""table table-sm table-hover"">
                       <thead>
                         <tr>
                           <th scope=""col"">服务名称</th>
@@ -1207,42 +1224,6 @@ namespace xQuantLogFactory.BIZ.Exporter
 
                 builder.AppendLine(@"</div>");
             }
-        }
-
-        /// <summary>
-        /// 渲染异步服务
-        /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="argument"></param>
-        private void RenderCoreService(StringBuilder builder, TaskArgument argument)
-        {
-            var monitor = argument.MonitorContainerRoot.TerminalMonitorTreeRoots.Find(m => m.Name == "Core服务");
-            if (monitor == null)
-            {
-                builder.AppendLine("不包含名称为 \"Core服务\" 的监视规则");
-                return;
-            }
-
-            var groups = monitor.AnalysisResults.Where(r => r.IsIntactGroup())
-                            .GroupBy(r => r.AnalysisDatas[FixedDatas.CORE_SERVICE_NAME])
-                            .ToArray();
-
-            builder.AppendLine(@"<div class=""container-fluid"">");
-            builder.AppendLine($@"  <div class=""row align-content-center"">{this.RenderValue("danger", "排行榜排序字段")} {this.RenderValue("warning", "平均耗时")} {this.RenderValue("info", "服务调用次数")}</div>");
-            builder.AppendLine(@"   <hr />");
-            builder.AppendLine(@"    <div class=""row"">");
-
-            var topGroups = groups.OrderByDescending(g => g.Sum(r => r.ElapsedMillisecond)).Take(20).ToArray();
-            this.RenderRankingList(builder, "总耗时-排行榜", topGroups, g => g.Key, g => this.RenderValue("danger", g.Sum(r => r.ElapsedMillisecond).ToString("N0")), g => this.RenderValue("info", g.Count().ToString("N0")));
-            topGroups = groups.OrderByDescending(g => g.Average(r => r.ElapsedMillisecond)).Take(20).ToArray();
-            this.RenderRankingList(builder, "平均耗时-排行榜", topGroups, g => g.Key, g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
-            topGroups = groups.OrderByDescending(g => g.Max(r => r.ElapsedMillisecond)).Take(20).ToArray();
-            this.RenderRankingList(builder, "最大耗时-排行榜", topGroups, g => g.Key, g => this.RenderValue("danger", g.Max(r => r.ElapsedMillisecond).ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N2")), g => this.RenderValue("info", g.Count().ToString("N0")));
-            topGroups = groups.OrderByDescending(g => g.Count()).Take(20).ToArray();
-            this.RenderRankingList(builder, "调用次数-排行榜", topGroups, g => g.Key, g => this.RenderValue("info", g.Count().ToString("N0")), g => this.RenderValue("warning", g.Average(r => r.ElapsedMillisecond).ToString("N2")));
-
-            builder.AppendLine(@"    </div>");
-            builder.AppendLine(@"</div>");
         }
 
         /// <summary>

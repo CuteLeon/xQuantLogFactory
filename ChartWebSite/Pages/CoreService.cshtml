@@ -1,7 +1,6 @@
 ﻿<div class="row align-content-center"><span class="badge badge-danger">排行榜排序字段</span> <span class="badge badge-warning">平均耗时</span> <span class="badge badge-info">服务调用次数</span></div>
 <hr>
 <div class="row">
-
     <div class="col-sm-4" style="margin-bottom:10px">
         <div class="card text-left font-weight-bold">
             <div class="card-header">
@@ -103,38 +102,312 @@
             </div>
         </div>
     </div>
-
-    <div class="col-sm-4" style="margin-bottom:10px">
-        <div class="card text-left font-weight-bold">
-            <div class="card-header">
-                调用次数-排行榜
-            </div>
-            <div class="card-body">
-                <div class="card-text">
-                    <ul>
-                        <li>EXH_Res <span class="badge badge-info">13,589</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>清算请求服务 <span class="badge badge-info">13,571</span> <span class="badge badge-warning">2.19</span></li>
-                        <li>EXH_Stg <span class="badge badge-info">13,481</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>EXH_Dealy <span class="badge badge-info">13,461</span> <span class="badge badge-warning">0.03</span></li>
-                        <li>固收上行协议回购服务 <span class="badge badge-info">6,738</span> <span class="badge badge-warning">1.47</span></li>
-                        <li>外汇上行2.0对话报价服务 <span class="badge badge-info">6,718</span> <span class="badge badge-warning">4.44</span></li>
-                        <li>外汇上行2.0请求报价服务 <span class="badge badge-info">6,716</span> <span class="badge badge-warning">4.98</span></li>
-                        <li>Fix_UP <span class="badge badge-info">6,656</span> <span class="badge badge-warning">23.54</span></li>
-                        <li>消息服务 <span class="badge badge-info">2,731</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>中债直联合同服务 <span class="badge badge-info">1,356</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>中债直联通用服务 <span class="badge badge-info">1,352</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>中债直联指令服务 <span class="badge badge-info">1,351</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>外汇交易中心上行服务 <span class="badge badge-info">1,350</span> <span class="badge badge-warning">0.02</span></li>
-                        <li>新意银企直联服务 <span class="badge badge-info">1,349</span> <span class="badge badge-warning">0.04</span></li>
-                        <li>IR通信服务 <span class="badge badge-info">1,348</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>清算所直联合同服务 <span class="badge badge-info">1,348</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>交易所自动补单服务 <span class="badge badge-info">1,348</span> <span class="badge badge-warning">7.10</span></li>
-                        <li>交易匹配服务 <span class="badge badge-info">1,134</span> <span class="badge badge-warning">4.37</span></li>
-                        <li>EXH_Req <span class="badge badge-info">757</span> <span class="badge badge-warning">0.00</span></li>
-                        <li>MQ请求任务服务(消费者) <span class="badge badge-info">228</span> <span class="badge badge-warning">3.70</span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
+<hr>
+<h4>异常异步服务</h4>
+<table class="table table-sm table-hover">
+    <thead>
+        <tr>
+            <th scope="col">服务名称</th>
+            <th scope="col">执行序号</th>
+            <th scope="col">触发</th>
+            <th scope="col">线程号</th>
+            <th scope="col">耗时</th>
+            <th scope="col">开始时间</th>
+            <th scope="col">结束时间</th>
+            <th scope="col">日志文件</th>
+            <th scope="col">开始行号</th>
+            <th scope="col">结束行号</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>中债直联合同服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>57</td>
+            <td>0</td>
+            <td>2019-05-16 06:01:37.808</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95134</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>EXH_Req</td>
+            <td>8622</td>
+            <td>非触发</td>
+            <td>50</td>
+            <td>0</td>
+            <td>2019-05-16 06:01:50.902</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95241</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>EXH_Req</td>
+            <td>8622</td>
+            <td>非触发</td>
+            <td>49</td>
+            <td>0</td>
+            <td></td>
+            <td>2019-05-16 06:01:50.902</td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td></td>
+            <td>95244</td>
+        </tr>
+        <tr>
+            <td>EXH_Refresh</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>53</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:02.295</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95311</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>委托服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>50</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:02.302</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95315</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>委托服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>49</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:10.903</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95396</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>回报服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>52</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:11.302</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95405</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>清算请求服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>47</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:20.260</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95433</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>任务响应服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>46</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:20.267</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95438</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>MQ请求任务服务(消费者)</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>44</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:29.842</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95490</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>本地计算任务服务(消费者)</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>43</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:29.848</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95494</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>任务服务(生产者)</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>42</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:29.853</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95498</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>预授权服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>40</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:29.893</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95503</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>交易匹配服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>39</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:29.900</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95507</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>收付款服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>38</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:29.907</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95511</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>交易接口服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>36</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:37.150</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95520</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>新审批流程服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>35</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:37.156</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95524</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>限额服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>34</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:37.162</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95528</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>交易对手、金融工具出入池</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>11</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:37.167</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95532</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>数据变动监控服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>33</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:37.172</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95536</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>消息服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>32</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:37.428</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95544</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>数据传输分包服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>16</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:37.442</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95549</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>数据加载服务</td>
+            <td>-1</td>
+            <td>非触发</td>
+            <td>15</td>
+            <td>0</td>
+            <td>2019-05-16 06:02:38.051</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>95553</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>外汇上行2.0对话报价服务</td>
+            <td>354</td>
+            <td>非触发</td>
+            <td>85</td>
+            <td>0</td>
+            <td>2019-05-16 06:16:52.675</td>
+            <td></td>
+            <td>\SrvLog_Debug.txt.12</td>
+            <td>115418</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
