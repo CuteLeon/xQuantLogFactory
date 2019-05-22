@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Item Name ="批量审批" Begin="MobileCheckBeforeActionByNodeId_Batch批量审批审批操作检查开始" End="MobileCheckBeforeAction_Batch批量审批审批操作检查结束" />
+    <Item Name ="审批" Begin="MobileApproveTaskByNodeId_Batch审批开始" End ="MobileApproveTaskByNodeId_Batch审批结束"/>
+</MonitorRoot>
