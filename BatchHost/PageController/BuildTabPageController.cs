@@ -11,7 +11,7 @@ using BatchHost.Utils;
 using VisualPlus.Toolkit.Controls.Interactivity;
 using xQuantLogFactory.Model.Factory;
 using xQuantLogFactory.Model.Fixed;
-using xQuantLogFactory.Utils;
+using LogFactoryUtils = xQuantLogFactory.Utils;
 
 using static BatchHost.Model.FixedValue;
 
@@ -84,6 +84,8 @@ namespace BatchHost
         /// </summary>
         public void InitBuildTabPage()
         {
+            this.LogDirTextBox.Text = ConfigHelper.ReadExeConfiguration("LogDir") ?? string.Empty;
+
             foreach (var mode in Enum.GetValues(typeof(TimeUnits)))
             {
                 this.TimeUnitComboBox.Items.Add(mode);
@@ -100,9 +102,17 @@ namespace BatchHost
             {
                 this.LogLevelComboBox.Items.Add(mode);
             }
-            this.LogLevelComboBox.SelectedItem = LogLevels.Debug;
+            this.LogLevelComboBox.SelectedItem = Enum.TryParse(ConfigHelper.ReadExeConfiguration("LogLevel"), out LogLevels level) ? level : LogLevels.Debug;
 
-            this.MonitorListBox.Items.AddRange(CreateTaskArgumentForm.GetMonitorFiles(ConfigHelper.MonitorDirectory));
+            this.MonitorListBox.Items.AddRange(CreateTaskArgumentForm.GetMonitorFiles(LogFactoryUtils.ConfigHelper.MonitorDirectory));
+            HashSet<string> checkedMonitor = new HashSet<string>(ConfigHelper.ReadExeConfiguration("CheckedMonitor")?.Split(':') ?? new string[] { });
+            if (checkedMonitor.Count > 0)
+            {
+                for (int index = 0; index < this.MonitorListBox.Items.Count; index++)
+                {
+                    this.MonitorListBox.SetItemChecked(index, checkedMonitor.Contains(this.MonitorListBox.Items[index].ToString()));
+                }
+            }
 
             this.LogStartTimePicker.Value = DateTime.Today;
             this.LogStartTimePicker.Checked = false;
@@ -161,6 +171,8 @@ namespace BatchHost
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     this.LogDirTextBox.Text = dialog.SelectedPath;
+
+                    ConfigHelper.WriteExeConfiguration("LogDir", dialog.SelectedPath);
                 }
             }
         }

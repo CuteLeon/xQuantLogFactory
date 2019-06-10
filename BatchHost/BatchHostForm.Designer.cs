@@ -37,6 +37,7 @@
             this.BuildTabPage = new VisualPlus.Toolkit.Child.VisualTabPage();
             this.ArgumentGroupBox = new VisualPlus.Toolkit.Controls.Layout.VisualGroupBox();
             this.ArgumentLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.label13 = new System.Windows.Forms.Label();
             this.LogLevelComboBox = new VisualPlus.Toolkit.Controls.Interactivity.VisualComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.ReportModeComboBox = new VisualPlus.Toolkit.Controls.Interactivity.VisualComboBox();
@@ -62,6 +63,7 @@
             this.BatchesCountPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.BatchesCountLabel = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.OneKeyPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.BuildProgressPanel = new System.Windows.Forms.Panel();
             this.BuildCancelButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.BuildGauge = new VisualPlus.Toolkit.Controls.DataVisualization.VisualGauge();
@@ -100,8 +102,6 @@
             this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.InputTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
-            this.OneKeyPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.label13 = new System.Windows.Forms.Label();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -399,6 +399,20 @@
             this.ArgumentLayoutPanel.Size = new System.Drawing.Size(507, 327);
             this.ArgumentLayoutPanel.TabIndex = 5;
             // 
+            // label13
+            // 
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.label13.AutoEllipsis = true;
+            this.label13.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.ForeColor = System.Drawing.Color.Black;
+            this.label13.Location = new System.Drawing.Point(3, 246);
+            this.label13.Name = "label13";
+            this.label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label13.Size = new System.Drawing.Size(94, 21);
+            this.label13.TabIndex = 34;
+            this.label13.Text = "一键操作：";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
             // LogLevelComboBox
             // 
             this.LogLevelComboBox.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -454,6 +468,7 @@
             this.LogLevelComboBox.Watermark.Inactive = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(211)))), ((int)(((byte)(211)))));
             this.LogLevelComboBox.Watermark.Text = "请选择日志等级 ...";
             this.LogLevelComboBox.Watermark.Visible = true;
+            this.LogLevelComboBox.SelectedValueChanged += new System.EventHandler(this.LogLevelComboBox_SelectedValueChanged);
             // 
             // label9
             // 
@@ -1054,6 +1069,17 @@
             this.label12.TabIndex = 30;
             this.label12.Text = "预计生成批处理文件数量:";
             this.label12.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            // 
+            // OneKeyPanel
+            // 
+            this.OneKeyPanel.AutoScroll = true;
+            this.OneKeyPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.ArgumentLayoutPanel.SetColumnSpan(this.OneKeyPanel, 4);
+            this.OneKeyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.OneKeyPanel.Location = new System.Drawing.Point(3, 270);
+            this.OneKeyPanel.Name = "OneKeyPanel";
+            this.OneKeyPanel.Size = new System.Drawing.Size(501, 54);
+            this.OneKeyPanel.TabIndex = 33;
             // 
             // BuildProgressPanel
             // 
@@ -2219,31 +2245,6 @@
             this.InputTextBox.Watermark.Text = "输入要发送到控制台的文本 ...";
             this.InputTextBox.Watermark.Visible = true;
             this.InputTextBox.WordWrap = true;
-            // 
-            // OneKeyPanel
-            // 
-            this.OneKeyPanel.AutoScroll = true;
-            this.OneKeyPanel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ArgumentLayoutPanel.SetColumnSpan(this.OneKeyPanel, 4);
-            this.OneKeyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OneKeyPanel.Location = new System.Drawing.Point(3, 270);
-            this.OneKeyPanel.Name = "OneKeyPanel";
-            this.OneKeyPanel.Size = new System.Drawing.Size(501, 54);
-            this.OneKeyPanel.TabIndex = 33;
-            // 
-            // label13
-            // 
-            this.label13.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label13.AutoEllipsis = true;
-            this.label13.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label13.ForeColor = System.Drawing.Color.Black;
-            this.label13.Location = new System.Drawing.Point(3, 246);
-            this.label13.Name = "label13";
-            this.label13.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label13.Size = new System.Drawing.Size(94, 21);
-            this.label13.TabIndex = 34;
-            this.label13.Text = "一键操作：";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // BatchHostForm
             // 

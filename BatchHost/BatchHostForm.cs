@@ -197,13 +197,18 @@ namespace BatchHost
                 if (e.NewValue == CheckState.Unchecked)
                 {
                     this.UnityTaskArgument.MonitorNames.Remove(this.MonitorListBox.Items[e.Index] as string);
-                    this.UnityTaskArgument.OnBatchesCountChanged();
                 }
                 else if (e.NewValue == CheckState.Checked)
                 {
                     this.UnityTaskArgument.MonitorNames.Add(this.MonitorListBox.Items[e.Index] as string);
-                    this.UnityTaskArgument.OnBatchesCountChanged();
                 }
+                else
+                {
+                    return;
+                }
+
+                this.UnityTaskArgument.OnBatchesCountChanged();
+                ConfigHelper.WriteExeConfiguration("CheckedMonitor", string.Join(":", this.UnityTaskArgument.MonitorNames));
             }
         }
 
@@ -430,6 +435,11 @@ namespace BatchHost
             {
                 MessageBox.Show(this, ex.Message, "执行预设任务遇到异常：", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void LogLevelComboBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ConfigHelper.WriteExeConfiguration("LogLevel", this.LogLevelComboBox.SelectedItem?.ToString());
         }
     }
 }
