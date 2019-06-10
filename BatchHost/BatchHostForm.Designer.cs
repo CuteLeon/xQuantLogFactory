@@ -102,6 +102,10 @@
             this.SendInputButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.ConsoleTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualRichTextBox();
             this.InputTextBox = new VisualPlus.Toolkit.Controls.Editors.VisualTextBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.MonitorSelectAllButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.MonitorSelectInverseButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
+            this.MonitorSelectNoneButton = new VisualPlus.Toolkit.Controls.Interactivity.VisualButton();
             this.TitlePanel.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.BuildTabPage.SuspendLayout();
@@ -122,6 +126,7 @@
             this.OutputTabPage.SuspendLayout();
             this.ConsoleGroupBox.SuspendLayout();
             this.OutputLayoutPanel.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // TitlePanel
@@ -1169,6 +1174,7 @@
             this.MonitorGroupBox.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
             this.MonitorGroupBox.Border.Visible = true;
             this.MonitorGroupBox.BoxStyle = VisualPlus.Toolkit.Controls.Layout.VisualGroupBox.GroupBoxStyle.Default;
+            this.MonitorGroupBox.Controls.Add(this.tableLayoutPanel1);
             this.MonitorGroupBox.Controls.Add(this.MonitorListBox);
             this.MonitorGroupBox.Dock = System.Windows.Forms.DockStyle.Right;
             this.MonitorGroupBox.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -1197,9 +1203,6 @@
             // 
             // MonitorListBox
             // 
-            this.MonitorListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.MonitorListBox.BackColor = System.Drawing.Color.WhiteSmoke;
             this.MonitorListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.MonitorListBox.CheckOnClick = true;
@@ -1207,7 +1210,7 @@
             this.MonitorListBox.IntegralHeight = false;
             this.MonitorListBox.Location = new System.Drawing.Point(5, 31);
             this.MonitorListBox.Name = "MonitorListBox";
-            this.MonitorListBox.Size = new System.Drawing.Size(210, 327);
+            this.MonitorListBox.Size = new System.Drawing.Size(210, 302);
             this.MonitorListBox.TabIndex = 1;
             this.MonitorListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.MonitorListBox_ItemCheck);
             // 
@@ -2246,6 +2249,129 @@
             this.InputTextBox.Watermark.Visible = true;
             this.InputTextBox.WordWrap = true;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.Controls.Add(this.MonitorSelectNoneButton, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.MonitorSelectInverseButton, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.MonitorSelectAllButton, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 336);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(220, 28);
+            this.tableLayoutPanel1.TabIndex = 2;
+            // 
+            // MonitorSelectAllButton
+            // 
+            this.MonitorSelectAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MonitorSelectAllButton.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.MonitorSelectAllButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MonitorSelectAllButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.MonitorSelectAllButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MonitorSelectAllButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.MonitorSelectAllButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.MonitorSelectAllButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.MonitorSelectAllButton.Border.HoverVisible = true;
+            this.MonitorSelectAllButton.Border.Rounding = 6;
+            this.MonitorSelectAllButton.Border.Thickness = 1;
+            this.MonitorSelectAllButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.MonitorSelectAllButton.Border.Visible = true;
+            this.MonitorSelectAllButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.MonitorSelectAllButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectAllButton.Image = null;
+            this.MonitorSelectAllButton.Location = new System.Drawing.Point(3, 3);
+            this.MonitorSelectAllButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.MonitorSelectAllButton.Name = "MonitorSelectAllButton";
+            this.MonitorSelectAllButton.Size = new System.Drawing.Size(67, 22);
+            this.MonitorSelectAllButton.TabIndex = 4;
+            this.MonitorSelectAllButton.Text = "全选";
+            this.MonitorSelectAllButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.MonitorSelectAllButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.MonitorSelectAllButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectAllButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectAllButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectAllButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitorSelectAllButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitorSelectAllButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.MonitorSelectAllButton.Click += new System.EventHandler(this.MonitorSelectAllButton_Click);
+            // 
+            // MonitorSelectInverseButton
+            // 
+            this.MonitorSelectInverseButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MonitorSelectInverseButton.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.MonitorSelectInverseButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MonitorSelectInverseButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.MonitorSelectInverseButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MonitorSelectInverseButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.MonitorSelectInverseButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.MonitorSelectInverseButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.MonitorSelectInverseButton.Border.HoverVisible = true;
+            this.MonitorSelectInverseButton.Border.Rounding = 6;
+            this.MonitorSelectInverseButton.Border.Thickness = 1;
+            this.MonitorSelectInverseButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.MonitorSelectInverseButton.Border.Visible = true;
+            this.MonitorSelectInverseButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.MonitorSelectInverseButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectInverseButton.Image = null;
+            this.MonitorSelectInverseButton.Location = new System.Drawing.Point(76, 3);
+            this.MonitorSelectInverseButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.MonitorSelectInverseButton.Name = "MonitorSelectInverseButton";
+            this.MonitorSelectInverseButton.Size = new System.Drawing.Size(67, 22);
+            this.MonitorSelectInverseButton.TabIndex = 5;
+            this.MonitorSelectInverseButton.Text = "反选";
+            this.MonitorSelectInverseButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.MonitorSelectInverseButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.MonitorSelectInverseButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectInverseButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectInverseButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectInverseButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitorSelectInverseButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitorSelectInverseButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.MonitorSelectInverseButton.Click += new System.EventHandler(this.MonitorSelectInverseButton_Click);
+            // 
+            // MonitorSelectNoneButton
+            // 
+            this.MonitorSelectNoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MonitorSelectNoneButton.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.MonitorSelectNoneButton.BackColorState.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MonitorSelectNoneButton.BackColorState.Enabled = System.Drawing.Color.White;
+            this.MonitorSelectNoneButton.BackColorState.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.MonitorSelectNoneButton.BackColorState.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.MonitorSelectNoneButton.Border.Color = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.MonitorSelectNoneButton.Border.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(183)))), ((int)(((byte)(230)))));
+            this.MonitorSelectNoneButton.Border.HoverVisible = true;
+            this.MonitorSelectNoneButton.Border.Rounding = 6;
+            this.MonitorSelectNoneButton.Border.Thickness = 1;
+            this.MonitorSelectNoneButton.Border.Type = VisualPlus.Enumerators.ShapeTypes.Rounded;
+            this.MonitorSelectNoneButton.Border.Visible = true;
+            this.MonitorSelectNoneButton.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.MonitorSelectNoneButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectNoneButton.Image = null;
+            this.MonitorSelectNoneButton.Location = new System.Drawing.Point(149, 3);
+            this.MonitorSelectNoneButton.MouseState = VisualPlus.Enumerators.MouseStates.Normal;
+            this.MonitorSelectNoneButton.Name = "MonitorSelectNoneButton";
+            this.MonitorSelectNoneButton.Size = new System.Drawing.Size(68, 22);
+            this.MonitorSelectNoneButton.TabIndex = 6;
+            this.MonitorSelectNoneButton.Text = "全不选";
+            this.MonitorSelectNoneButton.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.MonitorSelectNoneButton.TextStyle.Disabled = System.Drawing.Color.FromArgb(((int)(((byte)(131)))), ((int)(((byte)(129)))), ((int)(((byte)(129)))));
+            this.MonitorSelectNoneButton.TextStyle.Enabled = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectNoneButton.TextStyle.Hover = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectNoneButton.TextStyle.Pressed = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.MonitorSelectNoneButton.TextStyle.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitorSelectNoneButton.TextStyle.TextLineAlignment = System.Drawing.StringAlignment.Center;
+            this.MonitorSelectNoneButton.TextStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            this.MonitorSelectNoneButton.Click += new System.EventHandler(this.MonitorSelectNoneButton_Click);
+            // 
             // BatchHostForm
             // 
             this.AllowDrop = true;
@@ -2289,6 +2415,7 @@
             this.ConsoleGroupBox.ResumeLayout(false);
             this.OutputLayoutPanel.ResumeLayout(false);
             this.OutputLayoutPanel.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2366,6 +2493,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.FlowLayoutPanel OneKeyPanel;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton MonitorSelectNoneButton;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton MonitorSelectInverseButton;
+        private VisualPlus.Toolkit.Controls.Interactivity.VisualButton MonitorSelectAllButton;
     }
 }
 

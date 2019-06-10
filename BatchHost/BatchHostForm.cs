@@ -441,5 +441,31 @@ namespace BatchHost
         {
             ConfigHelper.WriteExeConfiguration("LogLevel", this.LogLevelComboBox.SelectedItem?.ToString());
         }
+
+        private void MonitorSelectAllButton_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < this.MonitorListBox.Items.Count; index++)
+            {
+                this.MonitorListBox.SetItemChecked(index, true);
+            }
+        }
+
+        private void MonitorSelectInverseButton_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < this.MonitorListBox.Items.Count; index++)
+            {
+                this.MonitorListBox.SetItemChecked(
+                    index,
+                    !this.MonitorListBox.GetItemChecked(index));
+            }
+        }
+
+        private void MonitorSelectNoneButton_Click(object sender, EventArgs e)
+        {
+            for (int index = 0; index < this.MonitorListBox.Items.Count; index++)
+            {
+                this.MonitorListBox.SetItemChecked(index, false);
+            }
+        }
     }
 }
