@@ -14,7 +14,7 @@ namespace BatchHost.Utils
         /// </summary>
         public static Lazy<Configuration> ExeConfiguration = new Lazy<Configuration>(() =>
         ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), true);
-
+        public static Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         /// <summary>
         /// 读取Exe配置
         /// </summary>
@@ -31,14 +31,7 @@ namespace BatchHost.Utils
         /// <returns></returns>
         public static void WriteExeConfiguration(string key, string value)
         {
-            if (ExeConfiguration.Value.AppSettings.Settings.AllKeys.Contains(key))
-            {
-                ExeConfiguration.Value.AppSettings.Settings[key].Value = value;
-            }
-            else
-            {
-                ExeConfiguration.Value.AppSettings.Settings.Add(key, value);
-            }
+            ExeConfiguration.Value.AppSettings.Settings.Add(key, value);
 
             ExeConfiguration.Value.Save();
         }
