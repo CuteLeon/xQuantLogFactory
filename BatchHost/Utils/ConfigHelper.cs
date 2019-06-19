@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Linq;
 
 namespace BatchHost.Utils
 {
@@ -14,7 +13,7 @@ namespace BatchHost.Utils
         /// </summary>
         public static Lazy<Configuration> ExeConfiguration = new Lazy<Configuration>(() =>
         ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None), true);
-        public static Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
         /// <summary>
         /// 读取Exe配置
         /// </summary>
