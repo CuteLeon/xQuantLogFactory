@@ -40,7 +40,7 @@ namespace xQuantLogFactory.BIZ.Analysiser.GroupAnalysiser.Terminal
         /// 2. Regex 必须附带 RegexOptions.RightToLeft 枚举值以同时应对服务名称中间包含的数字的日志内容
         /// </remarks>
         public override Regex AnalysisRegex { get; protected set; } = new Regex(
-            @"\<-(?<CoreServiceName>.*)(?<Index>\d*)\|(执行(?<Trigger>.*)|结束:(?<Elapsed>\d*))-\>",
+            @"\<-(?<CoreServiceName>.*)(?<Index>\d*)\|(执行(?<Trigger>.*)|结束(:(?<Elapsed>\d*)|.*))-\>",
             RegexOptions.RightToLeft | RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         /// <summary>

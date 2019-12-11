@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <MonitorRoot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Item Name="Core服务" Begin="|执行" End="|结束:" GroupAnalysiser="CoreServiceAsync" IgnoreUnIntactRoot="false" Sheet="Core服务"/>
+  <Item Name="Core服务" Begin="|执行" End="|结束" GroupAnalysiser="CoreServiceAsync" IgnoreUnIntactRoot="false" Sheet="Core服务"/>
 </MonitorRoot>
