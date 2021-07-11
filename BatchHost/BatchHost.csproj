@@ -118,9 +118,9 @@
     <None Include="Resources\BatchHostIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\xQuantLogFactory\xQuantLogFactory.csproj">
-      <Project>{A2D3FB8C-BF8D-478E-AC36-0C9DC1E05EDE}</Project>
-      <Name>xQuantLogFactory</Name>
+    <ProjectReference Include="..\LogFactory\LogFactory.csproj">
+      <Project>{a2d3fb8c-bf8d-478e-ac36-0c9dc1e05ede}</Project>
+      <Name>LogFactory</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

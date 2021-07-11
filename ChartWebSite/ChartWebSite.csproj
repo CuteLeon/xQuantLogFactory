@@ -14,7 +14,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\xQuantLogFactory\xQuantLogFactory.csproj" />
+    <ProjectReference Include="..\LogFactory\LogFactory.csproj" />
   </ItemGroup>
 
 

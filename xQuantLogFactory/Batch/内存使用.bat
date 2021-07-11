@@ -1,1 +1,0 @@
-xQuantLogFactory.exe logdir="D:\项目点日志\ylb" monitor=内存使用.xml export=Excel

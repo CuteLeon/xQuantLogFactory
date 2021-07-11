@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("BatchHost")]
-[assembly: AssemblyDescription("xQuant日志分析工具-批量执行工具")]
+[assembly: AssemblyDescription("日志分析工具-批量执行工具")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("xQuant")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("BatchHost")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]

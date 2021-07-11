@@ -1,1 +1,0 @@
-xQuantLogFactory.exe logdir="D:\项目点日志\山西证券\Log - 副本" monitor=批量审批.xml report=excel Level=DEBUG

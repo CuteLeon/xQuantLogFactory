@@ -1,4 +1,4 @@
-﻿using xQuantLogFactory.Model.Fixed;
+﻿using LogFactory.Model.Fixed;
 
 namespace BatchHost.Model
 {

@@ -151,7 +151,7 @@
             this.TitleLabel.Name = "TitleLabel";
             this.TitleLabel.Size = new System.Drawing.Size(674, 25);
             this.TitleLabel.TabIndex = 1;
-            this.TitleLabel.Text = "xQuant日志分析工具-批量执行工具";
+            this.TitleLabel.Text = "日志分析工具-批量执行工具";
             this.TitleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FormControlBox
@@ -2387,7 +2387,7 @@
             this.Name = "BatchHostForm";
             this.Padding = new System.Windows.Forms.Padding(3);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "xQuant日志分析工具-批量执行工具";
+            this.Text = "日志分析工具-批量执行工具";
             this.Load += new System.EventHandler(this.BatchHostForm_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.BatchHostForm_Paint);
             this.TitlePanel.ResumeLayout(false);

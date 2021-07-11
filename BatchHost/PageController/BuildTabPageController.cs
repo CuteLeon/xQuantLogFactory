@@ -9,9 +9,9 @@ using System.Windows.Forms;
 using BatchHost.Model;
 using BatchHost.Utils;
 using VisualPlus.Toolkit.Controls.Interactivity;
-using xQuantLogFactory.Model.Factory;
-using xQuantLogFactory.Model.Fixed;
-using LogFactoryUtils = xQuantLogFactory.Utils;
+using LogFactory.Model.Factory;
+using LogFactory.Model.Fixed;
+using LogFactoryUtils = LogFactory.Utils;
 
 using static BatchHost.Model.FixedValue;
 
@@ -369,7 +369,7 @@ namespace BatchHost
         {
             StringBuilder batchBuilder = new StringBuilder();
 
-            batchBuilder.Append($"{UnityUtils.xQuantName}");
+            batchBuilder.Append($"{UnityUtils.WorkName}");
 
             batchBuilder.AppendFormat($" \"{ArgsTaskArgumentFactory.LOG_DIR}={argument.LogDirectory}\"");
             batchBuilder.AppendFormat($" {ArgsTaskArgumentFactory.MONITOR_NAME}={monitorName}");

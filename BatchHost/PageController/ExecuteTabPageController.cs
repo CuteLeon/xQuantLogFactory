@@ -216,7 +216,7 @@ namespace BatchHost
             {
                 this.BatchProcess = new Process();
                 this.BatchProcess.StartInfo.FileName = path;
-                this.BatchProcess.StartInfo.WorkingDirectory = UnityUtils.xQuantDirectory;
+                this.BatchProcess.StartInfo.WorkingDirectory = UnityUtils.WorkDirectory;
 
                 // 输入信息
                 this.BatchProcess.StartInfo.RedirectStandardInput = true;

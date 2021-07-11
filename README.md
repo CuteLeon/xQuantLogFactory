@@ -1,4 +1,4 @@
-# xQuant 日志分析工具
+# 日志分析工具
 
 > - author: Leon
 >
@@ -8,11 +8,9 @@
 >
 > - tips: 文档内部分图形需要使用 Typora
 >
-> - e-mail: zichao.liu@xquant.com
+> - github: [https://github.com/CuteLeon/LogFactory](https://github.com/CuteLeon/LogFactory)
 >
-> - github: [https://github.com/CuteLeon/xQuantLogFactory](https://github.com/CuteLeon/xQuantLogFactory)
->
-> - release: [https://github.com/CuteLeon/xQuantLogFactory/releases](https://github.com/CuteLeon/xQuantLogFactory/releases)
+> - release: [https://github.com/CuteLeon/LogFactory/releases](https://github.com/CuteLeon/LogFactory/releases)
 >
 ---
 
@@ -20,7 +18,7 @@
 
 ## 1.项目介绍
 
-​	xQuant日志分析工具（下称分析工具），是xQuant企业内部为挖掘系统日志内深层信息而研发的日志分析工具，旨在通过日志文件暴露出系统运行中出现的性能问题。
+​	日志分析工具（下称分析工具），是内部为挖掘系统日志内深层信息而研发的日志分析工具，旨在通过日志文件暴露出系统运行中出现的性能问题。
 
 ​	分析工具业务流程大致如下：
 
@@ -106,7 +104,7 @@ readToEnd(yes)->generalRegex
 
 ## 4.主要数据实体
 
-![实体引用关系图](./Document/xQuant日志分析工具-实体关系.jpg)
+![实体引用关系图](./Document/日志分析工具-实体关系.jpg)
 
 ### 4.1.TaskArgument
 
@@ -688,8 +686,7 @@ readToEnd(yes)->groupType
 ​	遇到需要特殊处理的日志结果，以通过配置分析工具已支持的组分析器或定向分析器实现复杂的分析逻辑，各个组分析器与定向分析器的使用场景可见上文[分析器](#analysiser)章节；
 
 - 对于工作中遇到的需要自定义逻辑的日志数据，而分析工具尚未实现对应的分析器时：
-  - 请访问此分析工具的GitHub仓库：[`https://github.com/CuteLeon/xQuantLogFactory`](https://github.com/CuteLeon/xQuantLogFactory)
-  - 或联系开发者：`zichao.liu@xquant.com`
+  - 请访问此分析工具的GitHub仓库：[`https://github.com/CuteLeon/LogFactory`](https://github.com/CuteLeon/LogFactory)
 
 ## 7.批量执行工具
 

@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A2D3FB8C-BF8D-478E-AC36-0C9DC1E05EDE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>LogFactory</RootNamespace>
+    <AssemblyName>LogFactory</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Build\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+    <CodeAnalysisRuleSet>LogFactory.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Build\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>8.0</LangVersion>
+    <CodeAnalysisRuleSet>LogFactory.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LogFactoryIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>LogFactory.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EPPlus, Version=4.5.3.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.1\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\portable-net40+sl4+win8+wp8\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\BatchApprovalAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CacheSizeAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\SQLAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Performance\CommonPerformanceLogAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\AsyncGroupLogAnalysiserBase.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonLoadAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonMemoryAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\DirectedLogAnalysiserBase.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonPrefixAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\CommonTerminalLogAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\CommonSelfSealingGroupAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\LimitCheckAsyncGroupAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\ReportAsyncGroupAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\FormAsyncGroupAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\Terminal\CoreAsyncGroupAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\GroupAnalysiser\GroupLogAnalysiserBase.cs" />
+    <Compile Include="BIZ\Analysiser\ICustomLogAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\LogAnalysiserBase.cs" />
+    <Compile Include="BIZ\Analysiser\LogAnalysiserHost.cs" />
+    <Compile Include="BIZ\Analysiser\DirectedAnalysiser\Terminal\CommonKeyValuePairAnalysiser.cs" />
+    <Compile Include="BIZ\Analysiser\QuotaAnalysiser.cs" />
+    <Compile Include="BIZ\Exporter\ChartContainer.cs" />
+    <Compile Include="BIZ\Exporter\ChartsReportExporter.cs" />
+    <Compile Include="BIZ\Exporter\ExcelLogReportExporter.cs" />
+    <Compile Include="BIZ\Exporter\ILogReportExporter.cs" />
+    <Compile Include="BIZ\Exporter\HTMLLogReportExporter.cs" />
+    <Compile Include="BIZ\FileFinder\IFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\LogFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\MonitorFileFinder.cs" />
+    <Compile Include="BIZ\FileFinder\TaskFileFinderBase.cs" />
+    <Compile Include="BIZ\Parser\ClientPerformanceParser.cs" />
+    <Compile Include="BIZ\Parser\ClientTerminalParser.cs" />
+    <Compile Include="BIZ\Analysiser\ILogAnalysiser.cs" />
+    <Compile Include="BIZ\Parser\OldPerformanceParser.cs" />
+    <Compile Include="BIZ\Parser\ServerSQLTerminalParser.cs" />
+    <Compile Include="BIZ\Parser\ServerPerformanceParser.cs" />
+    <Compile Include="BIZ\Parser\TerminalLogParserBase.cs" />
+    <Compile Include="BIZ\Parser\ILogParser.cs" />
+    <Compile Include="BIZ\Parser\LogParserBase.cs" />
+    <Compile Include="BIZ\Processer\LogProcesserBase.cs" />
+    <Compile Include="BIZ\Parser\PerformanceLogParserBase.cs" />
+    <Compile Include="BIZ\Parser\ServerTerminalParser.cs" />
+    <Compile Include="Model\EqualityComparer\TerminalAnalysisResultEqualityComparer.cs" />
+    <Compile Include="Model\Extensions\TaskArgumentExtension.cs" />
+    <Compile Include="Model\Factory\ArgsTaskArgumentFactory.cs" />
+    <Compile Include="Model\Factory\CreateTaskArgumentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Model\Factory\CreateTaskArgumentForm.Designer.cs">
+      <DependentUpon>CreateTaskArgumentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Factory\GUITaskArgumentFactory.cs" />
+    <Compile Include="Model\Factory\ITaskArgumentFactory.cs" />
+    <Compile Include="Model\Fixed\FixedDatas.cs" />
+    <Compile Include="Model\Fixed\Enums.cs" />
+    <Compile Include="Model\LogFile\LogFileBase.cs" />
+    <Compile Include="Model\LogFile\LogFileRelBase.cs" />
+    <Compile Include="Model\LogFile\PerformanceLogFile.cs" />
+    <Compile Include="Model\Monitor\IMonitorContainer.cs" />
+    <Compile Include="Model\Monitor\MonitorBase.cs" />
+    <Compile Include="Model\Monitor\MonitorItemBase.cs" />
+    <Compile Include="Model\Monitor\MonitorItemRelBase.cs" />
+    <Compile Include="Model\Monitor\PerformanceMonitorItem.cs" />
+    <Compile Include="Model\Report\ExcelWorksheetPackage.cs" />
+    <Compile Include="Model\Result\AnalysisResultBase.cs" />
+    <Compile Include="Model\Result\AnalysisResultRelBase.cs" />
+    <Compile Include="Model\Result\IAnalysisResult.cs" />
+    <Compile Include="Model\Result\IMonitorResult.cs" />
+    <Compile Include="Model\Result\MonitorResultBase.cs" />
+    <Compile Include="Model\Result\MonitorResultRelBase.cs" />
+    <Compile Include="Model\Result\PerformanceAnalysisResult.cs" />
+    <Compile Include="Model\Result\AnalysisResultContainer.cs" />
+    <Compile Include="Model\Result\TerminalAnalysisResult.cs" />
+    <Compile Include="Model\Result\LogResultBase.cs" />
+    <Compile Include="Model\LogFile\TerminalLogFile.cs" />
+    <Compile Include="Model\Result\PerformanceMonitorResult.cs" />
+    <Compile Include="Model\Monitor\MonitorContainer.cs" />
+    <Compile Include="Model\Monitor\TerminalMonitorItem.cs" />
+    <Compile Include="Model\Result\TerminalMonitorResult.cs" />
+    <Compile Include="Model\Result\TerminalUnparsedResult.cs" />
+    <Compile Include="Model\Result\Transition\IAnalysisResultable.cs" />
+    <Compile Include="Model\Result\Transition\LimitCheckTransition.cs" />
+    <Compile Include="Model\SystemInfo.cs" />
+    <Compile Include="Model\TaskArgument.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityResource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UnityResource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\Collections\VersionedList.cs" />
+    <Compile Include="Utils\ConfigHelper.cs" />
+    <Compile Include="Utils\DebugHelper.cs" />
+    <Compile Include="Utils\Extensions\DeepCloneExtension.cs" />
+    <Compile Include="Utils\Extensions\SaveToFileExtension.cs" />
+    <Compile Include="Utils\Extensions\EnumExtension.cs" />
+    <Compile Include="Utils\Extensions\XMLSerializationExtension.cs" />
+    <Compile Include="Utils\IOUtils.cs" />
+    <Compile Include="Utils\Trace\ITracer.cs" />
+    <Compile Include="Utils\Trace\ConsoleTracer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Monitor\Client.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\Client其他.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\Client启动.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\Client窗体与报表.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\Client组合动态核算.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\Performance.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\SQL.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\中间件启动v064.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\中间件启动v065.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\中间件启动_new.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\交易清算.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\内存使用.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\客户端启动v064.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\客户端启动v065.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\客户端启动_new.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\客户端消息.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\异步服务监控.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\批量审批.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\测试规则.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\窗体与报表.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\财务核算.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\Info审批.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\限额检查.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Monitor\限额刷新.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReportTemplet\lib\bootstrap.bundle.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReportTemplet\lib\bootstrap.min.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReportTemplet\lib\echarts.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReportTemplet\lib\jquery-3.3.1.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReportTemplet\lib\report.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ReportTemplet\SQLHash.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Batch\中间件启动日志.bat" />
+    <None Include="Batch\中间件启动日志v064.bat" />
+    <None Include="Batch\中间件启动日志v065.bat" />
+    <None Include="Batch\交易清算日志.bat" />
+    <None Include="Batch\内存使用.bat" />
+    <None Include="Batch\客户端启动日志v064.bat" />
+    <None Include="Batch\客户端启动日志v065.bat" />
+    <None Include="Batch\异步服务监控.bat" />
+    <None Include="Batch\批量审批.bat" />
+    <None Include="Batch\窗体与报表日志.bat" />
+    <None Include="ReportTemplet\HTML_Templet.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ReportTemplet\EXCEL_Templet.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="LogFactory.ruleset" />
+    <None Include="LogFactoryIcon.ico" />
+    <Content Include="Monitor\Server.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Model\Factory\CreateTaskArgumentForm.resx">
+      <DependentUpon>CreateTaskArgumentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UnityResource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>UnityResource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)Batch\*" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

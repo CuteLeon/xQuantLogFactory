@@ -8,24 +8,24 @@ namespace BatchHost.Utils
     public static class UnityUtils
     {
         /// <summary>
-        /// xQuant日志分析工具文件路径
+        /// 日志分析工具文件路径
         /// </summary>
-        public static string xQuantPath = typeof(xQuantLogFactory.BIZ.Processer.LogProcesserBase).Assembly.Location;
+        public static string WorkPath = typeof(LogFactory.BIZ.Processer.LogProcesserBase).Assembly.Location;
 
         /// <summary>
-        /// xQuant日志分析工具文件名称
+        /// 日志分析工具文件名称
         /// </summary>
-        public static string xQuantName = Path.GetFileName(xQuantPath);
+        public static string WorkName = Path.GetFileName(WorkPath);
 
         /// <summary>
-        /// xQuant日志分析工具目录
+        /// 日志分析工具目录
         /// </summary>
-        public static string xQuantDirectory = Path.GetDirectoryName(xQuantPath);
+        public static string WorkDirectory = Path.GetDirectoryName(WorkPath);
 
         /// <summary>
         /// 生成目录
         /// </summary>
-        public static string BuildDirectory = Path.Combine(xQuantDirectory, "Batches");
+        public static string BuildDirectory = Path.Combine(WorkDirectory, "Batches");
 
         [DllImport("user32.dll")]
         public static extern bool RedrawWindow(IntPtr hWnd, IntPtr lprc, IntPtr hrgn, uint flags);

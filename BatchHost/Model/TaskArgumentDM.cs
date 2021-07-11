@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using xQuantLogFactory.Model.Fixed;
+using LogFactory.Model.Fixed;
 
 using static BatchHost.Model.FixedValue;
 
