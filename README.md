@@ -11,7 +11,6 @@
 > - github: [https://github.com/CuteLeon/LogFactory](https://github.com/CuteLeon/LogFactory)
 >
 > - release: [https://github.com/CuteLeon/LogFactory/releases](https://github.com/CuteLeon/LogFactory/releases)
->
 ---
 
 [TOC]
@@ -508,6 +507,20 @@ readToEnd(yes)->groupType
 #### 5.4.2.HTML导出器
 
 ​	将任务所有日志结果导出到HTML文件；
+
+![](./Document/Image.5.4.2_1.png)
+
+![](./Document/Image.5.4.2_2.png)
+
+![](./Document/Image.5.4.2_3.png)
+
+![](./Document/Image.5.4.2_4.png)
+
+![](./Document/Image.5.4.2_5.png)
+
+![](./Document/Image.5.4.2_6.png)
+
+![](./Document/Image.5.4.2_7.png)
 
 #### 5.4.3.Word导出器
 
